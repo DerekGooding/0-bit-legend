@@ -562,7 +562,7 @@ public class EnemyMovement : MainProgram
 
     public void SpawnRupee()
     {
-        if (_sRType != "dragon" && _sRType != "bat" && new Random().Next(2) == 1)
+        if (_sRType != "dragon" && _sRType != "bat" && Random.Shared.Next(2) == 1)
         {
             string[] rupee_storage_copy = new string[9];
 
@@ -587,7 +587,7 @@ public class EnemyMovement : MainProgram
             _rPosY.Add(_sRPosY);
             _rupee_storage.Add(rupee_storage_copy);
 
-            if (new Random().Next(5) == 4 || (_sRType == "spider" && new Random().Next(10) == 9))
+            if (Random.Shared.Next(5) == 4 || (_sRType == "spider" && Random.Shared.Next(10) == 9))
             {
                 map[_sRPosX, _sRPosY] = "V";
             }

@@ -7,8 +7,6 @@ public class MainProgram
     protected static LinkMovement linkMovement = new LinkMovement();
     protected static EnemyMovement enemyMovement = new EnemyMovement();
 
-    private static readonly Random random = new Random();
-
     protected static string[,] map = new string[102, 33];
     protected static int currentMap = 0;
 
@@ -144,7 +142,7 @@ public class MainProgram
                             for (int i = 0; i < enemyMovement.GetTotal(); i++)
                             {
                                 bool passed = false;
-                                int rnd1 = random.Next(10);
+                                int rnd1 = Random.Shared.Next(10);
 
                                 if (enemyMovement.GetEnemyType(i) == "octorok")
                                 {
@@ -174,7 +172,7 @@ public class MainProgram
 
                                     if (passed)
                                     {
-                                        int rnd2 = random.Next(4) + 1;
+                                        int rnd2 = Random.Shared.Next(4) + 1;
                                         if (rnd2 == 1)
                                         {
                                             enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) - 1, "w", -1, false);
@@ -224,7 +222,7 @@ public class MainProgram
 
                                         if (passed)
                                         {
-                                            int rnd2 = random.Next(4) + 1;
+                                            int rnd2 = Random.Shared.Next(4) + 1;
                                             if (rnd2 == 1)
                                             {
                                                 enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) - 1, "w", -1, false);
@@ -276,7 +274,7 @@ public class MainProgram
 
                                     if (passed)
                                     {
-                                        int rnd2 = random.Next(4) + 1;
+                                        int rnd2 = Random.Shared.Next(4) + 1;
                                         if (rnd2 == 1)
                                         {
                                             enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) - 1, "w", -1, false);
