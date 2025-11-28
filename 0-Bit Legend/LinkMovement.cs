@@ -359,35 +359,35 @@ public class LinkMovement
             }
             else if (posY >= 1 && !(_posX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
             {
-                IsTouching(posX, posY, "r");
+                IsTouching(posX, posY, 'r');
                 StoreChar(_posX, _posY);
                 var inCave = false;
 
-                if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
+                if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
                 {
                     SetFlag(GameFlags.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
                 {
                     Rupees -= 35;
 
                     SetFlag(GameFlags.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 5)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 5)
                 {
                     Rupees -= 10;
                     Keys++;
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && Rupees >= 15)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, '#') && Rupees >= 15)
                 {
                     Rupees -= 25;
 
                     SetFlag(GameFlags.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && HasFlags([GameFlags.Door1, GameFlags.Door2, GameFlags.Door3]) && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '=') && HasFlags([GameFlags.Door1, GameFlags.Door2, GameFlags.Door3]) && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
                 {
                     LoadMap(12, 50, 24, direction);
                 }
@@ -400,9 +400,9 @@ public class LinkMovement
                     LoadMap(9, _posX, _posY, direction);
                 }
 
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !IsTouching(posX, posY, ">") && !IsTouching(posX, posY, "*") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && !((CurrentMap == 6 || CurrentMap == 7) && posY < 17) && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9))
+                if (!IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n') && !IsTouching(posX, posY, 'B') && !IsTouching(posX, posY, '{') && !IsTouching(posX, posY, '}') && !IsTouching(posX, posY, 'S') && !IsTouching(posX, posY, '<') && !IsTouching(posX, posY, '>') && !IsTouching(posX, posY, '*') && !(IsTouching(posX, posY, 'F') && CurrentMap != 7) && !IsTouching(posX, posY, '~') && !((CurrentMap == 6 || CurrentMap == 7) && posY < 17) && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
                 {
-                    if (IsTouching(posX, posY, "/"))
+                    if (IsTouching(posX, posY, '/'))
                     {
                         inCave = true;
                     }
@@ -418,7 +418,7 @@ public class LinkMovement
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
+                else if (IsTouching(posX, posY, 't') || IsTouching(posX, posY, 'n') || IsTouching(posX, posY, 'B') || IsTouching(posX, posY, '{') || IsTouching(posX, posY, '}') || IsTouching(posX, posY, 'S') || IsTouching(posX, posY, '<') || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -429,7 +429,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (CurrentMap == 13 && IsTouching(posX, posY, "~"))
+                else if (CurrentMap == 13 && IsTouching(posX, posY, '~'))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -438,7 +438,7 @@ public class LinkMovement
                     UpdateRow(_posY + 1);
                     UpdateRow(_posY + 2);
 
-                    LoadMap(13, 58, 15, "a");
+                    LoadMap(13, 58, 15, 'a');
                     SetFlag(GameFlags.GameOver, true);
                 }
                 else
@@ -460,67 +460,67 @@ public class LinkMovement
             {
                 if (CurrentMap == 0)
                 {
-                    LoadMap(1, 63, 29, "w");
+                    LoadMap(1, 63, 29, 'w');
                 }
                 else if (CurrentMap == 2)
                 {
                     if (posX > 29)
                     {
-                        LoadMap(4, 55, 30, "w");
+                        LoadMap(4, 55, 30, 'w');
                     }
                     else if (posX == 21)
                     {
-                        LoadMap(4, 21, 29, "w");
+                        LoadMap(4, 21, 29, 'w');
                     }
                     else
                     {
-                        LoadMap(4, 10, 29, "w");
+                        LoadMap(4, 10, 29, 'w');
                     }
                 }
                 else if (CurrentMap == 3)
                 {
-                    LoadMap(5, 49, 30, "w");
+                    LoadMap(5, 49, 30, 'w');
                 }
             }
             if (HasFlag(GameFlags.Text))
             {
                 SetFlag(GameFlags.Text , false );
-                LoadMap(9, posX, posY, "w");
+                LoadMap(9, posX, posY, 'w');
             }
         }
-        else if (direction == "a")
+        else if (direction == 'a')
         {
             _prev2 = 'a';
             if (posX >= 2)
             {
-                IsTouching(posX, posY, "r");
+                IsTouching(posX, posY, 'r');
                 StoreChar(_posX, _posY);
 
-                if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
+                if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
                 {
                     SetFlag(GameFlags.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
                 {
                     Rupees -= 35;
 
                     SetFlag(GameFlags.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 10)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
                 {
                     Rupees -= 10;
                     Keys++;
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && Rupees >= 25)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, '#') && Rupees >= 25)
                 {
                     Rupees -= 25;
 
                     SetFlag(GameFlags.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && HasFlag(GameFlags.Door1) && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '=') && HasFlag(GameFlags.Door1) && !_debounce)
                 {
                     LoadMap(10, 87, 15, direction);
                 }
@@ -533,7 +533,7 @@ public class LinkMovement
                     LoadMap(9, _posX, _posY, direction);
                 }
 
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9))
+                if (!IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n') && !IsTouching(posX, posY, 'B') && !IsTouching(posX, posY, '{') && !IsTouching(posX, posY, '}') && !IsTouching(posX, posY, 'S') && !IsTouching(posX, posY, '<') && !(IsTouching(posX, posY, 'F') && CurrentMap != 7) && !IsTouching(posX, posY, '~') && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
                 {
                     StoreChar(posX, posY);
                     BuildChar(posX, posY, direction);
@@ -546,7 +546,7 @@ public class LinkMovement
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
+                else if (IsTouching(posX, posY, 't') || IsTouching(posX, posY, 'n') || IsTouching(posX, posY, 'B') || IsTouching(posX, posY, '{') || IsTouching(posX, posY, '}') || IsTouching(posX, posY, 'S') || IsTouching(posX, posY, '<') || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -557,7 +557,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, '~') && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n'))
                 {
                     StoreChar(_posX, _posY);
 
@@ -567,7 +567,7 @@ public class LinkMovement
                     UpdateRow(_posY + 2);
 
                     _posX = 21;
-                    DeployRaft("a");
+                    DeployRaft('a');
                     wait = 150;
                 }
                 else if (_posX == 21 && ((posY > 11 && CurrentMap == 4) || CurrentMap == 2) && ((CurrentMap == 2 && posY < 25) || CurrentMap == 4))
@@ -599,13 +599,13 @@ public class LinkMovement
                     UpdateRow(posY + 2);
                     UpdateRow(posY + 3);
                 }
-                else if (CurrentMap == 11 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 11 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(9, 86, 15, "a");
+                    LoadMap(9, 86, 15, 'a');
                 }
-                else if (CurrentMap == 13 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 13 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(12, 86, 15, "a");
+                    LoadMap(12, 86, 15, 'a');
                 }
                 else
                 {
@@ -622,32 +622,32 @@ public class LinkMovement
             {
                 if (CurrentMap == 0)
                 {
-                    LoadMap(2, 99, 12, "a");
+                    LoadMap(2, 99, 12, 'a');
                 }
                 else if (CurrentMap == 3)
                 {
-                    LoadMap(0, 98, 17, "a");
+                    LoadMap(0, 98, 17, 'a');
                 }
                 else if (CurrentMap == 1)
                 {
-                    LoadMap(4, 98, 13, "a");
+                    LoadMap(4, 98, 13, 'a');
                 }
                 else if (CurrentMap == 5)
                 {
-                    LoadMap(1, 98, 16, "a");
+                    LoadMap(1, 98, 16, 'a');
                 }
                 else if (CurrentMap == 4)
                 {
-                    LoadMap(8, 99, 16, "a");
+                    LoadMap(8, 99, 16, 'a');
                 }
             }
             if (HasFlag(GameFlags.Text))
             {
                 SetFlag(GameFlags.Text, false);
-                LoadMap(9, posX, posY, "w");
+                LoadMap(9, posX, posY, 'w');
             }
         }
-        else if (direction == "s")
+        else if (direction == 's')
         {
             if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
             {
@@ -668,15 +668,13 @@ public class LinkMovement
                 }
                 else if (CurrentMap == 4)
                 {
-                    LoadMap(2, 21, 2, "s");
+                    LoadMap(2, 21, 2, 's');
                 }
             }
             else if (posY <= 29)
             {
-                IsTouching(posX, posY, "r");
-
-                StoreChar(_posX, _posY);
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9))
+                IsTouching(posX, posY, 'r');
+                if (!IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n') && !IsTouching(posX, posY, 'B') && !IsTouching(posX, posY, '{') && !IsTouching(posX, posY, '}') && !IsTouching(posX, posY, 's') && !IsTouching(posX, posY, '<') && !(IsTouching(posX, posY, 'F') && CurrentMap != 7) && !IsTouching(posX, posY, '~') && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
                 {
                     StoreChar(posX, posY);
                     BuildChar(posX, posY, direction);
@@ -689,7 +687,7 @@ public class LinkMovement
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
+                else if (IsTouching(posX, posY, 't') || IsTouching(posX, posY, 'n') || IsTouching(posX, posY, 'B') || IsTouching(posX, posY, '{') || IsTouching(posX, posY, '}') || IsTouching(posX, posY, 's') || IsTouching(posX, posY, '<') || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -700,7 +698,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (CurrentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -709,7 +707,7 @@ public class LinkMovement
                     UpdateRow(_posY + 1);
                     UpdateRow(_posY + 2);
 
-                    LoadMap(9, 50, 9, "s");
+                    LoadMap(9, 50, 9, 's');
                 }
                 else
                 {
@@ -725,79 +723,79 @@ public class LinkMovement
             {
                 if (CurrentMap == 1)
                 {
-                    LoadMap(0, 63, 1, "s");
+                    LoadMap(0, 63, 1, 's');
                 }
                 else if (CurrentMap == 4)
                 {
                     if (posX > 29)
                     {
-                        LoadMap(2, 55, 1, "s");
+                        LoadMap(2, 55, 1, 's');
                     }
                     else if (posX == 21)
                     {
-                        LoadMap(2, 21, 2, "s");
+                        LoadMap(2, 21, 2, 's');
                     }
                     else
                     {
-                        LoadMap(2, 10, 2, "s");
+                        LoadMap(2, 10, 2, 's');
                     }
                 }
                 else if (CurrentMap == 5)
                 {
-                    LoadMap(3, 49, 2, "s");
+                    LoadMap(3, 49, 2, 's');
                 }
                 else if (CurrentMap == 6)
                 {
-                    LoadMap(0, 16, 6, "s");
+                    LoadMap(0, 16, 6, 's');
                     Wait(2);
                 }
                 else if (CurrentMap == 7)
                 {
-                    LoadMap(4, 86, 7, "s");
+                    LoadMap(4, 86, 7, 's');
                     Wait(2);
                 }
                 else if (CurrentMap == 9)
                 {
-                    LoadMap(8, 51, 17, "s");
+                    LoadMap(8, 51, 17, 's');
                     Wait(2);
                 }
             }
             SetFlag(GameFlags.Text, false);
         }
-        else if (direction == "d")
+        else if (direction == 'd')
         {
             _prev2 = 'd';
             if (posX <= 99)
             {
-                IsTouching(posX, posY, "r");
+                IsTouching(posX, posY, 'r');
                 StoreChar(_posX, _posY);
 
                 var persist = true;
-                if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
+                if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 's')))
                 {
                     SetFlag(GameFlags.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
                 {
                     Rupees -= 35;
 
                     SetFlag(GameFlags.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 10)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
                 {
                     Rupees -= 10;
                     Keys++;
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && Rupees >= 25)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, '#') && Rupees >= 25)
                 {
                     Rupees -= 25;
 
                     SetFlag(GameFlags.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && HasFlag(GameFlags.Door2) && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '=') && HasFlag(GameFlags.Door2) && !_debounce)
                 {
                     persist = false;
                     LoadMap(11, 14, 15, direction);
@@ -811,7 +809,7 @@ public class LinkMovement
                     LoadMap(9, _posX, _posY, direction);
                 }
 
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9) && persist)
+                if (!IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n') && !IsTouching(posX, posY, 'B') && !IsTouching(posX, posY, '{') && !IsTouching(posX, posY, '}') && !IsTouching(posX, posY, 's') && !IsTouching(posX, posY, '<') && !(IsTouching(posX, posY, 'F') && CurrentMap != 7) && !IsTouching(posX, posY, '~') && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9) && persist)
                 {
                     StoreChar(posX, posY);
                     BuildChar(posX, posY, direction);
@@ -824,7 +822,7 @@ public class LinkMovement
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
+                else if (IsTouching(posX, posY, 't') || IsTouching(posX, posY, 'n') || IsTouching(posX, posY, 'B') || IsTouching(posX, posY, '{') || IsTouching(posX, posY, '}') || IsTouching(posX, posY, 's') || IsTouching(posX, posY, '<') || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -835,7 +833,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, '~') && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n'))
                 {
                     StoreChar(_posX, _posY);
 
@@ -845,7 +843,7 @@ public class LinkMovement
                     UpdateRow(_posY + 2);
 
                     _posX = 21;
-                    DeployRaft("d");
+                    DeployRaft('d');
                     wait = 150;
                 }
                 else if (_posX == 21 && posY < 25 && ((posY > 3 && CurrentMap == 2) || (posY < 25 && CurrentMap == 4)))
@@ -877,13 +875,13 @@ public class LinkMovement
                     UpdateRow(posY + 2);
                     UpdateRow(posY + 3);
                 }
-                else if (CurrentMap == 10 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 10 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(9, 14, 15, "d");
+                    LoadMap(9, 14, 15, 'd');
                 }
-                else if (CurrentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(13, 15, 15, "d");
+                    LoadMap(13, 15, 15, 'd');
                 }
                 else
                 {
@@ -899,29 +897,29 @@ public class LinkMovement
             {
                 if (CurrentMap == 2)
                 {
-                    LoadMap(0, 4, 12, "d");
+                    LoadMap(0, 4, 12, 'd');
                 }
                 else if (CurrentMap == 0)
                 {
-                    LoadMap(3, 2, 18, "d");
+                    LoadMap(3, 2, 18, 'd');
                 }
                 else if (CurrentMap == 4)
                 {
-                    LoadMap(1, 2, 13, "d");
+                    LoadMap(1, 2, 13, 'd');
                 }
                 else if (CurrentMap == 1)
                 {
-                    LoadMap(5, 2, 15, "d");
+                    LoadMap(5, 2, 15, 'd');
                 }
                 else if (CurrentMap == 8)
                 {
-                    LoadMap(4, 2, 16, "d");
+                    LoadMap(4, 2, 16, 'd');
                 }
             }
             if (HasFlag(GameFlags.Text))
             {
                 SetFlag(GameFlags.Text, false);
-                LoadMap(9, posX, posY, "w");
+                LoadMap(9, posX, posY, 'w');
             }
         }
         _debounce = false;
@@ -929,15 +927,15 @@ public class LinkMovement
 
     public void BuildChar(int posX, int posY, char direction)
     {
-        var spaceslot = " ";
-        var underslot = "_";
+        var spaceslot = ' ';
+        var underslot = '_';
         if (HasFlag(GameFlags.HasArmor))
         {
-            spaceslot = "#";
-            underslot = "#";
+            spaceslot = '#';
+            underslot = '#';
         }
 
-        if (direction == "w")
+        if (direction == 'w')
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '_';
@@ -963,7 +961,7 @@ public class LinkMovement
             Map[posX + 1, posY + 2] = '/';
             Map[posX + 2, posY + 2] = ' ';
         }
-        else if (direction == "a")
+        else if (direction == 'a')
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -989,7 +987,7 @@ public class LinkMovement
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == "s")
+        else if (direction == 's')
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -1015,7 +1013,7 @@ public class LinkMovement
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == "d")
+        else if (direction == 'd')
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '/';

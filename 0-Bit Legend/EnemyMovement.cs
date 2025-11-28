@@ -9,7 +9,7 @@ public class EnemyMovement
     private readonly List<int> _posX = [];
     private readonly List<int> _posY = [];
 
-    private readonly List<string[]> _map_storage = [];
+    private readonly List<char[]> _map_storage = [];
 
     private readonly List<char> _prev1 = [];
     private readonly List<char> _prev2 = [];
@@ -22,7 +22,7 @@ public class EnemyMovement
     // Rupee
     private readonly List<int> _rPosX = [];
     private readonly List<int> _rPosY = [];
-    private readonly List<string[]> _rupee_storage = [];
+    private readonly List<char[]> _rupee_storage = [];
 
     private int _sRPosX;
     private int _sRPosY;
@@ -37,9 +37,9 @@ public class EnemyMovement
 
     public int GetTotal() => _posX.ToArray().Length;
 
-    public string GetPrev1(int index) => _prev1[index];
+    public char GetPrev1(int index) => _prev1[index];
 
-    public string GetPrev2(int index) => _prev2[index];
+    public char GetPrev2(int index) => _prev2[index];
 
     public int GetMotion(int index) => _motion[index];
 
@@ -66,7 +66,7 @@ public class EnemyMovement
             {
                 for (var j = 0; j < 12; j++)
                 {
-                    Map[GetPosX(index) + j, GetPosY(index) + i] = dragon[value].ToString();
+                    Map[GetPosX(index) + j, GetPosY(index) + i] = dragon[value];
                     value++;
                 }
             }
@@ -92,7 +92,7 @@ public class EnemyMovement
         return true;
     }
 
-    public bool Move(int index, EnemyType type, int posX, int posY, string direction, int motion, bool spawn)
+    public bool Move(int index, EnemyType type, int posX, int posY, char direction, int motion, bool spawn)
     {
         if (index == -1)
         {
@@ -112,32 +112,32 @@ public class EnemyMovement
 
             _motion.Add(motion);
 
-            string[] storage_copy;
+            char[] storage_copy;
             if (type == EnemyType.Octorok)
             {
-                storage_copy = new string[12];
+                storage_copy = new char[12];
             }
             else if (type == EnemyType.Spider)
             {
-                storage_copy = new string[15];
+                storage_copy = new char[15];
             }
             else if (type == EnemyType.Bat)
             {
-                storage_copy = new string[10];
+                storage_copy = new char[10];
             }
             else if (type == EnemyType.Dragon)
             {
-                storage_copy = new string[84];
+                storage_copy = new char[84];
                 _hp[GetTotal() - 1] = 3;
             }
             else
             {
-                storage_copy = type == EnemyType.Fireball ? (new string[6]) : (new string[12]);
+                storage_copy = type == EnemyType.Fireball ? (new char[6]) : (new char[12]);
             }
 
             for (var i = 0; i < storage_copy.Length; i++)
             {
-                storage_copy[i] = " ";
+                storage_copy[i] = ' ';
             }
 
             _map_storage.Add(storage_copy);
@@ -146,7 +146,7 @@ public class EnemyMovement
         if (InBounds(type, posX, posY))
         {
             Clear(index, type);
-            if (type == EnemyType.Dragon || (type == EnemyType.Spider || type == EnemyType.Bat || (!IsTouching(type, posX, posY, "=") && !IsTouching(type, posX, posY, "X"))) && !IsTouching(type, posX, posY, "t") && !IsTouching(type, posX, posY, "n") && !IsTouching(type, posX, posY, "B") && !IsTouching(type, posX, posY, "{") && !IsTouching(type, posX, posY, "}") && !IsTouching(type, posX, posY, "|") && !IsTouching(type, posX, posY, "/") && !IsTouching(type, posX, posY, "\\") && !IsTouching(type, posX, posY, "_") && !IsTouching(type, posX, posY, "~"))
+            if (type == EnemyType.Dragon || ((type == EnemyType.Spider || type == EnemyType.Bat || (!IsTouching(type, posX, posY, "=") && !IsTouching(type, posX, posY, "X"))) && !IsTouching(type, posX, posY, "t") && !IsTouching(type, posX, posY, "n") && !IsTouching(type, posX, posY, "B") && !IsTouching(type, posX, posY, "{") && !IsTouching(type, posX, posY, "}") && !IsTouching(type, posX, posY, "|") && !IsTouching(type, posX, posY, "/") && !IsTouching(type, posX, posY, "\\") && !IsTouching(type, posX, posY, "_") && !IsTouching(type, posX, posY, "~")))
             {
                 _prev1[index] = direction;
 
@@ -340,7 +340,7 @@ public class EnemyMovement
         if (type == EnemyType.Dragon)
         {
             var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
-            if (_prev1[index] == "d") dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
+            if (_prev1[index] == 'd') dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
 
             var debounce = false;
             var value = 0;
@@ -353,7 +353,7 @@ public class EnemyMovement
                         debounce = true;
                         MainProgram.LinkMovement.Hit();
                     }
-                    Map[posX + j, posY + i] = dragon[value].ToString();
+                    Map[posX + j, posY + i] = dragon[value];
                     value++;
                 }
             }
@@ -563,7 +563,7 @@ public class EnemyMovement
     {
         if (_sRType != EnemyType.Dragon && _sRType != EnemyType.Bat && Random.Shared.Next(2) == 1)
         {
-            var rupee_storage_copy = new string[9];
+            var rupee_storage_copy = new char[9];
 
             var value = 0;
             for (var i = 0; i < 3; i++)
@@ -572,7 +572,7 @@ public class EnemyMovement
                 {
                     rupee_storage_copy[value] = Map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not '-' and not 'S'
                         ? Map[_sRPosX - 1 + j, _sRPosY - 1 + i]
-                        : " ";
+                        : ' ';
                     value++;
                 }
             }
@@ -582,7 +582,7 @@ public class EnemyMovement
             _rupee_storage.Add(rupee_storage_copy);
 
             Map[_sRPosX, _sRPosY]
-                = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? "V" : "R";
+                = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? 'V' : 'R';
 
             Map[_sRPosX - 1, _sRPosY] = 'R';
             Map[_sRPosX + 1, _sRPosY] = 'R';
@@ -601,7 +601,7 @@ public class EnemyMovement
         {
             if (posX >= _rPosX[i] - 1 && posX <= _rPosX[i] + 1 && posY >= _rPosY[i] - 1 && posY <= _rPosY[i] + 1)
             {
-                if (Map[_rPosX[i], _rPosY[i]] == "V")
+                if (Map[_rPosX[i], _rPosY[i]] == 'V')
                 {
                     Rupees += 5;
                 }
@@ -661,7 +661,7 @@ public class EnemyMovement
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(EnemyType type, int posX, int posY, string symbol)
+    public bool IsTouching(EnemyType type, int posX, int posY, char symbol)
         => (type == EnemyType.Octorok && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol))
             || ((type == EnemyType.Spider && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol || Map[posX + 4, posY + 2] == symbol))
             || ((type == EnemyType.Bat && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))

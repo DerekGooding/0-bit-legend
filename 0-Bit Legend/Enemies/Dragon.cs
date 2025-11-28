@@ -10,7 +10,7 @@ public class Dragon : IEnemy
     public void Build(int posX, int posY, char previousIndex)
     {
         var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
-        if (_prev1[index] == "d") dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
+        if (previousIndex == 'd') dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
 
         var debounce = false;
         var value = 0;
@@ -18,12 +18,12 @@ public class Dragon : IEnemy
         {
             for (var j = 0; j < 12; j++)
             {
-                if (Map[posX + j, posY + i] == "/" || Map[posX + j, posY + i] == "\\" || Map[posX + j, posY + i] == "|" || Map[posX + j, posY + i] == "_" && !debounce)
+                if (Map[posX + j, posY + i] == '/' || Map[posX + j, posY + i] == '\\' || Map[posX + j, posY + i] == '|' || Map[posX + j, posY + i] == '_' && !debounce)
                 {
                     debounce = true;
                     MainProgram.LinkMovement.Hit();
                 }
-                Map[posX + j, posY + i] = dragon[value].ToString();
+                Map[posX + j, posY + i] = dragon[value];
                 value++;
             }
         }
