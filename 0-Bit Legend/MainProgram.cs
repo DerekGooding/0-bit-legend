@@ -81,8 +81,7 @@ public static class MainProgram
                 iFrames = 0;
             }
 
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine(" \n \n \n ");
+            Console.SetCursorPosition(0, 4);
             UpdateHud();
 
             for (var i = 0; i < 33; i++)
@@ -104,6 +103,14 @@ public static class MainProgram
                 }
 
                 Console.WriteLine(_strs[i]);
+            }
+
+            // Clear remaining lines at the bottom of the console
+            var lastGameLine = 4 + 33; // Game content goes from line 4 to line 36 (inclusive), so next line is 37
+            for (var i = lastGameLine; i < Console.WindowHeight; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(new string(' ', Console.WindowWidth));
             }
 
             Thread.Sleep(wait);
@@ -145,7 +152,7 @@ public static class MainProgram
                                 var passed = false;
                                 var rnd1 = Random.Shared.Next(10);
 
-                                if (EnemyMovement.GetEnemyType(i) == "octorok")
+                                if (EnemyMovement.GetEnemyType(i) == EnemyType.Octorok)
                                 {
                                     if (rnd1 > 2)
                                     {
@@ -192,7 +199,7 @@ public static class MainProgram
                                         }
                                     }
                                 }
-                                else if (EnemyMovement.GetEnemyType(i) == "spider")
+                                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Spider)
                                 {
                                     EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
                                     if (EnemyMovement.GetMotion(i) > 0)
@@ -247,7 +254,7 @@ public static class MainProgram
                                         EnemyMovement.SetMotion(i, 10);
                                     }
                                 }
-                                else if (EnemyMovement.GetEnemyType(i) == "bat")
+                                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Bat)
                                 {
                                     if (rnd1 > 4)
                                     {
@@ -294,7 +301,7 @@ public static class MainProgram
                                         }
                                     }
                                 }
-                                else if (EnemyMovement.GetEnemyType(i) == "dragon" && waitDragon <= 0)
+                                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Dragon && waitDragon <= 0)
                                 {
                                     waitDragon = 4;
                                     EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
@@ -307,9 +314,9 @@ public static class MainProgram
                                         speed = 0;
                                         if (EnemyMovement.GetMotion(i) <= 0)
                                         {
-                                            EnemyMovement.Move(-1, "fireball", EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 3, "w", -1, true);
-                                            EnemyMovement.Move(-1, "fireball", EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 1, "a", -1, true);
-                                            EnemyMovement.Move(-1, "fireball", EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) - 1, "s", -1, true);
+                                            EnemyMovement.Move(-1, EnemyType.Fireball, EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 3, "w", -1, true);
+                                            EnemyMovement.Move(-1, EnemyType.Fireball, EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 1, "a", -1, true);
+                                            EnemyMovement.Move(-1, EnemyType.Fireball, EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) - 1, "s", -1, true);
                                             EnemyMovement.SetMotion(i, 12);
                                         }
                                     }
@@ -334,7 +341,7 @@ public static class MainProgram
                                         }
                                     }
                                 }
-                                else if (EnemyMovement.GetEnemyType(i) == "fireball")
+                                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Fireball)
                                 {
                                     if (EnemyMovement.GetPrev1(i) == "w")
                                     {
@@ -768,34 +775,34 @@ public static class MainProgram
 
         if (mapNum == 1)
         {
-            EnemyMovement.Move(-1, "octorok", 75, 13, "a", -1, true);
-            EnemyMovement.Move(-1, "octorok", 9, 12, "d", -1, true);
-            EnemyMovement.Move(-1, "octorok", 23, 26, "a", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 75, 13, "a", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 9, 12, "d", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 23, 26, "a", -1, true);
         }
         else if (mapNum == 2)
         {
-            EnemyMovement.Move(-1, "octorok", 59, 23, "d", -1, true);
-            EnemyMovement.Move(-1, "spider", 76, 6, "a", 5, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 59, 23, "d", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Spider, 76, 6, "a", 5, true);
         }
         else if (mapNum == 3)
         {
-            EnemyMovement.Move(-1, "spider", 44, 25, "a", 6, true);
-            EnemyMovement.Move(-1, "octorok", 38, 14, "d", -1, true);
-            EnemyMovement.Move(-1, "octorok", 83, 9, "a", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Spider, 44, 25, "a", 6, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 38, 14, "d", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 83, 9, "a", -1, true);
         }
         else if (mapNum == 4)
         {
-            EnemyMovement.Move(-1, "octorok", 35, 23, "a", -1, true);
-            EnemyMovement.Move(-1, "octorok", 69, 6, "a", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 35, 23, "a", -1, true);
+            EnemyMovement.Move(-1, EnemyType.Octorok, 69, 6, "a", -1, true);
         }
         else if (mapNum == 5)
         {
-            EnemyMovement.Move(-1, "spider", 81, 9, "a", 4, true);
-            EnemyMovement.Move(-1, "spider", 32, 5, "d", 6, true);
+            EnemyMovement.Move(-1, EnemyType.Spider, 81, 9, "a", 4, true);
+            EnemyMovement.Move(-1, EnemyType.Spider, 32, 5, "d", 6, true);
         }
         else if (mapNum == 8)
         {
-            //enemyMovement.Move(-1, "spider", 26, 20, "d", 4, true);
+            //enemyMovement.Move(-1, EnemyType.Spider, 26, 20, "d", 4, true);
             cEnemies1 = 4;
             cEnemies2 = 4;
         }
@@ -803,43 +810,43 @@ public static class MainProgram
         {
             if (cEnemies1 >= 1)
             {
-                EnemyMovement.Move(-1, "bat", 70, 11, "a", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 70, 11, "a", -1, true);
             }
             if (cEnemies1 >= 2)
             {
-                EnemyMovement.Move(-1, "bat", 32, 9, "d", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 32, 9, "d", -1, true);
             }
             if (cEnemies1 >= 3)
             {
-                EnemyMovement.Move(-1, "bat", 53, 15, "a", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 53, 15, "a", -1, true);
             }
             if (cEnemies1 >= 4)
             {
-                EnemyMovement.Move(-1, "bat", 20, 20, "d", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 20, 20, "d", -1, true);
             }
         }
         else if (mapNum == 11)
         {
             if (cEnemies2 >= 1)
             {
-                EnemyMovement.Move(-1, "bat", 27, 9, "a", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 27, 9, "a", -1, true);
             }
             if (cEnemies2 >= 2)
             {
-                EnemyMovement.Move(-1, "bat", 56, 20, "d", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 56, 20, "d", -1, true);
             }
             if (cEnemies2 >= 3)
             {
-                EnemyMovement.Move(-1, "bat", 73, 15, "a", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 73, 15, "a", -1, true);
             }
             if (cEnemies2 >= 4)
             {
-                EnemyMovement.Move(-1, "bat", 18, 11, "d", -1, true);
+                EnemyMovement.Move(-1, EnemyType.Bat, 18, 11, "d", -1, true);
             }
         }
         else if (mapNum == 12)
         {
-            if (!HasFlag(GameFlags.Dragon)) EnemyMovement.Move(-1, "dragon", 71, 13, "a", 12, true);
+            if (!HasFlag(GameFlags.Dragon)) EnemyMovement.Move(-1, EnemyType.Dragon, 71, 13, "a", 12, true);
         }
 
         if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)

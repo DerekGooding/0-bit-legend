@@ -1,4 +1,5 @@
-﻿using static _0_Bit_Legend.MainProgram;
+﻿using _0_Bit_Legend.Model;
+using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
 
@@ -13,7 +14,7 @@ public class EnemyMovement
     private readonly List<string> _prev1 = [];
     private readonly List<string> _prev2 = [];
 
-    private readonly List<string> _type = [];
+    private readonly List<EnemyType> _type = [];
     private readonly List<int> _hp = [];
 
     private readonly List<int> _motion = [];
@@ -25,14 +26,14 @@ public class EnemyMovement
 
     private int _sRPosX;
     private int _sRPosY;
-    private string _sRType = "";
+    private EnemyType _sRType = EnemyType.None;
 
     //    Methods    //
     public int GetPosX(int index) => _posX[index];
 
     public int GetPosY(int index) => _posY[index];
 
-    public string GetEnemyType(int index) => _type[index];
+    public EnemyType GetEnemyType(int index) => _type[index];
 
     public int GetTotal() => _posX.ToArray().Length;
 
@@ -50,12 +51,12 @@ public class EnemyMovement
         var index = GetIndex(posX, posY);
         MainProgram.LinkMovement.StoreSword(prev);
 
-        if (index == -1 || _type[index] == "fireball")
+        if (index == -1 || _type[index] == EnemyType.Fireball)
         {
             return false;
         }
 
-        if (_type[index] == "dragon")
+        if (_type[index] == EnemyType.Dragon)
         {
             waitDragon++;
 
@@ -82,7 +83,7 @@ public class EnemyMovement
 
             MainProgram.LinkMovement.SetSpawnRupee(true);
 
-            if (_sRType == "dragon")
+            if (_sRType == EnemyType.Dragon)
             {
                 SetFlag(Model.GameFlags.Dragon, true);
                 LoadMap(12, MainProgram.LinkMovement.GetPosX(), MainProgram.LinkMovement.GetPosY(), MainProgram.LinkMovement.GetPrev());
@@ -91,7 +92,7 @@ public class EnemyMovement
         return true;
     }
 
-    public bool Move(int index, string type, int posX, int posY, string direction, int motion, bool spawn)
+    public bool Move(int index, EnemyType type, int posX, int posY, string direction, int motion, bool spawn)
     {
         if (index == -1)
         {
@@ -112,26 +113,26 @@ public class EnemyMovement
             _motion.Add(motion);
 
             string[] storage_copy;
-            if (type == "octorok")
+            if (type == EnemyType.Octorok)
             {
                 storage_copy = new string[12];
             }
-            else if (type == "spider")
+            else if (type == EnemyType.Spider)
             {
                 storage_copy = new string[15];
             }
-            else if (type == "bat")
+            else if (type == EnemyType.Bat)
             {
                 storage_copy = new string[10];
             }
-            else if (type == "dragon")
+            else if (type == EnemyType.Dragon)
             {
                 storage_copy = new string[84];
                 _hp[GetTotal() - 1] = 3;
             }
             else
             {
-                storage_copy = type == "fireball" ? (new string[6]) : (new string[12]);
+                storage_copy = type == EnemyType.Fireball ? (new string[6]) : (new string[12]);
             }
 
             for (var i = 0; i < storage_copy.Length; i++)
@@ -145,18 +146,18 @@ public class EnemyMovement
         if (InBounds(type, posX, posY))
         {
             Clear(index, type);
-            if (type == "dragon" || (type == "spider" || type == "bat" || (!IsTouching(type, posX, posY, "=") && !IsTouching(type, posX, posY, "X"))) && !IsTouching(type, posX, posY, "t") && !IsTouching(type, posX, posY, "n") && !IsTouching(type, posX, posY, "B") && !IsTouching(type, posX, posY, "{") && !IsTouching(type, posX, posY, "}") && !IsTouching(type, posX, posY, "|") && !IsTouching(type, posX, posY, "/") && !IsTouching(type, posX, posY, "\\") && !IsTouching(type, posX, posY, "_") && !IsTouching(type, posX, posY, "~"))
+            if (type == EnemyType.Dragon || (type == EnemyType.Spider || type == EnemyType.Bat || (!IsTouching(type, posX, posY, "=") && !IsTouching(type, posX, posY, "X"))) && !IsTouching(type, posX, posY, "t") && !IsTouching(type, posX, posY, "n") && !IsTouching(type, posX, posY, "B") && !IsTouching(type, posX, posY, "{") && !IsTouching(type, posX, posY, "}") && !IsTouching(type, posX, posY, "|") && !IsTouching(type, posX, posY, "/") && !IsTouching(type, posX, posY, "\\") && !IsTouching(type, posX, posY, "_") && !IsTouching(type, posX, posY, "~"))
             {
                 _prev1[index] = direction;
 
-                if (type == "octorok")
+                if (type == EnemyType.Octorok)
                 {
                     if (direction is "a" or "d")
                     {
                         _prev2[index] = direction;
                     }
                 }
-                else if (type == "spider")
+                else if (type == EnemyType.Spider)
                 {
                     if (direction is "w" or "s")
                     {
@@ -167,7 +168,7 @@ public class EnemyMovement
                         _prev2[index] = "d";
                     }
                 }
-                else if (type == "bat")
+                else if (type == EnemyType.Bat)
                 {
                     if (_prev2[index] == "d")
                     {
@@ -186,7 +187,7 @@ public class EnemyMovement
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                if (type == "dragon")
+                if (type == EnemyType.Dragon)
                 {
                     UpdateRow(posY + 3);
                     UpdateRow(posY + 4);
@@ -202,7 +203,7 @@ public class EnemyMovement
             else if (IsTouching(type, posX, posY, "|") || IsTouching(type, posX, posY, "_") || IsTouching(type, posX, posY, "\\"))
             {
                 MainProgram.LinkMovement.Hit();
-                if (type == "fireball")
+                if (type == EnemyType.Fireball)
                 {
                     Remove(GetIndex(_posX[index], _posY[index]), type);
                 }
@@ -213,7 +214,7 @@ public class EnemyMovement
             }
             else
             {
-                if (type == "fireball")
+                if (type == EnemyType.Fireball)
                 {
                     Remove(GetIndex(_posX[index], _posY[index]), type);
                 }
@@ -226,11 +227,11 @@ public class EnemyMovement
         return false;
     }
 
-    public void Build(int index, string type, int posX, int posY)
+    public void Build(int index, EnemyType type, int posX, int posY)
     {
         if (_prev2[index] == "a")
         {
-            if (type == "octorok")
+            if (type == EnemyType.Octorok)
             {
                 Map[posX + 0, posY] = " ";
                 Map[posX + 1, posY] = "t";
@@ -247,7 +248,7 @@ public class EnemyMovement
                 Map[posX + 2, posY + 2] = "t";
                 Map[posX + 3, posY + 2] = "t";
             }
-            else if (type == "spider")
+            else if (type == EnemyType.Spider)
             {
                 Map[posX + 0, posY] = " ";
                 Map[posX + 1, posY] = "t";
@@ -267,7 +268,7 @@ public class EnemyMovement
                 Map[posX + 4, posY + 2] = " ";
                 Map[posX + 3, posY + 2] = "n";
             }
-            else if (type == "bat")
+            else if (type == EnemyType.Bat)
             {
                 Map[posX + 0, posY] = "{";
                 Map[posX + 1, posY] = "t";
@@ -284,7 +285,7 @@ public class EnemyMovement
         }
         else
         {
-            if (type == "octorok")
+            if (type == EnemyType.Octorok)
             {
                 Map[posX + 0, posY] = "t";
                 Map[posX + 1, posY] = "t";
@@ -301,7 +302,7 @@ public class EnemyMovement
                 Map[posX + 2, posY + 2] = "t";
                 Map[posX + 3, posY + 2] = "t";
             }
-            else if (type == "spider")
+            else if (type == EnemyType.Spider)
             {
                 Map[posX + 0, posY] = " ";
                 Map[posX + 1, posY] = "t";
@@ -321,7 +322,7 @@ public class EnemyMovement
                 Map[posX + 3, posY + 2] = "n";
                 Map[posX + 4, posY + 2] = " ";
             }
-            else if (type == "bat")
+            else if (type == EnemyType.Bat)
             {
                 Map[posX + 0, posY] = " ";
                 Map[posX + 1, posY] = " ";
@@ -336,7 +337,7 @@ public class EnemyMovement
                 Map[posX + 4, posY + 1] = "}";
             }
         }
-        if (type == "dragon")
+        if (type == EnemyType.Dragon)
         {
             var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
             if (_prev1[index] == "d") dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
@@ -357,7 +358,7 @@ public class EnemyMovement
                 }
             }
         }
-        else if (type == "fireball")
+        else if (type == EnemyType.Fireball)
         {
             Map[posX + 0, posY] = "F";
             Map[posX + 1, posY] = "F";
@@ -369,11 +370,11 @@ public class EnemyMovement
         }
     }
 
-    public void Store(int index, string type, int posX, int posY)
+    public void Store(int index, EnemyType type, int posX, int posY)
     {
         Clear(index, type);
 
-        if (type == "octorok")
+        if (type == EnemyType.Octorok)
         {
             var value = 0;
             for (var i = 0; i < 3; i++)
@@ -385,7 +386,7 @@ public class EnemyMovement
                 }
             }
         }
-        else if (type == "spider")
+        else if (type == EnemyType.Spider)
         {
             var value = 0;
             for (var i = 0; i < 3; i++)
@@ -397,7 +398,7 @@ public class EnemyMovement
                 }
             }
         }
-        else if (type == "bat")
+        else if (type == EnemyType.Bat)
         {
             var value = 0;
             for (var i = 0; i < 2; i++)
@@ -409,7 +410,7 @@ public class EnemyMovement
                 }
             }
         }
-        else if (type == "fireball")
+        else if (type == EnemyType.Fireball)
         {
             var value = 0;
             for (var i = 0; i < 2; i++)
@@ -434,7 +435,7 @@ public class EnemyMovement
         UpdateRow(_posY[index] + 1);
         UpdateRow(_posY[index] + 2);
 
-        if (type == "dragon")
+        if (type == EnemyType.Dragon)
         {
             UpdateRow(_posY[index] + 3);
             UpdateRow(_posY[index] + 4);
@@ -443,9 +444,9 @@ public class EnemyMovement
         }
     }
 
-    public void Clear(int index, string type)
+    public void Clear(int index, EnemyType type)
     {
-        if (type == "octorok")
+        if (type == EnemyType.Octorok)
         {
             Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
             Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
@@ -462,7 +463,7 @@ public class EnemyMovement
             Map[_posX[index] + 2, _posY[index] + 2] = _map_storage[index][10];
             Map[_posX[index] + 3, _posY[index] + 2] = _map_storage[index][11];
         }
-        else if (type == "spider")
+        else if (type == EnemyType.Spider)
         {
             Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
             Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
@@ -482,7 +483,7 @@ public class EnemyMovement
             Map[_posX[index] + 3, _posY[index] + 2] = _map_storage[index][13];
             Map[_posX[index] + 4, _posY[index] + 2] = _map_storage[index][14];
         }
-        else if (type == "bat")
+        else if (type == EnemyType.Bat)
         {
             Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
             Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
@@ -496,7 +497,7 @@ public class EnemyMovement
             Map[_posX[index] + 3, _posY[index] + 1] = _map_storage[index][8];
             Map[_posX[index] + 4, _posY[index] + 1] = _map_storage[index][9];
         }
-        else if (type == "dragon")
+        else if (type == EnemyType.Dragon)
         {
             var value = 0;
             for (var i = 0; i < 7; i++)
@@ -508,7 +509,7 @@ public class EnemyMovement
                 }
             }
         }
-        else if (type == "fireball")
+        else if (type == EnemyType.Fireball)
         {
             Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
             Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
@@ -520,7 +521,7 @@ public class EnemyMovement
         }
     }
 
-    public void Remove(int index, string type)
+    public void Remove(int index, EnemyType type)
     {
         Clear(index, type);
 
@@ -528,7 +529,7 @@ public class EnemyMovement
         UpdateRow(_posY[index] + 1);
         UpdateRow(_posY[index] + 2);
 
-        if (type == "dragon")
+        if (type == EnemyType.Dragon)
         {
             UpdateRow(_posY[index] + 3);
             UpdateRow(_posY[index] + 4);
@@ -545,7 +546,7 @@ public class EnemyMovement
         _motion.RemoveAt(index);
         _map_storage.RemoveAt(index);
 
-        if (type == "bat")
+        if (type == EnemyType.Bat)
         {
             if (CurrentMap == 10)
             {
@@ -560,7 +561,7 @@ public class EnemyMovement
 
     public void SpawnRupee()
     {
-        if (_sRType != "dragon" && _sRType != "bat" && Random.Shared.Next(2) == 1)
+        if (_sRType != EnemyType.Dragon && _sRType != EnemyType.Bat && Random.Shared.Next(2) == 1)
         {
             var rupee_storage_copy = new string[9];
 
@@ -581,7 +582,7 @@ public class EnemyMovement
             _rupee_storage.Add(rupee_storage_copy);
 
             Map[_sRPosX, _sRPosY]
-                = Random.Shared.Next(5) == 4 || (_sRType == "spider" && Random.Shared.Next(10) == 9) ? "V" : "R";
+                = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? "V" : "R";
 
             Map[_sRPosX - 1, _sRPosY] = "R";
             Map[_sRPosX + 1, _sRPosY] = "R";
@@ -632,26 +633,26 @@ public class EnemyMovement
         }
     }
 
-    public bool InBounds(string type, int posX, int posY)
+    public bool InBounds(EnemyType type, int posX, int posY)
     {
         var inPosX = 0;
         var inPosY = 0;
-        if (type == "octorok")
+        if (type == EnemyType.Octorok)
         {
             inPosX = posX + 3;
             inPosY = posY + 2;
         }
-        else if (type == "spider")
+        else if (type == EnemyType.Spider)
         {
             inPosX = posX + 4;
             inPosY = posY + 2;
         }
-        else if (type == "bat")
+        else if (type == EnemyType.Bat)
         {
             inPosX = posX + 4;
             inPosY = posY + 1;
         }
-        else if (type == "fireball")
+        else if (type == EnemyType.Fireball)
         {
             inPosX = posX + 3;
             inPosY = posY + 1;
@@ -660,11 +661,11 @@ public class EnemyMovement
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(string type, int posX, int posY, string symbol)
-        => (type == "octorok" && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol))
-            || ((type == "spider" && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol || Map[posX + 4, posY + 2] == symbol))
-            || ((type == "bat" && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
-            || (type == "fireball" && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol))));
+    public bool IsTouching(EnemyType type, int posX, int posY, string symbol)
+        => (type == EnemyType.Octorok && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol))
+            || ((type == EnemyType.Spider && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol || Map[posX + 4, posY + 2] == symbol))
+            || ((type == EnemyType.Bat && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
+            || (type == EnemyType.Fireball && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol))));
 
     public int GetIndex(int posX, int posY)
     {
@@ -672,27 +673,27 @@ public class EnemyMovement
         {
             var inPosX = 0;
             var inPosY = 0;
-            if (_type[i] == "octorok")
+            if (_type[i] == EnemyType.Octorok)
             {
                 inPosX = 4;
                 inPosY = 3;
             }
-            else if (_type[i] == "spider")
+            else if (_type[i] == EnemyType.Spider)
             {
                 inPosX = 5;
                 inPosY = 3;
             }
-            else if (_type[i] == "bat")
+            else if (_type[i] == EnemyType.Bat)
             {
                 inPosX = 5;
                 inPosY = 2;
             }
-            else if (_type[i] == "dragon")
+            else if (_type[i] == EnemyType.Dragon)
             {
                 inPosX = 12;
                 inPosY = 7;
             }
-            else if (_type[i] == "fireball")
+            else if (_type[i] == EnemyType.Fireball)
             {
                 inPosX = 3;
                 inPosY = 2;
