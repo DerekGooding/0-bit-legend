@@ -22,12 +22,12 @@ public class LinkMovement : MainProgram
     public int GetPosY() => _posY;
     public string GetPrev() => _prev;
     public string GetPrev2() => _prev2;
-    public void SetPosX(int posX) => this._posX = posX;
-    public void SetPosY(int posY) => this._posY = posY;
-    public void SetPreHitPosX(int posX) => this._preHitPosX = posX;
-    public void SetPreHitPosY(int posY) => this._preHitPosY = posY;
-    public void SetPrev(string prev) => this._prev = prev;
-    public void SetSpawnRupee(bool spawnRupee) => this._spawnRupee = spawnRupee;
+    public void SetPosX(int posX) => _posX = posX;
+    public void SetPosY(int posY) => _posY = posY;
+    public void SetPreHitPosX(int posX) => _preHitPosX = posX;
+    public void SetPreHitPosY(int posY) => _preHitPosY = posY;
+    public void SetPrev(string prev) => _prev = prev;
+    public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
     public void Attack(string prev, bool attacking)
     {
@@ -299,8 +299,8 @@ public class LinkMovement : MainProgram
     {
         if (spawn)
         {
-            this._posX = posX;
-            this._posY = posY;
+            _posX = posX;
+            _posY = posY;
 
             _storage_map[0] = map[posX - 2, posY - 1];
             _storage_map[1] = map[posX - 1, posY - 1];
@@ -331,32 +331,32 @@ public class LinkMovement : MainProgram
 
         if (direction == "w")
         {
-            if (this._posX == 21 && ((currentMap == 4 && posY > 9) || currentMap == 2))
+            if (_posX == 21 && ((currentMap == 4 && posY > 9) || currentMap == 2))
             {
                 if (posY > 1)
                 {
-                    for (int y = this._posY - 2; y <= this._posY + 3; y++)
+                    for (int y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = this._posX - 3; x <= this._posX + 3; x++)
+                        for (int x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
                     }
 
-                    this._posY -= 1;
+                    _posY -= 1;
                     DeployRaft(_prev2);
 
-                    UpdateRow(this._posY + 4);
+                    UpdateRow(_posY + 4);
                 }
                 else
                 {
                     LoadMap(4, 21, 29, "w");
                 }
             }
-            else if (posY >= 1 && !(this._posX == 21 && (currentMap == 4 || currentMap == 2)))
+            else if (posY >= 1 && !(_posX == 21 && (currentMap == 4 || currentMap == 2)))
             {
                 IsTouching(posX, posY, "r");
-                StoreChar(this._posX, this._posY);
+                StoreChar(_posX, _posY);
                 bool inCave = false;
 
                 if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
@@ -387,13 +387,13 @@ public class LinkMovement : MainProgram
                 {
                     LoadMap(12, 50, 24, direction);
                 }
-                else if (currentMap == 9 && this._posX >= 48 && this._posX <= 52 && this._posY == 7 && !cDoor3 && keys > 0)
+                else if (currentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !cDoor3 && keys > 0)
                 {
                     _debounce = true;
                     keys--;
 
                     cDoor3 = true;
-                    LoadMap(9, this._posX, this._posY, direction);
+                    LoadMap(9, _posX, _posY, direction);
                 }
 
                 if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !IsTouching(posX, posY, ">") && !IsTouching(posX, posY, "*") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && !((currentMap == 6 || currentMap == 7) && posY < 17) && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9))
@@ -411,40 +411,40 @@ public class LinkMovement : MainProgram
                     UpdateRow(posY + 1);
                     UpdateRow(posY + 2);
 
-                    this._posX = posX;
-                    this._posY = posY;
+                    _posX = posX;
+                    _posY = posY;
                 }
                 else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
                     Hit();
                 }
                 else if (currentMap == 13 && IsTouching(posX, posY, "~"))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
                     LoadMap(13, 58, 15, "a");
                     gameOver = true;
                 }
                 else
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
                 }
 
                 if (inCave)
@@ -490,7 +490,7 @@ public class LinkMovement : MainProgram
             if (posX >= 2)
             {
                 IsTouching(posX, posY, "r");
-                StoreChar(this._posX, this._posY);
+                StoreChar(_posX, _posY);
 
                 if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
@@ -520,13 +520,13 @@ public class LinkMovement : MainProgram
                 {
                     LoadMap(10, 87, 15, direction);
                 }
-                else if (currentMap == 9 && this._posX == 14 && this._posY >= 14 && this._posY <= 16 && !cDoor1 && keys > 0)
+                else if (currentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !cDoor1 && keys > 0)
                 {
                     _debounce = true;
                     keys--;
 
                     cDoor1 = true;
-                    LoadMap(9, this._posX, this._posY, direction);
+                    LoadMap(9, _posX, _posY, direction);
                 }
 
                 if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9))
@@ -539,51 +539,51 @@ public class LinkMovement : MainProgram
                     UpdateRow(posY + 1);
                     UpdateRow(posY + 2);
 
-                    this._posX = posX;
-                    this._posY = posY;
+                    _posX = posX;
+                    _posY = posY;
                 }
                 else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && this._posX != 21 && hasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, "~") && _posX != 21 && hasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
                 {
-                    StoreChar(this._posX, this._posY);
+                    StoreChar(_posX, _posY);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
-                    this._posX = 21;
+                    _posX = 21;
                     DeployRaft("a");
                     wait = 150;
                 }
-                else if (this._posX == 21 && ((posY > 11 && currentMap == 4) || currentMap == 2) && ((currentMap == 2 && posY < 25) || currentMap == 4))
+                else if (_posX == 21 && ((posY > 11 && currentMap == 4) || currentMap == 2) && ((currentMap == 2 && posY < 25) || currentMap == 4))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
-                    for (int y = this._posY - 2; y <= this._posY + 3; y++)
+                    for (int y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = this._posX - 3; x <= this._posX + 3; x++)
+                        for (int x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
                     }
 
-                    this._posX = 11;
+                    _posX = 11;
                     posX = 11;
 
                     BuildChar(posX, posY, direction);
@@ -605,12 +605,12 @@ public class LinkMovement : MainProgram
                 }
                 else
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
                 }
 
             }
@@ -649,18 +649,18 @@ public class LinkMovement : MainProgram
             {
                 if ((posY < 30) && ((currentMap == 2 && posY < 27) || currentMap == 4))
                 {
-                    for (int y = this._posY - 2; y <= this._posY + 3; y++)
+                    for (int y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = this._posX - 3; x <= this._posX + 3; x++)
+                        for (int x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
                     }
 
-                    this._posY += 1;
+                    _posY += 1;
                     DeployRaft(_prev2);
 
-                    UpdateRow(this._posY - 3);
+                    UpdateRow(_posY - 3);
                 }
                 else if (currentMap == 4)
                 {
@@ -671,7 +671,7 @@ public class LinkMovement : MainProgram
             {
                 IsTouching(posX, posY, "r");
 
-                StoreChar(this._posX, this._posY);
+                StoreChar(_posX, _posY);
                 if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9))
                 {
                     StoreChar(posX, posY);
@@ -682,39 +682,39 @@ public class LinkMovement : MainProgram
                     UpdateRow(posY + 1);
                     UpdateRow(posY + 2);
 
-                    this._posX = posX;
-                    this._posY = posY;
+                    _posX = posX;
+                    _posY = posY;
                 }
                 else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
                     Hit();
                 }
                 else if (currentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
                     LoadMap(9, 50, 9, "s");
                 }
                 else
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
                 }
             }
             else
@@ -766,7 +766,7 @@ public class LinkMovement : MainProgram
             if (posX <= 99)
             {
                 IsTouching(posX, posY, "r");
-                StoreChar(this._posX, this._posY);
+                StoreChar(_posX, _posY);
 
                 bool persist = true;
                 if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
@@ -798,13 +798,13 @@ public class LinkMovement : MainProgram
                     persist = false;
                     LoadMap(11, 14, 15, direction);
                 }
-                else if (currentMap == 9 && this._posX == 86 && this._posY >= 14 && this._posY <= 16 && !cDoor2 && keys > 0)
+                else if (currentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !cDoor2 && keys > 0)
                 {
                     _debounce = true;
                     keys--;
 
                     cDoor2 = true;
-                    LoadMap(9, this._posX, this._posY, direction);
+                    LoadMap(9, _posX, _posY, direction);
                 }
 
                 if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9) && persist)
@@ -817,51 +817,51 @@ public class LinkMovement : MainProgram
                     UpdateRow(posY + 1);
                     UpdateRow(posY + 2);
 
-                    this._posX = posX;
-                    this._posY = posY;
+                    _posX = posX;
+                    _posY = posY;
                 }
                 else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && this._posX != 21 && hasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, "~") && _posX != 21 && hasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
                 {
-                    StoreChar(this._posX, this._posY);
+                    StoreChar(_posX, _posY);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
-                    this._posX = 21;
+                    _posX = 21;
                     DeployRaft("d");
                     wait = 150;
                 }
-                else if (this._posX == 21 && posY < 25 && ((posY > 3 && currentMap == 2) || (posY < 25 && currentMap == 4)))
+                else if (_posX == 21 && posY < 25 && ((posY > 3 && currentMap == 2) || (posY < 25 && currentMap == 4)))
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
 
-                    for (int y = this._posY - 2; y <= this._posY + 3; y++)
+                    for (int y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = this._posX - 3; x <= this._posX + 3; x++)
+                        for (int x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
                     }
 
-                    this._posX = 30;
+                    _posX = 30;
                     posX = 30;
 
                     BuildChar(posX, posY, direction);
@@ -883,12 +883,12 @@ public class LinkMovement : MainProgram
                 }
                 else
                 {
-                    BuildChar(this._posX, this._posY, direction);
+                    BuildChar(_posX, _posY, direction);
 
-                    UpdateRow(this._posY - 1);
-                    UpdateRow(this._posY);
-                    UpdateRow(this._posY + 1);
-                    UpdateRow(this._posY + 2);
+                    UpdateRow(_posY - 1);
+                    UpdateRow(_posY);
+                    UpdateRow(_posY + 1);
+                    UpdateRow(_posY + 2);
                 }
             }
             else
@@ -1041,34 +1041,34 @@ public class LinkMovement : MainProgram
 
     public void StoreChar(int posX, int posY)
     {
-        map[this._posX - 2, this._posY - 1] = _storage_map[0];
-        map[this._posX - 1, this._posY - 1] = _storage_map[1];
-        map[this._posX, this._posY - 1] = _storage_map[2];
-        map[this._posX + 1, this._posY - 1] = _storage_map[3];
-        map[this._posX + 2, this._posY - 1] = _storage_map[4];
+        map[_posX - 2, _posY - 1] = _storage_map[0];
+        map[_posX - 1, _posY - 1] = _storage_map[1];
+        map[_posX, _posY - 1] = _storage_map[2];
+        map[_posX + 1, _posY - 1] = _storage_map[3];
+        map[_posX + 2, _posY - 1] = _storage_map[4];
 
-        map[this._posX - 2, this._posY] = _storage_map[5];
-        map[this._posX - 1, this._posY] = _storage_map[6];
-        map[this._posX, this._posY] = _storage_map[7];
-        map[this._posX + 1, this._posY] = _storage_map[8];
-        map[this._posX + 2, this._posY] = _storage_map[9];
+        map[_posX - 2, _posY] = _storage_map[5];
+        map[_posX - 1, _posY] = _storage_map[6];
+        map[_posX, _posY] = _storage_map[7];
+        map[_posX + 1, _posY] = _storage_map[8];
+        map[_posX + 2, _posY] = _storage_map[9];
 
-        map[this._posX - 2, this._posY + 1] = _storage_map[10];
-        map[this._posX - 1, this._posY + 1] = _storage_map[11];
-        map[this._posX, this._posY + 1] = _storage_map[12];
-        map[this._posX + 1, this._posY + 1] = _storage_map[13];
-        map[this._posX + 2, this._posY + 1] = _storage_map[14];
+        map[_posX - 2, _posY + 1] = _storage_map[10];
+        map[_posX - 1, _posY + 1] = _storage_map[11];
+        map[_posX, _posY + 1] = _storage_map[12];
+        map[_posX + 1, _posY + 1] = _storage_map[13];
+        map[_posX + 2, _posY + 1] = _storage_map[14];
 
-        map[this._posX - 2, this._posY + 2] = _storage_map[15];
-        map[this._posX - 1, this._posY + 2] = _storage_map[16];
-        map[this._posX, this._posY + 2] = _storage_map[17];
-        map[this._posX + 1, this._posY + 2] = _storage_map[18];
-        map[this._posX + 2, this._posY + 2] = _storage_map[19];
+        map[_posX - 2, _posY + 2] = _storage_map[15];
+        map[_posX - 1, _posY + 2] = _storage_map[16];
+        map[_posX, _posY + 2] = _storage_map[17];
+        map[_posX + 1, _posY + 2] = _storage_map[18];
+        map[_posX + 2, _posY + 2] = _storage_map[19];
 
-        UpdateRow(this._posY - 1);
-        UpdateRow(this._posY);
-        UpdateRow(this._posY + 1);
-        UpdateRow(this._posY + 2);
+        UpdateRow(_posY - 1);
+        UpdateRow(_posY);
+        UpdateRow(_posY + 1);
+        UpdateRow(_posY + 2);
 
         _storage_map[0] = map[posX - 2, posY - 1];
         _storage_map[1] = map[posX - 1, posY - 1];

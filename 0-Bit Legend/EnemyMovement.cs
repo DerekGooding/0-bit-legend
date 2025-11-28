@@ -72,8 +72,8 @@ public class EnemyMovement : MainProgram
         _hp[index] -= 1;
         if (_hp[index] <= 0)
         {
-            _sRPosX = this._posX[index] + 2;
-            _sRPosY = this._posY[index] + 1;
+            _sRPosX = _posX[index] + 2;
+            _sRPosY = _posY[index] + 1;
             _sRType = _type[index];
 
             Remove(index, _type[index]);
@@ -98,16 +98,16 @@ public class EnemyMovement : MainProgram
 
         if (spawn)
         {
-            this._posX.Add(posX);
-            this._posY.Add(posY);
+            _posX.Add(posX);
+            _posY.Add(posY);
 
             _prev1.Add(direction);
             _prev2.Add(direction);
 
-            this._type.Add(type);
-            this._hp.Add(1);
+            _type.Add(type);
+            _hp.Add(1);
 
-            this._motion.Add(motion);
+            _motion.Add(motion);
 
             string[] storage_copy;
             if (type == "octorok")
@@ -196,8 +196,8 @@ public class EnemyMovement : MainProgram
                     UpdateRow(posY + 6);
                 }
 
-                this._posX[index] = posX;
-                this._posY[index] = posY;
+                _posX[index] = posX;
+                _posY[index] = posY;
 
                 return true;
             }
@@ -206,22 +206,22 @@ public class EnemyMovement : MainProgram
                 linkMovement.Hit();
                 if (type == "fireball")
                 {
-                    Remove(GetIndex(this._posX[index], this._posY[index]), type);
+                    Remove(GetIndex(_posX[index], _posY[index]), type);
                 }
                 else
                 {
-                    Build(index, type, this._posX[index], this._posY[index]);
+                    Build(index, type, _posX[index], _posY[index]);
                 }
             }
             else
             {
                 if (type == "fireball")
                 {
-                    Remove(GetIndex(this._posX[index], this._posY[index]), type);
+                    Remove(GetIndex(_posX[index], _posY[index]), type);
                 }
                 else
                 {
-                    Build(index, type, this._posX[index], this._posY[index]);
+                    Build(index, type, _posX[index], _posY[index]);
                 }
             }
         }
@@ -432,16 +432,16 @@ public class EnemyMovement : MainProgram
             }
         }
 
-        UpdateRow(this._posY[index]);
-        UpdateRow(this._posY[index] + 1);
-        UpdateRow(this._posY[index] + 2);
+        UpdateRow(_posY[index]);
+        UpdateRow(_posY[index] + 1);
+        UpdateRow(_posY[index] + 2);
 
         if (type == "dragon")
         {
-            UpdateRow(this._posY[index] + 3);
-            UpdateRow(this._posY[index] + 4);
-            UpdateRow(this._posY[index] + 5);
-            UpdateRow(this._posY[index] + 6);
+            UpdateRow(_posY[index] + 3);
+            UpdateRow(_posY[index] + 4);
+            UpdateRow(_posY[index] + 5);
+            UpdateRow(_posY[index] + 6);
         }
     }
 
@@ -540,7 +540,7 @@ public class EnemyMovement : MainProgram
 
         _posX.RemoveAt(index);
         _posY.RemoveAt(index);
-        this._type.RemoveAt(index);
+        _type.RemoveAt(index);
         _prev1.RemoveAt(index);
         _prev2.RemoveAt(index);
         _hp.RemoveAt(index);
@@ -611,7 +611,7 @@ public class EnemyMovement : MainProgram
     {
         for (int i = 0; i < _rPosX.ToArray().Length; i++)
         {
-            if (posX >= this._rPosX[i] - 1 && posX <= this._rPosX[i] + 1 && posY >= this._rPosY[i] - 1 && posY <= this._rPosY[i] + 1)
+            if (posX >= _rPosX[i] - 1 && posX <= _rPosX[i] + 1 && posY >= _rPosY[i] - 1 && posY <= _rPosY[i] + 1)
             {
                 if (map[_rPosX[i], _rPosY[i]] == "V")
                 {
@@ -730,7 +730,7 @@ public class EnemyMovement : MainProgram
                 inPosY = 2;
             }
 
-            if (posX >= this._posX[i] && posX <= this._posX[i] + inPosX && posY >= this._posY[i] && posY <= this._posY[i] + inPosY)
+            if (posX >= _posX[i] && posX <= _posX[i] + inPosX && posY >= _posY[i] && posY <= _posY[i] + inPosY)
             {
                 return i;
             }
