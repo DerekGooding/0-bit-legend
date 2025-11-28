@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading;
-using ZeldaEmulator;
-
 namespace ZeldaEmulator;
 
 public class LinkMovement : MainProgram

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace ZeldaEmulator;
+﻿namespace ZeldaEmulator;
 
 public class EnemyMovement : MainProgram
 {
