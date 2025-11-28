@@ -7,12 +7,12 @@ public class MainProgram
     protected static LinkMovement linkMovement = new LinkMovement();
     protected static EnemyMovement enemyMovement = new EnemyMovement();
 
-    private static Random random = new Random();
+    private static readonly Random random = new Random();
 
     protected static string[,] map = new string[102, 33];
     protected static int currentMap = 0;
 
-    private static string[] strs = new string[33];
+    private static readonly string[] strs = new string[33];
 
     public static double health = 3;
     public static int rupees = 0;

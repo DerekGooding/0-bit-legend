@@ -8,9 +8,9 @@ public class LinkMovement : MainProgram
     private int preHitPosX;
     private int preHitPosY;
 
-    private string[] storage_map = new string[20] { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    private static string[] storage_sword = new string[6];
-    private static string[] storage_detect_enemy = new string[6];
+    private readonly string[] storage_map = new string[20] { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+    private static readonly string[] storage_sword = new string[6];
+    private static readonly string[] storage_detect_enemy = new string[6];
 
     private string prev = "w";
     private string prev2 = "a";
