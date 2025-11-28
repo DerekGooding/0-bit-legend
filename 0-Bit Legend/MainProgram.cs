@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace ZeldaEmulator;
+namespace _0_Bit_Legend;
 
 public class MainProgram
 {

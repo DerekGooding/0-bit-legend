@@ -1,4 +1,4 @@
-﻿namespace ZeldaEmulator;
+﻿namespace _0_Bit_Legend;
 
 public class EnemyMovement : MainProgram
 {
