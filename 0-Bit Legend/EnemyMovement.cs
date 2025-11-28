@@ -58,7 +58,7 @@ public class EnemyMovement : MainProgram
             waitDragon++;
 
             var value = 0;
-            var dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
+            const string dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
             for (var i = 0; i < 7; i++)
             {
                 for (var j = 0; j < 12; j++)
@@ -69,7 +69,7 @@ public class EnemyMovement : MainProgram
             }
         }
 
-        _hp[index] -= 1;
+        _hp[index]--;
         if (_hp[index] <= 0)
         {
             _sRPosX = _posX[index] + 2;
@@ -127,13 +127,9 @@ public class EnemyMovement : MainProgram
                 storage_copy = new string[84];
                 _hp[GetTotal() - 1] = 3;
             }
-            else if (type == "fireball")
-            {
-                storage_copy = new string[6];
-            }
             else
             {
-                storage_copy = new string[12];
+                storage_copy = type == "fireball" ? (new string[6]) : (new string[12]);
             }
 
             for (var i = 0; i < storage_copy.Length; i++)
