@@ -84,7 +84,7 @@ public class EnemyMovement
 
             if (_sRType == "dragon")
             {
-                cDragon = true;
+                SetFlag(Model.GameFlags.Dragon, true);
                 LoadMap(12, MainProgram.LinkMovement.GetPosX(), MainProgram.LinkMovement.GetPosY(), MainProgram.LinkMovement.GetPrev());
             }
         }

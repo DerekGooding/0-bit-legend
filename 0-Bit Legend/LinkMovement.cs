@@ -1,3 +1,4 @@
+using _0_Bit_Legend.Model;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
@@ -363,14 +364,14 @@ public class LinkMovement
 
                 if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
-                    HasSword = true;
+                    SetFlag(GameFlags.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
                 {
                     Rupees -= 35;
 
-                    HasRaft = true;
+                    SetFlag(GameFlags.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 5)
@@ -382,19 +383,19 @@ public class LinkMovement
                 {
                     Rupees -= 25;
 
-                    HasArmor = true;
+                    SetFlag(GameFlags.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && cDoor2 && cDoor3 && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && HasFlags([GameFlags.Door1, GameFlags.Door2, GameFlags.Door3]) && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
                 {
                     LoadMap(12, 50, 24, direction);
                 }
-                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !cDoor3 && Keys > 0)
+                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !HasFlag(GameFlags.Door3) && Keys > 0)
                 {
                     _debounce = true;
                     Keys--;
 
-                    cDoor3 = true;
+                    SetFlag(GameFlags.Door3, true);
                     LoadMap(9, _posX, _posY, direction);
                 }
 
@@ -437,7 +438,7 @@ public class LinkMovement
                     UpdateRow(_posY + 2);
 
                     LoadMap(13, 58, 15, "a");
-                    GameOver = true;
+                    SetFlag(GameFlags.GameOver, true);
                 }
                 else
                 {
@@ -480,9 +481,9 @@ public class LinkMovement
                     LoadMap(5, 49, 30, "w");
                 }
             }
-            if (cText)
+            if (HasFlag(GameFlags.Text))
             {
-                cText = false;
+                SetFlag(GameFlags.Text , false );
                 LoadMap(9, posX, posY, "w");
             }
         }
@@ -496,14 +497,14 @@ public class LinkMovement
 
                 if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
-                    HasSword = true;
+                    SetFlag(GameFlags.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
                 {
                     Rupees -= 35;
 
-                    HasRaft = true;
+                    SetFlag(GameFlags.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 10)
@@ -515,19 +516,19 @@ public class LinkMovement
                 {
                     Rupees -= 25;
 
-                    HasArmor = true;
+                    SetFlag(GameFlags.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && HasFlag(GameFlags.Door1) && !_debounce)
                 {
                     LoadMap(10, 87, 15, direction);
                 }
-                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !cDoor1 && Keys > 0)
+                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlags.Door1) && Keys > 0)
                 {
                     _debounce = true;
                     Keys--;
 
-                    cDoor1 = true;
+                    SetFlag(GameFlags.Door1, true);
                     LoadMap(9, _posX, _posY, direction);
                 }
 
@@ -555,7 +556,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
                 {
                     StoreChar(_posX, _posY);
 
@@ -639,9 +640,9 @@ public class LinkMovement
                     LoadMap(8, 99, 16, "a");
                 }
             }
-            if (cText)
+            if (HasFlag(GameFlags.Text))
             {
-                cText = false;
+                SetFlag(GameFlags.Text, false);
                 LoadMap(9, posX, posY, "w");
             }
         }
@@ -760,7 +761,7 @@ public class LinkMovement
                     Wait(2);
                 }
             }
-            cText = false;
+            SetFlag(GameFlags.Text, false);
         }
         else if (direction == "d")
         {
@@ -773,14 +774,14 @@ public class LinkMovement
                 var persist = true;
                 if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
-                    HasSword = true;
+                    SetFlag(GameFlags.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
                 {
                     Rupees -= 35;
 
-                    HasRaft = true;
+                    SetFlag(GameFlags.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 10)
@@ -792,20 +793,20 @@ public class LinkMovement
                 {
                     Rupees -= 25;
 
-                    HasArmor = true;
+                    SetFlag(GameFlags.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor2 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && HasFlag(GameFlags.Door2) && !_debounce)
                 {
                     persist = false;
                     LoadMap(11, 14, 15, direction);
                 }
-                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !cDoor2 && Keys > 0)
+                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlags.Door2) && Keys > 0)
                 {
                     _debounce = true;
                     Keys--;
 
-                    cDoor2 = true;
+                    SetFlag(GameFlags.Door2, true);
                     LoadMap(9, _posX, _posY, direction);
                 }
 
@@ -833,7 +834,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
                 {
                     StoreChar(_posX, _posY);
 
@@ -916,9 +917,9 @@ public class LinkMovement
                     LoadMap(4, 2, 16, "d");
                 }
             }
-            if (cText)
+            if (HasFlag(GameFlags.Text))
             {
-                cText = false;
+                SetFlag(GameFlags.Text, false);
                 LoadMap(9, posX, posY, "w");
             }
         }
@@ -929,7 +930,7 @@ public class LinkMovement
     {
         var spaceslot = " ";
         var underslot = "_";
-        if (HasArmor)
+        if (HasFlag(GameFlags.HasArmor))
         {
             spaceslot = "#";
             underslot = "#";
@@ -1101,7 +1102,7 @@ public class LinkMovement
     {
         var spaceslot = " ";
         var underslot = "_";
-        if (HasArmor)
+        if (HasFlag(GameFlags.HasArmor))
         {
             spaceslot = "#";
             underslot = "#";
@@ -1239,7 +1240,7 @@ public class LinkMovement
         {
             iFrames = 6;
 
-            if (HasArmor)
+            if (HasFlag(GameFlags.HasArmor))
             {
                 Health -= 0.5;
             }
@@ -1247,7 +1248,7 @@ public class LinkMovement
             {
                 Health--;
             }
-            hit = true;
+            SetFlag(GameFlags.Hit, true);
 
             StoreChar(_posX, _posY);
 
