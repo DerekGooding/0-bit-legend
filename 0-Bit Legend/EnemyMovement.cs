@@ -3,23 +3,23 @@
 public class EnemyMovement : MainProgram
 {
     // Enemy
-    private readonly List<int> posX = new List<int>();
-    private readonly List<int> posY = new List<int>();
+    private readonly List<int> posX = [];
+    private readonly List<int> posY = [];
 
-    private readonly List<string[]> map_storage = new List<string[]>();
+    private readonly List<string[]> map_storage = [];
 
-    private readonly List<string> prev1 = new List<string>();
-    private readonly List<string> prev2 = new List<string>();
+    private readonly List<string> prev1 = [];
+    private readonly List<string> prev2 = [];
 
-    private readonly List<string> type = new List<string>();
-    private readonly List<int> hp = new List<int>();
+    private readonly List<string> type = [];
+    private readonly List<int> hp = [];
 
-    private readonly List<int> motion = new List<int>();
+    private readonly List<int> motion = [];
 
     // Rupee
-    private readonly List<int> rPosX = new List<int>();
-    private readonly List<int> rPosY = new List<int>();
-    private readonly List<string[]> rupee_storage = new List<string[]>();
+    private readonly List<int> rPosX = [];
+    private readonly List<int> rPosY = [];
+    private readonly List<string[]> rupee_storage = [];
 
     private int sRPosX;
     private int sRPosY;
