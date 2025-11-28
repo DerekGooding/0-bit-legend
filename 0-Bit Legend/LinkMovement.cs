@@ -363,36 +363,36 @@ public class LinkMovement
 
                 if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
-                    hasSword = true;
+                    HasSword = true;
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
                 {
-                    rupees -= 35;
+                    Rupees -= 35;
 
-                    hasRaft = true;
+                    HasRaft = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 5)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 5)
                 {
-                    rupees -= 10;
-                    keys++;
+                    Rupees -= 10;
+                    Keys++;
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 15)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && Rupees >= 15)
                 {
-                    rupees -= 25;
+                    Rupees -= 25;
 
-                    hasArmor = true;
+                    HasArmor = true;
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && cDoor2 && cDoor3 && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
                 {
                     LoadMap(12, 50, 24, direction);
                 }
-                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !cDoor3 && keys > 0)
+                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !cDoor3 && Keys > 0)
                 {
                     _debounce = true;
-                    keys--;
+                    Keys--;
 
                     cDoor3 = true;
                     LoadMap(9, _posX, _posY, direction);
@@ -437,7 +437,7 @@ public class LinkMovement
                     UpdateRow(_posY + 2);
 
                     LoadMap(13, 58, 15, "a");
-                    gameOver = true;
+                    GameOver = true;
                 }
                 else
                 {
@@ -496,36 +496,36 @@ public class LinkMovement
 
                 if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
-                    hasSword = true;
+                    HasSword = true;
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
                 {
-                    rupees -= 35;
+                    Rupees -= 35;
 
-                    hasRaft = true;
+                    HasRaft = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 10)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 10)
                 {
-                    rupees -= 10;
-                    keys++;
+                    Rupees -= 10;
+                    Keys++;
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 25)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && Rupees >= 25)
                 {
-                    rupees -= 25;
+                    Rupees -= 25;
 
-                    hasArmor = true;
+                    HasArmor = true;
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && !_debounce)
                 {
                     LoadMap(10, 87, 15, direction);
                 }
-                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !cDoor1 && keys > 0)
+                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !cDoor1 && Keys > 0)
                 {
                     _debounce = true;
-                    keys--;
+                    Keys--;
 
                     cDoor1 = true;
                     LoadMap(9, _posX, _posY, direction);
@@ -555,7 +555,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && _posX != 21 && hasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
                 {
                     StoreChar(_posX, _posY);
 
@@ -773,26 +773,26 @@ public class LinkMovement
                 var persist = true;
                 if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
-                    hasSword = true;
+                    HasSword = true;
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && Rupees >= 35)
                 {
-                    rupees -= 35;
+                    Rupees -= 35;
 
-                    hasRaft = true;
+                    HasRaft = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 10)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && Rupees >= 10)
                 {
-                    rupees -= 10;
-                    keys++;
+                    Rupees -= 10;
+                    Keys++;
                 }
-                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 25)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && Rupees >= 25)
                 {
-                    rupees -= 25;
+                    Rupees -= 25;
 
-                    hasArmor = true;
+                    HasArmor = true;
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor2 && !_debounce)
@@ -800,10 +800,10 @@ public class LinkMovement
                     persist = false;
                     LoadMap(11, 14, 15, direction);
                 }
-                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !cDoor2 && keys > 0)
+                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !cDoor2 && Keys > 0)
                 {
                     _debounce = true;
-                    keys--;
+                    Keys--;
 
                     cDoor2 = true;
                     LoadMap(9, _posX, _posY, direction);
@@ -833,7 +833,7 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, "~") && _posX != 21 && hasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
+                else if (IsTouching(posX, posY, "~") && _posX != 21 && HasRaft && !IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n"))
                 {
                     StoreChar(_posX, _posY);
 
@@ -929,7 +929,7 @@ public class LinkMovement
     {
         var spaceslot = " ";
         var underslot = "_";
-        if (hasArmor)
+        if (HasArmor)
         {
             spaceslot = "#";
             underslot = "#";
@@ -1101,7 +1101,7 @@ public class LinkMovement
     {
         var spaceslot = " ";
         var underslot = "_";
-        if (hasArmor)
+        if (HasArmor)
         {
             spaceslot = "#";
             underslot = "#";
@@ -1239,13 +1239,13 @@ public class LinkMovement
         {
             iFrames = 6;
 
-            if (hasArmor)
+            if (HasArmor)
             {
-                health -= 0.5;
+                Health -= 0.5;
             }
             else
             {
-                health--;
+                Health--;
             }
             hit = true;
 

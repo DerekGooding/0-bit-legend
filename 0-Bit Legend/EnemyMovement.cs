@@ -602,11 +602,11 @@ public class EnemyMovement
             {
                 if (Map[_rPosX[i], _rPosY[i]] == "V")
                 {
-                    rupees += 5;
+                    Rupees += 5;
                 }
                 else
                 {
-                    rupees++;
+                    Rupees++;
                 }
 
                 Map[_rPosX[i] - 1, _rPosY[i] - 1] = _rupee_storage[i][0];
