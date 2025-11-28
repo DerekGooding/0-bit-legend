@@ -11,8 +11,8 @@ public class EnemyMovement
 
     private readonly List<string[]> _map_storage = [];
 
-    private readonly List<string> _prev1 = [];
-    private readonly List<string> _prev2 = [];
+    private readonly List<char> _prev1 = [];
+    private readonly List<char> _prev2 = [];
 
     private readonly List<EnemyType> _type = [];
     private readonly List<int> _hp = [];
@@ -46,7 +46,7 @@ public class EnemyMovement
     public void SetMotion(int index, int value) => _motion[index] = value;
 
 
-    public bool TakeDamage(int posX, int posY, string prev, int damage)
+    public bool TakeDamage(int posX, int posY, char prev, int damage)
     {
         var index = GetIndex(posX, posY);
         MainProgram.LinkMovement.StoreSword(prev);
@@ -161,22 +161,22 @@ public class EnemyMovement
                 {
                     if (direction is "w" or "s")
                     {
-                        _prev2[index] = "a";
+                        _prev2[index] = 'a';
                     }
                     else if (direction is "a" or "d")
                     {
-                        _prev2[index] = "d";
+                        _prev2[index] = 'd';
                     }
                 }
                 else if (type == EnemyType.Bat)
                 {
                     if (_prev2[index] == "d")
                     {
-                        _prev2[index] = "a";
+                        _prev2[index] = 'a';
                     }
                     else if (_prev2[index] == "a")
                     {
-                        _prev2[index] = "d";
+                        _prev2[index] = 'd';
                     }
                 }
 
@@ -233,108 +233,108 @@ public class EnemyMovement
         {
             if (type == EnemyType.Octorok)
             {
-                Map[posX + 0, posY] = " ";
-                Map[posX + 1, posY] = "t";
-                Map[posX + 2, posY] = "t";
-                Map[posX + 3, posY] = "t";
+                Map[posX + 0, posY] = ' ';
+                Map[posX + 1, posY] = 't';
+                Map[posX + 2, posY] = 't';
+                Map[posX + 3, posY] = 't';
 
-                Map[posX + 0, posY + 1] = "t";
-                Map[posX + 1, posY + 1] = "^";
-                Map[posX + 2, posY + 1] = "t";
-                Map[posX + 3, posY + 1] = "t";
+                Map[posX + 0, posY + 1] = 't';
+                Map[posX + 1, posY + 1] = '^';
+                Map[posX + 2, posY + 1] = 't';
+                Map[posX + 3, posY + 1] = 't';
 
-                Map[posX + 0, posY + 2] = "t";
-                Map[posX + 1, posY + 2] = "t";
-                Map[posX + 2, posY + 2] = "t";
-                Map[posX + 3, posY + 2] = "t";
+                Map[posX + 0, posY + 2] = 't';
+                Map[posX + 1, posY + 2] = 't';
+                Map[posX + 2, posY + 2] = 't';
+                Map[posX + 3, posY + 2] = 't';
             }
             else if (type == EnemyType.Spider)
             {
-                Map[posX + 0, posY] = " ";
-                Map[posX + 1, posY] = "t";
-                Map[posX + 2, posY] = "t";
-                Map[posX + 3, posY] = "t";
-                Map[posX + 4, posY] = " ";
+                Map[posX + 0, posY] = ' ';
+                Map[posX + 1, posY] = 't';
+                Map[posX + 2, posY] = 't';
+                Map[posX + 3, posY] = 't';
+                Map[posX + 4, posY] = ' ';
 
-                Map[posX + 0, posY + 1] = "n";
-                Map[posX + 1, posY + 1] = "0";
-                Map[posX + 2, posY + 1] = "0";
-                Map[posX + 3, posY + 1] = "t";
-                Map[posX + 4, posY + 1] = "t";
+                Map[posX + 0, posY + 1] = 'n';
+                Map[posX + 1, posY + 1] = '0';
+                Map[posX + 2, posY + 1] = '0';
+                Map[posX + 3, posY + 1] = 't';
+                Map[posX + 4, posY + 1] = 't';
 
-                Map[posX + 0, posY + 2] = " ";
-                Map[posX + 1, posY + 2] = "n";
-                Map[posX + 2, posY + 2] = "t";
-                Map[posX + 4, posY + 2] = " ";
-                Map[posX + 3, posY + 2] = "n";
+                Map[posX + 0, posY + 2] = ' ';
+                Map[posX + 1, posY + 2] = 'n';
+                Map[posX + 2, posY + 2] = 't';
+                Map[posX + 4, posY + 2] = ' ';
+                Map[posX + 3, posY + 2] = 'n';
             }
             else if (type == EnemyType.Bat)
             {
-                Map[posX + 0, posY] = "{";
-                Map[posX + 1, posY] = "t";
-                Map[posX + 2, posY] = " ";
-                Map[posX + 3, posY] = "t";
-                Map[posX + 4, posY] = "}";
+                Map[posX + 0, posY] = '{';
+                Map[posX + 1, posY] = 't';
+                Map[posX + 2, posY] = ' ';
+                Map[posX + 3, posY] = 't';
+                Map[posX + 4, posY] = '}';
 
-                Map[posX + 0, posY + 1] = " ";
-                Map[posX + 1, posY + 1] = " ";
-                Map[posX + 2, posY + 1] = "B";
-                Map[posX + 3, posY + 1] = " ";
-                Map[posX + 4, posY + 1] = " ";
+                Map[posX + 0, posY + 1] = ' ';
+                Map[posX + 1, posY + 1] = ' ';
+                Map[posX + 2, posY + 1] = 'B';
+                Map[posX + 3, posY + 1] = ' ';
+                Map[posX + 4, posY + 1] = ' ';
             }
         }
         else
         {
             if (type == EnemyType.Octorok)
             {
-                Map[posX + 0, posY] = "t";
-                Map[posX + 1, posY] = "t";
-                Map[posX + 2, posY] = "t";
-                Map[posX + 3, posY] = " ";
+                Map[posX + 0, posY] = 't';
+                Map[posX + 1, posY] = 't';
+                Map[posX + 2, posY] = 't';
+                Map[posX + 3, posY] = ' ';
 
-                Map[posX + 0, posY + 1] = "t";
-                Map[posX + 1, posY + 1] = "t";
-                Map[posX + 2, posY + 1] = "^";
-                Map[posX + 3, posY + 1] = "t";
+                Map[posX + 0, posY + 1] = 't';
+                Map[posX + 1, posY + 1] = 't';
+                Map[posX + 2, posY + 1] = '^';
+                Map[posX + 3, posY + 1] = 't';
 
-                Map[posX + 0, posY + 2] = "t";
-                Map[posX + 1, posY + 2] = "t";
-                Map[posX + 2, posY + 2] = "t";
-                Map[posX + 3, posY + 2] = "t";
+                Map[posX + 0, posY + 2] = 't';
+                Map[posX + 1, posY + 2] = 't';
+                Map[posX + 2, posY + 2] = 't';
+                Map[posX + 3, posY + 2] = 't';
             }
             else if (type == EnemyType.Spider)
             {
-                Map[posX + 0, posY] = " ";
-                Map[posX + 1, posY] = "t";
-                Map[posX + 2, posY] = "t";
-                Map[posX + 3, posY] = "t";
-                Map[posX + 4, posY] = " ";
+                Map[posX + 0, posY] = ' ';
+                Map[posX + 1, posY] = 't';
+                Map[posX + 2, posY] = 't';
+                Map[posX + 3, posY] = 't';
+                Map[posX + 4, posY] = ' ';
 
-                Map[posX + 0, posY + 1] = "t";
-                Map[posX + 1, posY + 1] = "t";
-                Map[posX + 2, posY + 1] = "0";
-                Map[posX + 3, posY + 1] = "0";
-                Map[posX + 4, posY + 1] = "n";
+                Map[posX + 0, posY + 1] = 't';
+                Map[posX + 1, posY + 1] = 't';
+                Map[posX + 2, posY + 1] = '0';
+                Map[posX + 3, posY + 1] = '0';
+                Map[posX + 4, posY + 1] = 'n';
 
-                Map[posX + 0, posY + 2] = " ";
-                Map[posX + 1, posY + 2] = "n";
-                Map[posX + 2, posY + 2] = "t";
-                Map[posX + 3, posY + 2] = "n";
-                Map[posX + 4, posY + 2] = " ";
+                Map[posX + 0, posY + 2] = ' ';
+                Map[posX + 1, posY + 2] = 'n';
+                Map[posX + 2, posY + 2] = 't';
+                Map[posX + 3, posY + 2] = 'n';
+                Map[posX + 4, posY + 2] = ' ';
             }
             else if (type == EnemyType.Bat)
             {
-                Map[posX + 0, posY] = " ";
-                Map[posX + 1, posY] = " ";
-                Map[posX + 2, posY] = "B";
-                Map[posX + 3, posY] = " ";
-                Map[posX + 4, posY] = " ";
+                Map[posX + 0, posY] = ' ';
+                Map[posX + 1, posY] = ' ';
+                Map[posX + 2, posY] = 'B';
+                Map[posX + 3, posY] = ' ';
+                Map[posX + 4, posY] = ' ';
 
-                Map[posX + 0, posY + 1] = "{";
-                Map[posX + 1, posY + 1] = "t";
-                Map[posX + 2, posY + 1] = " ";
-                Map[posX + 3, posY + 1] = "t";
-                Map[posX + 4, posY + 1] = "}";
+                Map[posX + 0, posY + 1] = '{';
+                Map[posX + 1, posY + 1] = 't';
+                Map[posX + 2, posY + 1] = ' ';
+                Map[posX + 3, posY + 1] = 't';
+                Map[posX + 4, posY + 1] = '}';
             }
         }
         if (type == EnemyType.Dragon)
@@ -360,13 +360,13 @@ public class EnemyMovement
         }
         else if (type == EnemyType.Fireball)
         {
-            Map[posX + 0, posY] = "F";
-            Map[posX + 1, posY] = "F";
-            Map[posX + 2, posY] = "F";
+            Map[posX + 0, posY] = 'F';
+            Map[posX + 1, posY] = 'F';
+            Map[posX + 2, posY] = 'F';
 
-            Map[posX + 0, posY + 1] = "F";
-            Map[posX + 1, posY + 1] = "F";
-            Map[posX + 2, posY + 1] = "F";
+            Map[posX + 0, posY + 1] = 'F';
+            Map[posX + 1, posY + 1] = 'F';
+            Map[posX + 2, posY + 1] = 'F';
         }
     }
 
@@ -504,7 +504,7 @@ public class EnemyMovement
             {
                 for (var j = 0; j < 12; j++)
                 {
-                    Map[_posX[index] + j, _posY[index] + i] = " ";
+                    Map[_posX[index] + j, _posY[index] + i] = ' ';
                     value++;
                 }
             }
@@ -570,7 +570,7 @@ public class EnemyMovement
             {
                 for (var j = 0; j < 3; j++)
                 {
-                    rupee_storage_copy[value] = Map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not "-" and not "S"
+                    rupee_storage_copy[value] = Map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not '-' and not 'S'
                         ? Map[_sRPosX - 1 + j, _sRPosY - 1 + i]
                         : " ";
                     value++;
@@ -584,10 +584,10 @@ public class EnemyMovement
             Map[_sRPosX, _sRPosY]
                 = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? "V" : "R";
 
-            Map[_sRPosX - 1, _sRPosY] = "R";
-            Map[_sRPosX + 1, _sRPosY] = "R";
-            Map[_sRPosX, _sRPosY - 1] = "r";
-            Map[_sRPosX, _sRPosY + 1] = "r";
+            Map[_sRPosX - 1, _sRPosY] = 'R';
+            Map[_sRPosX + 1, _sRPosY] = 'R';
+            Map[_sRPosX, _sRPosY - 1] = 'r';
+            Map[_sRPosX, _sRPosY + 1] = 'r';
 
             UpdateRow(_sRPosY - 1);
             UpdateRow(_sRPosY);

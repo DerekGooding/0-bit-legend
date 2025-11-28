@@ -11,30 +11,30 @@ public class LinkMovement
     private int _preHitPosX;
     private int _preHitPosY;
 
-    private readonly string[] _storage_map = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "];
-    private static readonly string[] _storage_sword = new string[6];
-    private static readonly string[] _storage_detect_enemy = new string[6];
+    private readonly char[] _storage_map = new string(' ', 20).ToArray();
+    private static readonly char[] _storage_sword = new char[6];
+    private static readonly char[] _storage_detect_enemy = new char[6];
 
-    private string _prev = "w";
-    private string _prev2 = "a";
+    private char _prev = 'w';
+    private char _prev2 = 'a';
 
     private bool _debounce;
     private bool _spawnRupee;
 
     public int GetPosX() => _posX;
     public int GetPosY() => _posY;
-    public string GetPrev() => _prev;
-    public string GetPrev2() => _prev2;
+    public char GetPrev() => _prev;
+    public char GetPrev2() => _prev2;
     public void SetPosX(int posX) => _posX = posX;
     public void SetPosY(int posY) => _posY = posY;
     public void SetPreHitPosX(int posX) => _preHitPosX = posX;
     public void SetPreHitPosY(int posY) => _preHitPosY = posY;
-    public void SetPrev(string prev) => _prev = prev;
+    public void SetPrev(char prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
-    public void Attack(string prev, bool attacking)
+    public void Attack(char prev, bool attacking)
     {
-        if (prev == "w" && _posY > 3)
+        if (prev == 'w' && _posY > 3)
         {
             if (!attacking)
             {
@@ -44,11 +44,11 @@ public class LinkMovement
                 _storage_sword[3] = Map[_posX, _posY - 3];
                 _storage_sword[4] = Map[_posX, _posY - 4];
 
-                Map[_posX - 1, _posY - 2] = "-";
-                Map[_posX, _posY - 2] = "-";
-                Map[_posX + 1, _posY - 2] = "-";
-                Map[_posX, _posY - 3] = "S";
-                Map[_posX, _posY - 4] = "S";
+                Map[_posX - 1, _posY - 2] = '-';
+                Map[_posX, _posY - 2] = '-';
+                Map[_posX + 1, _posY - 2] = '-';
+                Map[_posX, _posY - 3] = 'S';
+                Map[_posX, _posY - 4] = 'S';
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
@@ -80,7 +80,7 @@ public class LinkMovement
             UpdateRow(_preHitPosY - 3);
             UpdateRow(_preHitPosY - 4);
         }
-        else if (prev == "a" && _posX > 4)
+        else if (prev == 'a' && _posX > 4)
         {
             if (!attacking)
             {
@@ -91,12 +91,12 @@ public class LinkMovement
                 _storage_sword[4] = Map[_posX - 5, _posY + 1];
                 _storage_sword[5] = Map[_posX - 6, _posY + 1];
 
-                Map[_posX - 3, _posY] = "-";
-                Map[_posX - 3, _posY + 1] = "-";
-                Map[_posX - 3, _posY + 2] = "-";
-                Map[_posX - 4, _posY + 1] = "S";
-                Map[_posX - 5, _posY + 1] = "S";
-                Map[_posX - 6, _posY + 1] = "S";
+                Map[_posX - 3, _posY] = '-';
+                Map[_posX - 3, _posY + 1] = '-';
+                Map[_posX - 3, _posY + 2] = '-';
+                Map[_posX - 4, _posY + 1] = 'S';
+                Map[_posX - 5, _posY + 1] = 'S';
+                Map[_posX - 6, _posY + 1] = 'S';
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
@@ -131,7 +131,7 @@ public class LinkMovement
             UpdateRow(_preHitPosY + 1);
             UpdateRow(_preHitPosY + 2);
         }
-        else if (prev == "s" && _posY + 4 < 33)
+        else if (prev == 's' && _posY + 4 < 33)
         {
             if (!attacking)
             {
@@ -141,11 +141,11 @@ public class LinkMovement
                 _storage_sword[3] = Map[_posX, _posY + 4];
                 _storage_sword[4] = Map[_posX, _posY + 5];
 
-                Map[_posX - 1, _posY + 3] = "-";
-                Map[_posX, _posY + 3] = "-";
-                Map[_posX + 1, _posY + 3] = "-";
-                Map[_posX, _posY + 4] = "S";
-                Map[_posX, _posY + 5] = "S";
+                Map[_posX - 1, _posY + 3] = '-';
+                Map[_posX, _posY + 3] = '-';
+                Map[_posX + 1, _posY + 3] = '-';
+                Map[_posX, _posY + 4] = 'S';
+                Map[_posX, _posY + 5] = 'S';
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
@@ -177,7 +177,7 @@ public class LinkMovement
             UpdateRow(_preHitPosY + 4);
             UpdateRow(_preHitPosY + 5);
         }
-        else if (prev == "d" && _posX + 6 < 102)
+        else if (prev == 'd' && _posX + 6 < 102)
         {
             if (!attacking)
             {
@@ -188,12 +188,12 @@ public class LinkMovement
                 _storage_sword[4] = Map[_posX + 5, _posY + 1];
                 _storage_sword[5] = Map[_posX + 6, _posY + 1];
 
-                Map[_posX + 3, _posY] = "-";
-                Map[_posX + 3, _posY + 1] = "-";
-                Map[_posX + 3, _posY + 2] = "-";
-                Map[_posX + 4, _posY + 1] = "S";
-                Map[_posX + 5, _posY + 1] = "S";
-                Map[_posX + 6, _posY + 1] = "S";
+                Map[_posX + 3, _posY] = '-';
+                Map[_posX + 3, _posY + 1] = '-';
+                Map[_posX + 3, _posY + 2] = '-';
+                Map[_posX + 4, _posY + 1] = 'S';
+                Map[_posX + 5, _posY + 1] = 'S';
+                Map[_posX + 6, _posY + 1] = 'S';
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
@@ -230,12 +230,13 @@ public class LinkMovement
         }
     }
 
-    public void Stab(int[,] swordArr, string prev, int amt, int dmg)
+    public void Stab(int[,] swordArr, char prev, int amt, int dmg)
     {
         var hit = false;
         for (var i = 0; i < amt; i++)
         {
-            if (_storage_sword[i] == "t" || _storage_sword[i] == "n" || _storage_sword[i] == "B" || _storage_sword[i] == "{" || _storage_sword[i] == "}" || _storage_sword[i] == "F" || _storage_detect_enemy[i] == "t" || _storage_detect_enemy[i] == "n" || _storage_detect_enemy[i] == "B" || _storage_detect_enemy[i] == "{" || _storage_detect_enemy[i] == "}" || _storage_detect_enemy[i] == "F")
+            char[] detect = ['t', 'n', 'B', '{', '}', 'F'];
+            if (detect.Any(x => x == _storage_sword[i]) || detect.Any(x => x == _storage_detect_enemy[i]))
             {
                 hit = true;
                 if (MainProgram.EnemyMovement.TakeDamage(swordArr[0, i], swordArr[1, i], prev, dmg) && _spawnRupee)
@@ -252,17 +253,17 @@ public class LinkMovement
         }
     }
 
-    public void StoreSword(string prev)
+    public void StoreSword(char prev)
     {
         for (var i = 0; i < 6; i++)
         {
-            if (_storage_sword[i] is "t" or "^" or "n" or "0" or "B" or "{" or "}" or "F" or "S" or ">" or "*")
+            if (_storage_sword[i] is 't' or '^' or 'n' or '0' or 'B' or '{' or '}' or 'F' or 'S' or '>' or '*')
             {
-                _storage_sword[i] = " ";
+                _storage_sword[i] = ' ';
             }
         }
 
-        if (prev == "w")
+        if (prev == 'w')
         {
             Map[_preHitPosX - 1, _preHitPosY - 2] = _storage_sword[0];
             Map[_preHitPosX, _preHitPosY - 2] = _storage_sword[1];
@@ -270,7 +271,7 @@ public class LinkMovement
             Map[_preHitPosX, _preHitPosY - 3] = _storage_sword[3];
             Map[_preHitPosX, _preHitPosY - 4] = _storage_sword[4];
         }
-        else if (prev == "a")
+        else if (prev == 'a')
         {
             Map[_preHitPosX - 3, _preHitPosY] = _storage_sword[0];
             Map[_preHitPosX - 3, _preHitPosY + 1] = _storage_sword[1];
@@ -279,7 +280,7 @@ public class LinkMovement
             Map[_preHitPosX - 5, _preHitPosY + 1] = _storage_sword[4];
             Map[_preHitPosX - 6, _preHitPosY + 1] = _storage_sword[5];
         }
-        else if (prev == "s")
+        else if (prev == 's')
         {
             Map[_preHitPosX - 1, _preHitPosY + 3] = _storage_sword[0];
             Map[_preHitPosX, _preHitPosY + 3] = _storage_sword[1];
@@ -287,7 +288,7 @@ public class LinkMovement
             Map[_preHitPosX, _preHitPosY + 4] = _storage_sword[3];
             Map[_preHitPosX, _preHitPosY + 5] = _storage_sword[4];
         }
-        else if (prev == "d")
+        else if (prev == 'd')
         {
             Map[_preHitPosX + 3, _preHitPosY] = _storage_sword[0];
             Map[_preHitPosX + 3, _preHitPosY + 1] = _storage_sword[1];
@@ -298,7 +299,7 @@ public class LinkMovement
         }
     }
 
-    public void MoveLink(int posX, int posY, string direction, bool spawn)
+    public void MoveLink(int posX, int posY, char direction, bool spawn)
     {
         if (spawn)
         {
@@ -332,7 +333,7 @@ public class LinkMovement
 
         _prev = direction;
 
-        if (direction == "w")
+        if (direction == 'w')
         {
             if (_posX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
             {
@@ -342,7 +343,7 @@ public class LinkMovement
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            Map[x, y] = "~";
+                            Map[x, y] = '~';
                         }
                     }
 
@@ -353,7 +354,7 @@ public class LinkMovement
                 }
                 else
                 {
-                    LoadMap(4, 21, 29, "w");
+                    LoadMap(4, 21, 29, 'w');
                 }
             }
             else if (posY >= 1 && !(_posX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
@@ -489,7 +490,7 @@ public class LinkMovement
         }
         else if (direction == "a")
         {
-            _prev2 = "a";
+            _prev2 = 'a';
             if (posX >= 2)
             {
                 IsTouching(posX, posY, "r");
@@ -582,7 +583,7 @@ public class LinkMovement
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            Map[x, y] = "~";
+                            Map[x, y] = '~';
                         }
                     }
 
@@ -656,7 +657,7 @@ public class LinkMovement
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            Map[x, y] = "~";
+                            Map[x, y] = '~';
                         }
                     }
 
@@ -765,7 +766,7 @@ public class LinkMovement
         }
         else if (direction == "d")
         {
-            _prev2 = "d";
+            _prev2 = 'd';
             if (posX <= 99)
             {
                 IsTouching(posX, posY, "r");
@@ -860,7 +861,7 @@ public class LinkMovement
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            Map[x, y] = "~";
+                            Map[x, y] = '~';
                         }
                     }
 
@@ -926,7 +927,7 @@ public class LinkMovement
         _debounce = false;
     }
 
-    public void BuildChar(int posX, int posY, string direction)
+    public void BuildChar(int posX, int posY, char direction)
     {
         var spaceslot = " ";
         var underslot = "_";
@@ -938,107 +939,107 @@ public class LinkMovement
 
         if (direction == "w")
         {
-            Map[posX - 2, posY - 1] = " ";
-            Map[posX - 1, posY - 1] = "_";
-            Map[posX, posY - 1] = "_";
-            Map[posX + 1, posY - 1] = "_";
-            Map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = ' ';
+            Map[posX - 1, posY - 1] = '_';
+            Map[posX, posY - 1] = '_';
+            Map[posX + 1, posY - 1] = '_';
+            Map[posX + 2, posY - 1] = ' ';
 
-            Map[posX - 2, posY] = "|";
+            Map[posX - 2, posY] = '|';
             Map[posX - 1, posY] = spaceslot;
-            Map[posX, posY] = "=";
+            Map[posX, posY] = '=';
             Map[posX + 1, posY] = spaceslot;
-            Map[posX + 2, posY] = "|";
+            Map[posX + 2, posY] = '|';
 
-            Map[posX - 2, posY + 1] = "|";
-            Map[posX - 1, posY + 1] = "^";
+            Map[posX - 2, posY + 1] = '|';
+            Map[posX - 1, posY + 1] = '^';
             Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = "^";
-            Map[posX + 2, posY + 1] = "|";
+            Map[posX + 1, posY + 1] = '^';
+            Map[posX + 2, posY + 1] = '|';
 
-            Map[posX - 2, posY + 2] = " ";
-            Map[posX - 1, posY + 2] = "\\";
-            Map[posX, posY + 2] = "_";
-            Map[posX + 1, posY + 2] = "/";
-            Map[posX + 2, posY + 2] = " ";
+            Map[posX - 2, posY + 2] = ' ';
+            Map[posX - 1, posY + 2] = '\\';
+            Map[posX, posY + 2] = '_';
+            Map[posX + 1, posY + 2] = '/';
+            Map[posX + 2, posY + 2] = ' ';
         }
         else if (direction == "a")
         {
-            Map[posX - 2, posY - 1] = " ";
-            Map[posX - 1, posY - 1] = " ";
-            Map[posX, posY - 1] = "/";
-            Map[posX + 1, posY - 1] = "\\";
-            Map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = ' ';
+            Map[posX - 1, posY - 1] = ' ';
+            Map[posX, posY - 1] = '/';
+            Map[posX + 1, posY - 1] = '\\';
+            Map[posX + 2, posY - 1] = ' ';
 
-            Map[posX - 2, posY] = " ";
-            Map[posX - 1, posY] = "/";
-            Map[posX, posY] = " ";
-            Map[posX + 1, posY] = " ";
-            Map[posX + 2, posY] = "|";
+            Map[posX - 2, posY] = ' ';
+            Map[posX - 1, posY] = '/';
+            Map[posX, posY] = ' ';
+            Map[posX + 1, posY] = ' ';
+            Map[posX + 2, posY] = '|';
 
-            Map[posX - 2, posY + 1] = "|";
-            Map[posX - 1, posY + 1] = "^";
+            Map[posX - 2, posY + 1] = '|';
+            Map[posX - 1, posY + 1] = '^';
             Map[posX, posY + 1] = spaceslot;
             Map[posX + 1, posY + 1] = spaceslot;
-            Map[posX + 2, posY + 1] = "|";
+            Map[posX + 2, posY + 1] = '|';
 
-            Map[posX - 2, posY + 2] = "|";
+            Map[posX - 2, posY + 2] = '|';
             Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = "=";
+            Map[posX, posY + 2] = '=';
             Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = "|";
+            Map[posX + 2, posY + 2] = '|';
         }
         else if (direction == "s")
         {
-            Map[posX - 2, posY - 1] = " ";
-            Map[posX - 1, posY - 1] = " ";
-            Map[posX, posY - 1] = "_";
-            Map[posX + 1, posY - 1] = " ";
-            Map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = ' ';
+            Map[posX - 1, posY - 1] = ' ';
+            Map[posX, posY - 1] = '_';
+            Map[posX + 1, posY - 1] = ' ';
+            Map[posX + 2, posY - 1] = ' ';
 
-            Map[posX - 2, posY] = " ";
-            Map[posX - 1, posY] = "/";
-            Map[posX, posY] = " ";
-            Map[posX + 1, posY] = "\\";
-            Map[posX + 2, posY] = " ";
+            Map[posX - 2, posY] = ' ';
+            Map[posX - 1, posY] = '/';
+            Map[posX, posY] = ' ';
+            Map[posX + 1, posY] = '\\';
+            Map[posX + 2, posY] = ' ';
 
-            Map[posX - 2, posY + 1] = "|";
-            Map[posX - 1, posY + 1] = "^";
+            Map[posX - 2, posY + 1] = '|';
+            Map[posX - 1, posY + 1] = '^';
             Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = "^";
-            Map[posX + 2, posY + 1] = "|";
+            Map[posX + 1, posY + 1] = '^';
+            Map[posX + 2, posY + 1] = '|';
 
-            Map[posX - 2, posY + 2] = "|";
+            Map[posX - 2, posY + 2] = '|';
             Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = "=";
+            Map[posX, posY + 2] = '=';
             Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = "|";
+            Map[posX + 2, posY + 2] = '|';
         }
         else if (direction == "d")
         {
-            Map[posX - 2, posY - 1] = " ";
-            Map[posX - 1, posY - 1] = "/";
-            Map[posX, posY - 1] = "\\";
-            Map[posX + 1, posY - 1] = " ";
-            Map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = ' ';
+            Map[posX - 1, posY - 1] = '/';
+            Map[posX, posY - 1] = '\\';
+            Map[posX + 1, posY - 1] = ' ';
+            Map[posX + 2, posY - 1] = ' ';
 
-            Map[posX - 2, posY] = "|";
-            Map[posX - 1, posY] = " ";
-            Map[posX, posY] = " ";
-            Map[posX + 1, posY] = "\\";
-            Map[posX + 2, posY] = " ";
+            Map[posX - 2, posY] = '|';
+            Map[posX - 1, posY] = ' ';
+            Map[posX, posY] = ' ';
+            Map[posX + 1, posY] = '\\';
+            Map[posX + 2, posY] = ' ';
 
-            Map[posX - 2, posY + 1] = "|";
+            Map[posX - 2, posY + 1] = '|';
             Map[posX - 1, posY + 1] = spaceslot;
             Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = "^";
-            Map[posX + 2, posY + 1] = "|";
+            Map[posX + 1, posY + 1] = '^';
+            Map[posX + 2, posY + 1] = '|';
 
-            Map[posX - 2, posY + 2] = "|";
+            Map[posX - 2, posY + 2] = '|';
             Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = "=";
+            Map[posX, posY + 2] = '=';
             Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = "|";
+            Map[posX + 2, posY + 2] = '|';
         }
     }
 
@@ -1098,78 +1099,78 @@ public class LinkMovement
         _storage_map[19] = Map[posX + 2, posY + 2];
     }
 
-    public void DeployRaft(string direction)
+    public void DeployRaft(char direction)
     {
-        var spaceslot = " ";
-        var underslot = "_";
+        var spaceslot = ' ';
+        var underslot = '_';
         if (HasFlag(GameFlags.HasArmor))
         {
-            spaceslot = "#";
-            underslot = "#";
+            spaceslot = '#';
+            underslot = '#';
         }
 
-        Map[_posX - 3, _posY - 2] = "*";
-        Map[_posX - 2, _posY - 2] = "*";
-        Map[_posX - 1, _posY - 2] = "*";
-        Map[_posX, _posY - 2] = "*";
-        Map[_posX + 1, _posY - 2] = "*";
-        Map[_posX + 2, _posY - 2] = "*";
-        Map[_posX + 3, _posY - 2] = "*";
+        Map[_posX - 3, _posY - 2] = '*';
+        Map[_posX - 2, _posY - 2] = '*';
+        Map[_posX - 1, _posY - 2] = '*';
+        Map[_posX, _posY - 2] = '*';
+        Map[_posX + 1, _posY - 2] = '*';
+        Map[_posX + 2, _posY - 2] = '*';
+        Map[_posX + 3, _posY - 2] = '*';
 
-        Map[_posX - 3, _posY - 1] = "=";
-        Map[_posX, _posY - 1] = " ";
-        Map[_posX + 3, _posY - 1] = "=";
+        Map[_posX - 3, _posY - 1] = '=';
+        Map[_posX, _posY - 1] = ' ';
+        Map[_posX + 3, _posY - 1] = '=';
 
-        Map[_posX - 3, _posY] = "*";
-        Map[_posX - 2, _posY] = "|";
-        Map[_posX + 2, _posY] = "|";
-        Map[_posX + 3, _posY] = "*";
+        Map[_posX - 3, _posY] = '*';
+        Map[_posX - 2, _posY] = '|';
+        Map[_posX + 2, _posY] = '|';
+        Map[_posX + 3, _posY] = '*';
 
-        Map[_posX - 3, _posY + 1] = "*";
-        Map[_posX - 2, _posY + 1] = "|";
+        Map[_posX - 3, _posY + 1] = '*';
+        Map[_posX - 2, _posY + 1] = '|';
         Map[_posX - 1, _posY + 1] = underslot;
-        Map[_posX, _posY + 1] = "=";
+        Map[_posX, _posY + 1] = '=';
         Map[_posX + 1, _posY + 1] = underslot;
-        Map[_posX + 2, _posY + 1] = "|";
-        Map[_posX + 3, _posY + 1] = "*";
+        Map[_posX + 2, _posY + 1] = '|';
+        Map[_posX + 3, _posY + 1] = '*';
 
-        Map[_posX - 3, _posY + 2] = "=";
-        Map[_posX - 2, _posY + 2] = "=";
-        Map[_posX - 1, _posY + 2] = "=";
-        Map[_posX, _posY + 2] = "=";
-        Map[_posX + 1, _posY + 2] = "=";
-        Map[_posX + 2, _posY + 2] = "=";
-        Map[_posX + 3, _posY + 2] = "=";
+        Map[_posX - 3, _posY + 2] = '=';
+        Map[_posX - 2, _posY + 2] = '=';
+        Map[_posX - 1, _posY + 2] = '=';
+        Map[_posX, _posY + 2] = '=';
+        Map[_posX + 1, _posY + 2] = '=';
+        Map[_posX + 2, _posY + 2] = '=';
+        Map[_posX + 3, _posY + 2] = '=';
 
-        Map[_posX - 3, _posY + 3] = "*";
-        Map[_posX - 2, _posY + 3] = "*";
-        Map[_posX - 1, _posY + 3] = "*";
-        Map[_posX, _posY + 3] = "*";
-        Map[_posX + 1, _posY + 3] = "*";
-        Map[_posX + 2, _posY + 3] = "*";
-        Map[_posX + 3, _posY + 3] = "*";
+        Map[_posX - 3, _posY + 3] = '*';
+        Map[_posX - 2, _posY + 3] = '*';
+        Map[_posX - 1, _posY + 3] = '*';
+        Map[_posX, _posY + 3] = '*';
+        Map[_posX + 1, _posY + 3] = '*';
+        Map[_posX + 2, _posY + 3] = '*';
+        Map[_posX + 3, _posY + 3] = '*';
 
-        if (direction == "a")
+        if (direction == 'a')
         {
-            Map[_posX - 2, _posY - 1] = "=";
-            Map[_posX - 1, _posY - 1] = "/";
-            Map[_posX + 1, _posY - 1] = " ";
-            Map[_posX + 2, _posY - 1] = "|";
+            Map[_posX - 2, _posY - 1] = '=';
+            Map[_posX - 1, _posY - 1] = '/';
+            Map[_posX + 1, _posY - 1] = ' ';
+            Map[_posX + 2, _posY - 1] = '|';
 
-            Map[_posX - 1, _posY] = "^";
+            Map[_posX - 1, _posY] = '^';
             Map[_posX, _posY] = spaceslot;
             Map[_posX + 1, _posY] = spaceslot;
         }
-        else if (direction == "d")
+        else if (direction == 'd')
         {
-            Map[_posX - 2, _posY - 1] = "|";
-            Map[_posX - 1, _posY - 1] = " ";
-            Map[_posX + 1, _posY - 1] = "\\";
-            Map[_posX + 2, _posY - 1] = "=";
+            Map[_posX - 2, _posY - 1] = '|';
+            Map[_posX - 1, _posY - 1] = ' ';
+            Map[_posX + 1, _posY - 1] = '\\';
+            Map[_posX + 2, _posY - 1] = '=';
 
             Map[_posX - 1, _posY] = spaceslot;
             Map[_posX, _posY] = spaceslot;
-            Map[_posX + 1, _posY] = "^";
+            Map[_posX + 1, _posY] = '^';
         }
 
         UpdateRow(_posY - 2);
@@ -1180,7 +1181,7 @@ public class LinkMovement
         UpdateRow(_posY + 3);
     }
 
-    public void PlayEffect(string symbol)
+    public void PlayEffect(char symbol)
     {
         Map[_posX - 2, _posY - 1] = symbol;
         Map[_posX - 1, _posY - 1] = symbol;
@@ -1209,29 +1210,29 @@ public class LinkMovement
 
     public void PlaceZelda()
     {
-        Map[50, 14] = "=";
-        Map[51, 14] = "<";
-        Map[52, 14] = ">";
-        Map[53, 14] = "=";
+        Map[50, 14] = '=';
+        Map[51, 14] = '<';
+        Map[52, 14] = '>';
+        Map[53, 14] = '=';
 
-        Map[50, 15] = "s";
-        Map[51, 15] = "^";
-        Map[52, 15] = "^";
-        Map[53, 15] = "s";
+        Map[50, 15] = 's';
+        Map[51, 15] = '^';
+        Map[52, 15] = '^';
+        Map[53, 15] = 's';
 
-        Map[49, 16] = "s";
-        Map[50, 16] = "s";
-        Map[51, 16] = "~";
-        Map[52, 16] = "~";
-        Map[53, 16] = "s";
-        Map[54, 16] = "s";
+        Map[49, 16] = 's';
+        Map[50, 16] = 's';
+        Map[51, 16] = '~';
+        Map[52, 16] = '~';
+        Map[53, 16] = 's';
+        Map[54, 16] = 's';
 
-        Map[49, 16] = "~";
-        Map[50, 16] = "~";
-        Map[51, 16] = "~";
-        Map[52, 16] = "~";
-        Map[53, 16] = "~";
-        Map[54, 16] = "~";
+        Map[49, 16] = '~';
+        Map[50, 16] = '~';
+        Map[51, 16] = '~';
+        Map[52, 16] = '~';
+        Map[53, 16] = '~';
+        Map[54, 16] = '~';
     }
 
     public void Hit()
@@ -1252,7 +1253,7 @@ public class LinkMovement
 
             StoreChar(_posX, _posY);
 
-            PlayEffect("*");
+            PlayEffect('*');
 
             UpdateRow(_posY - 1);
             UpdateRow(_posY);
@@ -1261,22 +1262,22 @@ public class LinkMovement
         }
     }
 
-    public bool IsTouching(int posX, int posY, string symbol)
+    public bool IsTouching(int posX, int posY, char symbol)
     {
-        if (symbol == "/")
+        if (symbol == '/')
         {
-            return Map[posX, posY - 1] == "/";
+            return Map[posX, posY - 1] == '/';
         }
 
         if (Map[posX - 2, posY - 1] == symbol || Map[posX - 1, posY - 1] == symbol || Map[posX, posY - 1] == symbol || Map[posX + 1, posY - 1] == symbol || Map[posX + 2, posY - 1] == symbol || Map[posX - 2, posY] == symbol || Map[posX - 1, posY] == symbol || Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX - 2, posY + 1] == symbol || Map[posX - 1, posY + 1] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX - 2, posY + 2] == symbol || Map[posX - 1, posY + 2] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol)
         {
-            if (symbol is "R" or "r")
+            if (symbol is 'R' or 'r')
             {
                 for (var i = 0; i < 4; i++)
                 {
                     for (var j = 0; j < 5; j++)
                     {
-                        if (Map[posX - 2 + j, posY - 1 + i] is "R" or "r")
+                        if (Map[posX - 2 + j, posY - 1 + i] is 'R' or 'r')
                         {
                             MainProgram.EnemyMovement.RemoveRupee(posX - 2 + j, posY - 1 + i);
                         }

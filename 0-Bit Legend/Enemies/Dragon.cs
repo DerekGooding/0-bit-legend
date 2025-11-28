@@ -1,0 +1,31 @@
+﻿using _0_Bit_Legend.Model;
+using System;
+using static _0_Bit_Legend.MainProgram;
+
+namespace _0_Bit_Legend.Enemies;
+
+public class Dragon : IEnemy
+{
+    public EnemyType Type => EnemyType.Dragon;
+    public void Build(int posX, int posY, char previousIndex)
+    {
+        var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
+        if (_prev1[index] == "d") dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
+
+        var debounce = false;
+        var value = 0;
+        for (var i = 0; i < 7; i++)
+        {
+            for (var j = 0; j < 12; j++)
+            {
+                if (Map[posX + j, posY + i] == "/" || Map[posX + j, posY + i] == "\\" || Map[posX + j, posY + i] == "|" || Map[posX + j, posY + i] == "_" && !debounce)
+                {
+                    debounce = true;
+                    MainProgram.LinkMovement.Hit();
+                }
+                Map[posX + j, posY + i] = dragon[value].ToString();
+                value++;
+            }
+        }
+    }
+}

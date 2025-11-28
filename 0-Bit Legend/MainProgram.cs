@@ -20,7 +20,7 @@ public static class MainProgram
             _flags &= ~flag;
     }
 
-    public static string[,] Map { get; } = new string[102, 33];
+    public static char[,] Map { get; } = new char[102, 33];
     public static int CurrentMap { get; set; } = 0;
 
     private static readonly string[] _strs = new string[33];
@@ -65,7 +65,7 @@ public static class MainProgram
         const int VK_RSHIFT = 0xA1;
 
         Console.CursorVisible = false;
-        LoadMap(0, 52, 18, "w");
+        LoadMap(0, 52, 18, 'w');
 
         var credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^  |                                               #                                           ~~~~~~ |_=_|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|  ^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|_=_|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
         while (_frames < 118)
@@ -124,19 +124,19 @@ public static class MainProgram
                     {
                         if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, "w", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, 'w', false);
                         }
                         else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), "a", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), 'a', false);
                         }
                         else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, "s", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, 's', false);
                         }
                         else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), "d", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), 'd', false);
                         }
                         else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlags.HasSword))
                         {
@@ -362,33 +362,33 @@ public static class MainProgram
                     else
                     {
                         LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
-                        if (LinkMovement.GetPrev() != "w" && LinkMovement.GetPrev() != "a" && LinkMovement.GetPrev() != "s" && LinkMovement.GetPrev() != "d")
+                        if (LinkMovement.GetPrev() != 'w' && LinkMovement.GetPrev() != 'a' && LinkMovement.GetPrev() != 's' && LinkMovement.GetPrev() != 'd')
                         {
-                            if (int.Parse(LinkMovement.GetPrev()) <= 0)
+                            if (int.Parse(LinkMovement.GetPrev().ToString()) <= 0)
                             {
                                 if (CurrentMap == 0)
                                 {
-                                    LoadMap(6, 50, 29, "w");
+                                    LoadMap(6, 50, 29, 'w');
                                 }
                                 else if (CurrentMap == 4)
                                 {
-                                    LoadMap(7, 50, 30, "w");
+                                    LoadMap(7, 50, 30, 'w');
                                 }
                                 else if (CurrentMap == 8)
                                 {
-                                    LoadMap(9, 50, 30, "w");
+                                    LoadMap(9, 50, 30, 'w');
                                 }
                                 else if (CurrentMap == 6)
                                 {
-                                    LoadMap(0, 16, 9, "s");
+                                    LoadMap(0, 16, 9, 's');
                                 }
                                 else if (CurrentMap == 7)
                                 {
-                                    LoadMap(4, 86, 10, "s");
+                                    LoadMap(4, 86, 10, 's');
                                 }
                                 else if (CurrentMap == 9)
                                 {
-                                    LoadMap(8, 51, 20, "s");
+                                    LoadMap(8, 51, 20, 's');
                                 }
                                 _attacking = false;
                             }
@@ -396,22 +396,22 @@ public static class MainProgram
                             {
                                 if (CurrentMap is 0 or 4 or 8)
                                 {
-                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, "w", false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, 'w', false);
                                     Thread.Sleep(50);
                                 }
                                 else if (CurrentMap is 6 or 7 or 9)
                                 {
-                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, "s", false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, 's', false);
                                     Thread.Sleep(50);
                                 }
 
-                                if (LinkMovement.GetPrev() == "w" || LinkMovement.GetPrev() == "s")
+                                if (LinkMovement.GetPrev() == 'w' || LinkMovement.GetPrev() == 's')
                                 {
-                                    LinkMovement.SetPrev("0");
+                                    LinkMovement.SetPrev('0');
                                 }
                                 else
                                 {
-                                    LinkMovement.SetPrev((Int32.Parse(LinkMovement.GetPrev()) - 1).ToString());
+                                    LinkMovement.SetPrev((int.Parse(LinkMovement.GetPrev().ToString()) - 1).ToString()[0]);
                                 }
                             }
                         }
@@ -430,19 +430,19 @@ public static class MainProgram
                     var x = 0;
                     var y = 0;
 
-                    if (LinkMovement.GetPrev() == "w" && LinkMovement.GetPosY() < 27)
+                    if (LinkMovement.GetPrev() == 'w' && LinkMovement.GetPosY() < 27)
                     {
                         y = 3;
                     }
-                    else if (LinkMovement.GetPrev() == "a" && LinkMovement.GetPosX() < 94)
+                    else if (LinkMovement.GetPrev() == 'a' && LinkMovement.GetPosX() < 94)
                     {
                         x = 6;
                     }
-                    else if (LinkMovement.GetPrev() == "s" && LinkMovement.GetPosY() > 3)
+                    else if (LinkMovement.GetPrev() == 's' && LinkMovement.GetPosY() > 3)
                     {
                         y = -3;
                     }
-                    else if (LinkMovement.GetPrev() == "d" && LinkMovement.GetPosX() > 7)
+                    else if (LinkMovement.GetPrev() == 'd' && LinkMovement.GetPosX() > 7)
                     {
                         x = -6;
                     }
@@ -457,19 +457,19 @@ public static class MainProgram
                     Thread.Sleep(50);
                     for (var i = 0; i < 102; i++)
                     {
-                        Map[i, _frames] = " ";
-                        Map[i, 32 - _frames] = " ";
+                        Map[i, _frames] = ' ';
+                        Map[i, 32 - _frames] = ' ';
                     }
                     UpdateRow(_frames);
                     UpdateRow(32 - _frames);
 
                     if (_frames % 2 == 0)
                     {
-                        LinkMovement.PlayEffect("*");
+                        LinkMovement.PlayEffect('*');
                     }
                     else
                     {
-                        LinkMovement.PlayEffect("+");
+                        LinkMovement.PlayEffect('+');
                     }
                     UpdateRow(LinkMovement.GetPosY() - 1);
                     UpdateRow(LinkMovement.GetPosY());
@@ -500,10 +500,10 @@ public static class MainProgram
 
                     if (CurrentMap <= 8)
                     {
-                        LoadMap(0, 52, 15, "w");
+                        LoadMap(0, 52, 15, 'w');
                     } else
                     {
-                        LoadMap(9, 50, 25, "w");
+                        LoadMap(9, 50, 25, 'w');
                     }
                 }
                 _frames++;
@@ -516,27 +516,27 @@ public static class MainProgram
                 {
                     for (var i = 0; i < 32; i++)
                     {
-                        Map[_frames, i] = " ";
-                        Map[101 - _frames, i] = " ";
+                        Map[_frames, i] = ' ';
+                        Map[101 - _frames, i] = ' ';
                     }
                     UpdateRow(_frames);
                     UpdateRow(32 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), "a", false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), 'a', false);
                 }
                 else if (_frames < 30)
                 {
                     for (var i = 0; i < 102; i++)
                     {
-                        Map[i, _frames - 13] = " ";
-                        Map[i, 45 - _frames] = " ";
+                        Map[i, _frames - 13] = ' ';
+                        Map[i, 45 - _frames] = ' ';
                     }
                     UpdateRow(_frames - 13);
                     UpdateRow(45 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), "a", false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), 'a', false);
                 }
                 else if (_frames == 30)
                 {
@@ -587,7 +587,7 @@ public static class MainProgram
         }
     }
 
-    public static void LoadMap(int mapNum, int posX, int posY, string direction)
+    public static void LoadMap(int mapNum, int posX, int posY, char direction)
     {
         // Main Maps
         const string map0 = "======================================================                    ============================#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX====================                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXX///////XXXXXXXXXXXXXX=                                       =========XXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXX///////XXXXXXXXX======                                               =XXXXXXXXXXXXXXXXXX=#=XXXXXXXXX===///////==========                                                    =XXXXXXXXXXXXXXXXXX=#=XXXXXXXXX=                                                                       =XXXXXXXXXXXXXXXXXX=#=XXXXXXXXX=                                                                       =XXXXXXXXXXXXXXXXXX=#===========                                                                       =XXXXXXXXXXXXXXXXXX=#                                                                                  =====XXXXXXXXXXXXXX=#                                                                                      ======XXXXXXXXX=#                                                                                           ===========#                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #====                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                            ======#=XX=======                                                                                      =XXXX=#=XXXXXXXX=                                                                                 ======XXXX=#=XXXXXXXX=                                      ============================================XXXXXXXXX=#=XXXXXXXX=========                              =XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXX================================XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#======================================================================================================#";
@@ -687,63 +687,63 @@ public static class MainProgram
             _strs[i] = "";
             for (var j = 0; j < 102; j++)
             {
-                if (map0[val].ToString() != "#")
+                if (map0[val] != '#')
                 {
                     if (mapNum == 0)
                     {
-                        Map[j, i] = map0[val].ToString();
+                        Map[j, i] = map0[val];
                     }
                     else if (mapNum == 1)
                     {
-                        Map[j, i] = map1[val].ToString();
+                        Map[j, i] = map1[val];
                     }
                     else if (mapNum == 2)
                     {
-                        Map[j, i] = map2[val].ToString();
+                        Map[j, i] = map2[val];
                     }
                     else if (mapNum == 3)
                     {
-                        Map[j, i] = map3[val].ToString();
+                        Map[j, i] = map3[val];
                     }
                     else if (mapNum == 4)
                     {
-                        Map[j, i] = map4[val].ToString();
+                        Map[j, i] = map4[val];
                     }
                     else if (mapNum == 5)
                     {
-                        Map[j, i] = map5[val].ToString();
+                        Map[j, i] = map5[val];
                     }
                     else if (mapNum == 6)
                     {
-                        Map[j, i] = map6[val].ToString();
+                        Map[j, i] = map6[val];
                     }
                     else if (mapNum == 7)
                     {
-                        Map[j, i] = map7[val].ToString();
+                        Map[j, i] = map7[val];
                     }
                     else if (mapNum == 8)
                     {
-                        Map[j, i] = map8[val].ToString();
+                        Map[j, i] = map8[val];
                     }
                     else if (mapNum == 9)
                     {
-                        Map[j, i] = map9[val].ToString();
+                        Map[j, i] = map9[val];
                     }
                     else if (mapNum == 10)
                     {
-                        Map[j, i] = map10[val].ToString();
+                        Map[j, i] = map10[val];
                     }
                     else if (mapNum == 11)
                     {
-                        Map[j, i] = map11[val].ToString();
+                        Map[j, i] = map11[val];
                     }
                     else if (mapNum == 12)
                     {
-                        Map[j, i] = map12[val].ToString();
+                        Map[j, i] = map12[val];
                     }
                     else if (mapNum == 13)
                     {
-                        Map[j, i] = map13[val].ToString();
+                        Map[j, i] = map13[val];
                     }
 
                     _strs[i] += Map[j, i];
@@ -873,7 +873,7 @@ public static class MainProgram
     public static void Wait(int time)
     {
         _attacking = true;
-        LinkMovement.SetPrev(time.ToString());
+        LinkMovement.SetPrev(time.ToString()[0]);
     }
 
     public static void UpdateRow(int row)
