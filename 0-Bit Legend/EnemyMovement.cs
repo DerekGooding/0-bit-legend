@@ -26,45 +26,21 @@ public class EnemyMovement : MainProgram
     private string sRType = "";
 
     //    Methods    //
-    public int GetPosX(int index)
-    {
-        return posX[index];
-    }
+    public int GetPosX(int index) => posX[index];
 
-    public int GetPosY(int index)
-    {
-        return posY[index];
-    }
+    public int GetPosY(int index) => posY[index];
 
-    public string GetEnemyType(int index)
-    {
-        return type[index];
-    }
+    public string GetEnemyType(int index) => type[index];
 
-    public int GetTotal()
-    {
-        return posX.ToArray().Length;
-    }
+    public int GetTotal() => posX.ToArray().Length;
 
-    public string GetPrev1(int index)
-    {
-        return prev1[index];
-    }
+    public string GetPrev1(int index) => prev1[index];
 
-    public string GetPrev2(int index)
-    {
-        return prev2[index];
-    }
+    public string GetPrev2(int index) => prev2[index];
 
-    public int GetMotion(int index)
-    {
-        return motion[index];
-    }
+    public int GetMotion(int index) => motion[index];
 
-    public void SetMotion(int index, int value)
-    {
-        motion[index] = value;
-    }
+    public void SetMotion(int index, int value) => motion[index] = value;
 
 
     public bool TakeDamage(int posX, int posY, string prev, int damage)

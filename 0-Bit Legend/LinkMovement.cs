@@ -18,46 +18,16 @@ public class LinkMovement : MainProgram
     private bool debounce = false;
     private bool spawnRupee = false;
 
-    public int GetPosX()
-    {
-        return posX;
-    }
-    public int GetPosY()
-    {
-        return posY;
-    }
-    public string GetPrev()
-    {
-        return prev;
-    }
-    public string GetPrev2()
-    {
-        return prev2;
-    }
-    public void SetPosX(int posX)
-    {
-        this.posX = posX;
-    }
-    public void SetPosY(int posY)
-    {
-        this.posY = posY;
-    }
-    public void SetPreHitPosX(int posX)
-    {
-        this.preHitPosX = posX;
-    }
-    public void SetPreHitPosY(int posY)
-    {
-        this.preHitPosY = posY;
-    }
-    public void SetPrev(string prev)
-    {
-        this.prev = prev;
-    }
-    public void SetSpawnRupee(bool spawnRupee)
-    {
-        this.spawnRupee = spawnRupee;
-    }
+    public int GetPosX() => posX;
+    public int GetPosY() => posY;
+    public string GetPrev() => prev;
+    public string GetPrev2() => prev2;
+    public void SetPosX(int posX) => this.posX = posX;
+    public void SetPosY(int posY) => this.posY = posY;
+    public void SetPreHitPosX(int posX) => this.preHitPosX = posX;
+    public void SetPreHitPosY(int posY) => this.preHitPosY = posY;
+    public void SetPrev(string prev) => this.prev = prev;
+    public void SetSpawnRupee(bool spawnRupee) => this.spawnRupee = spawnRupee;
 
     public void Attack(string prev, bool attacking)
     {
