@@ -58,7 +58,7 @@ public class LinkMovement : MainProgram
                 _storage_detect_enemy[3] = map[_preHitPosX, _preHitPosY - 3];
                 _storage_detect_enemy[4] = map[_preHitPosX, _preHitPosY - 4];
 
-                int[,] swordArr = new int[2, 5];
+                var swordArr = new int[2, 5];
                 swordArr[0, 0] = _preHitPosX - 1;
                 swordArr[1, 0] = _preHitPosY - 2;
                 swordArr[0, 1] = _preHitPosX;
@@ -107,7 +107,7 @@ public class LinkMovement : MainProgram
                 _storage_detect_enemy[4] = map[_preHitPosX - 5, _preHitPosY + 1];
                 _storage_detect_enemy[5] = map[_preHitPosX - 6, _preHitPosY + 1];
 
-                int[,] swordArr = new int[2, 6];
+                var swordArr = new int[2, 6];
                 swordArr[0, 0] = _preHitPosX - 3;
                 swordArr[1, 0] = _preHitPosY;
                 swordArr[0, 1] = _preHitPosX - 3;
@@ -155,7 +155,7 @@ public class LinkMovement : MainProgram
                 _storage_detect_enemy[3] = map[_preHitPosX, _preHitPosY + 4];
                 _storage_detect_enemy[4] = map[_preHitPosX, _preHitPosY + 5];
 
-                int[,] swordArr = new int[2, 5];
+                var swordArr = new int[2, 5];
                 swordArr[0, 0] = _preHitPosX - 1;
                 swordArr[1, 0] = _preHitPosY + 3;
                 swordArr[0, 1] = _preHitPosX;
@@ -204,7 +204,7 @@ public class LinkMovement : MainProgram
                 _storage_detect_enemy[4] = map[_preHitPosX + 5, _preHitPosY + 1];
                 _storage_detect_enemy[5] = map[_preHitPosX + 6, _preHitPosY + 1];
 
-                int[,] swordArr = new int[2, 6];
+                var swordArr = new int[2, 6];
                 swordArr[0, 0] = _preHitPosX + 3;
                 swordArr[1, 0] = _preHitPosY;
                 swordArr[0, 1] = _preHitPosX + 3;
@@ -229,8 +229,8 @@ public class LinkMovement : MainProgram
 
     public void Stab(int[,] swordArr, string prev, int amt, int dmg)
     {
-        bool hit = false;
-        for (int i = 0; i < amt; i++)
+        var hit = false;
+        for (var i = 0; i < amt; i++)
         {
             if (_storage_sword[i] == "t" || _storage_sword[i] == "n" || _storage_sword[i] == "B" || _storage_sword[i] == "{" || _storage_sword[i] == "}" || _storage_sword[i] == "F" || _storage_detect_enemy[i] == "t" || _storage_detect_enemy[i] == "n" || _storage_detect_enemy[i] == "B" || _storage_detect_enemy[i] == "{" || _storage_detect_enemy[i] == "}" || _storage_detect_enemy[i] == "F")
             {
@@ -251,7 +251,7 @@ public class LinkMovement : MainProgram
 
     public void StoreSword(string prev)
     {
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             if (_storage_sword[i] is "t" or "^" or "n" or "0" or "B" or "{" or "}" or "F" or "S" or ">" or "*")
             {
@@ -335,9 +335,9 @@ public class LinkMovement : MainProgram
             {
                 if (posY > 1)
                 {
-                    for (int y = _posY - 2; y <= _posY + 3; y++)
+                    for (var y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = _posX - 3; x <= _posX + 3; x++)
+                        for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
@@ -357,7 +357,7 @@ public class LinkMovement : MainProgram
             {
                 IsTouching(posX, posY, "r");
                 StoreChar(_posX, _posY);
-                bool inCave = false;
+                var inCave = false;
 
                 if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
@@ -575,9 +575,9 @@ public class LinkMovement : MainProgram
                     UpdateRow(_posY + 1);
                     UpdateRow(_posY + 2);
 
-                    for (int y = _posY - 2; y <= _posY + 3; y++)
+                    for (var y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = _posX - 3; x <= _posX + 3; x++)
+                        for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
@@ -649,9 +649,9 @@ public class LinkMovement : MainProgram
             {
                 if ((posY < 30) && ((currentMap == 2 && posY < 27) || currentMap == 4))
                 {
-                    for (int y = _posY - 2; y <= _posY + 3; y++)
+                    for (var y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = _posX - 3; x <= _posX + 3; x++)
+                        for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
@@ -768,7 +768,7 @@ public class LinkMovement : MainProgram
                 IsTouching(posX, posY, "r");
                 StoreChar(_posX, _posY);
 
-                bool persist = true;
+                var persist = true;
                 if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
                     hasSword = true;
@@ -853,9 +853,9 @@ public class LinkMovement : MainProgram
                     UpdateRow(_posY + 1);
                     UpdateRow(_posY + 2);
 
-                    for (int y = _posY - 2; y <= _posY + 3; y++)
+                    for (var y = _posY - 2; y <= _posY + 3; y++)
                     {
-                        for (int x = _posX - 3; x <= _posX + 3; x++)
+                        for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
                             map[x, y] = "~";
                         }
@@ -925,8 +925,8 @@ public class LinkMovement : MainProgram
 
     public void BuildChar(int posX, int posY, string direction)
     {
-        string spaceslot = " ";
-        string underslot = "_";
+        var spaceslot = " ";
+        var underslot = "_";
         if (hasArmor)
         {
             spaceslot = "#";
@@ -1097,8 +1097,8 @@ public class LinkMovement : MainProgram
 
     public void DeployRaft(string direction)
     {
-        string spaceslot = " ";
-        string underslot = "_";
+        var spaceslot = " ";
+        var underslot = "_";
         if (hasArmor)
         {
             spaceslot = "#";
@@ -1269,9 +1269,9 @@ public class LinkMovement : MainProgram
         {
             if (symbol is "R" or "r")
             {
-                for (int i = 0; i < 4; i++)
+                for (var i = 0; i < 4; i++)
                 {
-                    for (int j = 0; j < 5; j++)
+                    for (var j = 0; j < 5; j++)
                     {
                         if (map[posX - 2 + j, posY - 1 + i] is "R" or "r")
                         {

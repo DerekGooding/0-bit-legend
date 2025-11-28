@@ -45,7 +45,7 @@ public class EnemyMovement : MainProgram
 
     public bool TakeDamage(int posX, int posY, string prev, int damage)
     {
-        int index = GetIndex(posX, posY);
+        var index = GetIndex(posX, posY);
         linkMovement.StoreSword(prev);
 
         if (index == -1 || _type[index] == "fireball")
@@ -57,11 +57,11 @@ public class EnemyMovement : MainProgram
         {
             waitDragon++;
 
-            int value = 0;
-            string dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
-            for (int i = 0; i < 7; i++)
+            var value = 0;
+            var dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
+            for (var i = 0; i < 7; i++)
             {
-                for (int j = 0; j < 12; j++)
+                for (var j = 0; j < 12; j++)
                 {
                     map[GetPosX(index) + j, GetPosY(index) + i] = dragon[value].ToString();
                     value++;
@@ -136,7 +136,7 @@ public class EnemyMovement : MainProgram
                 storage_copy = new string[12];
             }
 
-            for (int i = 0; i < storage_copy.Length; i++)
+            for (var i = 0; i < storage_copy.Length; i++)
             {
                 storage_copy[i] = " ";
             }
@@ -340,14 +340,14 @@ public class EnemyMovement : MainProgram
         }
         if (type == "dragon")
         {
-            string dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
+            var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
             if (_prev1[index] == "d") dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
 
-            bool debounce = false;
-            int value = 0;
-            for (int i = 0; i < 7; i++)
+            var debounce = false;
+            var value = 0;
+            for (var i = 0; i < 7; i++)
             {
-                for (int j = 0; j < 12; j++)
+                for (var j = 0; j < 12; j++)
                 {
                     if (map[posX + j, posY + i] == "/" || map[posX + j, posY + i] == "\\" || map[posX + j, posY + i] == "|" || map[posX + j, posY + i] == "_" && !debounce)
                     {
@@ -377,10 +377,10 @@ public class EnemyMovement : MainProgram
 
         if (type == "octorok")
         {
-            int value = 0;
-            for (int i = 0; i < 3; i++)
+            var value = 0;
+            for (var i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (var j = 0; j < 4; j++)
                 {
                     _map_storage[index][value] = map[posX + j, posY + i];
                     value++;
@@ -389,10 +389,10 @@ public class EnemyMovement : MainProgram
         }
         else if (type == "spider")
         {
-            int value = 0;
-            for (int i = 0; i < 3; i++)
+            var value = 0;
+            for (var i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (var j = 0; j < 5; j++)
                 {
                     _map_storage[index][value] = map[posX + j, posY + i];
                     value++;
@@ -401,10 +401,10 @@ public class EnemyMovement : MainProgram
         }
         else if (type == "bat")
         {
-            int value = 0;
-            for (int i = 0; i < 2; i++)
+            var value = 0;
+            for (var i = 0; i < 2; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (var j = 0; j < 5; j++)
                 {
                     _map_storage[index][value] = map[posX + j, posY + i];
                     value++;
@@ -413,10 +413,10 @@ public class EnemyMovement : MainProgram
         }
         else if (type == "fireball")
         {
-            int value = 0;
-            for (int i = 0; i < 2; i++)
+            var value = 0;
+            for (var i = 0; i < 2; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (var j = 0; j < 3; j++)
                 {
                     _map_storage[index][value] = map[posX + j, posY + i];
                     value++;
@@ -424,7 +424,7 @@ public class EnemyMovement : MainProgram
             }
         }
 
-        for (int i = 0; i < _map_storage[index].Length; i++)
+        for (var i = 0; i < _map_storage[index].Length; i++)
         {
             if (_map_storage[index][i] is "*" or "F" or "S" or "-" or "/" or "\\" or "|" or "^" or "#" or "r" or "R" or "V")
             {
@@ -500,10 +500,10 @@ public class EnemyMovement : MainProgram
         }
         else if (type == "dragon")
         {
-            int value = 0;
-            for (int i = 0; i < 7; i++)
+            var value = 0;
+            for (var i = 0; i < 7; i++)
             {
-                for (int j = 0; j < 12; j++)
+                for (var j = 0; j < 12; j++)
                 {
                     map[_posX[index] + j, _posY[index] + i] = " ";
                     value++;
@@ -564,12 +564,12 @@ public class EnemyMovement : MainProgram
     {
         if (_sRType != "dragon" && _sRType != "bat" && Random.Shared.Next(2) == 1)
         {
-            string[] rupee_storage_copy = new string[9];
+            var rupee_storage_copy = new string[9];
 
-            int value = 0;
-            for (int i = 0; i < 3; i++)
+            var value = 0;
+            for (var i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (var j = 0; j < 3; j++)
                 {
                     rupee_storage_copy[value] = map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not "-" and not "S"
                         ? map[_sRPosX - 1 + j, _sRPosY - 1 + i]
@@ -598,7 +598,7 @@ public class EnemyMovement : MainProgram
 
     public void RemoveRupee(int posX, int posY)
     {
-        for (int i = 0; i < _rPosX.ToArray().Length; i++)
+        for (var i = 0; i < _rPosX.ToArray().Length; i++)
         {
             if (posX >= _rPosX[i] - 1 && posX <= _rPosX[i] + 1 && posY >= _rPosY[i] - 1 && posY <= _rPosY[i] + 1)
             {
@@ -636,8 +636,8 @@ public class EnemyMovement : MainProgram
 
     public bool InBounds(string type, int posX, int posY)
     {
-        int inPosX = 0;
-        int inPosY = 0;
+        var inPosX = 0;
+        var inPosY = 0;
         if (type == "octorok")
         {
             inPosX = posX + 3;
@@ -670,10 +670,10 @@ public class EnemyMovement : MainProgram
 
     public int GetIndex(int posX, int posY)
     {
-        for (int i = 0; i < GetTotal(); i++)
+        for (var i = 0; i < GetTotal(); i++)
         {
-            int inPosX = 0;
-            int inPosY = 0;
+            var inPosX = 0;
+            var inPosY = 0;
             if (_type[i] == "octorok")
             {
                 inPosX = 4;
