@@ -153,18 +153,18 @@ public class EnemyMovement : MainProgram
 
                 if (type == "octorok")
                 {
-                    if (direction == "a" || direction == "d")
+                    if (direction is "a" or "d")
                     {
                         _prev2[index] = direction;
                     }
                 }
                 else if (type == "spider")
                 {
-                    if (direction == "w" || direction == "s")
+                    if (direction is "w" or "s")
                     {
                         _prev2[index] = "a";
                     }
-                    else if (direction == "a" || direction == "d")
+                    else if (direction is "a" or "d")
                     {
                         _prev2[index] = "d";
                     }
@@ -426,7 +426,7 @@ public class EnemyMovement : MainProgram
 
         for (int i = 0; i < _map_storage[index].Length; i++)
         {
-            if (_map_storage[index][i] == "*" || _map_storage[index][i] == "F" || _map_storage[index][i] == "S" || _map_storage[index][i] == "-" || _map_storage[index][i] == "/" || _map_storage[index][i] == "\\" || _map_storage[index][i] == "|" || _map_storage[index][i] == "^" || _map_storage[index][i] == "#" || _map_storage[index][i] == "r" || _map_storage[index][i] == "R" || _map_storage[index][i] == "V")
+            if (_map_storage[index][i] is "*" or "F" or "S" or "-" or "/" or "\\" or "|" or "^" or "#" or "r" or "R" or "V")
             {
                 _map_storage[index][i] = " ";
             }
@@ -571,7 +571,7 @@ public class EnemyMovement : MainProgram
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    if (map[_sRPosX - 1 + j, _sRPosY - 1 + i] != "-" && map[_sRPosX - 1 + j, _sRPosY - 1 + i] != "S")
+                    if (map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not "-" and not "S")
                     {
                         rupee_storage_copy[value] = map[_sRPosX - 1 + j, _sRPosY - 1 + i];
                     }

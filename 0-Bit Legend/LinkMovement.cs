@@ -253,7 +253,7 @@ public class LinkMovement : MainProgram
     {
         for (int i = 0; i < 6; i++)
         {
-            if (_storage_sword[i] == "t" || _storage_sword[i] == "^" || _storage_sword[i] == "n" || _storage_sword[i] == "0" || _storage_sword[i] == "B" || _storage_sword[i] == "{" || _storage_sword[i] == "}" || _storage_sword[i] == "F" || _storage_sword[i] == "S" || _storage_sword[i] == ">" || _storage_sword[i] == "*")
+            if (_storage_sword[i] is "t" or "^" or "n" or "0" or "B" or "{" or "}" or "F" or "S" or ">" or "*")
             {
                 _storage_sword[i] = " ";
             }
@@ -1274,13 +1274,13 @@ public class LinkMovement : MainProgram
 
         if (map[posX - 2, posY - 1] == symbol || map[posX - 1, posY - 1] == symbol || map[posX, posY - 1] == symbol || map[posX + 1, posY - 1] == symbol || map[posX + 2, posY - 1] == symbol || map[posX - 2, posY] == symbol || map[posX - 1, posY] == symbol || map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX - 2, posY + 1] == symbol || map[posX - 1, posY + 1] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX - 2, posY + 2] == symbol || map[posX - 1, posY + 2] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol)
         {
-            if (symbol == "R" || symbol == "r")
+            if (symbol is "R" or "r")
             {
                 for (int i = 0; i < 4; i++)
                 {
                     for (int j = 0; j < 5; j++)
                     {
-                        if (map[posX - 2 + j, posY - 1 + i] == "R" || map[posX - 2 + j, posY - 1 + i] == "r")
+                        if (map[posX - 2 + j, posY - 1 + i] is "R" or "r")
                         {
                             enemyMovement.RemoveRupee(posX - 2 + j, posY - 1 + i);
                         }

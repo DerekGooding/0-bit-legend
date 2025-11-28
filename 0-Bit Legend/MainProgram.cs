@@ -90,7 +90,7 @@ public class MainProgram
             {
                 if (health > 0 && !gameOver)
                 {
-                    if (i > 5 && i < 28)
+                    if (i is > 5 and < 28)
                     {
                         Console.Write("            " + _hud.Split("#")[i - 6] + "            ");
                     }
@@ -388,12 +388,12 @@ public class MainProgram
                             }
                             else
                             {
-                                if (currentMap == 0 || currentMap == 4 || currentMap == 8)
+                                if (currentMap is 0 or 4 or 8)
                                 {
                                     linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY() - 1, "w", false);
                                     Thread.Sleep(50);
                                 }
-                                else if (currentMap == 6 || currentMap == 7 || currentMap == 9)
+                                else if (currentMap is 6 or 7 or 9)
                                 {
                                     linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY() + 1, "s", false);
                                     Thread.Sleep(50);
@@ -548,7 +548,7 @@ public class MainProgram
                         count++;
                     }
                 }
-                else if (_frames > 30 && _frames < 111)
+                else if (_frames is > 30 and < 111)
                 {
                     if (_frames == 31) Thread.Sleep(3500);
                     for (int i = 0; i < 31; i++)
@@ -564,7 +564,7 @@ public class MainProgram
                     _strs[31] = row;
                     Thread.Sleep(600);
                 }
-                else if (_frames >= 111 && _frames < 117)
+                else if (_frames is >= 111 and < 117)
                 {
                     for (int i = 0; i < 31; i++)
                     {
