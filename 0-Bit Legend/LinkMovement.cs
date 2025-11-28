@@ -8,7 +8,7 @@ public class LinkMovement : MainProgram
     private int _preHitPosX;
     private int _preHitPosY;
 
-    private readonly string[] _storage_map = new string[20] { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+    private readonly string[] _storage_map = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "];
     private static readonly string[] _storage_sword = new string[6];
     private static readonly string[] _storage_detect_enemy = new string[6];
 
@@ -31,9 +31,9 @@ public class LinkMovement : MainProgram
 
     public void Attack(string prev, bool attacking)
     {
-        if (prev == "w" && _posY - 3 > 0)
+        if (prev == "w" && _posY > 3)
         {
-            if (attacking == false)
+            if (!attacking)
             {
                 _storage_sword[0] = map[_posX - 1, _posY - 2];
                 _storage_sword[1] = map[_posX, _posY - 2];
@@ -77,9 +77,9 @@ public class LinkMovement : MainProgram
             UpdateRow(_preHitPosY - 3);
             UpdateRow(_preHitPosY - 4);
         }
-        else if (prev == "a" && _posX - 4 > 0)
+        else if (prev == "a" && _posX > 4)
         {
-            if (attacking == false)
+            if (!attacking)
             {
                 _storage_sword[0] = map[_posX - 3, _posY];
                 _storage_sword[1] = map[_posX - 3, _posY + 1];
@@ -130,7 +130,7 @@ public class LinkMovement : MainProgram
         }
         else if (prev == "s" && _posY + 4 < 33)
         {
-            if (attacking == false)
+            if (!attacking)
             {
                 _storage_sword[0] = map[_posX - 1, _posY + 3];
                 _storage_sword[1] = map[_posX, _posY + 3];
@@ -176,7 +176,7 @@ public class LinkMovement : MainProgram
         }
         else if (prev == "d" && _posX + 6 < 102)
         {
-            if (attacking == false)
+            if (!attacking)
             {
                 _storage_sword[0] = map[_posX + 3, _posY];
                 _storage_sword[1] = map[_posX + 3, _posY + 1];
@@ -343,7 +343,7 @@ public class LinkMovement : MainProgram
                         }
                     }
 
-                    _posY -= 1;
+                    _posY--;
                     DeployRaft(_prev2);
 
                     UpdateRow(_posY + 4);
@@ -657,7 +657,7 @@ public class LinkMovement : MainProgram
                         }
                     }
 
-                    _posY += 1;
+                    _posY++;
                     DeployRaft(_prev2);
 
                     UpdateRow(_posY - 3);
@@ -1262,14 +1262,7 @@ public class LinkMovement : MainProgram
     {
         if (symbol == "/")
         {
-            if (map[posX, posY - 1] == "/")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return map[posX, posY - 1] == "/";
         }
 
         if (map[posX - 2, posY - 1] == symbol || map[posX - 1, posY - 1] == symbol || map[posX, posY - 1] == symbol || map[posX + 1, posY - 1] == symbol || map[posX + 2, posY - 1] == symbol || map[posX - 2, posY] == symbol || map[posX - 1, posY] == symbol || map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX - 2, posY + 1] == symbol || map[posX - 1, posY + 1] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX - 2, posY + 2] == symbol || map[posX - 1, posY + 2] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol)

@@ -4,8 +4,8 @@ namespace _0_Bit_Legend;
 
 public class MainProgram
 {
-    protected static LinkMovement linkMovement = new LinkMovement();
-    protected static EnemyMovement enemyMovement = new EnemyMovement();
+    protected static LinkMovement linkMovement = new();
+    protected static EnemyMovement enemyMovement = new();
 
     protected static string[,] map = new string[102, 33];
     protected static int currentMap = 0;
@@ -356,7 +356,7 @@ public class MainProgram
                         linkMovement.Attack(linkMovement.GetPrev(), _attacking);
                         if (linkMovement.GetPrev() != "w" && linkMovement.GetPrev() != "a" && linkMovement.GetPrev() != "s" && linkMovement.GetPrev() != "d")
                         {
-                            if (Int32.Parse(linkMovement.GetPrev()) <= 0)
+                            if (int.Parse(linkMovement.GetPrev()) <= 0)
                             {
                                 if (currentMap == 0)
                                 {

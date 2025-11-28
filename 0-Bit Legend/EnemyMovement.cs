@@ -571,14 +571,9 @@ public class EnemyMovement : MainProgram
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    if (map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not "-" and not "S")
-                    {
-                        rupee_storage_copy[value] = map[_sRPosX - 1 + j, _sRPosY - 1 + i];
-                    }
-                    else
-                    {
-                        rupee_storage_copy[value] = " ";
-                    }
+                    rupee_storage_copy[value] = map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not "-" and not "S"
+                        ? map[_sRPosX - 1 + j, _sRPosY - 1 + i]
+                        : " ";
                     value++;
                 }
             }
@@ -587,14 +582,8 @@ public class EnemyMovement : MainProgram
             _rPosY.Add(_sRPosY);
             _rupee_storage.Add(rupee_storage_copy);
 
-            if (Random.Shared.Next(5) == 4 || (_sRType == "spider" && Random.Shared.Next(10) == 9))
-            {
-                map[_sRPosX, _sRPosY] = "V";
-            }
-            else
-            {
-                map[_sRPosX, _sRPosY] = "R";
-            }
+            map[_sRPosX, _sRPosY]
+                = Random.Shared.Next(5) == 4 || (_sRType == "spider" && Random.Shared.Next(10) == 9) ? "V" : "R";
 
             map[_sRPosX - 1, _sRPosY] = "R";
             map[_sRPosX + 1, _sRPosY] = "R";
@@ -670,33 +659,14 @@ public class EnemyMovement : MainProgram
             inPosY = posY + 1;
         }
 
-        if (posX <= 0 || inPosX >= 102 || posY <= 0 || inPosY >= 33)
-        {
-            return false;
-        }
-        return true;
+        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
     public bool IsTouching(string type, int posX, int posY, string symbol)
-    {
-        if (type == "octorok" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX + 3, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX + 3, posY + 1] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol || map[posX + 3, posY + 2] == symbol))
-        {
-            return true;
-        }
-        if (type == "spider" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX + 3, posY] == symbol || map[posX + 4, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX + 3, posY + 1] == symbol || map[posX + 4, posY + 1] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol || map[posX + 3, posY + 2] == symbol || map[posX + 4, posY + 2] == symbol))
-        {
-            return true;
-        }
-        if (type == "bat" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX + 3, posY] == symbol || map[posX + 4, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX + 3, posY + 1] == symbol || map[posX + 4, posY + 1] == symbol))
-        {
-            return true;
-        }
-        if (type == "fireball" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol))
-        {
-            return true;
-        }
-        return false;
-    }
+        => (type == "octorok" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX + 3, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX + 3, posY + 1] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol || map[posX + 3, posY + 2] == symbol))
+            || ((type == "spider" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX + 3, posY] == symbol || map[posX + 4, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX + 3, posY + 1] == symbol || map[posX + 4, posY + 1] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol || map[posX + 3, posY + 2] == symbol || map[posX + 4, posY + 2] == symbol))
+            || ((type == "bat" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX + 3, posY] == symbol || map[posX + 4, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX + 3, posY + 1] == symbol || map[posX + 4, posY + 1] == symbol))
+            || (type == "fireball" && (map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol))));
 
     public int GetIndex(int posX, int posY)
     {
