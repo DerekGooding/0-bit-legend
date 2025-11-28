@@ -12,30 +12,30 @@ public class MainProgram
     protected static string[,] map = new string[102, 33];
     protected static int currentMap = 0;
 
-    private static readonly string[] strs = new string[33];
+    private static readonly string[] _strs = new string[33];
 
     public static double health = 3;
     public static int rupees = 0;
     public static int keys = 0;
-    private static int frames = 0;
+    private static int _frames = 0;
 
-    public static bool hasSword = false;
-    public static bool hasArmor = false;
-    public static bool hasRaft = false;
-    public static bool gameOver = false;
-    private static string hud = "";
+    public static bool hasSword;
+    public static bool hasArmor;
+    public static bool hasRaft;
+    public static bool gameOver;
+    private static string _hud = "";
 
-    public static bool cDoor1 = false;
-    public static bool cDoor2 = false;
-    public static bool cDoor3 = false;
-    public static bool cText = false;
+    public static bool cDoor1;
+    public static bool cDoor2;
+    public static bool cDoor3;
+    public static bool cText;
     public static int cEnemies1 = 4;
     public static int cEnemies2 = 4;
-    public static bool cDragon = false;
+    public static bool cDragon;
 
-    public static bool hit = false;
-    private static bool attacking = false;
-    private static bool start = false;
+    public static bool hit;
+    private static bool _attacking;
+    private static bool _start;
 
     public static int waitEnemies = 1;
     public static int waitDragon = 1;
@@ -68,7 +68,7 @@ public class MainProgram
         Console.Clear();
 
         string credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^  |                                               #                                           ~~~~~~ |_=_|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|  ^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|_=_|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
-        while (frames < 118)
+        while (_frames < 118)
         {
             waitEnemies--;
             waitDragon--;
@@ -92,7 +92,7 @@ public class MainProgram
                 {
                     if (i > 5 && i < 28)
                     {
-                        Console.Write("            " + hud.Split("#")[i - 6] + "            ");
+                        Console.Write("            " + _hud.Split("#")[i - 6] + "            ");
                     }
                     else
                     {
@@ -104,7 +104,7 @@ public class MainProgram
                     Console.Write("                                     ");
                 }
 
-                Console.WriteLine(strs[i]);
+                Console.WriteLine(_strs[i]);
             }
 
             Thread.Sleep(wait);
@@ -114,7 +114,7 @@ public class MainProgram
             {
                 if (!hit)
                 {
-                    if (!attacking)
+                    if (!_attacking)
                     {
                         if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
                         {
@@ -134,8 +134,8 @@ public class MainProgram
                         }
                         else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && hasSword)
                         {
-                            linkMovement.Attack(linkMovement.GetPrev(), attacking);
-                            attacking = true;
+                            linkMovement.Attack(linkMovement.GetPrev(), _attacking);
+                            _attacking = true;
                         }
 
                         if (!hit && waitEnemies <= 0)
@@ -355,7 +355,7 @@ public class MainProgram
                     }
                     else
                     {
-                        linkMovement.Attack(linkMovement.GetPrev(), attacking);
+                        linkMovement.Attack(linkMovement.GetPrev(), _attacking);
                         if (linkMovement.GetPrev() != "w" && linkMovement.GetPrev() != "a" && linkMovement.GetPrev() != "s" && linkMovement.GetPrev() != "d")
                         {
                             if (Int32.Parse(linkMovement.GetPrev()) <= 0)
@@ -384,7 +384,7 @@ public class MainProgram
                                 {
                                     LoadMap(8, 51, 20, "s");
                                 }
-                                attacking = false;
+                                _attacking = false;
                             }
                             else
                             {
@@ -411,7 +411,7 @@ public class MainProgram
                         }
                         else
                         {
-                            attacking = false;
+                            _attacking = false;
                         }
                         Thread.Sleep(100);
                     }
@@ -446,18 +446,18 @@ public class MainProgram
             }
             else if (health <= 0)
             {
-                if (frames <= 16)
+                if (_frames <= 16)
                 {
                     Thread.Sleep(50);
                     for (int i = 0; i < 102; i++)
                     {
-                        map[i, frames] = " ";
-                        map[i, 32 - frames] = " ";
+                        map[i, _frames] = " ";
+                        map[i, 32 - _frames] = " ";
                     }
-                    UpdateRow(frames);
-                    UpdateRow(32 - frames);
+                    UpdateRow(_frames);
+                    UpdateRow(32 - _frames);
 
-                    if (frames % 2 == 0)
+                    if (_frames % 2 == 0)
                     {
                         linkMovement.PlayEffect("*");
                     }
@@ -470,14 +470,14 @@ public class MainProgram
                     UpdateRow(linkMovement.GetPosY() + 1);
                     UpdateRow(linkMovement.GetPosY() + 2);
                 }
-                else if (frames == 25)
+                else if (_frames == 25)
                 {
                     for (int i = 0; i < 33; i++)
                     {
-                        strs[i] = "                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          #                         X                                                 X                          #                         X                                                 X                          #                         X                                                 X                          #                         X     Your hero fell.                             X                          #                         X                                                 X                          #                         X     Press any button to CONTINUE                X                          #                         X                                                 X                          #                         X                                                 X                          #                         X                                                 X                          #                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #".Split("#")[i];
+                        _strs[i] = "                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          #                         X                                                 X                          #                         X                                                 X                          #                         X                                                 X                          #                         X     Your hero fell.                             X                          #                         X                                                 X                          #                         X     Press any button to CONTINUE                X                          #                         X                                                 X                          #                         X                                                 X                          #                         X                                                 X                          #                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #".Split("#")[i];
                     }
                 }
-                else if (frames == 26)
+                else if (_frames == 26)
                 {
                     while (Console.KeyAvailable)
                     {
@@ -486,8 +486,8 @@ public class MainProgram
                     Console.ReadKey(true);
 
                     health = 3;
-                    frames = -1;
-                    start = false;
+                    _frames = -1;
+                    _start = false;
 
                     cEnemies1 = 4;
                     cEnemies2 = 4;
@@ -500,39 +500,39 @@ public class MainProgram
                         LoadMap(9, 50, 25, "w");
                     }
                 }
-                frames++;
+                _frames++;
             }
             else if (gameOver)
             {
                 if (hasArmor) credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^##|                                               #                                           ~~~~~~ |#=#|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|##^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|#=#|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
 
-                if (frames < 13)
+                if (_frames < 13)
                 {
                     for (int i = 0; i < 32; i++)
                     {
-                        map[frames, i] = " ";
-                        map[101 - frames, i] = " ";
+                        map[_frames, i] = " ";
+                        map[101 - _frames, i] = " ";
                     }
-                    UpdateRow(frames);
-                    UpdateRow(32 - frames);
+                    UpdateRow(_frames);
+                    UpdateRow(32 - _frames);
 
                     linkMovement.PlaceZelda();
                     linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY(), "a", false);
                 }
-                else if (frames < 30)
+                else if (_frames < 30)
                 {
                     for (int i = 0; i < 102; i++)
                     {
-                        map[i, frames - 13] = " ";
-                        map[i, 45 - frames] = " ";
+                        map[i, _frames - 13] = " ";
+                        map[i, 45 - _frames] = " ";
                     }
-                    UpdateRow(frames - 13);
-                    UpdateRow(45 - frames);
+                    UpdateRow(_frames - 13);
+                    UpdateRow(45 - _frames);
 
                     linkMovement.PlaceZelda();
                     linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY(), "a", false);
                 }
-                else if (frames == 30)
+                else if (_frames == 30)
                 {
                     int count = 0;
                     for (int i = 0; i < 7; i++)
@@ -543,37 +543,37 @@ public class MainProgram
                             row += credits[count];
                             count++;
                         }
-                        strs[i + 11] = row.ToString();
+                        _strs[i + 11] = row.ToString();
 
                         count++;
                     }
                 }
-                else if (frames > 30 && frames < 111)
+                else if (_frames > 30 && _frames < 111)
                 {
-                    if (frames == 31) Thread.Sleep(3500);
+                    if (_frames == 31) Thread.Sleep(3500);
                     for (int i = 0; i < 31; i++)
                     {
-                        strs[i] = strs[i + 1];
+                        _strs[i] = _strs[i + 1];
                     }
 
                     string row = "";
                     for (int i = 0; i < 102; i++)
                     {
-                        row += credits[103 * (frames - 18) + i];
+                        row += credits[103 * (_frames - 18) + i];
                     }
-                    strs[31] = row;
+                    _strs[31] = row;
                     Thread.Sleep(600);
                 }
-                else if (frames >= 111 && frames < 117)
+                else if (_frames >= 111 && _frames < 117)
                 {
                     for (int i = 0; i < 31; i++)
                     {
-                        strs[i] = strs[i + 1];
+                        _strs[i] = _strs[i + 1];
                     }
-                    strs[31] = "                                                                                                     ";
+                    _strs[31] = "                                                                                                     ";
                     Thread.Sleep(600);
                 }
-                frames++;
+                _frames++;
             }
 
             // Frame Rate: ~ 12 FPS
@@ -678,7 +678,7 @@ public class MainProgram
         // Load the map
         for (int i = 0; i < 33; i++)
         {
-            strs[i] = "";
+            _strs[i] = "";
             for (int j = 0; j < 102; j++)
             {
                 if (map0[val].ToString() != "#")
@@ -740,7 +740,7 @@ public class MainProgram
                         map[j, i] = map13[val].ToString();
                     }
 
-                    strs[i] += map[j, i];
+                    _strs[i] += map[j, i];
                 }
                 else
                 {
@@ -750,7 +750,7 @@ public class MainProgram
             }
         }
 
-        if (mapNum == 0 && !start)
+        if (mapNum == 0 && !_start)
         {
             string skippedLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
@@ -863,12 +863,12 @@ public class MainProgram
             wait = 750;
         }
 
-        start = true;
+        _start = true;
     }
 
     public static void Wait(int time)
     {
-        attacking = true;
+        _attacking = true;
         linkMovement.SetPrev(time.ToString());
     }
 
@@ -879,7 +879,7 @@ public class MainProgram
         {
             line += map[x, row];
         }
-        strs[row] = line;
+        _strs[row] = line;
         //Console.SetCursorPosition(37, row);
         //Console.Write(line);
         //Console.SetCursorPosition(0, 0);
@@ -888,34 +888,34 @@ public class MainProgram
     public static void UpdateHud()
     {
         //oldHud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X       MAIN ITEM:        X#X                         X#X           S             X#X           S             X#X         - - -           X#X           -             X#X  ---------------------  X#X                         X#X      RUPEES:   {rupees.ToString().PadRight(4)}     X#X                         X#X      KEYS:     {keys.ToString().PadRight(4)}     X#X                         X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
-        hud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X                         X#X    r                    X#X   RRR          {rupees.ToString().PadRight(4)}     X#X    r                    X#X                         X#X  =======       {keys.ToString().PadRight(4)}     X#X  ==  = =                X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
+        _hud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X                         X#X    r                    X#X   RRR          {rupees.ToString().PadRight(4)}     X#X    r                    X#X                         X#X  =======       {keys.ToString().PadRight(4)}     X#X  ==  = =                X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
         if (health > 2.5)
         {
-            hud = hud.Substring(0, 196) + "X       <3  <3  <3        X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X       <3  <3  <3        X#" + _hud.Substring(224);
         }
         else if (health > 2)
         {
-            hud = hud.Substring(0, 196) + "X       <3  <3  =         X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X       <3  <3  =         X#" + _hud.Substring(224);
         }
         else if (health > 1.5)
         {
-            hud = hud.Substring(0, 196) + "X       <3  <3            X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X       <3  <3            X#" + _hud.Substring(224);
         }
         else if (health > 1)
         {
-            hud = hud.Substring(0, 196) + "X       <3  =             X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X       <3  =             X#" + _hud.Substring(224);
         }
         else if (health > 0.5)
         {
-            hud = hud.Substring(0, 196) + "X       <3                X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X       <3                X#" + _hud.Substring(224);
         }
         else if (health > 0)
         {
-            hud = hud.Substring(0, 196) + "X       =                 X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X       =                 X#" + _hud.Substring(224);
         }
         else
         {
-            hud = hud.Substring(0, 196) + "X                         X#" + hud.Substring(224);
+            _hud = _hud.Substring(0, 196) + "X                         X#" + _hud.Substring(224);
         }
     }
 
