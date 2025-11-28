@@ -2,13 +2,13 @@ using System.Runtime.InteropServices;
 
 namespace _0_Bit_Legend;
 
-public class MainProgram
+public static class MainProgram
 {
-    protected static LinkMovement linkMovement = new();
-    protected static EnemyMovement enemyMovement = new();
+    public static LinkMovement LinkMovement { get; } = new();
+    public static EnemyMovement EnemyMovement { get; } = new();
 
-    protected static string[,] map = new string[102, 33];
-    protected static int currentMap = 0;
+    public static string[,] Map { get; } = new string[102, 33];
+    public static int CurrentMap { get; set; } = 0;
 
     private static readonly string[] _strs = new string[33];
 
@@ -116,53 +116,53 @@ public class MainProgram
                     {
                         if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
                         {
-                            linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY() - 1, "w", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, "w", false);
                         }
                         else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
                         {
-                            linkMovement.MoveLink(linkMovement.GetPosX() - 2, linkMovement.GetPosY(), "a", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), "a", false);
                         }
                         else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
                         {
-                            linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY() + 1, "s", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, "s", false);
                         }
                         else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
                         {
-                            linkMovement.MoveLink(linkMovement.GetPosX() + 2, linkMovement.GetPosY(), "d", false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), "d", false);
                         }
                         else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && hasSword)
                         {
-                            linkMovement.Attack(linkMovement.GetPrev(), _attacking);
+                            LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
                             _attacking = true;
                         }
 
                         if (!hit && waitEnemies <= 0)
                         {
                             waitEnemies = 2;
-                            for (var i = 0; i < enemyMovement.GetTotal(); i++)
+                            for (var i = 0; i < EnemyMovement.GetTotal(); i++)
                             {
                                 var passed = false;
                                 var rnd1 = Random.Shared.Next(10);
 
-                                if (enemyMovement.GetEnemyType(i) == "octorok")
+                                if (EnemyMovement.GetEnemyType(i) == "octorok")
                                 {
                                     if (rnd1 > 2)
                                     {
-                                        if (enemyMovement.GetPrev1(i) == "w")
+                                        if (EnemyMovement.GetPrev1(i) == "w")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) - 1, "w", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) - 1, "w", -1, false);
                                         }
-                                        else if (enemyMovement.GetPrev1(i) == "a")
+                                        else if (EnemyMovement.GetPrev1(i) == "a")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i), "a", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i), "a", -1, false);
                                         }
-                                        else if (enemyMovement.GetPrev1(i) == "s")
+                                        else if (EnemyMovement.GetPrev1(i) == "s")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) + 1, "s", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) + 1, "s", -1, false);
                                         }
-                                        else if (enemyMovement.GetPrev1(i) == "d")
+                                        else if (EnemyMovement.GetPrev1(i) == "d")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i), "d", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i), "d", -1, false);
                                         }
                                     }
                                     else
@@ -175,44 +175,44 @@ public class MainProgram
                                         var rnd2 = Random.Shared.Next(4) + 1;
                                         if (rnd2 == 1)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) - 1, "w", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) - 1, "w", -1, false);
                                         }
                                         else if (rnd2 == 2)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i), "a", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i), "a", -1, false);
                                         }
                                         else if (rnd2 == 3)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) + 1, "s", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) + 1, "s", -1, false);
                                         }
                                         else if (rnd2 == 4)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i), "d", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i), "d", -1, false);
                                         }
                                     }
                                 }
-                                else if (enemyMovement.GetEnemyType(i) == "spider")
+                                else if (EnemyMovement.GetEnemyType(i) == "spider")
                                 {
-                                    enemyMovement.SetMotion(i, enemyMovement.GetMotion(i) - 1);
-                                    if (enemyMovement.GetMotion(i) > 0)
+                                    EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
+                                    if (EnemyMovement.GetMotion(i) > 0)
                                     {
                                         if (rnd1 > 2)
                                         {
-                                            if (enemyMovement.GetPrev1(i) == "w")
+                                            if (EnemyMovement.GetPrev1(i) == "w")
                                             {
-                                                passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) - 1, "w", -1, false);
+                                                passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) - 1, "w", -1, false);
                                             }
-                                            else if (enemyMovement.GetPrev1(i) == "a")
+                                            else if (EnemyMovement.GetPrev1(i) == "a")
                                             {
-                                                passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) - 1, "a", -1, false);
+                                                passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) - 1, "a", -1, false);
                                             }
-                                            else if (enemyMovement.GetPrev1(i) == "s")
+                                            else if (EnemyMovement.GetPrev1(i) == "s")
                                             {
-                                                passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) + 1, "s", -1, false);
+                                                passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) + 1, "s", -1, false);
                                             }
-                                            else if (enemyMovement.GetPrev1(i) == "d")
+                                            else if (EnemyMovement.GetPrev1(i) == "d")
                                             {
-                                                passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) + 1, "d", -1, false);
+                                                passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) + 1, "d", -1, false);
                                             }
                                         }
                                         else
@@ -225,46 +225,46 @@ public class MainProgram
                                             var rnd2 = Random.Shared.Next(4) + 1;
                                             if (rnd2 == 1)
                                             {
-                                                enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) - 1, "w", -1, false);
+                                                EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) - 1, "w", -1, false);
                                             }
                                             else if (rnd2 == 2)
                                             {
-                                                enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) - 1, "a", -1, false);
+                                                EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) - 1, "a", -1, false);
                                             }
                                             else if (rnd2 == 3)
                                             {
-                                                enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) + 1, "s", -1, false);
+                                                EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) + 1, "s", -1, false);
                                             }
                                             else if (rnd2 == 4)
                                             {
-                                                enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) + 1, "d", -1, false);
+                                                EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) + 1, "d", -1, false);
                                             }
                                         }
                                     }
-                                    else if (enemyMovement.GetMotion(i) <= -5)
+                                    else if (EnemyMovement.GetMotion(i) <= -5)
                                     {
-                                        enemyMovement.SetMotion(i, 10);
+                                        EnemyMovement.SetMotion(i, 10);
                                     }
                                 }
-                                else if (enemyMovement.GetEnemyType(i) == "bat")
+                                else if (EnemyMovement.GetEnemyType(i) == "bat")
                                 {
                                     if (rnd1 > 4)
                                     {
-                                        if (enemyMovement.GetPrev1(i) == "w")
+                                        if (EnemyMovement.GetPrev1(i) == "w")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) - 1, "w", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) - 1, "w", -1, false);
                                         }
-                                        else if (enemyMovement.GetPrev1(i) == "a")
+                                        else if (EnemyMovement.GetPrev1(i) == "a")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) - 1, "a", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) - 1, "a", -1, false);
                                         }
-                                        else if (enemyMovement.GetPrev1(i) == "s")
+                                        else if (EnemyMovement.GetPrev1(i) == "s")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) + 1, "s", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) + 1, "s", -1, false);
                                         }
-                                        else if (enemyMovement.GetPrev1(i) == "d")
+                                        else if (EnemyMovement.GetPrev1(i) == "d")
                                         {
-                                            passed = !enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) + 1, "d", -1, false);
+                                            passed = !EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) + 1, "d", -1, false);
                                         }
                                     }
                                     else
@@ -277,75 +277,75 @@ public class MainProgram
                                         var rnd2 = Random.Shared.Next(4) + 1;
                                         if (rnd2 == 1)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) - 1, "w", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) - 1, "w", -1, false);
                                         }
                                         else if (rnd2 == 2)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) - 1, "a", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) - 1, "a", -1, false);
                                         }
                                         else if (rnd2 == 3)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 2, enemyMovement.GetPosY(i) + 1, "s", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 2, EnemyMovement.GetPosY(i) + 1, "s", -1, false);
                                         }
                                         else if (rnd2 == 4)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) + 2, enemyMovement.GetPosY(i) + 1, "d", -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) + 2, EnemyMovement.GetPosY(i) + 1, "d", -1, false);
                                         }
                                     }
                                 }
-                                else if (enemyMovement.GetEnemyType(i) == "dragon" && waitDragon <= 0)
+                                else if (EnemyMovement.GetEnemyType(i) == "dragon" && waitDragon <= 0)
                                 {
                                     waitDragon = 4;
-                                    enemyMovement.SetMotion(i, enemyMovement.GetMotion(i) - 1);
+                                    EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
 
                                     var phase = "a";
                                     var speed = 1;
-                                    if (enemyMovement.GetMotion(i) <= 1)
+                                    if (EnemyMovement.GetMotion(i) <= 1)
                                     {
                                         phase = "d";
                                         speed = 0;
-                                        if (enemyMovement.GetMotion(i) <= 0)
+                                        if (EnemyMovement.GetMotion(i) <= 0)
                                         {
-                                            enemyMovement.Move(-1, "fireball", enemyMovement.GetPosX(i) - 3, enemyMovement.GetPosY(i) + 3, "w", -1, true);
-                                            enemyMovement.Move(-1, "fireball", enemyMovement.GetPosX(i) - 3, enemyMovement.GetPosY(i) + 1, "a", -1, true);
-                                            enemyMovement.Move(-1, "fireball", enemyMovement.GetPosX(i) - 3, enemyMovement.GetPosY(i) - 1, "s", -1, true);
-                                            enemyMovement.SetMotion(i, 12);
+                                            EnemyMovement.Move(-1, "fireball", EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 3, "w", -1, true);
+                                            EnemyMovement.Move(-1, "fireball", EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 1, "a", -1, true);
+                                            EnemyMovement.Move(-1, "fireball", EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) - 1, "s", -1, true);
+                                            EnemyMovement.SetMotion(i, 12);
                                         }
                                     }
 
-                                    if (enemyMovement.GetPosY(i) <= 7)
+                                    if (EnemyMovement.GetPosY(i) <= 7)
                                     {
-                                        enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) + speed, phase, -1, false);
+                                        EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) + speed, phase, -1, false);
                                     }
-                                    else if (enemyMovement.GetPosY(i) >= 19)
+                                    else if (EnemyMovement.GetPosY(i) >= 19)
                                     {
-                                        enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) - speed, phase, -1, false);
+                                        EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) - speed, phase, -1, false);
                                     }
                                     else
                                     {
                                         if (rnd1 <= 4)
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) + speed, phase, -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) + speed, phase, -1, false);
                                         }
                                         else
                                         {
-                                            enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i), enemyMovement.GetPosY(i) - speed, phase, -1, false);
+                                            EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i), EnemyMovement.GetPosY(i) - speed, phase, -1, false);
                                         }
                                     }
                                 }
-                                else if (enemyMovement.GetEnemyType(i) == "fireball")
+                                else if (EnemyMovement.GetEnemyType(i) == "fireball")
                                 {
-                                    if (enemyMovement.GetPrev1(i) == "w")
+                                    if (EnemyMovement.GetPrev1(i) == "w")
                                     {
-                                        enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 3, enemyMovement.GetPosY(i) - 2, "w", -1, false);
+                                        EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) - 2, "w", -1, false);
                                     }
-                                    else if (enemyMovement.GetPrev1(i) == "a")
+                                    else if (EnemyMovement.GetPrev1(i) == "a")
                                     {
-                                        enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 3, enemyMovement.GetPosY(i), "a", -1, false);
+                                        EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i), "a", -1, false);
                                     }
-                                    else if (enemyMovement.GetPrev1(i) == "s")
+                                    else if (EnemyMovement.GetPrev1(i) == "s")
                                     {
-                                        enemyMovement.Move(i, enemyMovement.GetEnemyType(i), enemyMovement.GetPosX(i) - 3, enemyMovement.GetPosY(i) + 2, "s", -1, false);
+                                        EnemyMovement.Move(i, EnemyMovement.GetEnemyType(i), EnemyMovement.GetPosX(i) - 3, EnemyMovement.GetPosY(i) + 2, "s", -1, false);
                                     }
                                 }
                             }
@@ -353,32 +353,32 @@ public class MainProgram
                     }
                     else
                     {
-                        linkMovement.Attack(linkMovement.GetPrev(), _attacking);
-                        if (linkMovement.GetPrev() != "w" && linkMovement.GetPrev() != "a" && linkMovement.GetPrev() != "s" && linkMovement.GetPrev() != "d")
+                        LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
+                        if (LinkMovement.GetPrev() != "w" && LinkMovement.GetPrev() != "a" && LinkMovement.GetPrev() != "s" && LinkMovement.GetPrev() != "d")
                         {
-                            if (int.Parse(linkMovement.GetPrev()) <= 0)
+                            if (int.Parse(LinkMovement.GetPrev()) <= 0)
                             {
-                                if (currentMap == 0)
+                                if (CurrentMap == 0)
                                 {
                                     LoadMap(6, 50, 29, "w");
                                 }
-                                else if (currentMap == 4)
+                                else if (CurrentMap == 4)
                                 {
                                     LoadMap(7, 50, 30, "w");
                                 }
-                                else if (currentMap == 8)
+                                else if (CurrentMap == 8)
                                 {
                                     LoadMap(9, 50, 30, "w");
                                 }
-                                else if (currentMap == 6)
+                                else if (CurrentMap == 6)
                                 {
                                     LoadMap(0, 16, 9, "s");
                                 }
-                                else if (currentMap == 7)
+                                else if (CurrentMap == 7)
                                 {
                                     LoadMap(4, 86, 10, "s");
                                 }
-                                else if (currentMap == 9)
+                                else if (CurrentMap == 9)
                                 {
                                     LoadMap(8, 51, 20, "s");
                                 }
@@ -386,24 +386,24 @@ public class MainProgram
                             }
                             else
                             {
-                                if (currentMap is 0 or 4 or 8)
+                                if (CurrentMap is 0 or 4 or 8)
                                 {
-                                    linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY() - 1, "w", false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, "w", false);
                                     Thread.Sleep(50);
                                 }
-                                else if (currentMap is 6 or 7 or 9)
+                                else if (CurrentMap is 6 or 7 or 9)
                                 {
-                                    linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY() + 1, "s", false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, "s", false);
                                     Thread.Sleep(50);
                                 }
 
-                                if (linkMovement.GetPrev() == "w" || linkMovement.GetPrev() == "s")
+                                if (LinkMovement.GetPrev() == "w" || LinkMovement.GetPrev() == "s")
                                 {
-                                    linkMovement.SetPrev("0");
+                                    LinkMovement.SetPrev("0");
                                 }
                                 else
                                 {
-                                    linkMovement.SetPrev((Int32.Parse(linkMovement.GetPrev()) - 1).ToString());
+                                    LinkMovement.SetPrev((Int32.Parse(LinkMovement.GetPrev()) - 1).ToString());
                                 }
                             }
                         }
@@ -422,24 +422,24 @@ public class MainProgram
                     var x = 0;
                     var y = 0;
 
-                    if (linkMovement.GetPrev() == "w" && linkMovement.GetPosY() < 27)
+                    if (LinkMovement.GetPrev() == "w" && LinkMovement.GetPosY() < 27)
                     {
                         y = 3;
                     }
-                    else if (linkMovement.GetPrev() == "a" && linkMovement.GetPosX() < 94)
+                    else if (LinkMovement.GetPrev() == "a" && LinkMovement.GetPosX() < 94)
                     {
                         x = 6;
                     }
-                    else if (linkMovement.GetPrev() == "s" && linkMovement.GetPosY() > 3)
+                    else if (LinkMovement.GetPrev() == "s" && LinkMovement.GetPosY() > 3)
                     {
                         y = -3;
                     }
-                    else if (linkMovement.GetPrev() == "d" && linkMovement.GetPosX() > 7)
+                    else if (LinkMovement.GetPrev() == "d" && LinkMovement.GetPosX() > 7)
                     {
                         x = -6;
                     }
 
-                    linkMovement.MoveLink(linkMovement.GetPosX() + x, linkMovement.GetPosY() + y, linkMovement.GetPrev(), false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX() + x, LinkMovement.GetPosY() + y, LinkMovement.GetPrev(), false);
                 }
             }
             else if (health <= 0)
@@ -449,24 +449,24 @@ public class MainProgram
                     Thread.Sleep(50);
                     for (var i = 0; i < 102; i++)
                     {
-                        map[i, _frames] = " ";
-                        map[i, 32 - _frames] = " ";
+                        Map[i, _frames] = " ";
+                        Map[i, 32 - _frames] = " ";
                     }
                     UpdateRow(_frames);
                     UpdateRow(32 - _frames);
 
                     if (_frames % 2 == 0)
                     {
-                        linkMovement.PlayEffect("*");
+                        LinkMovement.PlayEffect("*");
                     }
                     else
                     {
-                        linkMovement.PlayEffect("+");
+                        LinkMovement.PlayEffect("+");
                     }
-                    UpdateRow(linkMovement.GetPosY() - 1);
-                    UpdateRow(linkMovement.GetPosY());
-                    UpdateRow(linkMovement.GetPosY() + 1);
-                    UpdateRow(linkMovement.GetPosY() + 2);
+                    UpdateRow(LinkMovement.GetPosY() - 1);
+                    UpdateRow(LinkMovement.GetPosY());
+                    UpdateRow(LinkMovement.GetPosY() + 1);
+                    UpdateRow(LinkMovement.GetPosY() + 2);
                 }
                 else if (_frames == 25)
                 {
@@ -490,7 +490,7 @@ public class MainProgram
                     cEnemies1 = 4;
                     cEnemies2 = 4;
 
-                    if (currentMap <= 8)
+                    if (CurrentMap <= 8)
                     {
                         LoadMap(0, 52, 15, "w");
                     } else
@@ -508,27 +508,27 @@ public class MainProgram
                 {
                     for (var i = 0; i < 32; i++)
                     {
-                        map[_frames, i] = " ";
-                        map[101 - _frames, i] = " ";
+                        Map[_frames, i] = " ";
+                        Map[101 - _frames, i] = " ";
                     }
                     UpdateRow(_frames);
                     UpdateRow(32 - _frames);
 
-                    linkMovement.PlaceZelda();
-                    linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY(), "a", false);
+                    LinkMovement.PlaceZelda();
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), "a", false);
                 }
                 else if (_frames < 30)
                 {
                     for (var i = 0; i < 102; i++)
                     {
-                        map[i, _frames - 13] = " ";
-                        map[i, 45 - _frames] = " ";
+                        Map[i, _frames - 13] = " ";
+                        Map[i, 45 - _frames] = " ";
                     }
                     UpdateRow(_frames - 13);
                     UpdateRow(45 - _frames);
 
-                    linkMovement.PlaceZelda();
-                    linkMovement.MoveLink(linkMovement.GetPosX(), linkMovement.GetPosY(), "a", false);
+                    LinkMovement.PlaceZelda();
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), "a", false);
                 }
                 else if (_frames == 30)
                 {
@@ -619,7 +619,7 @@ public class MainProgram
         {
             map7 = $"{map7.AsSpan(0, 1751)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                  =======                                     =XXXXXXXXXX=#=XXXXXXXXXX=                                  ==  = =                                     =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#{map7.AsSpan(2163)}";
         }
-        else if (mapNum == 9 && currentMap == 8)
+        else if (mapNum == 9 && CurrentMap == 8)
         {
             lCText = true;
             map9 = $"{map9.AsSpan(0, 1133)}=//////////=                                                                              =//////////=#=//////////=                                                                              =//////////=#=/////                       ||  TILL'  YOUR  FOES  ARE  BUT  HITHER,  ||                       /////=#=//  =======                 ||        SEALED  THE  PORTAL  IS.        ||                 =======  //=#=//=========                                                                              =========//=#=//== O>  ==                                                                              ==  <O ==//=#=//=========                                                                              =========//=#=//  =======                                                                              =======  //=#=/////                                                                                           ////=#=//////////=                                                                              =//////////=#=//////////=                                                                              =//////////=#{map9.AsSpan(2266)}";
@@ -665,12 +665,12 @@ public class MainProgram
 
         if (!(posX == 16 && posY == 6) && !(posX == 86 && posY == 7) && !(posX == 51 && posY == 17))
         {
-            currentMap = mapNum;
+            CurrentMap = mapNum;
         }
 
-        while (enemyMovement.GetTotal() != 0)
+        while (EnemyMovement.GetTotal() != 0)
         {
-            enemyMovement.Remove(0, enemyMovement.GetEnemyType(0));
+            EnemyMovement.Remove(0, EnemyMovement.GetEnemyType(0));
         }
 
         // Load the map
@@ -683,62 +683,62 @@ public class MainProgram
                 {
                     if (mapNum == 0)
                     {
-                        map[j, i] = map0[val].ToString();
+                        Map[j, i] = map0[val].ToString();
                     }
                     else if (mapNum == 1)
                     {
-                        map[j, i] = map1[val].ToString();
+                        Map[j, i] = map1[val].ToString();
                     }
                     else if (mapNum == 2)
                     {
-                        map[j, i] = map2[val].ToString();
+                        Map[j, i] = map2[val].ToString();
                     }
                     else if (mapNum == 3)
                     {
-                        map[j, i] = map3[val].ToString();
+                        Map[j, i] = map3[val].ToString();
                     }
                     else if (mapNum == 4)
                     {
-                        map[j, i] = map4[val].ToString();
+                        Map[j, i] = map4[val].ToString();
                     }
                     else if (mapNum == 5)
                     {
-                        map[j, i] = map5[val].ToString();
+                        Map[j, i] = map5[val].ToString();
                     }
                     else if (mapNum == 6)
                     {
-                        map[j, i] = map6[val].ToString();
+                        Map[j, i] = map6[val].ToString();
                     }
                     else if (mapNum == 7)
                     {
-                        map[j, i] = map7[val].ToString();
+                        Map[j, i] = map7[val].ToString();
                     }
                     else if (mapNum == 8)
                     {
-                        map[j, i] = map8[val].ToString();
+                        Map[j, i] = map8[val].ToString();
                     }
                     else if (mapNum == 9)
                     {
-                        map[j, i] = map9[val].ToString();
+                        Map[j, i] = map9[val].ToString();
                     }
                     else if (mapNum == 10)
                     {
-                        map[j, i] = map10[val].ToString();
+                        Map[j, i] = map10[val].ToString();
                     }
                     else if (mapNum == 11)
                     {
-                        map[j, i] = map11[val].ToString();
+                        Map[j, i] = map11[val].ToString();
                     }
                     else if (mapNum == 12)
                     {
-                        map[j, i] = map12[val].ToString();
+                        Map[j, i] = map12[val].ToString();
                     }
                     else if (mapNum == 13)
                     {
-                        map[j, i] = map13[val].ToString();
+                        Map[j, i] = map13[val].ToString();
                     }
 
-                    _strs[i] += map[j, i];
+                    _strs[i] += Map[j, i];
                 }
                 else
                 {
@@ -769,30 +769,30 @@ public class MainProgram
 
         if (mapNum == 1)
         {
-            enemyMovement.Move(-1, "octorok", 75, 13, "a", -1, true);
-            enemyMovement.Move(-1, "octorok", 9, 12, "d", -1, true);
-            enemyMovement.Move(-1, "octorok", 23, 26, "a", -1, true);
+            EnemyMovement.Move(-1, "octorok", 75, 13, "a", -1, true);
+            EnemyMovement.Move(-1, "octorok", 9, 12, "d", -1, true);
+            EnemyMovement.Move(-1, "octorok", 23, 26, "a", -1, true);
         }
         else if (mapNum == 2)
         {
-            enemyMovement.Move(-1, "octorok", 59, 23, "d", -1, true);
-            enemyMovement.Move(-1, "spider", 76, 6, "a", 5, true);
+            EnemyMovement.Move(-1, "octorok", 59, 23, "d", -1, true);
+            EnemyMovement.Move(-1, "spider", 76, 6, "a", 5, true);
         }
         else if (mapNum == 3)
         {
-            enemyMovement.Move(-1, "spider", 44, 25, "a", 6, true);
-            enemyMovement.Move(-1, "octorok", 38, 14, "d", -1, true);
-            enemyMovement.Move(-1, "octorok", 83, 9, "a", -1, true);
+            EnemyMovement.Move(-1, "spider", 44, 25, "a", 6, true);
+            EnemyMovement.Move(-1, "octorok", 38, 14, "d", -1, true);
+            EnemyMovement.Move(-1, "octorok", 83, 9, "a", -1, true);
         }
         else if (mapNum == 4)
         {
-            enemyMovement.Move(-1, "octorok", 35, 23, "a", -1, true);
-            enemyMovement.Move(-1, "octorok", 69, 6, "a", -1, true);
+            EnemyMovement.Move(-1, "octorok", 35, 23, "a", -1, true);
+            EnemyMovement.Move(-1, "octorok", 69, 6, "a", -1, true);
         }
         else if (mapNum == 5)
         {
-            enemyMovement.Move(-1, "spider", 81, 9, "a", 4, true);
-            enemyMovement.Move(-1, "spider", 32, 5, "d", 6, true);
+            EnemyMovement.Move(-1, "spider", 81, 9, "a", 4, true);
+            EnemyMovement.Move(-1, "spider", 32, 5, "d", 6, true);
         }
         else if (mapNum == 8)
         {
@@ -804,54 +804,54 @@ public class MainProgram
         {
             if (cEnemies1 >= 1)
             {
-                enemyMovement.Move(-1, "bat", 70, 11, "a", -1, true);
+                EnemyMovement.Move(-1, "bat", 70, 11, "a", -1, true);
             }
             if (cEnemies1 >= 2)
             {
-                enemyMovement.Move(-1, "bat", 32, 9, "d", -1, true);
+                EnemyMovement.Move(-1, "bat", 32, 9, "d", -1, true);
             }
             if (cEnemies1 >= 3)
             {
-                enemyMovement.Move(-1, "bat", 53, 15, "a", -1, true);
+                EnemyMovement.Move(-1, "bat", 53, 15, "a", -1, true);
             }
             if (cEnemies1 >= 4)
             {
-                enemyMovement.Move(-1, "bat", 20, 20, "d", -1, true);
+                EnemyMovement.Move(-1, "bat", 20, 20, "d", -1, true);
             }
         }
         else if (mapNum == 11)
         {
             if (cEnemies2 >= 1)
             {
-                enemyMovement.Move(-1, "bat", 27, 9, "a", -1, true);
+                EnemyMovement.Move(-1, "bat", 27, 9, "a", -1, true);
             }
             if (cEnemies2 >= 2)
             {
-                enemyMovement.Move(-1, "bat", 56, 20, "d", -1, true);
+                EnemyMovement.Move(-1, "bat", 56, 20, "d", -1, true);
             }
             if (cEnemies2 >= 3)
             {
-                enemyMovement.Move(-1, "bat", 73, 15, "a", -1, true);
+                EnemyMovement.Move(-1, "bat", 73, 15, "a", -1, true);
             }
             if (cEnemies2 >= 4)
             {
-                enemyMovement.Move(-1, "bat", 18, 11, "d", -1, true);
+                EnemyMovement.Move(-1, "bat", 18, 11, "d", -1, true);
             }
         }
         else if (mapNum == 12)
         {
-            if (!cDragon) enemyMovement.Move(-1, "dragon", 71, 13, "a", 12, true);
+            if (!cDragon) EnemyMovement.Move(-1, "dragon", 71, 13, "a", 12, true);
         }
 
-        if ((currentMap == 2 || currentMap == 4) && posX == 21)
+        if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
         {
-            linkMovement.SetPosX(posX);
-            linkMovement.SetPosY(posY);
-            linkMovement.DeployRaft(linkMovement.GetPrev2());
+            LinkMovement.SetPosX(posX);
+            LinkMovement.SetPosY(posY);
+            LinkMovement.DeployRaft(LinkMovement.GetPrev2());
         }
         else
         {
-            linkMovement.MoveLink(posX, posY, direction, true);
+            LinkMovement.MoveLink(posX, posY, direction, true);
         }
 
         if (lCText)
@@ -867,7 +867,7 @@ public class MainProgram
     public static void Wait(int time)
     {
         _attacking = true;
-        linkMovement.SetPrev(time.ToString());
+        LinkMovement.SetPrev(time.ToString());
     }
 
     public static void UpdateRow(int row)
@@ -875,7 +875,7 @@ public class MainProgram
         var line = "";
         for (var x = 0; x < 102; x++)
         {
-            line += map[x, row];
+            line += Map[x, row];
         }
         _strs[row] = line;
         //Console.SetCursorPosition(37, row);

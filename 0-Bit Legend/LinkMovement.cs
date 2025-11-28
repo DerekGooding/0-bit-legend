@@ -1,6 +1,8 @@
+using static _0_Bit_Legend.MainProgram;
+
 namespace _0_Bit_Legend;
 
-public class LinkMovement : MainProgram
+public class LinkMovement
 {
     private int _posX;
     private int _posY;
@@ -35,28 +37,28 @@ public class LinkMovement : MainProgram
         {
             if (!attacking)
             {
-                _storage_sword[0] = map[_posX - 1, _posY - 2];
-                _storage_sword[1] = map[_posX, _posY - 2];
-                _storage_sword[2] = map[_posX + 1, _posY - 2];
-                _storage_sword[3] = map[_posX, _posY - 3];
-                _storage_sword[4] = map[_posX, _posY - 4];
+                _storage_sword[0] = Map[_posX - 1, _posY - 2];
+                _storage_sword[1] = Map[_posX, _posY - 2];
+                _storage_sword[2] = Map[_posX + 1, _posY - 2];
+                _storage_sword[3] = Map[_posX, _posY - 3];
+                _storage_sword[4] = Map[_posX, _posY - 4];
 
-                map[_posX - 1, _posY - 2] = "-";
-                map[_posX, _posY - 2] = "-";
-                map[_posX + 1, _posY - 2] = "-";
-                map[_posX, _posY - 3] = "S";
-                map[_posX, _posY - 4] = "S";
+                Map[_posX - 1, _posY - 2] = "-";
+                Map[_posX, _posY - 2] = "-";
+                Map[_posX + 1, _posY - 2] = "-";
+                Map[_posX, _posY - 3] = "S";
+                Map[_posX, _posY - 4] = "S";
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
             }
             else
             {
-                _storage_detect_enemy[0] = map[_preHitPosX - 1, _preHitPosY - 2];
-                _storage_detect_enemy[1] = map[_preHitPosX, _preHitPosY - 2];
-                _storage_detect_enemy[2] = map[_preHitPosX + 1, _preHitPosY - 2];
-                _storage_detect_enemy[3] = map[_preHitPosX, _preHitPosY - 3];
-                _storage_detect_enemy[4] = map[_preHitPosX, _preHitPosY - 4];
+                _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY - 2];
+                _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY - 2];
+                _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY - 2];
+                _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY - 3];
+                _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY - 4];
 
                 var swordArr = new int[2, 5];
                 swordArr[0, 0] = _preHitPosX - 1;
@@ -81,31 +83,31 @@ public class LinkMovement : MainProgram
         {
             if (!attacking)
             {
-                _storage_sword[0] = map[_posX - 3, _posY];
-                _storage_sword[1] = map[_posX - 3, _posY + 1];
-                _storage_sword[2] = map[_posX - 3, _posY + 2];
-                _storage_sword[3] = map[_posX - 4, _posY + 1];
-                _storage_sword[4] = map[_posX - 5, _posY + 1];
-                _storage_sword[5] = map[_posX - 6, _posY + 1];
+                _storage_sword[0] = Map[_posX - 3, _posY];
+                _storage_sword[1] = Map[_posX - 3, _posY + 1];
+                _storage_sword[2] = Map[_posX - 3, _posY + 2];
+                _storage_sword[3] = Map[_posX - 4, _posY + 1];
+                _storage_sword[4] = Map[_posX - 5, _posY + 1];
+                _storage_sword[5] = Map[_posX - 6, _posY + 1];
 
-                map[_posX - 3, _posY] = "-";
-                map[_posX - 3, _posY + 1] = "-";
-                map[_posX - 3, _posY + 2] = "-";
-                map[_posX - 4, _posY + 1] = "S";
-                map[_posX - 5, _posY + 1] = "S";
-                map[_posX - 6, _posY + 1] = "S";
+                Map[_posX - 3, _posY] = "-";
+                Map[_posX - 3, _posY + 1] = "-";
+                Map[_posX - 3, _posY + 2] = "-";
+                Map[_posX - 4, _posY + 1] = "S";
+                Map[_posX - 5, _posY + 1] = "S";
+                Map[_posX - 6, _posY + 1] = "S";
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
             }
             else
             {
-                _storage_detect_enemy[0] = map[_preHitPosX - 3, _preHitPosY];
-                _storage_detect_enemy[1] = map[_preHitPosX - 3, _preHitPosY + 1];
-                _storage_detect_enemy[2] = map[_preHitPosX - 3, _preHitPosY + 2];
-                _storage_detect_enemy[3] = map[_preHitPosX - 4, _preHitPosY + 1];
-                _storage_detect_enemy[4] = map[_preHitPosX - 5, _preHitPosY + 1];
-                _storage_detect_enemy[5] = map[_preHitPosX - 6, _preHitPosY + 1];
+                _storage_detect_enemy[0] = Map[_preHitPosX - 3, _preHitPosY];
+                _storage_detect_enemy[1] = Map[_preHitPosX - 3, _preHitPosY + 1];
+                _storage_detect_enemy[2] = Map[_preHitPosX - 3, _preHitPosY + 2];
+                _storage_detect_enemy[3] = Map[_preHitPosX - 4, _preHitPosY + 1];
+                _storage_detect_enemy[4] = Map[_preHitPosX - 5, _preHitPosY + 1];
+                _storage_detect_enemy[5] = Map[_preHitPosX - 6, _preHitPosY + 1];
 
                 var swordArr = new int[2, 6];
                 swordArr[0, 0] = _preHitPosX - 3;
@@ -132,28 +134,28 @@ public class LinkMovement : MainProgram
         {
             if (!attacking)
             {
-                _storage_sword[0] = map[_posX - 1, _posY + 3];
-                _storage_sword[1] = map[_posX, _posY + 3];
-                _storage_sword[2] = map[_posX + 1, _posY + 3];
-                _storage_sword[3] = map[_posX, _posY + 4];
-                _storage_sword[4] = map[_posX, _posY + 5];
+                _storage_sword[0] = Map[_posX - 1, _posY + 3];
+                _storage_sword[1] = Map[_posX, _posY + 3];
+                _storage_sword[2] = Map[_posX + 1, _posY + 3];
+                _storage_sword[3] = Map[_posX, _posY + 4];
+                _storage_sword[4] = Map[_posX, _posY + 5];
 
-                map[_posX - 1, _posY + 3] = "-";
-                map[_posX, _posY + 3] = "-";
-                map[_posX + 1, _posY + 3] = "-";
-                map[_posX, _posY + 4] = "S";
-                map[_posX, _posY + 5] = "S";
+                Map[_posX - 1, _posY + 3] = "-";
+                Map[_posX, _posY + 3] = "-";
+                Map[_posX + 1, _posY + 3] = "-";
+                Map[_posX, _posY + 4] = "S";
+                Map[_posX, _posY + 5] = "S";
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
             }
             else
             {
-                _storage_detect_enemy[0] = map[_preHitPosX - 1, _preHitPosY + 3];
-                _storage_detect_enemy[1] = map[_preHitPosX, _preHitPosY + 3];
-                _storage_detect_enemy[2] = map[_preHitPosX + 1, _preHitPosY + 3];
-                _storage_detect_enemy[3] = map[_preHitPosX, _preHitPosY + 4];
-                _storage_detect_enemy[4] = map[_preHitPosX, _preHitPosY + 5];
+                _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY + 3];
+                _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY + 3];
+                _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY + 3];
+                _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY + 4];
+                _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY + 5];
 
                 var swordArr = new int[2, 5];
                 swordArr[0, 0] = _preHitPosX - 1;
@@ -178,31 +180,31 @@ public class LinkMovement : MainProgram
         {
             if (!attacking)
             {
-                _storage_sword[0] = map[_posX + 3, _posY];
-                _storage_sword[1] = map[_posX + 3, _posY + 1];
-                _storage_sword[2] = map[_posX + 3, _posY + 2];
-                _storage_sword[3] = map[_posX + 4, _posY + 1];
-                _storage_sword[4] = map[_posX + 5, _posY + 1];
-                _storage_sword[5] = map[_posX + 6, _posY + 1];
+                _storage_sword[0] = Map[_posX + 3, _posY];
+                _storage_sword[1] = Map[_posX + 3, _posY + 1];
+                _storage_sword[2] = Map[_posX + 3, _posY + 2];
+                _storage_sword[3] = Map[_posX + 4, _posY + 1];
+                _storage_sword[4] = Map[_posX + 5, _posY + 1];
+                _storage_sword[5] = Map[_posX + 6, _posY + 1];
 
-                map[_posX + 3, _posY] = "-";
-                map[_posX + 3, _posY + 1] = "-";
-                map[_posX + 3, _posY + 2] = "-";
-                map[_posX + 4, _posY + 1] = "S";
-                map[_posX + 5, _posY + 1] = "S";
-                map[_posX + 6, _posY + 1] = "S";
+                Map[_posX + 3, _posY] = "-";
+                Map[_posX + 3, _posY + 1] = "-";
+                Map[_posX + 3, _posY + 2] = "-";
+                Map[_posX + 4, _posY + 1] = "S";
+                Map[_posX + 5, _posY + 1] = "S";
+                Map[_posX + 6, _posY + 1] = "S";
 
                 _preHitPosX = _posX;
                 _preHitPosY = _posY;
             }
             else
             {
-                _storage_detect_enemy[0] = map[_preHitPosX + 3, _preHitPosY];
-                _storage_detect_enemy[1] = map[_preHitPosX + 3, _preHitPosY + 1];
-                _storage_detect_enemy[2] = map[_preHitPosX + 3, _preHitPosY + 2];
-                _storage_detect_enemy[3] = map[_preHitPosX + 4, _preHitPosY + 1];
-                _storage_detect_enemy[4] = map[_preHitPosX + 5, _preHitPosY + 1];
-                _storage_detect_enemy[5] = map[_preHitPosX + 6, _preHitPosY + 1];
+                _storage_detect_enemy[0] = Map[_preHitPosX + 3, _preHitPosY];
+                _storage_detect_enemy[1] = Map[_preHitPosX + 3, _preHitPosY + 1];
+                _storage_detect_enemy[2] = Map[_preHitPosX + 3, _preHitPosY + 2];
+                _storage_detect_enemy[3] = Map[_preHitPosX + 4, _preHitPosY + 1];
+                _storage_detect_enemy[4] = Map[_preHitPosX + 5, _preHitPosY + 1];
+                _storage_detect_enemy[5] = Map[_preHitPosX + 6, _preHitPosY + 1];
 
                 var swordArr = new int[2, 6];
                 swordArr[0, 0] = _preHitPosX + 3;
@@ -235,10 +237,10 @@ public class LinkMovement : MainProgram
             if (_storage_sword[i] == "t" || _storage_sword[i] == "n" || _storage_sword[i] == "B" || _storage_sword[i] == "{" || _storage_sword[i] == "}" || _storage_sword[i] == "F" || _storage_detect_enemy[i] == "t" || _storage_detect_enemy[i] == "n" || _storage_detect_enemy[i] == "B" || _storage_detect_enemy[i] == "{" || _storage_detect_enemy[i] == "}" || _storage_detect_enemy[i] == "F")
             {
                 hit = true;
-                if (enemyMovement.TakeDamage(swordArr[0, i], swordArr[1, i], prev, dmg) && _spawnRupee)
+                if (MainProgram.EnemyMovement.TakeDamage(swordArr[0, i], swordArr[1, i], prev, dmg) && _spawnRupee)
                 {
                     _spawnRupee = false;
-                    enemyMovement.SpawnRupee();
+                    MainProgram.EnemyMovement.SpawnRupee();
                 }
                 break;
             }
@@ -261,37 +263,37 @@ public class LinkMovement : MainProgram
 
         if (prev == "w")
         {
-            map[_preHitPosX - 1, _preHitPosY - 2] = _storage_sword[0];
-            map[_preHitPosX, _preHitPosY - 2] = _storage_sword[1];
-            map[_preHitPosX + 1, _preHitPosY - 2] = _storage_sword[2];
-            map[_preHitPosX, _preHitPosY - 3] = _storage_sword[3];
-            map[_preHitPosX, _preHitPosY - 4] = _storage_sword[4];
+            Map[_preHitPosX - 1, _preHitPosY - 2] = _storage_sword[0];
+            Map[_preHitPosX, _preHitPosY - 2] = _storage_sword[1];
+            Map[_preHitPosX + 1, _preHitPosY - 2] = _storage_sword[2];
+            Map[_preHitPosX, _preHitPosY - 3] = _storage_sword[3];
+            Map[_preHitPosX, _preHitPosY - 4] = _storage_sword[4];
         }
         else if (prev == "a")
         {
-            map[_preHitPosX - 3, _preHitPosY] = _storage_sword[0];
-            map[_preHitPosX - 3, _preHitPosY + 1] = _storage_sword[1];
-            map[_preHitPosX - 3, _preHitPosY + 2] = _storage_sword[2];
-            map[_preHitPosX - 4, _preHitPosY + 1] = _storage_sword[3];
-            map[_preHitPosX - 5, _preHitPosY + 1] = _storage_sword[4];
-            map[_preHitPosX - 6, _preHitPosY + 1] = _storage_sword[5];
+            Map[_preHitPosX - 3, _preHitPosY] = _storage_sword[0];
+            Map[_preHitPosX - 3, _preHitPosY + 1] = _storage_sword[1];
+            Map[_preHitPosX - 3, _preHitPosY + 2] = _storage_sword[2];
+            Map[_preHitPosX - 4, _preHitPosY + 1] = _storage_sword[3];
+            Map[_preHitPosX - 5, _preHitPosY + 1] = _storage_sword[4];
+            Map[_preHitPosX - 6, _preHitPosY + 1] = _storage_sword[5];
         }
         else if (prev == "s")
         {
-            map[_preHitPosX - 1, _preHitPosY + 3] = _storage_sword[0];
-            map[_preHitPosX, _preHitPosY + 3] = _storage_sword[1];
-            map[_preHitPosX + 1, _preHitPosY + 3] = _storage_sword[2];
-            map[_preHitPosX, _preHitPosY + 4] = _storage_sword[3];
-            map[_preHitPosX, _preHitPosY + 5] = _storage_sword[4];
+            Map[_preHitPosX - 1, _preHitPosY + 3] = _storage_sword[0];
+            Map[_preHitPosX, _preHitPosY + 3] = _storage_sword[1];
+            Map[_preHitPosX + 1, _preHitPosY + 3] = _storage_sword[2];
+            Map[_preHitPosX, _preHitPosY + 4] = _storage_sword[3];
+            Map[_preHitPosX, _preHitPosY + 5] = _storage_sword[4];
         }
         else if (prev == "d")
         {
-            map[_preHitPosX + 3, _preHitPosY] = _storage_sword[0];
-            map[_preHitPosX + 3, _preHitPosY + 1] = _storage_sword[1];
-            map[_preHitPosX + 3, _preHitPosY + 2] = _storage_sword[2];
-            map[_preHitPosX + 4, _preHitPosY + 1] = _storage_sword[3];
-            map[_preHitPosX + 5, _preHitPosY + 1] = _storage_sword[4];
-            map[_preHitPosX + 6, _preHitPosY + 1] = _storage_sword[5];
+            Map[_preHitPosX + 3, _preHitPosY] = _storage_sword[0];
+            Map[_preHitPosX + 3, _preHitPosY + 1] = _storage_sword[1];
+            Map[_preHitPosX + 3, _preHitPosY + 2] = _storage_sword[2];
+            Map[_preHitPosX + 4, _preHitPosY + 1] = _storage_sword[3];
+            Map[_preHitPosX + 5, _preHitPosY + 1] = _storage_sword[4];
+            Map[_preHitPosX + 6, _preHitPosY + 1] = _storage_sword[5];
         }
     }
 
@@ -302,36 +304,36 @@ public class LinkMovement : MainProgram
             _posX = posX;
             _posY = posY;
 
-            _storage_map[0] = map[posX - 2, posY - 1];
-            _storage_map[1] = map[posX - 1, posY - 1];
-            _storage_map[2] = map[posX, posY - 1];
-            _storage_map[3] = map[posX + 1, posY - 1];
-            _storage_map[4] = map[posX + 2, posY - 1];
+            _storage_map[0] = Map[posX - 2, posY - 1];
+            _storage_map[1] = Map[posX - 1, posY - 1];
+            _storage_map[2] = Map[posX, posY - 1];
+            _storage_map[3] = Map[posX + 1, posY - 1];
+            _storage_map[4] = Map[posX + 2, posY - 1];
 
-            _storage_map[5] = map[posX - 2, posY];
-            _storage_map[6] = map[posX - 1, posY];
-            _storage_map[7] = map[posX, posY];
-            _storage_map[8] = map[posX + 1, posY];
-            _storage_map[9] = map[posX + 2, posY];
+            _storage_map[5] = Map[posX - 2, posY];
+            _storage_map[6] = Map[posX - 1, posY];
+            _storage_map[7] = Map[posX, posY];
+            _storage_map[8] = Map[posX + 1, posY];
+            _storage_map[9] = Map[posX + 2, posY];
 
-            _storage_map[10] = map[posX - 2, posY + 1];
-            _storage_map[11] = map[posX - 1, posY + 1];
-            _storage_map[12] = map[posX, posY + 1];
-            _storage_map[13] = map[posX + 1, posY + 1];
-            _storage_map[14] = map[posX + 2, posY + 1];
+            _storage_map[10] = Map[posX - 2, posY + 1];
+            _storage_map[11] = Map[posX - 1, posY + 1];
+            _storage_map[12] = Map[posX, posY + 1];
+            _storage_map[13] = Map[posX + 1, posY + 1];
+            _storage_map[14] = Map[posX + 2, posY + 1];
 
-            _storage_map[15] = map[posX - 2, posY + 2];
-            _storage_map[16] = map[posX - 1, posY + 2];
-            _storage_map[17] = map[posX, posY + 2];
-            _storage_map[18] = map[posX + 1, posY + 2];
-            _storage_map[19] = map[posX + 2, posY + 2];
+            _storage_map[15] = Map[posX - 2, posY + 2];
+            _storage_map[16] = Map[posX - 1, posY + 2];
+            _storage_map[17] = Map[posX, posY + 2];
+            _storage_map[18] = Map[posX + 1, posY + 2];
+            _storage_map[19] = Map[posX + 2, posY + 2];
         }
 
         _prev = direction;
 
         if (direction == "w")
         {
-            if (_posX == 21 && ((currentMap == 4 && posY > 9) || currentMap == 2))
+            if (_posX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
             {
                 if (posY > 1)
                 {
@@ -339,7 +341,7 @@ public class LinkMovement : MainProgram
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            map[x, y] = "~";
+                            Map[x, y] = "~";
                         }
                     }
 
@@ -353,41 +355,41 @@ public class LinkMovement : MainProgram
                     LoadMap(4, 21, 29, "w");
                 }
             }
-            else if (posY >= 1 && !(_posX == 21 && (currentMap == 4 || currentMap == 2)))
+            else if (posY >= 1 && !(_posX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
             {
                 IsTouching(posX, posY, "r");
                 StoreChar(_posX, _posY);
                 var inCave = false;
 
-                if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
+                if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
                     hasSword = true;
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
                 {
                     rupees -= 35;
 
                     hasRaft = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 5)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 5)
                 {
                     rupees -= 10;
                     keys++;
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 15)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 15)
                 {
                     rupees -= 25;
 
                     hasArmor = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (currentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && cDoor2 && cDoor3 && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && cDoor2 && cDoor3 && cEnemies1 <= 0 && cEnemies2 <= 0 && !_debounce)
                 {
                     LoadMap(12, 50, 24, direction);
                 }
-                else if (currentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !cDoor3 && keys > 0)
+                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !cDoor3 && keys > 0)
                 {
                     _debounce = true;
                     keys--;
@@ -396,7 +398,7 @@ public class LinkMovement : MainProgram
                     LoadMap(9, _posX, _posY, direction);
                 }
 
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !IsTouching(posX, posY, ">") && !IsTouching(posX, posY, "*") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && !((currentMap == 6 || currentMap == 7) && posY < 17) && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9))
+                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !IsTouching(posX, posY, ">") && !IsTouching(posX, posY, "*") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && !((CurrentMap == 6 || CurrentMap == 7) && posY < 17) && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9))
                 {
                     if (IsTouching(posX, posY, "/"))
                     {
@@ -414,7 +416,7 @@ public class LinkMovement : MainProgram
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
+                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -425,7 +427,7 @@ public class LinkMovement : MainProgram
 
                     Hit();
                 }
-                else if (currentMap == 13 && IsTouching(posX, posY, "~"))
+                else if (CurrentMap == 13 && IsTouching(posX, posY, "~"))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -454,11 +456,11 @@ public class LinkMovement : MainProgram
             }
             else
             {
-                if (currentMap == 0)
+                if (CurrentMap == 0)
                 {
                     LoadMap(1, 63, 29, "w");
                 }
-                else if (currentMap == 2)
+                else if (CurrentMap == 2)
                 {
                     if (posX > 29)
                     {
@@ -473,7 +475,7 @@ public class LinkMovement : MainProgram
                         LoadMap(4, 10, 29, "w");
                     }
                 }
-                else if (currentMap == 3)
+                else if (CurrentMap == 3)
                 {
                     LoadMap(5, 49, 30, "w");
                 }
@@ -492,35 +494,35 @@ public class LinkMovement : MainProgram
                 IsTouching(posX, posY, "r");
                 StoreChar(_posX, _posY);
 
-                if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
+                if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
                     hasSword = true;
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
                 {
                     rupees -= 35;
 
                     hasRaft = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 10)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 10)
                 {
                     rupees -= 10;
                     keys++;
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 25)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 25)
                 {
                     rupees -= 25;
 
                     hasArmor = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (currentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor1 && !_debounce)
                 {
                     LoadMap(10, 87, 15, direction);
                 }
-                else if (currentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !cDoor1 && keys > 0)
+                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !cDoor1 && keys > 0)
                 {
                     _debounce = true;
                     keys--;
@@ -529,7 +531,7 @@ public class LinkMovement : MainProgram
                     LoadMap(9, _posX, _posY, direction);
                 }
 
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9))
+                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9))
                 {
                     StoreChar(posX, posY);
                     BuildChar(posX, posY, direction);
@@ -542,7 +544,7 @@ public class LinkMovement : MainProgram
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
+                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -566,7 +568,7 @@ public class LinkMovement : MainProgram
                     DeployRaft("a");
                     wait = 150;
                 }
-                else if (_posX == 21 && ((posY > 11 && currentMap == 4) || currentMap == 2) && ((currentMap == 2 && posY < 25) || currentMap == 4))
+                else if (_posX == 21 && ((posY > 11 && CurrentMap == 4) || CurrentMap == 2) && ((CurrentMap == 2 && posY < 25) || CurrentMap == 4))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -579,7 +581,7 @@ public class LinkMovement : MainProgram
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            map[x, y] = "~";
+                            Map[x, y] = "~";
                         }
                     }
 
@@ -595,11 +597,11 @@ public class LinkMovement : MainProgram
                     UpdateRow(posY + 2);
                     UpdateRow(posY + 3);
                 }
-                else if (currentMap == 11 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 11 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
                 {
                     LoadMap(9, 86, 15, "a");
                 }
-                else if (currentMap == 13 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 13 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
                 {
                     LoadMap(12, 86, 15, "a");
                 }
@@ -616,23 +618,23 @@ public class LinkMovement : MainProgram
             }
             else
             {
-                if (currentMap == 0)
+                if (CurrentMap == 0)
                 {
                     LoadMap(2, 99, 12, "a");
                 }
-                else if (currentMap == 3)
+                else if (CurrentMap == 3)
                 {
                     LoadMap(0, 98, 17, "a");
                 }
-                else if (currentMap == 1)
+                else if (CurrentMap == 1)
                 {
                     LoadMap(4, 98, 13, "a");
                 }
-                else if (currentMap == 5)
+                else if (CurrentMap == 5)
                 {
                     LoadMap(1, 98, 16, "a");
                 }
-                else if (currentMap == 4)
+                else if (CurrentMap == 4)
                 {
                     LoadMap(8, 99, 16, "a");
                 }
@@ -645,15 +647,15 @@ public class LinkMovement : MainProgram
         }
         else if (direction == "s")
         {
-            if ((currentMap == 2 || currentMap == 4) && posX == 21)
+            if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
             {
-                if ((posY < 30) && ((currentMap == 2 && posY < 27) || currentMap == 4))
+                if ((posY < 30) && ((CurrentMap == 2 && posY < 27) || CurrentMap == 4))
                 {
                     for (var y = _posY - 2; y <= _posY + 3; y++)
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            map[x, y] = "~";
+                            Map[x, y] = "~";
                         }
                     }
 
@@ -662,7 +664,7 @@ public class LinkMovement : MainProgram
 
                     UpdateRow(_posY - 3);
                 }
-                else if (currentMap == 4)
+                else if (CurrentMap == 4)
                 {
                     LoadMap(2, 21, 2, "s");
                 }
@@ -672,7 +674,7 @@ public class LinkMovement : MainProgram
                 IsTouching(posX, posY, "r");
 
                 StoreChar(_posX, _posY);
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9))
+                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9))
                 {
                     StoreChar(posX, posY);
                     BuildChar(posX, posY, direction);
@@ -685,7 +687,7 @@ public class LinkMovement : MainProgram
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
+                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -696,7 +698,7 @@ public class LinkMovement : MainProgram
 
                     Hit();
                 }
-                else if (currentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -719,11 +721,11 @@ public class LinkMovement : MainProgram
             }
             else
             {
-                if (currentMap == 1)
+                if (CurrentMap == 1)
                 {
                     LoadMap(0, 63, 1, "s");
                 }
-                else if (currentMap == 4)
+                else if (CurrentMap == 4)
                 {
                     if (posX > 29)
                     {
@@ -738,21 +740,21 @@ public class LinkMovement : MainProgram
                         LoadMap(2, 10, 2, "s");
                     }
                 }
-                else if (currentMap == 5)
+                else if (CurrentMap == 5)
                 {
                     LoadMap(3, 49, 2, "s");
                 }
-                else if (currentMap == 6)
+                else if (CurrentMap == 6)
                 {
                     LoadMap(0, 16, 6, "s");
                     Wait(2);
                 }
-                else if (currentMap == 7)
+                else if (CurrentMap == 7)
                 {
                     LoadMap(4, 86, 7, "s");
                     Wait(2);
                 }
-                else if (currentMap == 9)
+                else if (CurrentMap == 9)
                 {
                     LoadMap(8, 51, 17, "s");
                     Wait(2);
@@ -769,36 +771,36 @@ public class LinkMovement : MainProgram
                 StoreChar(_posX, _posY);
 
                 var persist = true;
-                if (currentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
+                if (CurrentMap == 6 && (IsTouching(posX, posY, "-") || IsTouching(posX, posY, "S")))
                 {
                     hasSword = true;
                     LoadMap(6, posX, posY, direction);
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "*") && rupees >= 35)
                 {
                     rupees -= 35;
 
                     hasRaft = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 10)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "Y") && rupees >= 10)
                 {
                     rupees -= 10;
                     keys++;
                 }
-                else if (currentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 25)
+                else if (CurrentMap == 7 && IsTouching(posX, posY, "#") && rupees >= 25)
                 {
                     rupees -= 25;
 
                     hasArmor = true;
                     LoadMap(7, posX, posY, direction);
                 }
-                else if (currentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor2 && !_debounce)
+                else if (CurrentMap == 9 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "=") && cDoor2 && !_debounce)
                 {
                     persist = false;
                     LoadMap(11, 14, 15, direction);
                 }
-                else if (currentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !cDoor2 && keys > 0)
+                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !cDoor2 && keys > 0)
                 {
                     _debounce = true;
                     keys--;
@@ -807,7 +809,7 @@ public class LinkMovement : MainProgram
                     LoadMap(9, _posX, _posY, direction);
                 }
 
-                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && currentMap != 7) && !IsTouching(posX, posY, "~") && ((currentMap >= 9 && !IsTouching(posX, posY, "/")) || currentMap < 9) && persist)
+                if (!IsTouching(posX, posY, "=") && !IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "t") && !IsTouching(posX, posY, "n") && !IsTouching(posX, posY, "B") && !IsTouching(posX, posY, "{") && !IsTouching(posX, posY, "}") && !IsTouching(posX, posY, "S") && !IsTouching(posX, posY, "<") && !(IsTouching(posX, posY, "F") && CurrentMap != 7) && !IsTouching(posX, posY, "~") && ((CurrentMap >= 9 && !IsTouching(posX, posY, "/")) || CurrentMap < 9) && persist)
                 {
                     StoreChar(posX, posY);
                     BuildChar(posX, posY, direction);
@@ -820,7 +822,7 @@ public class LinkMovement : MainProgram
                     _posX = posX;
                     _posY = posY;
                 }
-                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && currentMap != 7))
+                else if (IsTouching(posX, posY, "t") || IsTouching(posX, posY, "n") || IsTouching(posX, posY, "B") || IsTouching(posX, posY, "{") || IsTouching(posX, posY, "}") || IsTouching(posX, posY, "S") || IsTouching(posX, posY, "<") || (IsTouching(posX, posY, "F") && CurrentMap != 7))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -844,7 +846,7 @@ public class LinkMovement : MainProgram
                     DeployRaft("d");
                     wait = 150;
                 }
-                else if (_posX == 21 && posY < 25 && ((posY > 3 && currentMap == 2) || (posY < 25 && currentMap == 4)))
+                else if (_posX == 21 && posY < 25 && ((posY > 3 && CurrentMap == 2) || (posY < 25 && CurrentMap == 4)))
                 {
                     BuildChar(_posX, _posY, direction);
 
@@ -857,7 +859,7 @@ public class LinkMovement : MainProgram
                     {
                         for (var x = _posX - 3; x <= _posX + 3; x++)
                         {
-                            map[x, y] = "~";
+                            Map[x, y] = "~";
                         }
                     }
 
@@ -873,11 +875,11 @@ public class LinkMovement : MainProgram
                     UpdateRow(posY + 2);
                     UpdateRow(posY + 3);
                 }
-                else if (currentMap == 10 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 10 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
                 {
                     LoadMap(9, 14, 15, "d");
                 }
-                else if (currentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
+                else if (CurrentMap == 12 && IsTouching(posX, posY, "X") && !IsTouching(posX, posY, "="))
                 {
                     LoadMap(13, 15, 15, "d");
                 }
@@ -893,23 +895,23 @@ public class LinkMovement : MainProgram
             }
             else
             {
-                if (currentMap == 2)
+                if (CurrentMap == 2)
                 {
                     LoadMap(0, 4, 12, "d");
                 }
-                else if (currentMap == 0)
+                else if (CurrentMap == 0)
                 {
                     LoadMap(3, 2, 18, "d");
                 }
-                else if (currentMap == 4)
+                else if (CurrentMap == 4)
                 {
                     LoadMap(1, 2, 13, "d");
                 }
-                else if (currentMap == 1)
+                else if (CurrentMap == 1)
                 {
                     LoadMap(5, 2, 15, "d");
                 }
-                else if (currentMap == 8)
+                else if (CurrentMap == 8)
                 {
                     LoadMap(4, 2, 16, "d");
                 }
@@ -935,164 +937,164 @@ public class LinkMovement : MainProgram
 
         if (direction == "w")
         {
-            map[posX - 2, posY - 1] = " ";
-            map[posX - 1, posY - 1] = "_";
-            map[posX, posY - 1] = "_";
-            map[posX + 1, posY - 1] = "_";
-            map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = " ";
+            Map[posX - 1, posY - 1] = "_";
+            Map[posX, posY - 1] = "_";
+            Map[posX + 1, posY - 1] = "_";
+            Map[posX + 2, posY - 1] = " ";
 
-            map[posX - 2, posY] = "|";
-            map[posX - 1, posY] = spaceslot;
-            map[posX, posY] = "=";
-            map[posX + 1, posY] = spaceslot;
-            map[posX + 2, posY] = "|";
+            Map[posX - 2, posY] = "|";
+            Map[posX - 1, posY] = spaceslot;
+            Map[posX, posY] = "=";
+            Map[posX + 1, posY] = spaceslot;
+            Map[posX + 2, posY] = "|";
 
-            map[posX - 2, posY + 1] = "|";
-            map[posX - 1, posY + 1] = "^";
-            map[posX, posY + 1] = spaceslot;
-            map[posX + 1, posY + 1] = "^";
-            map[posX + 2, posY + 1] = "|";
+            Map[posX - 2, posY + 1] = "|";
+            Map[posX - 1, posY + 1] = "^";
+            Map[posX, posY + 1] = spaceslot;
+            Map[posX + 1, posY + 1] = "^";
+            Map[posX + 2, posY + 1] = "|";
 
-            map[posX - 2, posY + 2] = " ";
-            map[posX - 1, posY + 2] = "\\";
-            map[posX, posY + 2] = "_";
-            map[posX + 1, posY + 2] = "/";
-            map[posX + 2, posY + 2] = " ";
+            Map[posX - 2, posY + 2] = " ";
+            Map[posX - 1, posY + 2] = "\\";
+            Map[posX, posY + 2] = "_";
+            Map[posX + 1, posY + 2] = "/";
+            Map[posX + 2, posY + 2] = " ";
         }
         else if (direction == "a")
         {
-            map[posX - 2, posY - 1] = " ";
-            map[posX - 1, posY - 1] = " ";
-            map[posX, posY - 1] = "/";
-            map[posX + 1, posY - 1] = "\\";
-            map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = " ";
+            Map[posX - 1, posY - 1] = " ";
+            Map[posX, posY - 1] = "/";
+            Map[posX + 1, posY - 1] = "\\";
+            Map[posX + 2, posY - 1] = " ";
 
-            map[posX - 2, posY] = " ";
-            map[posX - 1, posY] = "/";
-            map[posX, posY] = " ";
-            map[posX + 1, posY] = " ";
-            map[posX + 2, posY] = "|";
+            Map[posX - 2, posY] = " ";
+            Map[posX - 1, posY] = "/";
+            Map[posX, posY] = " ";
+            Map[posX + 1, posY] = " ";
+            Map[posX + 2, posY] = "|";
 
-            map[posX - 2, posY + 1] = "|";
-            map[posX - 1, posY + 1] = "^";
-            map[posX, posY + 1] = spaceslot;
-            map[posX + 1, posY + 1] = spaceslot;
-            map[posX + 2, posY + 1] = "|";
+            Map[posX - 2, posY + 1] = "|";
+            Map[posX - 1, posY + 1] = "^";
+            Map[posX, posY + 1] = spaceslot;
+            Map[posX + 1, posY + 1] = spaceslot;
+            Map[posX + 2, posY + 1] = "|";
 
-            map[posX - 2, posY + 2] = "|";
-            map[posX - 1, posY + 2] = underslot;
-            map[posX, posY + 2] = "=";
-            map[posX + 1, posY + 2] = underslot;
-            map[posX + 2, posY + 2] = "|";
+            Map[posX - 2, posY + 2] = "|";
+            Map[posX - 1, posY + 2] = underslot;
+            Map[posX, posY + 2] = "=";
+            Map[posX + 1, posY + 2] = underslot;
+            Map[posX + 2, posY + 2] = "|";
         }
         else if (direction == "s")
         {
-            map[posX - 2, posY - 1] = " ";
-            map[posX - 1, posY - 1] = " ";
-            map[posX, posY - 1] = "_";
-            map[posX + 1, posY - 1] = " ";
-            map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = " ";
+            Map[posX - 1, posY - 1] = " ";
+            Map[posX, posY - 1] = "_";
+            Map[posX + 1, posY - 1] = " ";
+            Map[posX + 2, posY - 1] = " ";
 
-            map[posX - 2, posY] = " ";
-            map[posX - 1, posY] = "/";
-            map[posX, posY] = " ";
-            map[posX + 1, posY] = "\\";
-            map[posX + 2, posY] = " ";
+            Map[posX - 2, posY] = " ";
+            Map[posX - 1, posY] = "/";
+            Map[posX, posY] = " ";
+            Map[posX + 1, posY] = "\\";
+            Map[posX + 2, posY] = " ";
 
-            map[posX - 2, posY + 1] = "|";
-            map[posX - 1, posY + 1] = "^";
-            map[posX, posY + 1] = spaceslot;
-            map[posX + 1, posY + 1] = "^";
-            map[posX + 2, posY + 1] = "|";
+            Map[posX - 2, posY + 1] = "|";
+            Map[posX - 1, posY + 1] = "^";
+            Map[posX, posY + 1] = spaceslot;
+            Map[posX + 1, posY + 1] = "^";
+            Map[posX + 2, posY + 1] = "|";
 
-            map[posX - 2, posY + 2] = "|";
-            map[posX - 1, posY + 2] = underslot;
-            map[posX, posY + 2] = "=";
-            map[posX + 1, posY + 2] = underslot;
-            map[posX + 2, posY + 2] = "|";
+            Map[posX - 2, posY + 2] = "|";
+            Map[posX - 1, posY + 2] = underslot;
+            Map[posX, posY + 2] = "=";
+            Map[posX + 1, posY + 2] = underslot;
+            Map[posX + 2, posY + 2] = "|";
         }
         else if (direction == "d")
         {
-            map[posX - 2, posY - 1] = " ";
-            map[posX - 1, posY - 1] = "/";
-            map[posX, posY - 1] = "\\";
-            map[posX + 1, posY - 1] = " ";
-            map[posX + 2, posY - 1] = " ";
+            Map[posX - 2, posY - 1] = " ";
+            Map[posX - 1, posY - 1] = "/";
+            Map[posX, posY - 1] = "\\";
+            Map[posX + 1, posY - 1] = " ";
+            Map[posX + 2, posY - 1] = " ";
 
-            map[posX - 2, posY] = "|";
-            map[posX - 1, posY] = " ";
-            map[posX, posY] = " ";
-            map[posX + 1, posY] = "\\";
-            map[posX + 2, posY] = " ";
+            Map[posX - 2, posY] = "|";
+            Map[posX - 1, posY] = " ";
+            Map[posX, posY] = " ";
+            Map[posX + 1, posY] = "\\";
+            Map[posX + 2, posY] = " ";
 
-            map[posX - 2, posY + 1] = "|";
-            map[posX - 1, posY + 1] = spaceslot;
-            map[posX, posY + 1] = spaceslot;
-            map[posX + 1, posY + 1] = "^";
-            map[posX + 2, posY + 1] = "|";
+            Map[posX - 2, posY + 1] = "|";
+            Map[posX - 1, posY + 1] = spaceslot;
+            Map[posX, posY + 1] = spaceslot;
+            Map[posX + 1, posY + 1] = "^";
+            Map[posX + 2, posY + 1] = "|";
 
-            map[posX - 2, posY + 2] = "|";
-            map[posX - 1, posY + 2] = underslot;
-            map[posX, posY + 2] = "=";
-            map[posX + 1, posY + 2] = underslot;
-            map[posX + 2, posY + 2] = "|";
+            Map[posX - 2, posY + 2] = "|";
+            Map[posX - 1, posY + 2] = underslot;
+            Map[posX, posY + 2] = "=";
+            Map[posX + 1, posY + 2] = underslot;
+            Map[posX + 2, posY + 2] = "|";
         }
     }
 
     public void StoreChar(int posX, int posY)
     {
-        map[_posX - 2, _posY - 1] = _storage_map[0];
-        map[_posX - 1, _posY - 1] = _storage_map[1];
-        map[_posX, _posY - 1] = _storage_map[2];
-        map[_posX + 1, _posY - 1] = _storage_map[3];
-        map[_posX + 2, _posY - 1] = _storage_map[4];
+        Map[_posX - 2, _posY - 1] = _storage_map[0];
+        Map[_posX - 1, _posY - 1] = _storage_map[1];
+        Map[_posX, _posY - 1] = _storage_map[2];
+        Map[_posX + 1, _posY - 1] = _storage_map[3];
+        Map[_posX + 2, _posY - 1] = _storage_map[4];
 
-        map[_posX - 2, _posY] = _storage_map[5];
-        map[_posX - 1, _posY] = _storage_map[6];
-        map[_posX, _posY] = _storage_map[7];
-        map[_posX + 1, _posY] = _storage_map[8];
-        map[_posX + 2, _posY] = _storage_map[9];
+        Map[_posX - 2, _posY] = _storage_map[5];
+        Map[_posX - 1, _posY] = _storage_map[6];
+        Map[_posX, _posY] = _storage_map[7];
+        Map[_posX + 1, _posY] = _storage_map[8];
+        Map[_posX + 2, _posY] = _storage_map[9];
 
-        map[_posX - 2, _posY + 1] = _storage_map[10];
-        map[_posX - 1, _posY + 1] = _storage_map[11];
-        map[_posX, _posY + 1] = _storage_map[12];
-        map[_posX + 1, _posY + 1] = _storage_map[13];
-        map[_posX + 2, _posY + 1] = _storage_map[14];
+        Map[_posX - 2, _posY + 1] = _storage_map[10];
+        Map[_posX - 1, _posY + 1] = _storage_map[11];
+        Map[_posX, _posY + 1] = _storage_map[12];
+        Map[_posX + 1, _posY + 1] = _storage_map[13];
+        Map[_posX + 2, _posY + 1] = _storage_map[14];
 
-        map[_posX - 2, _posY + 2] = _storage_map[15];
-        map[_posX - 1, _posY + 2] = _storage_map[16];
-        map[_posX, _posY + 2] = _storage_map[17];
-        map[_posX + 1, _posY + 2] = _storage_map[18];
-        map[_posX + 2, _posY + 2] = _storage_map[19];
+        Map[_posX - 2, _posY + 2] = _storage_map[15];
+        Map[_posX - 1, _posY + 2] = _storage_map[16];
+        Map[_posX, _posY + 2] = _storage_map[17];
+        Map[_posX + 1, _posY + 2] = _storage_map[18];
+        Map[_posX + 2, _posY + 2] = _storage_map[19];
 
         UpdateRow(_posY - 1);
         UpdateRow(_posY);
         UpdateRow(_posY + 1);
         UpdateRow(_posY + 2);
 
-        _storage_map[0] = map[posX - 2, posY - 1];
-        _storage_map[1] = map[posX - 1, posY - 1];
-        _storage_map[2] = map[posX, posY - 1];
-        _storage_map[3] = map[posX + 1, posY - 1];
-        _storage_map[4] = map[posX + 2, posY - 1];
+        _storage_map[0] = Map[posX - 2, posY - 1];
+        _storage_map[1] = Map[posX - 1, posY - 1];
+        _storage_map[2] = Map[posX, posY - 1];
+        _storage_map[3] = Map[posX + 1, posY - 1];
+        _storage_map[4] = Map[posX + 2, posY - 1];
 
-        _storage_map[5] = map[posX - 2, posY];
-        _storage_map[6] = map[posX - 1, posY];
-        _storage_map[7] = map[posX, posY];
-        _storage_map[8] = map[posX + 1, posY];
-        _storage_map[9] = map[posX + 2, posY];
+        _storage_map[5] = Map[posX - 2, posY];
+        _storage_map[6] = Map[posX - 1, posY];
+        _storage_map[7] = Map[posX, posY];
+        _storage_map[8] = Map[posX + 1, posY];
+        _storage_map[9] = Map[posX + 2, posY];
 
-        _storage_map[10] = map[posX - 2, posY + 1];
-        _storage_map[11] = map[posX - 1, posY + 1];
-        _storage_map[12] = map[posX, posY + 1];
-        _storage_map[13] = map[posX + 1, posY + 1];
-        _storage_map[14] = map[posX + 2, posY + 1];
+        _storage_map[10] = Map[posX - 2, posY + 1];
+        _storage_map[11] = Map[posX - 1, posY + 1];
+        _storage_map[12] = Map[posX, posY + 1];
+        _storage_map[13] = Map[posX + 1, posY + 1];
+        _storage_map[14] = Map[posX + 2, posY + 1];
 
-        _storage_map[15] = map[posX - 2, posY + 2];
-        _storage_map[16] = map[posX - 1, posY + 2];
-        _storage_map[17] = map[posX, posY + 2];
-        _storage_map[18] = map[posX + 1, posY + 2];
-        _storage_map[19] = map[posX + 2, posY + 2];
+        _storage_map[15] = Map[posX - 2, posY + 2];
+        _storage_map[16] = Map[posX - 1, posY + 2];
+        _storage_map[17] = Map[posX, posY + 2];
+        _storage_map[18] = Map[posX + 1, posY + 2];
+        _storage_map[19] = Map[posX + 2, posY + 2];
     }
 
     public void DeployRaft(string direction)
@@ -1105,68 +1107,68 @@ public class LinkMovement : MainProgram
             underslot = "#";
         }
 
-        map[_posX - 3, _posY - 2] = "*";
-        map[_posX - 2, _posY - 2] = "*";
-        map[_posX - 1, _posY - 2] = "*";
-        map[_posX, _posY - 2] = "*";
-        map[_posX + 1, _posY - 2] = "*";
-        map[_posX + 2, _posY - 2] = "*";
-        map[_posX + 3, _posY - 2] = "*";
+        Map[_posX - 3, _posY - 2] = "*";
+        Map[_posX - 2, _posY - 2] = "*";
+        Map[_posX - 1, _posY - 2] = "*";
+        Map[_posX, _posY - 2] = "*";
+        Map[_posX + 1, _posY - 2] = "*";
+        Map[_posX + 2, _posY - 2] = "*";
+        Map[_posX + 3, _posY - 2] = "*";
 
-        map[_posX - 3, _posY - 1] = "=";
-        map[_posX, _posY - 1] = " ";
-        map[_posX + 3, _posY - 1] = "=";
+        Map[_posX - 3, _posY - 1] = "=";
+        Map[_posX, _posY - 1] = " ";
+        Map[_posX + 3, _posY - 1] = "=";
 
-        map[_posX - 3, _posY] = "*";
-        map[_posX - 2, _posY] = "|";
-        map[_posX + 2, _posY] = "|";
-        map[_posX + 3, _posY] = "*";
+        Map[_posX - 3, _posY] = "*";
+        Map[_posX - 2, _posY] = "|";
+        Map[_posX + 2, _posY] = "|";
+        Map[_posX + 3, _posY] = "*";
 
-        map[_posX - 3, _posY + 1] = "*";
-        map[_posX - 2, _posY + 1] = "|";
-        map[_posX - 1, _posY + 1] = underslot;
-        map[_posX, _posY + 1] = "=";
-        map[_posX + 1, _posY + 1] = underslot;
-        map[_posX + 2, _posY + 1] = "|";
-        map[_posX + 3, _posY + 1] = "*";
+        Map[_posX - 3, _posY + 1] = "*";
+        Map[_posX - 2, _posY + 1] = "|";
+        Map[_posX - 1, _posY + 1] = underslot;
+        Map[_posX, _posY + 1] = "=";
+        Map[_posX + 1, _posY + 1] = underslot;
+        Map[_posX + 2, _posY + 1] = "|";
+        Map[_posX + 3, _posY + 1] = "*";
 
-        map[_posX - 3, _posY + 2] = "=";
-        map[_posX - 2, _posY + 2] = "=";
-        map[_posX - 1, _posY + 2] = "=";
-        map[_posX, _posY + 2] = "=";
-        map[_posX + 1, _posY + 2] = "=";
-        map[_posX + 2, _posY + 2] = "=";
-        map[_posX + 3, _posY + 2] = "=";
+        Map[_posX - 3, _posY + 2] = "=";
+        Map[_posX - 2, _posY + 2] = "=";
+        Map[_posX - 1, _posY + 2] = "=";
+        Map[_posX, _posY + 2] = "=";
+        Map[_posX + 1, _posY + 2] = "=";
+        Map[_posX + 2, _posY + 2] = "=";
+        Map[_posX + 3, _posY + 2] = "=";
 
-        map[_posX - 3, _posY + 3] = "*";
-        map[_posX - 2, _posY + 3] = "*";
-        map[_posX - 1, _posY + 3] = "*";
-        map[_posX, _posY + 3] = "*";
-        map[_posX + 1, _posY + 3] = "*";
-        map[_posX + 2, _posY + 3] = "*";
-        map[_posX + 3, _posY + 3] = "*";
+        Map[_posX - 3, _posY + 3] = "*";
+        Map[_posX - 2, _posY + 3] = "*";
+        Map[_posX - 1, _posY + 3] = "*";
+        Map[_posX, _posY + 3] = "*";
+        Map[_posX + 1, _posY + 3] = "*";
+        Map[_posX + 2, _posY + 3] = "*";
+        Map[_posX + 3, _posY + 3] = "*";
 
         if (direction == "a")
         {
-            map[_posX - 2, _posY - 1] = "=";
-            map[_posX - 1, _posY - 1] = "/";
-            map[_posX + 1, _posY - 1] = " ";
-            map[_posX + 2, _posY - 1] = "|";
+            Map[_posX - 2, _posY - 1] = "=";
+            Map[_posX - 1, _posY - 1] = "/";
+            Map[_posX + 1, _posY - 1] = " ";
+            Map[_posX + 2, _posY - 1] = "|";
 
-            map[_posX - 1, _posY] = "^";
-            map[_posX, _posY] = spaceslot;
-            map[_posX + 1, _posY] = spaceslot;
+            Map[_posX - 1, _posY] = "^";
+            Map[_posX, _posY] = spaceslot;
+            Map[_posX + 1, _posY] = spaceslot;
         }
         else if (direction == "d")
         {
-            map[_posX - 2, _posY - 1] = "|";
-            map[_posX - 1, _posY - 1] = " ";
-            map[_posX + 1, _posY - 1] = "\\";
-            map[_posX + 2, _posY - 1] = "=";
+            Map[_posX - 2, _posY - 1] = "|";
+            Map[_posX - 1, _posY - 1] = " ";
+            Map[_posX + 1, _posY - 1] = "\\";
+            Map[_posX + 2, _posY - 1] = "=";
 
-            map[_posX - 1, _posY] = spaceslot;
-            map[_posX, _posY] = spaceslot;
-            map[_posX + 1, _posY] = "^";
+            Map[_posX - 1, _posY] = spaceslot;
+            Map[_posX, _posY] = spaceslot;
+            Map[_posX + 1, _posY] = "^";
         }
 
         UpdateRow(_posY - 2);
@@ -1179,56 +1181,56 @@ public class LinkMovement : MainProgram
 
     public void PlayEffect(string symbol)
     {
-        map[_posX - 2, _posY - 1] = symbol;
-        map[_posX - 1, _posY - 1] = symbol;
-        map[_posX, _posY - 1] = symbol;
-        map[_posX + 1, _posY - 1] = symbol;
-        map[_posX + 2, _posY - 1] = symbol;
+        Map[_posX - 2, _posY - 1] = symbol;
+        Map[_posX - 1, _posY - 1] = symbol;
+        Map[_posX, _posY - 1] = symbol;
+        Map[_posX + 1, _posY - 1] = symbol;
+        Map[_posX + 2, _posY - 1] = symbol;
 
-        map[_posX - 2, _posY] = symbol;
-        map[_posX - 1, _posY] = symbol;
-        map[_posX, _posY] = symbol;
-        map[_posX + 1, _posY] = symbol;
-        map[_posX + 2, _posY] = symbol;
+        Map[_posX - 2, _posY] = symbol;
+        Map[_posX - 1, _posY] = symbol;
+        Map[_posX, _posY] = symbol;
+        Map[_posX + 1, _posY] = symbol;
+        Map[_posX + 2, _posY] = symbol;
 
-        map[_posX - 2, _posY + 1] = symbol;
-        map[_posX - 1, _posY + 1] = symbol;
-        map[_posX, _posY + 1] = symbol;
-        map[_posX + 1, _posY + 1] = symbol;
-        map[_posX + 2, _posY + 1] = symbol;
+        Map[_posX - 2, _posY + 1] = symbol;
+        Map[_posX - 1, _posY + 1] = symbol;
+        Map[_posX, _posY + 1] = symbol;
+        Map[_posX + 1, _posY + 1] = symbol;
+        Map[_posX + 2, _posY + 1] = symbol;
 
-        map[_posX - 2, _posY + 2] = symbol;
-        map[_posX - 1, _posY + 2] = symbol;
-        map[_posX, _posY + 2] = symbol;
-        map[_posX + 1, _posY + 2] = symbol;
-        map[_posX + 2, _posY + 2] = symbol;
+        Map[_posX - 2, _posY + 2] = symbol;
+        Map[_posX - 1, _posY + 2] = symbol;
+        Map[_posX, _posY + 2] = symbol;
+        Map[_posX + 1, _posY + 2] = symbol;
+        Map[_posX + 2, _posY + 2] = symbol;
     }
 
     public void PlaceZelda()
     {
-        map[50, 14] = "=";
-        map[51, 14] = "<";
-        map[52, 14] = ">";
-        map[53, 14] = "=";
+        Map[50, 14] = "=";
+        Map[51, 14] = "<";
+        Map[52, 14] = ">";
+        Map[53, 14] = "=";
 
-        map[50, 15] = "s";
-        map[51, 15] = "^";
-        map[52, 15] = "^";
-        map[53, 15] = "s";
+        Map[50, 15] = "s";
+        Map[51, 15] = "^";
+        Map[52, 15] = "^";
+        Map[53, 15] = "s";
 
-        map[49, 16] = "s";
-        map[50, 16] = "s";
-        map[51, 16] = "~";
-        map[52, 16] = "~";
-        map[53, 16] = "s";
-        map[54, 16] = "s";
+        Map[49, 16] = "s";
+        Map[50, 16] = "s";
+        Map[51, 16] = "~";
+        Map[52, 16] = "~";
+        Map[53, 16] = "s";
+        Map[54, 16] = "s";
 
-        map[49, 16] = "~";
-        map[50, 16] = "~";
-        map[51, 16] = "~";
-        map[52, 16] = "~";
-        map[53, 16] = "~";
-        map[54, 16] = "~";
+        Map[49, 16] = "~";
+        Map[50, 16] = "~";
+        Map[51, 16] = "~";
+        Map[52, 16] = "~";
+        Map[53, 16] = "~";
+        Map[54, 16] = "~";
     }
 
     public void Hit()
@@ -1262,10 +1264,10 @@ public class LinkMovement : MainProgram
     {
         if (symbol == "/")
         {
-            return map[posX, posY - 1] == "/";
+            return Map[posX, posY - 1] == "/";
         }
 
-        if (map[posX - 2, posY - 1] == symbol || map[posX - 1, posY - 1] == symbol || map[posX, posY - 1] == symbol || map[posX + 1, posY - 1] == symbol || map[posX + 2, posY - 1] == symbol || map[posX - 2, posY] == symbol || map[posX - 1, posY] == symbol || map[posX, posY] == symbol || map[posX + 1, posY] == symbol || map[posX + 2, posY] == symbol || map[posX - 2, posY + 1] == symbol || map[posX - 1, posY + 1] == symbol || map[posX, posY + 1] == symbol || map[posX + 1, posY + 1] == symbol || map[posX + 2, posY + 1] == symbol || map[posX - 2, posY + 2] == symbol || map[posX - 1, posY + 2] == symbol || map[posX, posY + 2] == symbol || map[posX + 1, posY + 2] == symbol || map[posX + 2, posY + 2] == symbol)
+        if (Map[posX - 2, posY - 1] == symbol || Map[posX - 1, posY - 1] == symbol || Map[posX, posY - 1] == symbol || Map[posX + 1, posY - 1] == symbol || Map[posX + 2, posY - 1] == symbol || Map[posX - 2, posY] == symbol || Map[posX - 1, posY] == symbol || Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX - 2, posY + 1] == symbol || Map[posX - 1, posY + 1] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX - 2, posY + 2] == symbol || Map[posX - 1, posY + 2] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol)
         {
             if (symbol is "R" or "r")
             {
@@ -1273,9 +1275,9 @@ public class LinkMovement : MainProgram
                 {
                     for (var j = 0; j < 5; j++)
                     {
-                        if (map[posX - 2 + j, posY - 1 + i] is "R" or "r")
+                        if (Map[posX - 2 + j, posY - 1 + i] is "R" or "r")
                         {
-                            enemyMovement.RemoveRupee(posX - 2 + j, posY - 1 + i);
+                            MainProgram.EnemyMovement.RemoveRupee(posX - 2 + j, posY - 1 + i);
                         }
                     }
                 }
