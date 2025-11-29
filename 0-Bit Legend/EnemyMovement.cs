@@ -1,4 +1,5 @@
-﻿using _0_Bit_Legend.Model;
+﻿using _0_Bit_Legend.Enemies;
+using _0_Bit_Legend.Model;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
@@ -229,144 +230,23 @@ public class EnemyMovement
 
     public void Build(int index, EnemyType type, int posX, int posY)
     {
-        if (_prev2[index] == 'a')
+        switch (type)
         {
-            if (type == EnemyType.Octorok)
-            {
-                Map[posX + 0, posY] = ' ';
-                Map[posX + 1, posY] = 't';
-                Map[posX + 2, posY] = 't';
-                Map[posX + 3, posY] = 't';
-
-                Map[posX + 0, posY + 1] = 't';
-                Map[posX + 1, posY + 1] = '^';
-                Map[posX + 2, posY + 1] = 't';
-                Map[posX + 3, posY + 1] = 't';
-
-                Map[posX + 0, posY + 2] = 't';
-                Map[posX + 1, posY + 2] = 't';
-                Map[posX + 2, posY + 2] = 't';
-                Map[posX + 3, posY + 2] = 't';
-            }
-            else if (type == EnemyType.Spider)
-            {
-                Map[posX + 0, posY] = ' ';
-                Map[posX + 1, posY] = 't';
-                Map[posX + 2, posY] = 't';
-                Map[posX + 3, posY] = 't';
-                Map[posX + 4, posY] = ' ';
-
-                Map[posX + 0, posY + 1] = 'n';
-                Map[posX + 1, posY + 1] = '0';
-                Map[posX + 2, posY + 1] = '0';
-                Map[posX + 3, posY + 1] = 't';
-                Map[posX + 4, posY + 1] = 't';
-
-                Map[posX + 0, posY + 2] = ' ';
-                Map[posX + 1, posY + 2] = 'n';
-                Map[posX + 2, posY + 2] = 't';
-                Map[posX + 4, posY + 2] = ' ';
-                Map[posX + 3, posY + 2] = 'n';
-            }
-            else if (type == EnemyType.Bat)
-            {
-                Map[posX + 0, posY] = '{';
-                Map[posX + 1, posY] = 't';
-                Map[posX + 2, posY] = ' ';
-                Map[posX + 3, posY] = 't';
-                Map[posX + 4, posY] = '}';
-
-                Map[posX + 0, posY + 1] = ' ';
-                Map[posX + 1, posY + 1] = ' ';
-                Map[posX + 2, posY + 1] = 'B';
-                Map[posX + 3, posY + 1] = ' ';
-                Map[posX + 4, posY + 1] = ' ';
-            }
-        }
-        else
-        {
-            if (type == EnemyType.Octorok)
-            {
-                Map[posX + 0, posY] = 't';
-                Map[posX + 1, posY] = 't';
-                Map[posX + 2, posY] = 't';
-                Map[posX + 3, posY] = ' ';
-
-                Map[posX + 0, posY + 1] = 't';
-                Map[posX + 1, posY + 1] = 't';
-                Map[posX + 2, posY + 1] = '^';
-                Map[posX + 3, posY + 1] = 't';
-
-                Map[posX + 0, posY + 2] = 't';
-                Map[posX + 1, posY + 2] = 't';
-                Map[posX + 2, posY + 2] = 't';
-                Map[posX + 3, posY + 2] = 't';
-            }
-            else if (type == EnemyType.Spider)
-            {
-                Map[posX + 0, posY] = ' ';
-                Map[posX + 1, posY] = 't';
-                Map[posX + 2, posY] = 't';
-                Map[posX + 3, posY] = 't';
-                Map[posX + 4, posY] = ' ';
-
-                Map[posX + 0, posY + 1] = 't';
-                Map[posX + 1, posY + 1] = 't';
-                Map[posX + 2, posY + 1] = '0';
-                Map[posX + 3, posY + 1] = '0';
-                Map[posX + 4, posY + 1] = 'n';
-
-                Map[posX + 0, posY + 2] = ' ';
-                Map[posX + 1, posY + 2] = 'n';
-                Map[posX + 2, posY + 2] = 't';
-                Map[posX + 3, posY + 2] = 'n';
-                Map[posX + 4, posY + 2] = ' ';
-            }
-            else if (type == EnemyType.Bat)
-            {
-                Map[posX + 0, posY] = ' ';
-                Map[posX + 1, posY] = ' ';
-                Map[posX + 2, posY] = 'B';
-                Map[posX + 3, posY] = ' ';
-                Map[posX + 4, posY] = ' ';
-
-                Map[posX + 0, posY + 1] = '{';
-                Map[posX + 1, posY + 1] = 't';
-                Map[posX + 2, posY + 1] = ' ';
-                Map[posX + 3, posY + 1] = 't';
-                Map[posX + 4, posY + 1] = '}';
-            }
-        }
-        if (type == EnemyType.Dragon)
-        {
-            var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
-            if (_prev1[index] == 'd') dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
-
-            var debounce = false;
-            var value = 0;
-            for (var i = 0; i < 7; i++)
-            {
-                for (var j = 0; j < 12; j++)
-                {
-                    if (Map[posX + j, posY + i] == '/' || Map[posX + j, posY + i] == '\\' || Map[posX + j, posY + i] == '|' || Map[posX + j, posY + i] == '_' && !debounce)
-                    {
-                        debounce = true;
-                        MainProgram.LinkMovement.Hit();
-                    }
-                    Map[posX + j, posY + i] = dragon[value];
-                    value++;
-                }
-            }
-        }
-        else if (type == EnemyType.Fireball)
-        {
-            Map[posX + 0, posY] = 'F';
-            Map[posX + 1, posY] = 'F';
-            Map[posX + 2, posY] = 'F';
-
-            Map[posX + 0, posY + 1] = 'F';
-            Map[posX + 1, posY + 1] = 'F';
-            Map[posX + 2, posY + 1] = 'F';
+            case EnemyType.Octorok:
+                new Octorok().Build(posX, posY, _prev2[index]);
+                break;
+            case EnemyType.Spider:
+                new Spider().Build(posX, posY, _prev2[index]);
+                break;
+            case EnemyType.Bat:
+                new Bat().Build(posX, posY, _prev2[index]);
+                break;
+            case EnemyType.Dragon:
+                new Dragon().Build(posX, posY, _prev1[index]);
+                break;
+            case EnemyType.Fireball:
+                new Fireball().Build(posX, posY, ' ');
+                break;
         }
     }
 

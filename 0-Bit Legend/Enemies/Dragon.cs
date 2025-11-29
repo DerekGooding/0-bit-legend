@@ -1,5 +1,4 @@
 ﻿using _0_Bit_Legend.Model;
-using System;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend.Enemies;
