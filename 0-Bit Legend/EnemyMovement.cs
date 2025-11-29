@@ -146,35 +146,35 @@ public class EnemyMovement
         if (InBounds(type, posX, posY))
         {
             Clear(index, type);
-            if (type == EnemyType.Dragon || ((type == EnemyType.Spider || type == EnemyType.Bat || (!IsTouching(type, posX, posY, "=") && !IsTouching(type, posX, posY, "X"))) && !IsTouching(type, posX, posY, "t") && !IsTouching(type, posX, posY, "n") && !IsTouching(type, posX, posY, "B") && !IsTouching(type, posX, posY, "{") && !IsTouching(type, posX, posY, "}") && !IsTouching(type, posX, posY, "|") && !IsTouching(type, posX, posY, "/") && !IsTouching(type, posX, posY, "\\") && !IsTouching(type, posX, posY, "_") && !IsTouching(type, posX, posY, "~")))
+            if (type == EnemyType.Dragon || ((type == EnemyType.Spider || type == EnemyType.Bat || (!IsTouching(type, posX, posY, '=') && !IsTouching(type, posX, posY, 'X'))) && !IsTouching(type, posX, posY, 't') && !IsTouching(type, posX, posY, 'n') && !IsTouching(type, posX, posY, 'B') && !IsTouching(type, posX, posY, '{') && !IsTouching(type, posX, posY, '}') && !IsTouching(type, posX, posY, '|') && !IsTouching(type, posX, posY, '/') && !IsTouching(type, posX, posY, '\\') && !IsTouching(type, posX, posY, '_') && !IsTouching(type, posX, posY, '~')))
             {
                 _prev1[index] = direction;
 
                 if (type == EnemyType.Octorok)
                 {
-                    if (direction is "a" or "d")
+                    if (direction is 'a' or 'd')
                     {
                         _prev2[index] = direction;
                     }
                 }
                 else if (type == EnemyType.Spider)
                 {
-                    if (direction is "w" or "s")
+                    if (direction is 'w' or 's')
                     {
                         _prev2[index] = 'a';
                     }
-                    else if (direction is "a" or "d")
+                    else if (direction is 'a' or 'd')
                     {
                         _prev2[index] = 'd';
                     }
                 }
                 else if (type == EnemyType.Bat)
                 {
-                    if (_prev2[index] == "d")
+                    if (_prev2[index] == 'd')
                     {
                         _prev2[index] = 'a';
                     }
-                    else if (_prev2[index] == "a")
+                    else if (_prev2[index] == 'a')
                     {
                         _prev2[index] = 'd';
                     }
@@ -200,7 +200,7 @@ public class EnemyMovement
 
                 return true;
             }
-            else if (IsTouching(type, posX, posY, "|") || IsTouching(type, posX, posY, "_") || IsTouching(type, posX, posY, "\\"))
+            else if (IsTouching(type, posX, posY, '|') || IsTouching(type, posX, posY, '_') || IsTouching(type, posX, posY, '\\'))
             {
                 MainProgram.LinkMovement.Hit();
                 if (type == EnemyType.Fireball)
@@ -229,7 +229,7 @@ public class EnemyMovement
 
     public void Build(int index, EnemyType type, int posX, int posY)
     {
-        if (_prev2[index] == "a")
+        if (_prev2[index] == 'a')
         {
             if (type == EnemyType.Octorok)
             {
@@ -348,7 +348,7 @@ public class EnemyMovement
             {
                 for (var j = 0; j < 12; j++)
                 {
-                    if (Map[posX + j, posY + i] == "/" || Map[posX + j, posY + i] == "\\" || Map[posX + j, posY + i] == "|" || Map[posX + j, posY + i] == "_" && !debounce)
+                    if (Map[posX + j, posY + i] == '/' || Map[posX + j, posY + i] == '\\' || Map[posX + j, posY + i] == '|' || Map[posX + j, posY + i] == '_' && !debounce)
                     {
                         debounce = true;
                         MainProgram.LinkMovement.Hit();
@@ -425,9 +425,9 @@ public class EnemyMovement
 
         for (var i = 0; i < _map_storage[index].Length; i++)
         {
-            if (_map_storage[index][i] is "*" or "F" or "S" or "-" or "/" or "\\" or "|" or "^" or "#" or "r" or "R" or "V")
+            if (_map_storage[index][i] is '*' or 'F' or 's' or '-' or '/' or '\\' or '|' or '^' or '#' or 'r' or 'R' or 'V')
             {
-                _map_storage[index][i] = " ";
+                _map_storage[index][i] = ' ';
             }
         }
 
