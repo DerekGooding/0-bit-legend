@@ -34,200 +34,225 @@ public class LinkMovement
 
     public void Attack(Direction prev, bool attacking)
     {
-        if (prev == Direction.Up && _posY > 3)
+        if (prev == Direction.Up)
         {
-            if (!attacking)
-            {
-                _storage_sword[0] = Map[_posX - 1, _posY - 2];
-                _storage_sword[1] = Map[_posX, _posY - 2];
-                _storage_sword[2] = Map[_posX + 1, _posY - 2];
-                _storage_sword[3] = Map[_posX, _posY - 3];
-                _storage_sword[4] = Map[_posX, _posY - 4];
-
-                Map[_posX - 1, _posY - 2] = '-';
-                Map[_posX, _posY - 2] = '-';
-                Map[_posX + 1, _posY - 2] = '-';
-                Map[_posX, _posY - 3] = 'S';
-                Map[_posX, _posY - 4] = 'S';
-
-                _preHitPosX = _posX;
-                _preHitPosY = _posY;
-            }
-            else
-            {
-                _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY - 2];
-                _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY - 2];
-                _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY - 2];
-                _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY - 3];
-                _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY - 4];
-
-                var swordArr = new int[2, 5];
-                swordArr[0, 0] = _preHitPosX - 1;
-                swordArr[1, 0] = _preHitPosY - 2;
-                swordArr[0, 1] = _preHitPosX;
-                swordArr[1, 1] = _preHitPosY - 2;
-                swordArr[0, 2] = _preHitPosX + 1;
-                swordArr[1, 2] = _preHitPosY - 2;
-                swordArr[0, 3] = _preHitPosX;
-                swordArr[1, 3] = _preHitPosY - 3;
-                swordArr[0, 4] = _preHitPosX;
-                swordArr[1, 4] = _preHitPosY - 4;
-
-                Stab(swordArr, prev, 5, 1);
-            }
-
-            UpdateRow(_preHitPosY - 2);
-            UpdateRow(_preHitPosY - 3);
-            UpdateRow(_preHitPosY - 4);
+            HandleAttackUp(attacking);
         }
-        else if (prev == Direction.Left && _posX > 4)
+        else if (prev == Direction.Left)
         {
-            if (!attacking)
-            {
-                _storage_sword[0] = Map[_posX - 3, _posY];
-                _storage_sword[1] = Map[_posX - 3, _posY + 1];
-                _storage_sword[2] = Map[_posX - 3, _posY + 2];
-                _storage_sword[3] = Map[_posX - 4, _posY + 1];
-                _storage_sword[4] = Map[_posX - 5, _posY + 1];
-                _storage_sword[5] = Map[_posX - 6, _posY + 1];
-
-                Map[_posX - 3, _posY] = '-';
-                Map[_posX - 3, _posY + 1] = '-';
-                Map[_posX - 3, _posY + 2] = '-';
-                Map[_posX - 4, _posY + 1] = 'S';
-                Map[_posX - 5, _posY + 1] = 'S';
-                Map[_posX - 6, _posY + 1] = 'S';
-
-                _preHitPosX = _posX;
-                _preHitPosY = _posY;
-            }
-            else
-            {
-                _storage_detect_enemy[0] = Map[_preHitPosX - 3, _preHitPosY];
-                _storage_detect_enemy[1] = Map[_preHitPosX - 3, _preHitPosY + 1];
-                _storage_detect_enemy[2] = Map[_preHitPosX - 3, _preHitPosY + 2];
-                _storage_detect_enemy[3] = Map[_preHitPosX - 4, _preHitPosY + 1];
-                _storage_detect_enemy[4] = Map[_preHitPosX - 5, _preHitPosY + 1];
-                _storage_detect_enemy[5] = Map[_preHitPosX - 6, _preHitPosY + 1];
-
-                var swordArr = new int[2, 6];
-                swordArr[0, 0] = _preHitPosX - 3;
-                swordArr[1, 0] = _preHitPosY;
-                swordArr[0, 1] = _preHitPosX - 3;
-                swordArr[1, 1] = _preHitPosY + 1;
-                swordArr[0, 2] = _preHitPosX - 3;
-                swordArr[1, 2] = _preHitPosY + 2;
-                swordArr[0, 3] = _preHitPosX - 4;
-                swordArr[1, 3] = _preHitPosY + 1;
-                swordArr[0, 4] = _preHitPosX - 5;
-                swordArr[1, 4] = _preHitPosY + 1;
-                swordArr[0, 5] = _preHitPosX - 6;
-                swordArr[1, 5] = _preHitPosY + 1;
-
-                Stab(swordArr, prev, 6, 1);
-            }
-
-            UpdateRow(_preHitPosY);
-            UpdateRow(_preHitPosY + 1);
-            UpdateRow(_preHitPosY + 2);
+            HandleAttackLeft(attacking);
         }
-        else if (prev == Direction.Down && _posY + 4 < 33)
+        else if (prev == Direction.Down)
         {
-            if (!attacking)
-            {
-                _storage_sword[0] = Map[_posX - 1, _posY + 3];
-                _storage_sword[1] = Map[_posX, _posY + 3];
-                _storage_sword[2] = Map[_posX + 1, _posY + 3];
-                _storage_sword[3] = Map[_posX, _posY + 4];
-                _storage_sword[4] = Map[_posX, _posY + 5];
-
-                Map[_posX - 1, _posY + 3] = '-';
-                Map[_posX, _posY + 3] = '-';
-                Map[_posX + 1, _posY + 3] = '-';
-                Map[_posX, _posY + 4] = 'S';
-                Map[_posX, _posY + 5] = 'S';
-
-                _preHitPosX = _posX;
-                _preHitPosY = _posY;
-            }
-            else
-            {
-                _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY + 3];
-                _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY + 3];
-                _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY + 3];
-                _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY + 4];
-                _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY + 5];
-
-                var swordArr = new int[2, 5];
-                swordArr[0, 0] = _preHitPosX - 1;
-                swordArr[1, 0] = _preHitPosY + 3;
-                swordArr[0, 1] = _preHitPosX;
-                swordArr[1, 1] = _preHitPosY + 3;
-                swordArr[0, 2] = _preHitPosX + 1;
-                swordArr[1, 2] = _preHitPosY + 3;
-                swordArr[0, 3] = _preHitPosX;
-                swordArr[1, 3] = _preHitPosY + 4;
-                swordArr[0, 4] = _preHitPosX;
-                swordArr[1, 4] = _preHitPosY + 5;
-
-                Stab(swordArr, prev, 5, 1);
-            }
-
-            UpdateRow(_preHitPosY + 3);
-            UpdateRow(_preHitPosY + 4);
-            UpdateRow(_preHitPosY + 5);
+            HandleAttackDown(attacking);
         }
-        else if (prev == Direction.Right && _posX + 6 < 102)
+        else if (prev == Direction.Right)
         {
-            if (!attacking)
-            {
-                _storage_sword[0] = Map[_posX + 3, _posY];
-                _storage_sword[1] = Map[_posX + 3, _posY + 1];
-                _storage_sword[2] = Map[_posX + 3, _posY + 2];
-                _storage_sword[3] = Map[_posX + 4, _posY + 1];
-                _storage_sword[4] = Map[_posX + 5, _posY + 1];
-                _storage_sword[5] = Map[_posX + 6, _posY + 1];
-
-                Map[_posX + 3, _posY] = '-';
-                Map[_posX + 3, _posY + 1] = '-';
-                Map[_posX + 3, _posY + 2] = '-';
-                Map[_posX + 4, _posY + 1] = 'S';
-                Map[_posX + 5, _posY + 1] = 'S';
-                Map[_posX + 6, _posY + 1] = 'S';
-
-                _preHitPosX = _posX;
-                _preHitPosY = _posY;
-            }
-            else
-            {
-                _storage_detect_enemy[0] = Map[_preHitPosX + 3, _preHitPosY];
-                _storage_detect_enemy[1] = Map[_preHitPosX + 3, _preHitPosY + 1];
-                _storage_detect_enemy[2] = Map[_preHitPosX + 3, _preHitPosY + 2];
-                _storage_detect_enemy[3] = Map[_preHitPosX + 4, _preHitPosY + 1];
-                _storage_detect_enemy[4] = Map[_preHitPosX + 5, _preHitPosY + 1];
-                _storage_detect_enemy[5] = Map[_preHitPosX + 6, _preHitPosY + 1];
-
-                var swordArr = new int[2, 6];
-                swordArr[0, 0] = _preHitPosX + 3;
-                swordArr[1, 0] = _preHitPosY;
-                swordArr[0, 1] = _preHitPosX + 3;
-                swordArr[1, 1] = _preHitPosY + 1;
-                swordArr[0, 2] = _preHitPosX + 3;
-                swordArr[1, 2] = _preHitPosY + 2;
-                swordArr[0, 3] = _preHitPosX + 4;
-                swordArr[1, 3] = _preHitPosY + 1;
-                swordArr[0, 4] = _preHitPosX + 5;
-                swordArr[1, 4] = _preHitPosY + 1;
-                swordArr[0, 5] = _preHitPosX + 6;
-                swordArr[1, 5] = _preHitPosY + 1;
-
-                Stab(swordArr, prev, 6, 1);
-            }
-
-            UpdateRow(_preHitPosY);
-            UpdateRow(_preHitPosY + 1);
-            UpdateRow(_preHitPosY + 2);
+            HandleAttackRight(attacking);
         }
+    }
+
+    private void HandleAttackUp(bool attacking)
+    {
+        if (_posY > 3)
+            return;
+        if (!attacking)
+        {
+            _storage_sword[0] = Map[_posX - 1, _posY - 2];
+            _storage_sword[1] = Map[_posX, _posY - 2];
+            _storage_sword[2] = Map[_posX + 1, _posY - 2];
+            _storage_sword[3] = Map[_posX, _posY - 3];
+            _storage_sword[4] = Map[_posX, _posY - 4];
+
+            Map[_posX - 1, _posY - 2] = '-';
+            Map[_posX, _posY - 2] = '-';
+            Map[_posX + 1, _posY - 2] = '-';
+            Map[_posX, _posY - 3] = 'S';
+            Map[_posX, _posY - 4] = 'S';
+
+            _preHitPosX = _posX;
+            _preHitPosY = _posY;
+        }
+        else
+        {
+            _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY - 2];
+            _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY - 2];
+            _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY - 2];
+            _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY - 3];
+            _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY - 4];
+
+            var swordArr = new int[2, 5];
+            swordArr[0, 0] = _preHitPosX - 1;
+            swordArr[1, 0] = _preHitPosY - 2;
+            swordArr[0, 1] = _preHitPosX;
+            swordArr[1, 1] = _preHitPosY - 2;
+            swordArr[0, 2] = _preHitPosX + 1;
+            swordArr[1, 2] = _preHitPosY - 2;
+            swordArr[0, 3] = _preHitPosX;
+            swordArr[1, 3] = _preHitPosY - 3;
+            swordArr[0, 4] = _preHitPosX;
+            swordArr[1, 4] = _preHitPosY - 4;
+
+            Stab(swordArr, prev, 5, 1);
+        }
+
+        UpdateRow(_preHitPosY - 2);
+        UpdateRow(_preHitPosY - 3);
+        UpdateRow(_preHitPosY - 4);
+    }
+    private void HandleAttackLeft(bool attacking)
+    {
+        if(_posX > 4)
+            return;
+        if (!attacking)
+        {
+            _storage_sword[0] = Map[_posX - 3, _posY];
+            _storage_sword[1] = Map[_posX - 3, _posY + 1];
+            _storage_sword[2] = Map[_posX - 3, _posY + 2];
+            _storage_sword[3] = Map[_posX - 4, _posY + 1];
+            _storage_sword[4] = Map[_posX - 5, _posY + 1];
+            _storage_sword[5] = Map[_posX - 6, _posY + 1];
+
+            Map[_posX - 3, _posY] = '-';
+            Map[_posX - 3, _posY + 1] = '-';
+            Map[_posX - 3, _posY + 2] = '-';
+            Map[_posX - 4, _posY + 1] = 'S';
+            Map[_posX - 5, _posY + 1] = 'S';
+            Map[_posX - 6, _posY + 1] = 'S';
+
+            _preHitPosX = _posX;
+            _preHitPosY = _posY;
+        }
+        else
+        {
+            _storage_detect_enemy[0] = Map[_preHitPosX - 3, _preHitPosY];
+            _storage_detect_enemy[1] = Map[_preHitPosX - 3, _preHitPosY + 1];
+            _storage_detect_enemy[2] = Map[_preHitPosX - 3, _preHitPosY + 2];
+            _storage_detect_enemy[3] = Map[_preHitPosX - 4, _preHitPosY + 1];
+            _storage_detect_enemy[4] = Map[_preHitPosX - 5, _preHitPosY + 1];
+            _storage_detect_enemy[5] = Map[_preHitPosX - 6, _preHitPosY + 1];
+
+            var swordArr = new int[2, 6];
+            swordArr[0, 0] = _preHitPosX - 3;
+            swordArr[1, 0] = _preHitPosY;
+            swordArr[0, 1] = _preHitPosX - 3;
+            swordArr[1, 1] = _preHitPosY + 1;
+            swordArr[0, 2] = _preHitPosX - 3;
+            swordArr[1, 2] = _preHitPosY + 2;
+            swordArr[0, 3] = _preHitPosX - 4;
+            swordArr[1, 3] = _preHitPosY + 1;
+            swordArr[0, 4] = _preHitPosX - 5;
+            swordArr[1, 4] = _preHitPosY + 1;
+            swordArr[0, 5] = _preHitPosX - 6;
+            swordArr[1, 5] = _preHitPosY + 1;
+
+            Stab(swordArr, prev, 6, 1);
+        }
+
+        UpdateRow(_preHitPosY);
+        UpdateRow(_preHitPosY + 1);
+        UpdateRow(_preHitPosY + 2);
+    }
+    private void HandleAttackDown(bool attacking)
+    {
+        if (_posY + 4 < 33)
+            return;
+        if (!attacking)
+        {
+            _storage_sword[0] = Map[_posX - 1, _posY + 3];
+            _storage_sword[1] = Map[_posX, _posY + 3];
+            _storage_sword[2] = Map[_posX + 1, _posY + 3];
+            _storage_sword[3] = Map[_posX, _posY + 4];
+            _storage_sword[4] = Map[_posX, _posY + 5];
+
+            Map[_posX - 1, _posY + 3] = '-';
+            Map[_posX, _posY + 3] = '-';
+            Map[_posX + 1, _posY + 3] = '-';
+            Map[_posX, _posY + 4] = 'S';
+            Map[_posX, _posY + 5] = 'S';
+
+            _preHitPosX = _posX;
+            _preHitPosY = _posY;
+        }
+        else
+        {
+            _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY + 3];
+            _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY + 3];
+            _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY + 3];
+            _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY + 4];
+            _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY + 5];
+
+            var swordArr = new int[2, 5];
+            swordArr[0, 0] = _preHitPosX - 1;
+            swordArr[1, 0] = _preHitPosY + 3;
+            swordArr[0, 1] = _preHitPosX;
+            swordArr[1, 1] = _preHitPosY + 3;
+            swordArr[0, 2] = _preHitPosX + 1;
+            swordArr[1, 2] = _preHitPosY + 3;
+            swordArr[0, 3] = _preHitPosX;
+            swordArr[1, 3] = _preHitPosY + 4;
+            swordArr[0, 4] = _preHitPosX;
+            swordArr[1, 4] = _preHitPosY + 5;
+
+            Stab(swordArr, prev, 5, 1);
+        }
+
+        UpdateRow(_preHitPosY + 3);
+        UpdateRow(_preHitPosY + 4);
+        UpdateRow(_preHitPosY + 5);
+    }
+    private void HandleAttackRight(bool attacking)
+    {
+        if (_posX + 6 < 102)
+            return;
+        if (!attacking)
+        {
+            _storage_sword[0] = Map[_posX + 3, _posY];
+            _storage_sword[1] = Map[_posX + 3, _posY + 1];
+            _storage_sword[2] = Map[_posX + 3, _posY + 2];
+            _storage_sword[3] = Map[_posX + 4, _posY + 1];
+            _storage_sword[4] = Map[_posX + 5, _posY + 1];
+            _storage_sword[5] = Map[_posX + 6, _posY + 1];
+
+            Map[_posX + 3, _posY] = '-';
+            Map[_posX + 3, _posY + 1] = '-';
+            Map[_posX + 3, _posY + 2] = '-';
+            Map[_posX + 4, _posY + 1] = 'S';
+            Map[_posX + 5, _posY + 1] = 'S';
+            Map[_posX + 6, _posY + 1] = 'S';
+
+            _preHitPosX = _posX;
+            _preHitPosY = _posY;
+        }
+        else
+        {
+            _storage_detect_enemy[0] = Map[_preHitPosX + 3, _preHitPosY];
+            _storage_detect_enemy[1] = Map[_preHitPosX + 3, _preHitPosY + 1];
+            _storage_detect_enemy[2] = Map[_preHitPosX + 3, _preHitPosY + 2];
+            _storage_detect_enemy[3] = Map[_preHitPosX + 4, _preHitPosY + 1];
+            _storage_detect_enemy[4] = Map[_preHitPosX + 5, _preHitPosY + 1];
+            _storage_detect_enemy[5] = Map[_preHitPosX + 6, _preHitPosY + 1];
+
+            var swordArr = new int[2, 6];
+            swordArr[0, 0] = _preHitPosX + 3;
+            swordArr[1, 0] = _preHitPosY;
+            swordArr[0, 1] = _preHitPosX + 3;
+            swordArr[1, 1] = _preHitPosY + 1;
+            swordArr[0, 2] = _preHitPosX + 3;
+            swordArr[1, 2] = _preHitPosY + 2;
+            swordArr[0, 3] = _preHitPosX + 4;
+            swordArr[1, 3] = _preHitPosY + 1;
+            swordArr[0, 4] = _preHitPosX + 5;
+            swordArr[1, 4] = _preHitPosY + 1;
+            swordArr[0, 5] = _preHitPosX + 6;
+            swordArr[1, 5] = _preHitPosY + 1;
+
+            Stab(swordArr, prev, 6, 1);
+        }
+
+        UpdateRow(_preHitPosY);
+        UpdateRow(_preHitPosY + 1);
+        UpdateRow(_preHitPosY + 2);
     }
 
     public void Stab(int[,] swordArr, Direction prev, int amt, int dmg)
