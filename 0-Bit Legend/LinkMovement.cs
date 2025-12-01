@@ -93,7 +93,7 @@ public class LinkMovement
             swordArr[0, 4] = _preHitPosX;
             swordArr[1, 4] = _preHitPosY - 4;
 
-            Stab(swordArr, prev, 5, 1);
+            Stab(swordArr, Direction.Up, 5, 1);
         }
 
         UpdateRow(_preHitPosY - 2);
@@ -146,7 +146,7 @@ public class LinkMovement
             swordArr[0, 5] = _preHitPosX - 6;
             swordArr[1, 5] = _preHitPosY + 1;
 
-            Stab(swordArr, prev, 6, 1);
+            Stab(swordArr, Direction.Left, 6, 1);
         }
 
         UpdateRow(_preHitPosY);
@@ -194,7 +194,7 @@ public class LinkMovement
             swordArr[0, 4] = _preHitPosX;
             swordArr[1, 4] = _preHitPosY + 5;
 
-            Stab(swordArr, prev, 5, 1);
+            Stab(swordArr, Direction.Down, 5, 1);
         }
 
         UpdateRow(_preHitPosY + 3);
@@ -247,7 +247,7 @@ public class LinkMovement
             swordArr[0, 5] = _preHitPosX + 6;
             swordArr[1, 5] = _preHitPosY + 1;
 
-            Stab(swordArr, prev, 6, 1);
+            Stab(swordArr, Direction.Right, 6, 1);
         }
 
         UpdateRow(_preHitPosY);
