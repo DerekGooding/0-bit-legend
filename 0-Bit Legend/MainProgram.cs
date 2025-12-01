@@ -128,19 +128,19 @@ public static class MainProgram
                     {
                         if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, Direction.Up, false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, Direction.Up);
                         }
                         else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), Direction.Left, false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), Direction.Left);
                         }
                         else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, Direction.Down, false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, Direction.Down);
                         }
                         else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), Direction.Right, false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), Direction.Right);
                         }
                         else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
                         {
@@ -605,12 +605,12 @@ public static class MainProgram
                             {
                                 if (CurrentMap is 0 or 4 or 8)
                                 {
-                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, Direction.Up, false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, Direction.Up);
                                     Thread.Sleep(50);
                                 }
                                 else if (CurrentMap is 6 or 7 or 9)
                                 {
-                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, Direction.Down, false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, Direction.Down);
                                     Thread.Sleep(50);
                                 }
 
@@ -656,7 +656,7 @@ public static class MainProgram
                         x = -6;
                     }
 
-                    LinkMovement.MoveLink(LinkMovement.GetPosX() + x, LinkMovement.GetPosY() + y, LinkMovement.GetPrev(), false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX() + x, LinkMovement.GetPosY() + y, LinkMovement.GetPrev());
                 }
             }
             else if (Health <= 0)
@@ -732,7 +732,7 @@ public static class MainProgram
                     UpdateRow(32 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), Direction.Left, false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), Direction.Left);
                 }
                 else if (_frames < 30)
                 {
@@ -745,7 +745,7 @@ public static class MainProgram
                     UpdateRow(45 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), Direction.Left, false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), Direction.Left);
                 }
                 else if (_frames == 30)
                 {
@@ -1014,7 +1014,7 @@ public static class MainProgram
         }
         else
         {
-            LinkMovement.MoveLink(posX, posY, direction, true);
+            LinkMovement.SpawnLink(posX, posY);
         }
 
         if (lCText)
