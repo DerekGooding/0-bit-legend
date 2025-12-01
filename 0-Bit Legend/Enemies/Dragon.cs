@@ -23,7 +23,7 @@ public class Dragon : IEnemy
                     || (Map[posX + j, posY + i] == '_' && !debounce))
                 {
                     debounce = true;
-                    MainProgram.LinkMovement.Hit();
+                    MainProgram.PlayerController.Hit();
                 }
                 Map[posX + j, posY + i] = dragon[value];
                 value++;

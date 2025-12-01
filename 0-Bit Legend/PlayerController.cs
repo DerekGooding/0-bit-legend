@@ -3,7 +3,7 @@ using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
 
-public class LinkMovement
+public class PlayerController
 {
     private int _preHitPosX;
     private int _preHitPosY;
@@ -17,6 +17,7 @@ public class LinkMovement
 
     private bool _debounce;
     private bool _spawnRupee;
+    private bool _swingingSword;
 
     public int PosX { get; private set; }
     public int PosY { get; private set; }
@@ -52,9 +53,9 @@ public class LinkMovement
 
     private void HandleAttackUp()
     {
-        //if (_posY > 3)
+        //if (PosY > 3)
         //    return;
-        if (State != GameState.Attacking)
+        if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX - 1, PosY - 2];
             _storage_sword[1] = Map[PosX, PosY - 2];
@@ -70,7 +71,7 @@ public class LinkMovement
 
             _preHitPosX = PosX;
             _preHitPosY = PosY;
-            SetGameState(GameState.Idle);
+            _swingingSword = true;
         }
         else
         {
@@ -101,9 +102,9 @@ public class LinkMovement
     }
     private void HandleAttackLeft()
     {
-        //if(_posX > 4)
+        //if (PosY > 4)
         //    return;
-        if (State != GameState.Attacking)
+        if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX - 3, PosY];
             _storage_sword[1] = Map[PosX - 3, PosY + 1];
@@ -121,7 +122,7 @@ public class LinkMovement
 
             _preHitPosX = PosX;
             _preHitPosY = PosY;
-            SetGameState(GameState.Idle);
+            _swingingSword = true;
         }
         else
         {
@@ -155,9 +156,9 @@ public class LinkMovement
     }
     private void HandleAttackDown()
     {
-        //if (_posY + 4 < 33)
+        //if (PosY + 4 < 33)
         //    return;
-        if (State != GameState.Attacking)
+        if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX - 1, PosY + 3];
             _storage_sword[1] = Map[PosX, PosY + 3];
@@ -173,7 +174,7 @@ public class LinkMovement
 
             _preHitPosX = PosX;
             _preHitPosY = PosY;
-            SetGameState(GameState.Idle);
+            _swingingSword = true;
         }
         else
         {
@@ -204,9 +205,9 @@ public class LinkMovement
     }
     private void HandleAttackRight()
     {
-        //if (_posX + 6 < 102)
+        //if (PosY + 6 < 102)
         //    return;
-        if (State != GameState.Attacking)
+        if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX + 3, PosY];
             _storage_sword[1] = Map[PosX + 3, PosY + 1];
@@ -224,7 +225,7 @@ public class LinkMovement
 
             _preHitPosX = PosX;
             _preHitPosY = PosY;
-            SetGameState(GameState.Idle);
+            _swingingSword = true;
         }
         else
         {
@@ -266,10 +267,10 @@ public class LinkMovement
             if (detect.Any(x => x == _storage_sword[i]) || detect.Any(x => x == _storage_detect_enemy[i]))
             {
                 hit = true;
-                if (MainProgram.EnemyMovement.TakeDamage(swordArr[0, i], swordArr[1, i], prev, dmg) && _spawnRupee)
+                if (MainProgram.EnemyManager.TakeDamage(swordArr[0, i], swordArr[1, i], prev, dmg) && _spawnRupee)
                 {
                     _spawnRupee = false;
-                    MainProgram.EnemyMovement.SpawnRupee();
+                    MainProgram.EnemyManager.SpawnRupee();
                 }
                 break;
             }
@@ -278,6 +279,8 @@ public class LinkMovement
         {
             StoreSword(prev);
         }
+        SetGameState(GameState.Idle);
+        _swingingSword = false;
     }
 
     public void StoreSword(Direction prev)
@@ -821,17 +824,17 @@ public class LinkMovement
             else if (CurrentMap == 6)
             {
                 LoadMap(0, 16, 6, Direction.Down);
-                WaitForTransition();
+                //WaitForTransition();
             }
             else if (CurrentMap == 7)
             {
                 LoadMap(4, 86, 7, Direction.Down);
-                WaitForTransition();
+                //WaitForTransition();
             }
             else if (CurrentMap == 9)
             {
                 LoadMap(8, 51, 17, Direction.Down);
-                WaitForTransition();
+                //WaitForTransition();
             }
         }
         SetFlag(GameFlag.Text, false);
@@ -1446,7 +1449,7 @@ public class LinkMovement
                     {
                         if (Map[posX - 2 + j, posY - 1 + i] is 'R' or 'r')
                         {
-                            MainProgram.EnemyMovement.RemoveRupee(posX - 2 + j, posY - 1 + i);
+                            MainProgram.EnemyManager.RemoveRupee(posX - 2 + j, posY - 1 + i);
                         }
                     }
                 }

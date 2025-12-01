@@ -4,7 +4,7 @@ using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
 
-public class EnemyMovement
+public class EnemyManager
 {
     // Enemy
     private readonly List<int> _posX = [];
@@ -50,7 +50,7 @@ public class EnemyMovement
     public bool TakeDamage(int posX, int posY, Direction prev, int _)
     {
         var index = GetIndex(posX, posY);
-        MainProgram.LinkMovement.StoreSword(prev);
+        MainProgram.PlayerController.StoreSword(prev);
 
         if (index == -1 || _type[index] == EnemyType.Fireball)
         {
@@ -82,12 +82,12 @@ public class EnemyMovement
 
             Remove(index, _type[index]);
 
-            MainProgram.LinkMovement.SetSpawnRupee(true);
+            MainProgram.PlayerController.SetSpawnRupee(true);
 
             if (_sRType == EnemyType.Dragon)
             {
                 SetFlag(Model.GameFlag.Dragon, true);
-                LoadMap(12, MainProgram.LinkMovement.PosX, MainProgram.LinkMovement.PosY, MainProgram.LinkMovement.GetPrev());
+                LoadMap(12, MainProgram.PlayerController.PosX, MainProgram.PlayerController.PosY, MainProgram.PlayerController.GetPrev());
             }
         }
         return true;
@@ -217,7 +217,7 @@ public class EnemyMovement
             }
             else if (enemy.IsTouching(posX, posY, blocking2))
             {
-                MainProgram.LinkMovement.Hit();
+                MainProgram.PlayerController.Hit();
                 if (type == EnemyType.Fireball)
                 {
                     Remove(GetIndex(_posX[index], _posY[index]), type);
