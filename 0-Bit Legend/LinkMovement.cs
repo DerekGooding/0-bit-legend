@@ -32,6 +32,8 @@ public class LinkMovement
     public void SetPrev(Direction prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
+    public int MovementWait;
+
     public void Attack(Direction direction, bool attacking)
     {
         switch (direction)
@@ -53,8 +55,8 @@ public class LinkMovement
 
     private void HandleAttackUp(bool attacking)
     {
-        if (_posY > 3)
-            return;
+        //if (_posY > 3)
+        //    return;
         if (!attacking)
         {
             _storage_sword[0] = Map[_posX - 1, _posY - 2];
@@ -101,8 +103,8 @@ public class LinkMovement
     }
     private void HandleAttackLeft(bool attacking)
     {
-        if(_posX > 4)
-            return;
+        //if(_posX > 4)
+        //    return;
         if (!attacking)
         {
             _storage_sword[0] = Map[_posX - 3, _posY];
@@ -154,8 +156,8 @@ public class LinkMovement
     }
     private void HandleAttackDown(bool attacking)
     {
-        if (_posY + 4 < 33)
-            return;
+        //if (_posY + 4 < 33)
+        //    return;
         if (!attacking)
         {
             _storage_sword[0] = Map[_posX - 1, _posY + 3];
@@ -202,8 +204,8 @@ public class LinkMovement
     }
     private void HandleAttackRight(bool attacking)
     {
-        if (_posX + 6 < 102)
-            return;
+        //if (_posX + 6 < 102)
+        //    return;
         if (!attacking)
         {
             _storage_sword[0] = Map[_posX + 3, _posY];
@@ -279,9 +281,10 @@ public class LinkMovement
 
     public void StoreSword(Direction prev)
     {
+        char[] convert = ['t', '^', 'n', '0', 'B', '{', '}', 'F', 'S', '>', '*'];
         for (var i = 0; i < 6; i++)
         {
-            if (_storage_sword[i] is 't' or '^' or 'n' or '0' or 'B' or '{' or '}' or 'F' or 'S' or '>' or '*')
+            if (convert.Any(x => x == _storage_sword[i]))
             {
                 _storage_sword[i] = ' ';
             }

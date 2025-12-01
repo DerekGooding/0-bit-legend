@@ -21,10 +21,10 @@ public static class MainProgram
             _flags &= ~flag;
     }
 
-    private static readonly List<IMap> _maps = new List<IMap>();
+    private static readonly List<IMap> _maps = [];
 
     public static char[,] Map { get; } = new char[102, 33];
-    public static int CurrentMap { get; set; } = 0;
+    public static int CurrentMap { get; private set; }
 
     private static readonly string[] _strs = new string[33];
 
@@ -573,7 +573,7 @@ public static class MainProgram
                         LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
                         if (LinkMovement.GetPrev() == Direction.None)
                         {
-                            if (int.Parse(LinkMovement.GetPrev().ToString()) <= 0)
+                            if (LinkMovement.MovementWait <= 0)
                             {
                                 if (CurrentMap == 0)
                                 {
@@ -620,9 +620,7 @@ public static class MainProgram
                                 }
                                 else
                                 {
-                                    //TODO => What is this? It just loops infinitely for no benefit
-                                    //LinkMovement.SetPrev((int.Parse(LinkMovement.GetPrev().ToString()) - 1).ToString()[0]);
-                                    LinkMovement.SetPrev(Direction.None);
+                                    LinkMovement.MovementWait--;
                                 }
                             }
                         }
@@ -884,10 +882,11 @@ public static class MainProgram
 
         var val = 0;
 
-        if (!(posX == 16 && posY == 6) && !(posX == 86 && posY == 7) && !(posX == 51 && posY == 17))
-        {
-            CurrentMap = mapNum;
-        }
+        //if (!(posX == 16 && posY == 6) && !(posX == 86 && posY == 7) && !(posX == 51 && posY == 17))
+        //{
+        //    CurrentMap = mapNum;
+        //}
+        CurrentMap = mapNum;
 
         while (EnemyMovement.GetTotal() != 0)
         {
@@ -1031,8 +1030,8 @@ public static class MainProgram
     public static void Wait(int time)
     {
         _attacking = true;
-        //TODO => Why is this set to a number?
-        //LinkMovement.SetPrev(time.ToString()[0]);
+        if(LinkMovement.MovementWait == 0)
+            LinkMovement.MovementWait = time;
         LinkMovement.SetPrev(Direction.None);
     }
 
