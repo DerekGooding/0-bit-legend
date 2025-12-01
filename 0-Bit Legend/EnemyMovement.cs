@@ -201,7 +201,9 @@ public class EnemyMovement
 
                 return true;
             }
-            else if (IsTouching(type, posX, posY, '|') || IsTouching(type, posX, posY, '_') || IsTouching(type, posX, posY, '\\'))
+            else if (IsTouching(type, posX, posY, '|')
+                || IsTouching(type, posX, posY, '_')
+                || IsTouching(type, posX, posY, '\\'))
             {
                 MainProgram.LinkMovement.Hit();
                 if (type == EnemyType.Fireball)
@@ -541,11 +543,76 @@ public class EnemyMovement
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(EnemyType type, int posX, int posY, char symbol)
-        => (type == EnemyType.Octorok && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol))
-            || ((type == EnemyType.Spider && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol || Map[posX + 4, posY + 2] == symbol))
-            || ((type == EnemyType.Bat && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
-            || (type == EnemyType.Fireball && (Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol))));
+    public bool IsTouching(EnemyType type, int posX, int posY, char symbol) => type switch
+    {
+        EnemyType.Octorok => IsTouchingOctorok(posX, posY, symbol),
+        EnemyType.Spider => IsTouchingSpider(posX, posY, symbol),
+        EnemyType.Bat => IsTouchingBat(posX, posY, symbol),
+        EnemyType.Fireball => IsTouchingFireball(posX, posY, symbol),
+        _ => false
+    };
+
+    private static bool IsTouchingOctorok(int posX, int posY, char symbol)
+    {
+        //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol))
+        for (var i = 0; i < 4; i++)
+        {
+            for (var j = 0; j < 3; j++)
+            {
+                if (Map[posX + i, posY + j] == symbol)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private static bool IsTouchingSpider(int posX, int posY, char symbol)
+    {
+        //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol || Map[posX + 4, posY + 2] == symbol))
+        for (var i = 0; i < 5; i++)
+        {
+            for (var j = 0; j < 3; j++)
+            {
+                if (Map[posX + i, posY + j] == symbol)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private static bool IsTouchingBat(int posX, int posY, char symbol)
+    {
+        //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
+        for (var i = 0; i < 5; i++)
+        {
+            for (var j = 0; j < 2; j++)
+            {
+                if (Map[posX + i, posY + j] == symbol)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private static bool IsTouchingFireball(int posX, int posY, char symbol)
+    {
+        //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol))))
+        for (var i = 0; i < 3; i++)
+        {
+            for (var j = 0; j < 2; j++)
+            {
+                if (Map[posX + i, posY + j] == symbol)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public int GetIndex(int posX, int posY)
     {
