@@ -94,19 +94,19 @@ public static class MainProgram
         switch (ResolveCardinalDirection(rawInput))
         {
             case InputType.Up:
-                PlayerController.MoveUp(PlayerController.PosX, PlayerController.PosY - 1);
+                PlayerController.MoveUp();
                 break;
 
             case InputType.Down:
-                PlayerController.MoveDown(PlayerController.PosX, PlayerController.PosY + 1);
+                PlayerController.MoveDown();
                 break;
 
             case InputType.Left:
-                PlayerController.MoveLeft(PlayerController.PosX - 2, PlayerController.PosY);
+                PlayerController.MoveLeft();
                 break;
 
             case InputType.Right:
-                PlayerController.MoveRight(PlayerController.PosX + 2, PlayerController.PosY);
+                PlayerController.MoveRight();
                 break;
         }
 
@@ -542,12 +542,12 @@ public static class MainProgram
 
         if (CurrentMap is 0 or 4 or 8)
         {
-            PlayerController.MoveUp(PlayerController.PosX, PlayerController.PosY - 1);
+            PlayerController.MoveUp();
             Thread.Sleep(50);
         }
         else if (CurrentMap is 6 or 7 or 9)
         {
-            PlayerController.MoveDown(PlayerController.PosX, PlayerController.PosY + 1);
+            PlayerController.MoveDown();
             Thread.Sleep(50);
         }
 
@@ -589,19 +589,19 @@ public static class MainProgram
 
         if (PlayerController.GetPrev() == Direction.Up && PlayerController.PosY < 27)
         {
-            PlayerController.MoveUp(PlayerController.PosX, PlayerController.PosY + 3);
+            PlayerController.MoveDown(3);
         }
         else if (PlayerController.GetPrev() == Direction.Left && PlayerController.PosX < 94)
         {
-            PlayerController.MoveLeft(PlayerController.PosX + 6, PlayerController.PosY);
+            PlayerController.MoveRight(3);
         }
         else if (PlayerController.GetPrev() == Direction.Down && PlayerController.PosY > 3)
         {
-            PlayerController.MoveDown(PlayerController.PosX, PlayerController.PosY - 3);
+            PlayerController.MoveUp(3);
         }
         else if (PlayerController.GetPrev() == Direction.Right && PlayerController.PosX > 7)
         {
-            PlayerController.MoveRight(PlayerController.PosX - 6, PlayerController.PosY);
+            PlayerController.MoveLeft(3);
         }
     }
 
@@ -680,7 +680,7 @@ public static class MainProgram
             UpdateRow(32 - _frames);
 
             PlayerController.PlaceZelda();
-            PlayerController.MoveLeft(PlayerController.PosX, PlayerController.PosY);
+            PlayerController.MoveLeft(0);
         }
         else if (_frames < 30)
         {
@@ -693,7 +693,7 @@ public static class MainProgram
             UpdateRow(45 - _frames);
 
             PlayerController.PlaceZelda();
-            PlayerController.MoveLeft(PlayerController.PosX, PlayerController.PosY);
+            PlayerController.MoveLeft(0);
         }
         else if (_frames == 30)
         {
@@ -1052,18 +1052,12 @@ public static class MainProgram
 
         if (vertical != InputType.None)
         {
-            if ((vertical & InputType.Up) != 0)
-                return InputType.Up;
-
-            return InputType.Down;
+            return (vertical & InputType.Up) != 0 ? InputType.Up : InputType.Down;
         }
 
         if (horizontal != InputType.None)
         {
-            if ((horizontal & InputType.Left) != 0)
-                return InputType.Left;
-
-            return InputType.Right;
+            return (horizontal & InputType.Left) != 0 ? InputType.Left : InputType.Right;
         }
 
         return InputType.None;

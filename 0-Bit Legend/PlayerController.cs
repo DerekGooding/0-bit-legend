@@ -330,9 +330,12 @@ public class PlayerController
         }
     }
 
-    public void MoveUp(int posX, int posY)
+    public void MoveUp(int magnitude = 1)
     {
         _prev = Direction.Up;
+        var posY = PosY - magnitude;
+        var posX = PosX;
+
         if (PosX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
         {
             if (posY > 1)
@@ -515,10 +518,13 @@ public class PlayerController
 
         _debounce = false;
     }
-    public void MoveLeft(int posX, int posY)
+    public void MoveLeft(int magnitude = 1)
     {
         _prev = Direction.Left;
         _prev2 = Direction.Left;
+        var posY = PosY;
+        var posX = PosX - (magnitude * 2);
+
         if (posX >= 2)
         {
             IsTouching(posX, posY, 'r');
@@ -706,9 +712,12 @@ public class PlayerController
 
         _debounce = false;
     }
-    public void MoveDown(int posX, int posY)
+    public void MoveDown(int magnitude = 1)
     {
         _prev = Direction.Down;
+        var posY = PosY + magnitude;
+        var posX = PosX;
+
         if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
         {
             if ((posY < 30) && ((CurrentMap == 2 && posY < 27) || CurrentMap == 4))
@@ -840,10 +849,13 @@ public class PlayerController
         SetFlag(GameFlag.Text, false);
         _debounce = false;
     }
-    public void MoveRight(int posX, int posY)
+    public void MoveRight(int magnitude = 1)
     {
         _prev = Direction.Right;
         _prev2 = Direction.Right;
+        var posY = PosY;
+        var posX = PosX + (magnitude * 2);
+
         if (posX <= 99)
         {
             IsTouching(posX, posY, 'r');
@@ -1064,16 +1076,16 @@ public class PlayerController
         switch (direction)
         {
             case Direction.Up:
-                MoveUp(posX, posY);
+                MoveUp(0);
                 break;
             case Direction.Down:
-                MoveDown(posX, posY);
+                MoveDown(0);
                 break;
             case Direction.Left:
-                MoveLeft(posX, posY);
+                MoveLeft(0);
                 break;
             case Direction.Right:
-                MoveRight(posX, posY);
+                MoveRight(0);
                 break;
         }
     }
