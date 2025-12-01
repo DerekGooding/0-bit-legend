@@ -100,6 +100,18 @@ public class EnemyMovement
             index = GetTotal();
         }
 
+        IEnemy? enemy = type switch
+        {
+            EnemyType.Octorok => new Octorok(),
+            EnemyType.Spider => new Spider(),
+            EnemyType.Bat => new Bat(),
+            EnemyType.Dragon => new Dragon(),
+            EnemyType.Fireball => new Fireball(),
+            _ => null
+        };
+        if(enemy is null)
+            throw new ArgumentOutOfRangeException(nameof(type), "Invalid enemy type");
+
         if (spawn)
         {
             _posX.Add(posX);
@@ -147,7 +159,20 @@ public class EnemyMovement
         if (InBounds(type, posX, posY))
         {
             Clear(index, type);
-            if (type == EnemyType.Dragon || ((type == EnemyType.Spider || type == EnemyType.Bat || (!IsTouching(type, posX, posY, '=') && !IsTouching(type, posX, posY, 'X'))) && !IsTouching(type, posX, posY, 't') && !IsTouching(type, posX, posY, 'n') && !IsTouching(type, posX, posY, 'B') && !IsTouching(type, posX, posY, '{') && !IsTouching(type, posX, posY, '}') && !IsTouching(type, posX, posY, '|') && !IsTouching(type, posX, posY, '/') && !IsTouching(type, posX, posY, '\\') && !IsTouching(type, posX, posY, '_') && !IsTouching(type, posX, posY, '~')))
+            if (type == EnemyType.Dragon
+                || ((type == EnemyType.Spider || type == EnemyType.Bat ||
+                (!IsTouching(enemy, posX, posY, '=')
+                    && !IsTouching(enemy, posX, posY, 'X')))
+                    && !IsTouching(enemy, posX, posY, 't')
+                    && !IsTouching(enemy, posX, posY, 'n')
+                    && !IsTouching(enemy, posX, posY, 'B')
+                    && !IsTouching(enemy, posX, posY, '{')
+                    && !IsTouching(enemy, posX, posY, '}')
+                    && !IsTouching(enemy, posX, posY, '|')
+                    && !IsTouching(enemy, posX, posY, '/')
+                    && !IsTouching(enemy, posX, posY, '\\')
+                    && !IsTouching(enemy, posX, posY, '_')
+                    && !IsTouching(enemy, posX, posY, '~')))
             {
                 _prev1[index] = direction;
 
@@ -201,9 +226,9 @@ public class EnemyMovement
 
                 return true;
             }
-            else if (IsTouching(type, posX, posY, '|')
-                || IsTouching(type, posX, posY, '_')
-                || IsTouching(type, posX, posY, '\\'))
+            else if (IsTouching(enemy, posX, posY, '|')
+                || IsTouching(enemy, posX, posY, '_')
+                || IsTouching(enemy, posX, posY, '\\'))
             {
                 MainProgram.LinkMovement.Hit();
                 if (type == EnemyType.Fireball)
@@ -543,14 +568,7 @@ public class EnemyMovement
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(EnemyType type, int posX, int posY, char symbol) => type switch
-    {
-        EnemyType.Octorok => new Octorok().IsTouching(posX, posY, symbol),
-        EnemyType.Spider => new Spider().IsTouching(posX, posY, symbol),
-        EnemyType.Bat => new Bat().IsTouching(posX, posY, symbol),
-        EnemyType.Fireball => new Fireball().IsTouching(posX, posY, symbol),
-        _ => false
-    };
+    public bool IsTouching(IEnemy enemy, int posX, int posY, char symbol) => enemy.IsTouching(posX, posY, symbol);
 
     public int GetIndex(int posX, int posY)
     {
