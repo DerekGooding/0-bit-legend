@@ -6,9 +6,9 @@ namespace _0_Bit_Legend.Enemies;
 public class Bat : IEnemy
 {
     public EnemyType Type => EnemyType.Bat;
-    public void Build(int posX, int posY, char previousIndex)
+    public void Build(int posX, int posY, Direction previousIndex)
     {
-        if (previousIndex == 'a')
+        if (previousIndex == Direction.Left)
         {
             Map[posX + 0, posY] = '{';
             Map[posX + 1, posY] = 't';

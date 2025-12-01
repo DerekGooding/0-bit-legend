@@ -6,7 +6,7 @@ namespace _0_Bit_Legend.Enemies;
 public class Fireball : IEnemy
 {
     public EnemyType Type => EnemyType.Fireball;
-    public void Build(int posX, int posY, char previousIndex)
+    public void Build(int posX, int posY, Direction _)
     {
         Map[posX + 0, posY] = 'F';
         Map[posX + 1, posY] = 'F';

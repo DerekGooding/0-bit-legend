@@ -12,8 +12,8 @@ public class EnemyMovement
 
     private readonly List<char[]> _map_storage = [];
 
-    private readonly List<char> _prev1 = [];
-    private readonly List<char> _prev2 = [];
+    private readonly List<Direction> _prev1 = [];
+    private readonly List<Direction> _prev2 = [];
 
     private readonly List<EnemyType> _type = [];
     private readonly List<int> _hp = [];
@@ -38,9 +38,9 @@ public class EnemyMovement
 
     public int GetTotal() => _posX.ToArray().Length;
 
-    public char GetPrev1(int index) => _prev1[index];
+    public Direction GetPrev1(int index) => _prev1[index];
 
-    public char GetPrev2(int index) => _prev2[index];
+    public Direction GetPrev2(int index) => _prev2[index];
 
     public int GetMotion(int index) => _motion[index];
 
@@ -93,7 +93,7 @@ public class EnemyMovement
         return true;
     }
 
-    public bool Move(int index, EnemyType type, int posX, int posY, char direction, int motion, bool spawn)
+    public bool Move(int index, EnemyType type, int posX, int posY, Direction direction, int motion, bool spawn)
     {
         if (index == -1)
         {
@@ -153,31 +153,31 @@ public class EnemyMovement
 
                 if (type == EnemyType.Octorok)
                 {
-                    if (direction is 'a' or 'd')
+                    if (direction is Direction.Left or Direction.Right)
                     {
                         _prev2[index] = direction;
                     }
                 }
                 else if (type == EnemyType.Spider)
                 {
-                    if (direction is 'w' or 's')
+                    if (direction is Direction.Up or Direction.Down)
                     {
-                        _prev2[index] = 'a';
+                        _prev2[index] = Direction.Left;
                     }
-                    else if (direction is 'a' or 'd')
+                    else if (direction is Direction.Left or Direction.Right)
                     {
-                        _prev2[index] = 'd';
+                        _prev2[index] = Direction.Right;
                     }
                 }
                 else if (type == EnemyType.Bat)
                 {
-                    if (_prev2[index] == 'd')
+                    if (_prev2[index] == Direction.Right)
                     {
-                        _prev2[index] = 'a';
+                        _prev2[index] = Direction.Left;
                     }
-                    else if (_prev2[index] == 'a')
+                    else if (_prev2[index] == Direction.Left)
                     {
-                        _prev2[index] = 'd';
+                        _prev2[index] = Direction.Right;
                     }
                 }
 
@@ -245,7 +245,7 @@ public class EnemyMovement
                 new Dragon().Build(posX, posY, _prev1[index]);
                 break;
             case EnemyType.Fireball:
-                new Fireball().Build(posX, posY, ' ');
+                new Fireball().Build(posX, posY, Direction.None);
                 break;
         }
     }

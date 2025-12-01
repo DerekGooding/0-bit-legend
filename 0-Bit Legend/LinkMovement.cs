@@ -32,9 +32,9 @@ public class LinkMovement
     public void SetPrev(Direction prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
-    public void Attack(Direction prev, bool attacking)
+    public void Attack(Direction direction, bool attacking)
     {
-        switch (prev)
+        switch (direction)
         {
             case Direction.Up:
                 HandleAttackUp(attacking);
