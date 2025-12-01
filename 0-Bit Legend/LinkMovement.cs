@@ -15,26 +15,26 @@ public class LinkMovement
     private static readonly char[] _storage_sword = new char[6];
     private static readonly char[] _storage_detect_enemy = new char[6];
 
-    private char _prev = 'w';
-    private char _prev2 = 'a';
+    private Direction _prev = Direction.Up;
+    private Direction _prev2 = Direction.Left;
 
     private bool _debounce;
     private bool _spawnRupee;
 
     public int GetPosX() => _posX;
     public int GetPosY() => _posY;
-    public char GetPrev() => _prev;
-    public char GetPrev2() => _prev2;
+    public Direction GetPrev() => _prev;
+    public Direction GetPrev2() => _prev2;
     public void SetPosX(int posX) => _posX = posX;
     public void SetPosY(int posY) => _posY = posY;
     public void SetPreHitPosX(int posX) => _preHitPosX = posX;
     public void SetPreHitPosY(int posY) => _preHitPosY = posY;
-    public void SetPrev(char prev) => _prev = prev;
+    public void SetPrev(Direction prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
-    public void Attack(char prev, bool attacking)
+    public void Attack(Direction prev, bool attacking)
     {
-        if (prev == 'w' && _posY > 3)
+        if (prev == Direction.Up && _posY > 3)
         {
             if (!attacking)
             {
@@ -80,7 +80,7 @@ public class LinkMovement
             UpdateRow(_preHitPosY - 3);
             UpdateRow(_preHitPosY - 4);
         }
-        else if (prev == 'a' && _posX > 4)
+        else if (prev == Direction.Left && _posX > 4)
         {
             if (!attacking)
             {
@@ -131,7 +131,7 @@ public class LinkMovement
             UpdateRow(_preHitPosY + 1);
             UpdateRow(_preHitPosY + 2);
         }
-        else if (prev == 's' && _posY + 4 < 33)
+        else if (prev == Direction.Down && _posY + 4 < 33)
         {
             if (!attacking)
             {
@@ -177,7 +177,7 @@ public class LinkMovement
             UpdateRow(_preHitPosY + 4);
             UpdateRow(_preHitPosY + 5);
         }
-        else if (prev == 'd' && _posX + 6 < 102)
+        else if (prev == Direction.Right && _posX + 6 < 102)
         {
             if (!attacking)
             {
@@ -230,7 +230,7 @@ public class LinkMovement
         }
     }
 
-    public void Stab(int[,] swordArr, char prev, int amt, int dmg)
+    public void Stab(int[,] swordArr, Direction prev, int amt, int dmg)
     {
         var hit = false;
         for (var i = 0; i < amt; i++)
@@ -253,7 +253,7 @@ public class LinkMovement
         }
     }
 
-    public void StoreSword(char prev)
+    public void StoreSword(Direction prev)
     {
         for (var i = 0; i < 6; i++)
         {
@@ -263,7 +263,7 @@ public class LinkMovement
             }
         }
 
-        if (prev == 'w')
+        if (prev == Direction.Up)
         {
             Map[_preHitPosX - 1, _preHitPosY - 2] = _storage_sword[0];
             Map[_preHitPosX, _preHitPosY - 2] = _storage_sword[1];
@@ -271,7 +271,7 @@ public class LinkMovement
             Map[_preHitPosX, _preHitPosY - 3] = _storage_sword[3];
             Map[_preHitPosX, _preHitPosY - 4] = _storage_sword[4];
         }
-        else if (prev == 'a')
+        else if (prev == Direction.Left)
         {
             Map[_preHitPosX - 3, _preHitPosY] = _storage_sword[0];
             Map[_preHitPosX - 3, _preHitPosY + 1] = _storage_sword[1];
@@ -280,7 +280,7 @@ public class LinkMovement
             Map[_preHitPosX - 5, _preHitPosY + 1] = _storage_sword[4];
             Map[_preHitPosX - 6, _preHitPosY + 1] = _storage_sword[5];
         }
-        else if (prev == 's')
+        else if (prev == Direction.Down)
         {
             Map[_preHitPosX - 1, _preHitPosY + 3] = _storage_sword[0];
             Map[_preHitPosX, _preHitPosY + 3] = _storage_sword[1];
@@ -288,7 +288,7 @@ public class LinkMovement
             Map[_preHitPosX, _preHitPosY + 4] = _storage_sword[3];
             Map[_preHitPosX, _preHitPosY + 5] = _storage_sword[4];
         }
-        else if (prev == 'd')
+        else if (prev == Direction.Right)
         {
             Map[_preHitPosX + 3, _preHitPosY] = _storage_sword[0];
             Map[_preHitPosX + 3, _preHitPosY + 1] = _storage_sword[1];
@@ -299,7 +299,7 @@ public class LinkMovement
         }
     }
 
-    public void MoveLink(int posX, int posY, char direction, bool spawn)
+    public void MoveLink(int posX, int posY, Direction direction, bool spawn)
     {
         if (spawn)
         {
@@ -333,7 +333,7 @@ public class LinkMovement
 
         _prev = direction;
 
-        if (direction == 'w')
+        if (direction == Direction.Up)
         {
             if (_posX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
             {
@@ -354,7 +354,7 @@ public class LinkMovement
                 }
                 else
                 {
-                    LoadMap(4, 21, 29, 'w');
+                    LoadMap(4, 21, 29, Direction.Up);
                 }
             }
             else if (posY >= 1 && !(_posX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
@@ -365,14 +365,14 @@ public class LinkMovement
 
                 if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
                 {
-                    SetFlag(GameFlags.HasSword, true);
+                    SetFlag(GameFlag.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
                 {
                     Rupees -= 35;
 
-                    SetFlag(GameFlags.HasRaft, true);
+                    SetFlag(GameFlag.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 5)
@@ -384,25 +384,25 @@ public class LinkMovement
                 {
                     Rupees -= 25;
 
-                    SetFlag(GameFlags.HasArmor, true);
+                    SetFlag(GameFlag.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 9
                     && IsTouching(posX, posY, 'X')
                     && !IsTouching(posX, posY, '=')
-                    && HasFlags([GameFlags.Door1, GameFlags.Door2, GameFlags.Door3])
+                    && HasFlags([GameFlag.Door1, GameFlag.Door2, GameFlag.Door3])
                     && cEnemies1 <= 0
                     && cEnemies2 <= 0
                     && !_debounce)
                 {
                     LoadMap(12, 50, 24, direction);
                 }
-                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !HasFlag(GameFlags.Door3) && Keys > 0)
+                else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !HasFlag(GameFlag.Door3) && Keys > 0)
                 {
                     _debounce = true;
                     Keys--;
 
-                    SetFlag(GameFlags.Door3, true);
+                    SetFlag(GameFlag.Door3, true);
                     LoadMap(9, _posX, _posY, direction);
                 }
 
@@ -465,8 +465,8 @@ public class LinkMovement
                     UpdateRow(_posY + 1);
                     UpdateRow(_posY + 2);
 
-                    LoadMap(13, 58, 15, 'a');
-                    SetFlag(GameFlags.GameOver, true);
+                    LoadMap(13, 58, 15, Direction.Left);
+                    SetFlag(GameFlag.GameOver, true);
                 }
                 else
                 {
@@ -487,37 +487,37 @@ public class LinkMovement
             {
                 if (CurrentMap == 0)
                 {
-                    LoadMap(1, 63, 29, 'w');
+                    LoadMap(1, 63, 29, Direction.Up);
                 }
                 else if (CurrentMap == 2)
                 {
                     if (posX > 29)
                     {
-                        LoadMap(4, 55, 30, 'w');
+                        LoadMap(4, 55, 30, Direction.Up);
                     }
                     else if (posX == 21)
                     {
-                        LoadMap(4, 21, 29, 'w');
+                        LoadMap(4, 21, 29, Direction.Up);
                     }
                     else
                     {
-                        LoadMap(4, 10, 29, 'w');
+                        LoadMap(4, 10, 29, Direction.Up);
                     }
                 }
                 else if (CurrentMap == 3)
                 {
-                    LoadMap(5, 49, 30, 'w');
+                    LoadMap(5, 49, 30, Direction.Up);
                 }
             }
-            if (HasFlag(GameFlags.Text))
+            if (HasFlag(GameFlag.Text))
             {
-                SetFlag(GameFlags.Text , false );
-                LoadMap(9, posX, posY, 'w');
+                SetFlag(GameFlag.Text , false );
+                LoadMap(9, posX, posY, Direction.Up);
             }
         }
-        else if (direction == 'a')
+        else if (direction == Direction.Left)
         {
-            _prev2 = 'a';
+            _prev2 = Direction.Left;
             if (posX >= 2)
             {
                 IsTouching(posX, posY, 'r');
@@ -525,14 +525,14 @@ public class LinkMovement
 
                 if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
                 {
-                    SetFlag(GameFlags.HasSword, true);
+                    SetFlag(GameFlag.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
                 {
                     Rupees -= 35;
 
-                    SetFlag(GameFlags.HasRaft, true);
+                    SetFlag(GameFlag.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
@@ -544,23 +544,23 @@ public class LinkMovement
                 {
                     Rupees -= 25;
 
-                    SetFlag(GameFlags.HasArmor, true);
+                    SetFlag(GameFlag.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 9
                     && IsTouching(posX, posY, 'X')
                     && !IsTouching(posX, posY, '=')
-                    && HasFlag(GameFlags.Door1)
+                    && HasFlag(GameFlag.Door1)
                     && !_debounce)
                 {
                     LoadMap(10, 87, 15, direction);
                 }
-                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlags.Door1) && Keys > 0)
+                else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlag.Door1) && Keys > 0)
                 {
                     _debounce = true;
                     Keys--;
 
-                    SetFlag(GameFlags.Door1, true);
+                    SetFlag(GameFlag.Door1, true);
                     LoadMap(9, _posX, _posY, direction);
                 }
 
@@ -608,7 +608,7 @@ public class LinkMovement
                 }
                 else if (IsTouching(posX, posY, '~')
                     && _posX != 21
-                    && HasFlag(GameFlags.HasRaft)
+                    && HasFlag(GameFlag.HasRaft)
                     && !IsTouching(posX, posY, '=')
                     && !IsTouching(posX, posY, 'X')
                     && !IsTouching(posX, posY, 't')
@@ -622,7 +622,7 @@ public class LinkMovement
                     UpdateRow(_posY + 2);
 
                     _posX = 21;
-                    DeployRaft('a');
+                    DeployRaft(Direction.Left);
                     wait = 150;
                 }
                 else if (_posX == 21 && ((posY > 11 && CurrentMap == 4)
@@ -657,11 +657,11 @@ public class LinkMovement
                 }
                 else if (CurrentMap == 11 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(9, 86, 15, 'a');
+                    LoadMap(9, 86, 15, Direction.Left);
                 }
                 else if (CurrentMap == 13 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(12, 86, 15, 'a');
+                    LoadMap(12, 86, 15, Direction.Left);
                 }
                 else
                 {
@@ -678,32 +678,32 @@ public class LinkMovement
             {
                 if (CurrentMap == 0)
                 {
-                    LoadMap(2, 99, 12, 'a');
+                    LoadMap(2, 99, 12, Direction.Left);
                 }
                 else if (CurrentMap == 3)
                 {
-                    LoadMap(0, 98, 17, 'a');
+                    LoadMap(0, 98, 17, Direction.Left);
                 }
                 else if (CurrentMap == 1)
                 {
-                    LoadMap(4, 98, 13, 'a');
+                    LoadMap(4, 98, 13, Direction.Left);
                 }
                 else if (CurrentMap == 5)
                 {
-                    LoadMap(1, 98, 16, 'a');
+                    LoadMap(1, 98, 16, Direction.Left);
                 }
                 else if (CurrentMap == 4)
                 {
-                    LoadMap(8, 99, 16, 'a');
+                    LoadMap(8, 99, 16, Direction.Left);
                 }
             }
-            if (HasFlag(GameFlags.Text))
+            if (HasFlag(GameFlag.Text))
             {
-                SetFlag(GameFlags.Text, false);
-                LoadMap(9, posX, posY, 'w');
+                SetFlag(GameFlag.Text, false);
+                LoadMap(9, posX, posY, Direction.Up);
             }
         }
-        else if (direction == 's')
+        else if (direction == Direction.Down)
         {
             if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
             {
@@ -724,7 +724,7 @@ public class LinkMovement
                 }
                 else if (CurrentMap == 4)
                 {
-                    LoadMap(2, 21, 2, 's');
+                    LoadMap(2, 21, 2, Direction.Down);
                 }
             }
             else if (posY <= 29)
@@ -780,7 +780,7 @@ public class LinkMovement
                     UpdateRow(_posY + 1);
                     UpdateRow(_posY + 2);
 
-                    LoadMap(9, 50, 9, 's');
+                    LoadMap(9, 50, 9, Direction.Down);
                 }
                 else
                 {
@@ -796,48 +796,48 @@ public class LinkMovement
             {
                 if (CurrentMap == 1)
                 {
-                    LoadMap(0, 63, 1, 's');
+                    LoadMap(0, 63, 1, Direction.Down);
                 }
                 else if (CurrentMap == 4)
                 {
                     if (posX > 29)
                     {
-                        LoadMap(2, 55, 1, 's');
+                        LoadMap(2, 55, 1, Direction.Down);
                     }
                     else if (posX == 21)
                     {
-                        LoadMap(2, 21, 2, 's');
+                        LoadMap(2, 21, 2, Direction.Down);
                     }
                     else
                     {
-                        LoadMap(2, 10, 2, 's');
+                        LoadMap(2, 10, 2, Direction.Down);
                     }
                 }
                 else if (CurrentMap == 5)
                 {
-                    LoadMap(3, 49, 2, 's');
+                    LoadMap(3, 49, 2, Direction.Down);
                 }
                 else if (CurrentMap == 6)
                 {
-                    LoadMap(0, 16, 6, 's');
+                    LoadMap(0, 16, 6, Direction.Down);
                     Wait(2);
                 }
                 else if (CurrentMap == 7)
                 {
-                    LoadMap(4, 86, 7, 's');
+                    LoadMap(4, 86, 7, Direction.Down);
                     Wait(2);
                 }
                 else if (CurrentMap == 9)
                 {
-                    LoadMap(8, 51, 17, 's');
+                    LoadMap(8, 51, 17, Direction.Down);
                     Wait(2);
                 }
             }
-            SetFlag(GameFlags.Text, false);
+            SetFlag(GameFlag.Text, false);
         }
-        else if (direction == 'd')
+        else if (direction == Direction.Right)
         {
-            _prev2 = 'd';
+            _prev2 = Direction.Right;
             if (posX <= 99)
             {
                 IsTouching(posX, posY, 'r');
@@ -846,14 +846,14 @@ public class LinkMovement
                 var persist = true;
                 if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 's')))
                 {
-                    SetFlag(GameFlags.HasSword, true);
+                    SetFlag(GameFlag.HasSword, true);
                     LoadMap(6, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
                 {
                     Rupees -= 35;
 
-                    SetFlag(GameFlags.HasRaft, true);
+                    SetFlag(GameFlag.HasRaft, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
@@ -865,24 +865,24 @@ public class LinkMovement
                 {
                     Rupees -= 25;
 
-                    SetFlag(GameFlags.HasArmor, true);
+                    SetFlag(GameFlag.HasArmor, true);
                     LoadMap(7, posX, posY, direction);
                 }
                 else if (CurrentMap == 9
                     && IsTouching(posX, posY, 'X')
                     && !IsTouching(posX, posY, '=')
-                    && HasFlag(GameFlags.Door2)
+                    && HasFlag(GameFlag.Door2)
                     && !_debounce)
                 {
                     persist = false;
                     LoadMap(11, 14, 15, direction);
                 }
-                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlags.Door2) && Keys > 0)
+                else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlag.Door2) && Keys > 0)
                 {
                     _debounce = true;
                     Keys--;
 
-                    SetFlag(GameFlags.Door2, true);
+                    SetFlag(GameFlag.Door2, true);
                     LoadMap(9, _posX, _posY, direction);
                 }
 
@@ -929,7 +929,13 @@ public class LinkMovement
 
                     Hit();
                 }
-                else if (IsTouching(posX, posY, '~') && _posX != 21 && HasFlag(GameFlags.HasRaft) && !IsTouching(posX, posY, '=') && !IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, 't') && !IsTouching(posX, posY, 'n'))
+                else if (IsTouching(posX, posY, '~')
+                    && _posX != 21
+                    && HasFlag(GameFlag.HasRaft)
+                    && !IsTouching(posX, posY, '=')
+                    && !IsTouching(posX, posY, 'X')
+                    && !IsTouching(posX, posY, 't')
+                    && !IsTouching(posX, posY, 'n'))
                 {
                     StoreChar(_posX, _posY);
 
@@ -939,7 +945,7 @@ public class LinkMovement
                     UpdateRow(_posY + 2);
 
                     _posX = 21;
-                    DeployRaft('d');
+                    DeployRaft(Direction.Right);
                     wait = 150;
                 }
                 else if (_posX == 21 && posY < 25 && ((posY > 3 && CurrentMap == 2) || (posY < 25 && CurrentMap == 4)))
@@ -973,11 +979,11 @@ public class LinkMovement
                 }
                 else if (CurrentMap == 10 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(9, 14, 15, 'd');
+                    LoadMap(9, 14, 15, Direction.Right);
                 }
                 else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
                 {
-                    LoadMap(13, 15, 15, 'd');
+                    LoadMap(13, 15, 15, Direction.Right);
                 }
                 else
                 {
@@ -993,45 +999,45 @@ public class LinkMovement
             {
                 if (CurrentMap == 2)
                 {
-                    LoadMap(0, 4, 12, 'd');
+                    LoadMap(0, 4, 12, Direction.Right);
                 }
                 else if (CurrentMap == 0)
                 {
-                    LoadMap(3, 2, 18, 'd');
+                    LoadMap(3, 2, 18, Direction.Right);
                 }
                 else if (CurrentMap == 4)
                 {
-                    LoadMap(1, 2, 13, 'd');
+                    LoadMap(1, 2, 13, Direction.Right);
                 }
                 else if (CurrentMap == 1)
                 {
-                    LoadMap(5, 2, 15, 'd');
+                    LoadMap(5, 2, 15, Direction.Right);
                 }
                 else if (CurrentMap == 8)
                 {
-                    LoadMap(4, 2, 16, 'd');
+                    LoadMap(4, 2, 16, Direction.Right);
                 }
             }
-            if (HasFlag(GameFlags.Text))
+            if (HasFlag(GameFlag.Text))
             {
-                SetFlag(GameFlags.Text, false);
-                LoadMap(9, posX, posY, 'w');
+                SetFlag(GameFlag.Text, false);
+                LoadMap(9, posX, posY, Direction.Up);
             }
         }
         _debounce = false;
     }
 
-    public void BuildChar(int posX, int posY, char direction)
+    public void BuildChar(int posX, int posY, Direction direction)
     {
         var spaceslot = ' ';
         var underslot = '_';
-        if (HasFlag(GameFlags.HasArmor))
+        if (HasFlag(GameFlag.HasArmor))
         {
             spaceslot = '#';
             underslot = '#';
         }
 
-        if (direction == 'w')
+        if (direction == Direction.Up)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '_';
@@ -1057,7 +1063,7 @@ public class LinkMovement
             Map[posX + 1, posY + 2] = '/';
             Map[posX + 2, posY + 2] = ' ';
         }
-        else if (direction == 'a')
+        else if (direction == Direction.Left)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -1083,7 +1089,7 @@ public class LinkMovement
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == 's')
+        else if (direction == Direction.Down)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -1109,7 +1115,7 @@ public class LinkMovement
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == 'd')
+        else if (direction == Direction.Right)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '/';
@@ -1193,11 +1199,11 @@ public class LinkMovement
         _storage_map[19] = Map[posX + 2, posY + 2];
     }
 
-    public void DeployRaft(char direction)
+    public void DeployRaft(Direction direction)
     {
         var spaceslot = ' ';
         var underslot = '_';
-        if (HasFlag(GameFlags.HasArmor))
+        if (HasFlag(GameFlag.HasArmor))
         {
             spaceslot = '#';
             underslot = '#';
@@ -1244,7 +1250,7 @@ public class LinkMovement
         Map[_posX + 2, _posY + 3] = '*';
         Map[_posX + 3, _posY + 3] = '*';
 
-        if (direction == 'a')
+        if (direction == Direction.Left)
         {
             Map[_posX - 2, _posY - 1] = '=';
             Map[_posX - 1, _posY - 1] = '/';
@@ -1255,7 +1261,7 @@ public class LinkMovement
             Map[_posX, _posY] = spaceslot;
             Map[_posX + 1, _posY] = spaceslot;
         }
-        else if (direction == 'd')
+        else if (direction == Direction.Right)
         {
             Map[_posX - 2, _posY - 1] = '|';
             Map[_posX - 1, _posY - 1] = ' ';
@@ -1335,7 +1341,7 @@ public class LinkMovement
         {
             iFrames = 6;
 
-            if (HasFlag(GameFlags.HasArmor))
+            if (HasFlag(GameFlag.HasArmor))
             {
                 Health -= 0.5;
             }
@@ -1343,7 +1349,7 @@ public class LinkMovement
             {
                 Health--;
             }
-            SetFlag(GameFlags.Hit, true);
+            SetFlag(GameFlag.Hit, true);
 
             StoreChar(_posX, _posY);
 

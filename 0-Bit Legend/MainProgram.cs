@@ -8,11 +8,11 @@ public static class MainProgram
     public static LinkMovement LinkMovement { get; } = new();
     public static EnemyMovement EnemyMovement { get; } = new();
 
-    private static GameFlags _flags = GameFlags.None;
+    private static GameFlag _flags = GameFlag.None;
 
-    public static bool HasFlag(GameFlags flag) => (_flags & flag) != 0;
-    public static bool HasFlags(GameFlags[] flags) => flags.All(flag => (_flags & flag) != 0);
-    public static void SetFlag(GameFlags flag, bool value)
+    public static bool HasFlag(GameFlag flag) => (_flags & flag) != 0;
+    public static bool HasFlags(GameFlag[] flags) => flags.All(flag => (_flags & flag) != 0);
+    public static void SetFlag(GameFlag flag, bool value)
     {
         if (value)
             _flags |= flag;
@@ -65,7 +65,7 @@ public static class MainProgram
         const int VK_RSHIFT = 0xA1;
 
         Console.CursorVisible = false;
-        LoadMap(0, 52, 18, 'w');
+        LoadMap(0, 52, 18, Direction.Up);
 
         var credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^  |                                               #                                           ~~~~~~ |_=_|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|  ^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|_=_|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
         while (_frames < 118)
@@ -86,7 +86,7 @@ public static class MainProgram
 
             for (var i = 0; i < 33; i++)
             {
-                if (Health > 0 && !HasFlag(GameFlags.GameOver))
+                if (Health > 0 && !HasFlag(GameFlag.GameOver))
                 {
                     if (i is > 5 and < 28)
                     {
@@ -116,35 +116,35 @@ public static class MainProgram
             Thread.Sleep(wait);
             wait = 0;
 
-            if (Health > 0 && !HasFlag(GameFlags.GameOver))
+            if (Health > 0 && !HasFlag(GameFlag.GameOver))
             {
-                if (!HasFlag(GameFlags.Hit))
+                if (!HasFlag(GameFlag.Hit))
                 {
                     if (!_attacking)
                     {
                         if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, 'w', false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, Direction.Up, false);
                         }
                         else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), 'a', false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY(), Direction.Left, false);
                         }
                         else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, 's', false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, Direction.Down, false);
                         }
                         else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), 'd', false);
+                            LinkMovement.MoveLink(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY(), Direction.Right, false);
                         }
-                        else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlags.HasSword))
+                        else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
                         {
                             LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
                             _attacking = true;
                         }
 
-                        if (!HasFlag(GameFlags.Hit) && waitEnemies <= 0)
+                        if (!HasFlag(GameFlag.Hit) && waitEnemies <= 0)
                         {
                             waitEnemies = 2;
                             for (var i = 0; i < EnemyMovement.GetTotal(); i++)
@@ -362,33 +362,33 @@ public static class MainProgram
                     else
                     {
                         LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
-                        if (LinkMovement.GetPrev() != 'w' && LinkMovement.GetPrev() != 'a' && LinkMovement.GetPrev() != 's' && LinkMovement.GetPrev() != 'd')
+                        if (LinkMovement.GetPrev() == Direction.None)
                         {
                             if (int.Parse(LinkMovement.GetPrev().ToString()) <= 0)
                             {
                                 if (CurrentMap == 0)
                                 {
-                                    LoadMap(6, 50, 29, 'w');
+                                    LoadMap(6, 50, 29, Direction.Up);
                                 }
                                 else if (CurrentMap == 4)
                                 {
-                                    LoadMap(7, 50, 30, 'w');
+                                    LoadMap(7, 50, 30, Direction.Up);
                                 }
                                 else if (CurrentMap == 8)
                                 {
-                                    LoadMap(9, 50, 30, 'w');
+                                    LoadMap(9, 50, 30, Direction.Up);
                                 }
                                 else if (CurrentMap == 6)
                                 {
-                                    LoadMap(0, 16, 9, 's');
+                                    LoadMap(0, 16, 9, Direction.Down);
                                 }
                                 else if (CurrentMap == 7)
                                 {
-                                    LoadMap(4, 86, 10, 's');
+                                    LoadMap(4, 86, 10, Direction.Down);
                                 }
                                 else if (CurrentMap == 9)
                                 {
-                                    LoadMap(8, 51, 20, 's');
+                                    LoadMap(8, 51, 20, Direction.Down);
                                 }
                                 _attacking = false;
                             }
@@ -396,22 +396,24 @@ public static class MainProgram
                             {
                                 if (CurrentMap is 0 or 4 or 8)
                                 {
-                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, 'w', false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1, Direction.Up, false);
                                     Thread.Sleep(50);
                                 }
                                 else if (CurrentMap is 6 or 7 or 9)
                                 {
-                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, 's', false);
+                                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1, Direction.Down, false);
                                     Thread.Sleep(50);
                                 }
 
-                                if (LinkMovement.GetPrev() == 'w' || LinkMovement.GetPrev() == 's')
+                                if (LinkMovement.GetPrev() == Direction.Up || LinkMovement.GetPrev() == Direction.Down)
                                 {
-                                    LinkMovement.SetPrev('0');
+                                    LinkMovement.SetPrev(Direction.None);
                                 }
                                 else
                                 {
-                                    LinkMovement.SetPrev((int.Parse(LinkMovement.GetPrev().ToString()) - 1).ToString()[0]);
+                                    //TODO => What is this? It just loops infinitely for no benefit
+                                    //LinkMovement.SetPrev((int.Parse(LinkMovement.GetPrev().ToString()) - 1).ToString()[0]);
+                                    LinkMovement.SetPrev(Direction.None);
                                 }
                             }
                         }
@@ -425,24 +427,24 @@ public static class MainProgram
                 else
                 {
                     Thread.Sleep(100);
-                    SetFlag(GameFlags.Hit, false);
+                    SetFlag(GameFlag.Hit, false);
 
                     var x = 0;
                     var y = 0;
 
-                    if (LinkMovement.GetPrev() == 'w' && LinkMovement.GetPosY() < 27)
+                    if (LinkMovement.GetPrev() == Direction.Up && LinkMovement.GetPosY() < 27)
                     {
                         y = 3;
                     }
-                    else if (LinkMovement.GetPrev() == 'a' && LinkMovement.GetPosX() < 94)
+                    else if (LinkMovement.GetPrev() == Direction.Left && LinkMovement.GetPosX() < 94)
                     {
                         x = 6;
                     }
-                    else if (LinkMovement.GetPrev() == 's' && LinkMovement.GetPosY() > 3)
+                    else if (LinkMovement.GetPrev() == Direction.Down && LinkMovement.GetPosY() > 3)
                     {
                         y = -3;
                     }
-                    else if (LinkMovement.GetPrev() == 'd' && LinkMovement.GetPosX() > 7)
+                    else if (LinkMovement.GetPrev() == Direction.Right && LinkMovement.GetPosX() > 7)
                     {
                         x = -6;
                     }
@@ -500,17 +502,17 @@ public static class MainProgram
 
                     if (CurrentMap <= 8)
                     {
-                        LoadMap(0, 52, 15, 'w');
+                        LoadMap(0, 52, 15, Direction.Up);
                     } else
                     {
-                        LoadMap(9, 50, 25, 'w');
+                        LoadMap(9, 50, 25, Direction.Up);
                     }
                 }
                 _frames++;
             }
-            else if (HasFlag(GameFlags.GameOver))
+            else if (HasFlag(GameFlag.GameOver))
             {
-                if (HasFlag(GameFlags.HasArmor)) credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^##|                                               #                                           ~~~~~~ |#=#|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|##^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|#=#|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
+                if (HasFlag(GameFlag.HasArmor)) credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^##|                                               #                                           ~~~~~~ |#=#|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|##^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|#=#|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
 
                 if (_frames < 13)
                 {
@@ -523,7 +525,7 @@ public static class MainProgram
                     UpdateRow(32 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), 'a', false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), Direction.Left, false);
                 }
                 else if (_frames < 30)
                 {
@@ -536,7 +538,7 @@ public static class MainProgram
                     UpdateRow(45 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), 'a', false);
+                    LinkMovement.MoveLink(LinkMovement.GetPosX(), LinkMovement.GetPosY(), Direction.Left, false);
                 }
                 else if (_frames == 30)
                 {
@@ -587,7 +589,7 @@ public static class MainProgram
         }
     }
 
-    public static void LoadMap(int mapNum, int posX, int posY, char direction)
+    public static void LoadMap(int mapNum, int posX, int posY, Direction direction)
     {
         // Main Maps
         const string map0 = "======================================================                    ============================#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX====================                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXX///////XXXXXXXXXXXXXX=                                       =========XXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXX///////XXXXXXXXX======                                               =XXXXXXXXXXXXXXXXXX=#=XXXXXXXXX===///////==========                                                    =XXXXXXXXXXXXXXXXXX=#=XXXXXXXXX=                                                                       =XXXXXXXXXXXXXXXXXX=#=XXXXXXXXX=                                                                       =XXXXXXXXXXXXXXXXXX=#===========                                                                       =XXXXXXXXXXXXXXXXXX=#                                                                                  =====XXXXXXXXXXXXXX=#                                                                                      ======XXXXXXXXX=#                                                                                           ===========#                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #====                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                                  #=XX=                                                                                            ======#=XX=======                                                                                      =XXXX=#=XXXXXXXX=                                                                                 ======XXXX=#=XXXXXXXX=                                      ============================================XXXXXXXXX=#=XXXXXXXX=========                              =XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXX================================XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#======================================================================================================#";
@@ -611,19 +613,19 @@ public static class MainProgram
 
         var lCText = false;
 
-        if (mapNum == 6 && HasFlag(GameFlags.HasSword))
+        if (mapNum == 6 && HasFlag(GameFlag.HasSword))
         {
             map6 = $"{map6.AsSpan(0, 1854)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#{map6.AsSpan(2266)}";
         }
-        else if (mapNum == 7 && HasFlag(GameFlags.HasRaft) && !HasFlag(GameFlags.HasArmor))
+        else if (mapNum == 7 && HasFlag(GameFlag.HasRaft) && !HasFlag(GameFlag.HasArmor))
         {
             map7 = $"{map7.AsSpan(0, 1751)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                  =======               ## ##                 =XXXXXXXXXX=#=XXXXXXXXXX=                                  ==  = =               #####                 =XXXXXXXXXX=#=XXXXXXXXXX=                                                         ###                  =XXXXXXXXXX=#{map7.AsSpan(2163)}";
         }
-        else if (mapNum == 7 && !HasFlag(GameFlags.HasRaft) && HasFlag(GameFlags.HasArmor))
+        else if (mapNum == 7 && !HasFlag(GameFlag.HasRaft) && HasFlag(GameFlag.HasArmor))
         {
             map7 = $"{map7.AsSpan(0, 1751)}=XXXXXXXXXX=                 =====                                                        =XXXXXXXXXX=#=XXXXXXXXXX=                 *****            =======                                     =XXXXXXXXXX=#=XXXXXXXXXX=                 =====            ==  = =                                     =XXXXXXXXXX=#=XXXXXXXXXX=                 *****                                                        =XXXXXXXXXX=#{map7.AsSpan(2163)}";
         }
-        else if (mapNum == 7 && HasFlag(GameFlags.HasRaft) && HasFlag(GameFlags.HasArmor))
+        else if (mapNum == 7 && HasFlag(GameFlag.HasRaft) && HasFlag(GameFlag.HasArmor))
         {
             map7 = $"{map7.AsSpan(0, 1751)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                  =======                                     =XXXXXXXXXX=#=XXXXXXXXXX=                                  ==  = =                                     =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#{map7.AsSpan(2163)}";
         }
@@ -632,39 +634,39 @@ public static class MainProgram
             lCText = true;
             map9 = $"{map9.AsSpan(0, 1133)}=//////////=                                                                              =//////////=#=//////////=                                                                              =//////////=#=/////                       ||  TILL'  YOUR  FOES  ARE  BUT  HITHER,  ||                       /////=#=//  =======                 ||        SEALED  THE  PORTAL  IS.        ||                 =======  //=#=//=========                                                                              =========//=#=//== O>  ==                                                                              ==  <O ==//=#=//=========                                                                              =========//=#=//  =======                                                                              =======  //=#=/////                                                                                           ////=#=//////////=                                                                              =//////////=#=//////////=                                                                              =//////////=#{map9.AsSpan(2266)}";
         }
-        else if (mapNum == 9 && HasFlag(GameFlags.Door1) && !HasFlag(GameFlags.Door2))
+        else if (mapNum == 9 && HasFlag(GameFlag.Door1) && !HasFlag(GameFlag.Door2))
         {
             map9 = $"{map9.AsSpan(0, 1339)}=/////                   =====   =====                         =====   =====                    /////=#=//  XXXXXXX                                                                              =======  //=#=//XXXXXXXXX                                                                              =========//=#=//XXXXXXXXX                                                                              ==  <O ==//=#=//XXXXXXXXX                                                                              =========//=#=//  XXXXXXX                                                                              =======  //=#=/////                   XXXXX   XXXXX                         XXXXX   XXXXX                    /////=#{map9.AsSpan(2060)}";
-            if (HasFlag(GameFlags.Door3))
+            if (HasFlag(GameFlag.Door3))
             {
                 map9 = $"{map9.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map9.AsSpan(618)}";
             }
         }
-        else if (mapNum == 9 && !HasFlag(GameFlags.Door1) && HasFlag(GameFlags.Door2))
+        else if (mapNum == 9 && !HasFlag(GameFlag.Door1) && HasFlag(GameFlag.Door2))
         {
             map9 = $"{map9.AsSpan(0, 1339)}=/////                   =====   =====                         =====   =====                    /////=#=//  =======                                                                              XXXXXXX  //=#=//=========                                                                              XXXXXXXXX//=#=//== O>  ==                                                                              XXXXXXXXX//=#=//=========                                                                              XXXXXXXXX//=#=//  =======                                                                              XXXXXXX  //=#=/////                   XXXXX   XXXXX                         XXXXX   XXXXX                    /////=#{map9.AsSpan(2060)}";
-            if (HasFlag(GameFlags.Door3))
+            if (HasFlag(GameFlag.Door3))
             {
                 map9 = $"{map9.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map9.AsSpan(618)}";
             }
         }
-        else if (mapNum == 9 && HasFlag(GameFlags.Door1) && HasFlag(GameFlags.Door2))
+        else if (mapNum == 9 && HasFlag(GameFlag.Door1) && HasFlag(GameFlag.Door2))
         {
             map9 = $"{map9.AsSpan(0, 1339)}=/////                   =====   =====                         =====   =====                    /////=#=//  XXXXXXX                                                                              XXXXXXX  //=#=//XXXXXXXXX                                                                              XXXXXXXXX//=#=//XXXXXXXXX                                                                              XXXXXXXXX//=#=//XXXXXXXXX                                                                              XXXXXXXXX//=#=//  XXXXXXX                                                                              XXXXXXX  //=#=/////                   XXXXX   XXXXX                         XXXXX   XXXXX                    /////=#{map9.AsSpan(2060)}";
-            if (HasFlag(GameFlags.Door3) && (cEnemies1 > 0 || cEnemies2 > 0))
+            if (HasFlag(GameFlag.Door3) && (cEnemies1 > 0 || cEnemies2 > 0))
             {
                 map9 = $"{map9.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map9.AsSpan(618)}";
             }
-            else if (HasFlag(GameFlags.Door3))
+            else if (HasFlag(GameFlag.Door3))
             {
                 map9 = $"{map9.AsSpan(0, 103)}=/////////////////////////////////////////////  XXXXX  //////////////////////////////////////////////=#=///////////////////////////////////////////  XXXXXXXXX  ////////////////////////////////////////////=#=///////////////////////////////////////////  XXXXXXXXX  ////////////////////////////////////////////=#=///////////////////////////////////////////  XXXXXXXXX  ////////////////////////////////////////////=#=//////////=================================  XXXXXXXXX  ==================================//////////=#{map9.AsSpan(618)}";
             }
         }
-        else if (mapNum == 9 && HasFlag(GameFlags.Door3))
+        else if (mapNum == 9 && HasFlag(GameFlag.Door3))
         {
             map9 = $"{map9.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map9.AsSpan(618)}";
         }
-        else if (mapNum == 12 && HasFlag(GameFlags.Dragon))
+        else if (mapNum == 12 && HasFlag(GameFlag.Dragon))
         {
             map12 = $"{map12.AsSpan(0, 1339)}=//////////=                                                                                    /////=#=//////////=                                                                              XXXXXXX  //=#=//////////=                                                                              XXXXXXXXX//=#=//////////=                                                                              XXXXXXXXX//=#=//////////=                                                                              XXXXXXXXX//=#=//////////=                                                                              XXXXXXX  //=#=//////////=                                                                                    /////=#{map12.AsSpan(2060)}";
         }
@@ -846,7 +848,7 @@ public static class MainProgram
         }
         else if (mapNum == 12)
         {
-            if (!HasFlag(GameFlags.Dragon)) EnemyMovement.Move(-1, EnemyType.Dragon, 71, 13, 'a', 12, true);
+            if (!HasFlag(GameFlag.Dragon)) EnemyMovement.Move(-1, EnemyType.Dragon, 71, 13, 'a', 12, true);
         }
 
         if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
@@ -863,7 +865,7 @@ public static class MainProgram
         if (lCText)
         {
             lCText = false;
-            SetFlag(GameFlags.Text, true);
+            SetFlag(GameFlag.Text, true);
             wait = 750;
         }
 
@@ -873,7 +875,9 @@ public static class MainProgram
     public static void Wait(int time)
     {
         _attacking = true;
-        LinkMovement.SetPrev(time.ToString()[0]);
+        //TODO => Why is this set to a number?
+        //LinkMovement.SetPrev(time.ToString()[0]);
+        LinkMovement.SetPrev(Direction.None);
     }
 
     public static void UpdateRow(int row)

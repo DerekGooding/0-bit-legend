@@ -47,7 +47,7 @@ public class EnemyMovement
     public void SetMotion(int index, int value) => _motion[index] = value;
 
 
-    public bool TakeDamage(int posX, int posY, char prev, int damage)
+    public bool TakeDamage(int posX, int posY, Direction prev, int damage)
     {
         var index = GetIndex(posX, posY);
         MainProgram.LinkMovement.StoreSword(prev);
@@ -86,7 +86,7 @@ public class EnemyMovement
 
             if (_sRType == EnemyType.Dragon)
             {
-                SetFlag(Model.GameFlags.Dragon, true);
+                SetFlag(Model.GameFlag.Dragon, true);
                 LoadMap(12, MainProgram.LinkMovement.GetPosX(), MainProgram.LinkMovement.GetPosY(), MainProgram.LinkMovement.GetPrev());
             }
         }

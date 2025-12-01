@@ -1,7 +1,7 @@
 ﻿namespace _0_Bit_Legend.Model;
 
 [Flags]
-public enum GameFlags
+public enum GameFlag
 {
     None = 0,
     HasSword = 1 << 0,
