@@ -884,14 +884,10 @@ public static class MainProgram
             line += Map[x, row];
         }
         _strs[row] = line;
-        //Console.SetCursorPosition(37, row);
-        //Console.Write(line);
-        //Console.SetCursorPosition(0, 0);
     }
 
     public static void UpdateHud()
     {
-        //oldHud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X       MAIN ITEM:        X#X                         X#X           S             X#X           S             X#X         - - -           X#X           -             X#X  ---------------------  X#X                         X#X      RUPEES:   {rupees.ToString().PadRight(4)}     X#X                         X#X      KEYS:     {keys.ToString().PadRight(4)}     X#X                         X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
         _hud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X                         X#X    r                    X#X   RRR          {Rupees,-4}     X#X    r                    X#X                         X#X  =======       {Keys,-4}     X#X  ==  = =                X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
         _hud = Health > 2.5
             ? $"{_hud.AsSpan(0, 196)}X       <3  <3  <3        X#{_hud.AsSpan(224)}" : Health > 2
