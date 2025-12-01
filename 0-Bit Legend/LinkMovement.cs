@@ -5,9 +5,6 @@ namespace _0_Bit_Legend;
 
 public class LinkMovement
 {
-    private int _posX;
-    private int _posY;
-
     private int _preHitPosX;
     private int _preHitPosY;
 
@@ -21,12 +18,12 @@ public class LinkMovement
     private bool _debounce;
     private bool _spawnRupee;
 
-    public int PosX => _posX;
-    public int PosY => _posY;
+    public int PosX { get; private set; }
+    public int PosY { get; private set; }
     public Direction GetPrev() => _prev;
     public Direction GetPrev2() => _prev2;
-    public void SetPosX(int posX) => _posX = posX;
-    public void SetPosY(int posY) => _posY = posY;
+    public void SetPosX(int posX) => PosX = posX;
+    public void SetPosY(int posY) => PosY = posY;
     public void SetPreHitPosX(int posX) => _preHitPosX = posX;
     public void SetPreHitPosY(int posY) => _preHitPosY = posY;
     public void SetPrev(Direction prev) => _prev = prev;
@@ -34,9 +31,9 @@ public class LinkMovement
 
     public int MovementWait;
 
-    public void Attack(Direction direction)
+    public void Attack()
     {
-        switch (direction)
+        switch (_prev)
         {
             case Direction.Up:
                 HandleAttackUp();
@@ -59,20 +56,20 @@ public class LinkMovement
         //    return;
         if (State != GameState.Attacking)
         {
-            _storage_sword[0] = Map[_posX - 1, _posY - 2];
-            _storage_sword[1] = Map[_posX, _posY - 2];
-            _storage_sword[2] = Map[_posX + 1, _posY - 2];
-            _storage_sword[3] = Map[_posX, _posY - 3];
-            _storage_sword[4] = Map[_posX, _posY - 4];
+            _storage_sword[0] = Map[PosX - 1, PosY - 2];
+            _storage_sword[1] = Map[PosX, PosY - 2];
+            _storage_sword[2] = Map[PosX + 1, PosY - 2];
+            _storage_sword[3] = Map[PosX, PosY - 3];
+            _storage_sword[4] = Map[PosX, PosY - 4];
 
-            Map[_posX - 1, _posY - 2] = '-';
-            Map[_posX, _posY - 2] = '-';
-            Map[_posX + 1, _posY - 2] = '-';
-            Map[_posX, _posY - 3] = 'S';
-            Map[_posX, _posY - 4] = 'S';
+            Map[PosX - 1, PosY - 2] = '-';
+            Map[PosX, PosY - 2] = '-';
+            Map[PosX + 1, PosY - 2] = '-';
+            Map[PosX, PosY - 3] = 'S';
+            Map[PosX, PosY - 4] = 'S';
 
-            _preHitPosX = _posX;
-            _preHitPosY = _posY;
+            _preHitPosX = PosX;
+            _preHitPosY = PosY;
             SetGameState(GameState.Idle);
         }
         else
@@ -108,22 +105,22 @@ public class LinkMovement
         //    return;
         if (State != GameState.Attacking)
         {
-            _storage_sword[0] = Map[_posX - 3, _posY];
-            _storage_sword[1] = Map[_posX - 3, _posY + 1];
-            _storage_sword[2] = Map[_posX - 3, _posY + 2];
-            _storage_sword[3] = Map[_posX - 4, _posY + 1];
-            _storage_sword[4] = Map[_posX - 5, _posY + 1];
-            _storage_sword[5] = Map[_posX - 6, _posY + 1];
+            _storage_sword[0] = Map[PosX - 3, PosY];
+            _storage_sword[1] = Map[PosX - 3, PosY + 1];
+            _storage_sword[2] = Map[PosX - 3, PosY + 2];
+            _storage_sword[3] = Map[PosX - 4, PosY + 1];
+            _storage_sword[4] = Map[PosX - 5, PosY + 1];
+            _storage_sword[5] = Map[PosX - 6, PosY + 1];
 
-            Map[_posX - 3, _posY] = '-';
-            Map[_posX - 3, _posY + 1] = '-';
-            Map[_posX - 3, _posY + 2] = '-';
-            Map[_posX - 4, _posY + 1] = 'S';
-            Map[_posX - 5, _posY + 1] = 'S';
-            Map[_posX - 6, _posY + 1] = 'S';
+            Map[PosX - 3, PosY] = '-';
+            Map[PosX - 3, PosY + 1] = '-';
+            Map[PosX - 3, PosY + 2] = '-';
+            Map[PosX - 4, PosY + 1] = 'S';
+            Map[PosX - 5, PosY + 1] = 'S';
+            Map[PosX - 6, PosY + 1] = 'S';
 
-            _preHitPosX = _posX;
-            _preHitPosY = _posY;
+            _preHitPosX = PosX;
+            _preHitPosY = PosY;
             SetGameState(GameState.Idle);
         }
         else
@@ -162,20 +159,20 @@ public class LinkMovement
         //    return;
         if (State != GameState.Attacking)
         {
-            _storage_sword[0] = Map[_posX - 1, _posY + 3];
-            _storage_sword[1] = Map[_posX, _posY + 3];
-            _storage_sword[2] = Map[_posX + 1, _posY + 3];
-            _storage_sword[3] = Map[_posX, _posY + 4];
-            _storage_sword[4] = Map[_posX, _posY + 5];
+            _storage_sword[0] = Map[PosX - 1, PosY + 3];
+            _storage_sword[1] = Map[PosX, PosY + 3];
+            _storage_sword[2] = Map[PosX + 1, PosY + 3];
+            _storage_sword[3] = Map[PosX, PosY + 4];
+            _storage_sword[4] = Map[PosX, PosY + 5];
 
-            Map[_posX - 1, _posY + 3] = '-';
-            Map[_posX, _posY + 3] = '-';
-            Map[_posX + 1, _posY + 3] = '-';
-            Map[_posX, _posY + 4] = 'S';
-            Map[_posX, _posY + 5] = 'S';
+            Map[PosX - 1, PosY + 3] = '-';
+            Map[PosX, PosY + 3] = '-';
+            Map[PosX + 1, PosY + 3] = '-';
+            Map[PosX, PosY + 4] = 'S';
+            Map[PosX, PosY + 5] = 'S';
 
-            _preHitPosX = _posX;
-            _preHitPosY = _posY;
+            _preHitPosX = PosX;
+            _preHitPosY = PosY;
             SetGameState(GameState.Idle);
         }
         else
@@ -211,22 +208,22 @@ public class LinkMovement
         //    return;
         if (State != GameState.Attacking)
         {
-            _storage_sword[0] = Map[_posX + 3, _posY];
-            _storage_sword[1] = Map[_posX + 3, _posY + 1];
-            _storage_sword[2] = Map[_posX + 3, _posY + 2];
-            _storage_sword[3] = Map[_posX + 4, _posY + 1];
-            _storage_sword[4] = Map[_posX + 5, _posY + 1];
-            _storage_sword[5] = Map[_posX + 6, _posY + 1];
+            _storage_sword[0] = Map[PosX + 3, PosY];
+            _storage_sword[1] = Map[PosX + 3, PosY + 1];
+            _storage_sword[2] = Map[PosX + 3, PosY + 2];
+            _storage_sword[3] = Map[PosX + 4, PosY + 1];
+            _storage_sword[4] = Map[PosX + 5, PosY + 1];
+            _storage_sword[5] = Map[PosX + 6, PosY + 1];
 
-            Map[_posX + 3, _posY] = '-';
-            Map[_posX + 3, _posY + 1] = '-';
-            Map[_posX + 3, _posY + 2] = '-';
-            Map[_posX + 4, _posY + 1] = 'S';
-            Map[_posX + 5, _posY + 1] = 'S';
-            Map[_posX + 6, _posY + 1] = 'S';
+            Map[PosX + 3, PosY] = '-';
+            Map[PosX + 3, PosY + 1] = '-';
+            Map[PosX + 3, PosY + 2] = '-';
+            Map[PosX + 4, PosY + 1] = 'S';
+            Map[PosX + 5, PosY + 1] = 'S';
+            Map[PosX + 6, PosY + 1] = 'S';
 
-            _preHitPosX = _posX;
-            _preHitPosY = _posY;
+            _preHitPosX = PosX;
+            _preHitPosY = PosY;
             SetGameState(GameState.Idle);
         }
         else
@@ -333,32 +330,32 @@ public class LinkMovement
     public void MoveUp(int posX, int posY)
     {
         _prev = Direction.Up;
-        if (_posX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
+        if (PosX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
         {
             if (posY > 1)
             {
-                for (var y = _posY - 2; y <= _posY + 3; y++)
+                for (var y = PosY - 2; y <= PosY + 3; y++)
                 {
-                    for (var x = _posX - 3; x <= _posX + 3; x++)
+                    for (var x = PosX - 3; x <= PosX + 3; x++)
                     {
                         Map[x, y] = '~';
                     }
                 }
 
-                _posY--;
+                PosY--;
                 DeployRaft(_prev2);
 
-                UpdateRow(_posY + 4);
+                UpdateRow(PosY + 4);
             }
             else
             {
                 LoadMap(4, 21, 29, Direction.Up);
             }
         }
-        else if (posY >= 1 && !(_posX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
+        else if (posY >= 1 && !(PosX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
         {
             IsTouching(posX, posY, 'r');
-            StoreChar(_posX, _posY);
+            StoreChar(PosX, PosY);
             var inCave = false;
 
             if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
@@ -395,13 +392,13 @@ public class LinkMovement
             {
                 LoadMap(12, 50, 24, Direction.Up);
             }
-            else if (CurrentMap == 9 && _posX >= 48 && _posX <= 52 && _posY == 7 && !HasFlag(GameFlag.Door3) && Keys > 0)
+            else if (CurrentMap == 9 && PosX >= 48 && PosX <= 52 && PosY == 7 && !HasFlag(GameFlag.Door3) && Keys > 0)
             {
                 _debounce = true;
                 Keys--;
 
                 SetFlag(GameFlag.Door3, true);
-                LoadMap(9, _posX, _posY, Direction.Up);
+                LoadMap(9, PosX, PosY, Direction.Up);
             }
 
             if (!IsTouching(posX, posY, '=')
@@ -433,8 +430,8 @@ public class LinkMovement
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                _posX = posX;
-                _posY = posY;
+                PosX = posX;
+                PosY = posY;
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -445,40 +442,40 @@ public class LinkMovement
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(_posX, _posY, Direction.Up);
+                BuildChar(PosX, PosY, Direction.Up);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
                 Hit();
             }
             else if (CurrentMap == 13 && IsTouching(posX, posY, '~'))
             {
-                BuildChar(_posX, _posY, Direction.Up);
+                BuildChar(PosX, PosY, Direction.Up);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
                 LoadMap(13, 58, 15, Direction.Left);
                 SetGameState(GameState.GameOver);
             }
             else
             {
-                BuildChar(_posX, _posY, Direction.Up);
+                BuildChar(PosX, PosY, Direction.Up);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
             }
 
             if (inCave)
             {
-                Wait(2);
+                WaitForTransition();
             }
         }
         else
@@ -522,7 +519,7 @@ public class LinkMovement
         if (posX >= 2)
         {
             IsTouching(posX, posY, 'r');
-            StoreChar(_posX, _posY);
+            StoreChar(PosX, PosY);
 
             if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
             {
@@ -556,13 +553,13 @@ public class LinkMovement
             {
                 LoadMap(10, 87, 15, Direction.Left);
             }
-            else if (CurrentMap == 9 && _posX == 14 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlag.Door1) && Keys > 0)
+            else if (CurrentMap == 9 && PosX == 14 && PosY >= 14 && PosY <= 16 && !HasFlag(GameFlag.Door1) && Keys > 0)
             {
                 _debounce = true;
                 Keys--;
 
                 SetFlag(GameFlag.Door1, true);
-                LoadMap(9, _posX, _posY, Direction.Left);
+                LoadMap(9, PosX, PosY, Direction.Left);
             }
 
             if (!IsTouching(posX, posY, '=')
@@ -586,8 +583,8 @@ public class LinkMovement
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                _posX = posX;
-                _posY = posY;
+                PosX = posX;
+                PosY = posY;
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -598,53 +595,53 @@ public class LinkMovement
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(_posX, _posY, Direction.Left);
+                BuildChar(PosX, PosY, Direction.Left);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
                 Hit();
             }
             else if (IsTouching(posX, posY, '~')
-                && _posX != 21
+                && PosX != 21
                 && HasFlag(GameFlag.HasRaft)
                 && !IsTouching(posX, posY, '=')
                 && !IsTouching(posX, posY, 'X')
                 && !IsTouching(posX, posY, 't')
                 && !IsTouching(posX, posY, 'n'))
             {
-                StoreChar(_posX, _posY);
+                StoreChar(PosX, PosY);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
-                _posX = 21;
+                PosX = 21;
                 DeployRaft(Direction.Left);
                 wait = 150;
             }
-            else if (_posX == 21 && ((posY > 11 && CurrentMap == 4)
+            else if (PosX == 21 && ((posY > 11 && CurrentMap == 4)
                 || CurrentMap == 2) && ((CurrentMap == 2 && posY < 25) || CurrentMap == 4))
             {
-                BuildChar(_posX, _posY, Direction.Left);
+                BuildChar(PosX, PosY, Direction.Left);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
-                for (var y = _posY - 2; y <= _posY + 3; y++)
+                for (var y = PosY - 2; y <= PosY + 3; y++)
                 {
-                    for (var x = _posX - 3; x <= _posX + 3; x++)
+                    for (var x = PosX - 3; x <= PosX + 3; x++)
                     {
                         Map[x, y] = '~';
                     }
                 }
 
-                _posX = 11;
+                PosX = 11;
                 posX = 11;
 
                 BuildChar(posX, posY, Direction.Left);
@@ -666,12 +663,12 @@ public class LinkMovement
             }
             else
             {
-                BuildChar(_posX, _posY, Direction.Left);
+                BuildChar(PosX, PosY, Direction.Left);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
             }
 
         }
@@ -713,18 +710,18 @@ public class LinkMovement
         {
             if ((posY < 30) && ((CurrentMap == 2 && posY < 27) || CurrentMap == 4))
             {
-                for (var y = _posY - 2; y <= _posY + 3; y++)
+                for (var y = PosY - 2; y <= PosY + 3; y++)
                 {
-                    for (var x = _posX - 3; x <= _posX + 3; x++)
+                    for (var x = PosX - 3; x <= PosX + 3; x++)
                     {
                         Map[x, y] = '~';
                     }
                 }
 
-                _posY++;
+                PosY++;
                 DeployRaft(_prev2);
 
-                UpdateRow(_posY - 3);
+                UpdateRow(PosY - 3);
             }
             else if (CurrentMap == 4)
             {
@@ -754,8 +751,8 @@ public class LinkMovement
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                _posX = posX;
-                _posY = posY;
+                PosX = posX;
+                PosY = posY;
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -766,34 +763,34 @@ public class LinkMovement
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(_posX, _posY, Direction.Down);
+                BuildChar(PosX, PosY, Direction.Down);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
                 Hit();
             }
             else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
             {
-                BuildChar(_posX, _posY, Direction.Down);
+                BuildChar(PosX, PosY, Direction.Down);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
                 LoadMap(9, 50, 9, Direction.Down);
             }
             else
             {
-                BuildChar(_posX, _posY, Direction.Down);
+                BuildChar(PosX, PosY, Direction.Down);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
             }
         }
         else
@@ -824,17 +821,17 @@ public class LinkMovement
             else if (CurrentMap == 6)
             {
                 LoadMap(0, 16, 6, Direction.Down);
-                Wait(2);
+                WaitForTransition();
             }
             else if (CurrentMap == 7)
             {
                 LoadMap(4, 86, 7, Direction.Down);
-                Wait(2);
+                WaitForTransition();
             }
             else if (CurrentMap == 9)
             {
                 LoadMap(8, 51, 17, Direction.Down);
-                Wait(2);
+                WaitForTransition();
             }
         }
         SetFlag(GameFlag.Text, false);
@@ -847,7 +844,7 @@ public class LinkMovement
         if (posX <= 99)
         {
             IsTouching(posX, posY, 'r');
-            StoreChar(_posX, _posY);
+            StoreChar(PosX, PosY);
 
             var persist = true;
             if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 's')))
@@ -883,13 +880,13 @@ public class LinkMovement
                 persist = false;
                 LoadMap(11, 14, 15, Direction.Right);
             }
-            else if (CurrentMap == 9 && _posX == 86 && _posY >= 14 && _posY <= 16 && !HasFlag(GameFlag.Door2) && Keys > 0)
+            else if (CurrentMap == 9 && PosX == 86 && PosY >= 14 && PosY <= 16 && !HasFlag(GameFlag.Door2) && Keys > 0)
             {
                 _debounce = true;
                 Keys--;
 
                 SetFlag(GameFlag.Door2, true);
-                LoadMap(9, _posX, _posY, Direction.Right);
+                LoadMap(9, PosX, PosY, Direction.Right);
             }
 
             if (!IsTouching(posX, posY, '=')
@@ -914,8 +911,8 @@ public class LinkMovement
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                _posX = posX;
-                _posY = posY;
+                PosX = posX;
+                PosY = posY;
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -926,52 +923,52 @@ public class LinkMovement
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(_posX, _posY, Direction.Right);
+                BuildChar(PosX, PosY, Direction.Right);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
                 Hit();
             }
             else if (IsTouching(posX, posY, '~')
-                && _posX != 21
+                && PosX != 21
                 && HasFlag(GameFlag.HasRaft)
                 && !IsTouching(posX, posY, '=')
                 && !IsTouching(posX, posY, 'X')
                 && !IsTouching(posX, posY, 't')
                 && !IsTouching(posX, posY, 'n'))
             {
-                StoreChar(_posX, _posY);
+                StoreChar(PosX, PosY);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
-                _posX = 21;
+                PosX = 21;
                 DeployRaft(Direction.Right);
                 wait = 150;
             }
-            else if (_posX == 21 && posY < 25 && ((posY > 3 && CurrentMap == 2) || (posY < 25 && CurrentMap == 4)))
+            else if (PosX == 21 && posY < 25 && ((posY > 3 && CurrentMap == 2) || (posY < 25 && CurrentMap == 4)))
             {
-                BuildChar(_posX, _posY, Direction.Right);
+                BuildChar(PosX, PosY, Direction.Right);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
 
-                for (var y = _posY - 2; y <= _posY + 3; y++)
+                for (var y = PosY - 2; y <= PosY + 3; y++)
                 {
-                    for (var x = _posX - 3; x <= _posX + 3; x++)
+                    for (var x = PosX - 3; x <= PosX + 3; x++)
                     {
                         Map[x, y] = '~';
                     }
                 }
 
-                _posX = 30;
+                PosX = 30;
                 posX = 30;
 
                 BuildChar(posX, posY, Direction.Right);
@@ -993,12 +990,12 @@ public class LinkMovement
             }
             else
             {
-                BuildChar(_posX, _posY, Direction.Right);
+                BuildChar(PosX, PosY, Direction.Right);
 
-                UpdateRow(_posY - 1);
-                UpdateRow(_posY);
-                UpdateRow(_posY + 1);
-                UpdateRow(_posY + 2);
+                UpdateRow(PosY - 1);
+                UpdateRow(PosY);
+                UpdateRow(PosY + 1);
+                UpdateRow(PosY + 2);
             }
         }
         else
@@ -1034,8 +1031,8 @@ public class LinkMovement
 
     public void SpawnLink(int posX, int posY, Direction direction)
     {
-        _posX = posX;
-        _posY = posY;
+        PosX = posX;
+        PosY = posY;
 
         _storage_map[0] = Map[posX - 2, posY - 1];
         _storage_map[1] = Map[posX - 1, posY - 1];
@@ -1196,34 +1193,34 @@ public class LinkMovement
 
     public void StoreChar(int posX, int posY)
     {
-        Map[_posX - 2, _posY - 1] = _storage_map[0];
-        Map[_posX - 1, _posY - 1] = _storage_map[1];
-        Map[_posX, _posY - 1] = _storage_map[2];
-        Map[_posX + 1, _posY - 1] = _storage_map[3];
-        Map[_posX + 2, _posY - 1] = _storage_map[4];
+        Map[PosX - 2, PosY - 1] = _storage_map[0];
+        Map[PosX - 1, PosY - 1] = _storage_map[1];
+        Map[PosX, PosY - 1] = _storage_map[2];
+        Map[PosX + 1, PosY - 1] = _storage_map[3];
+        Map[PosX + 2, PosY - 1] = _storage_map[4];
 
-        Map[_posX - 2, _posY] = _storage_map[5];
-        Map[_posX - 1, _posY] = _storage_map[6];
-        Map[_posX, _posY] = _storage_map[7];
-        Map[_posX + 1, _posY] = _storage_map[8];
-        Map[_posX + 2, _posY] = _storage_map[9];
+        Map[PosX - 2, PosY] = _storage_map[5];
+        Map[PosX - 1, PosY] = _storage_map[6];
+        Map[PosX, PosY] = _storage_map[7];
+        Map[PosX + 1, PosY] = _storage_map[8];
+        Map[PosX + 2, PosY] = _storage_map[9];
 
-        Map[_posX - 2, _posY + 1] = _storage_map[10];
-        Map[_posX - 1, _posY + 1] = _storage_map[11];
-        Map[_posX, _posY + 1] = _storage_map[12];
-        Map[_posX + 1, _posY + 1] = _storage_map[13];
-        Map[_posX + 2, _posY + 1] = _storage_map[14];
+        Map[PosX - 2, PosY + 1] = _storage_map[10];
+        Map[PosX - 1, PosY + 1] = _storage_map[11];
+        Map[PosX, PosY + 1] = _storage_map[12];
+        Map[PosX + 1, PosY + 1] = _storage_map[13];
+        Map[PosX + 2, PosY + 1] = _storage_map[14];
 
-        Map[_posX - 2, _posY + 2] = _storage_map[15];
-        Map[_posX - 1, _posY + 2] = _storage_map[16];
-        Map[_posX, _posY + 2] = _storage_map[17];
-        Map[_posX + 1, _posY + 2] = _storage_map[18];
-        Map[_posX + 2, _posY + 2] = _storage_map[19];
+        Map[PosX - 2, PosY + 2] = _storage_map[15];
+        Map[PosX - 1, PosY + 2] = _storage_map[16];
+        Map[PosX, PosY + 2] = _storage_map[17];
+        Map[PosX + 1, PosY + 2] = _storage_map[18];
+        Map[PosX + 2, PosY + 2] = _storage_map[19];
 
-        UpdateRow(_posY - 1);
-        UpdateRow(_posY);
-        UpdateRow(_posY + 1);
-        UpdateRow(_posY + 2);
+        UpdateRow(PosY - 1);
+        UpdateRow(PosY);
+        UpdateRow(PosY + 1);
+        UpdateRow(PosY + 2);
 
         _storage_map[0] = Map[posX - 2, posY - 1];
         _storage_map[1] = Map[posX - 1, posY - 1];
@@ -1260,103 +1257,103 @@ public class LinkMovement
             underslot = '#';
         }
 
-        Map[_posX - 3, _posY - 2] = '*';
-        Map[_posX - 2, _posY - 2] = '*';
-        Map[_posX - 1, _posY - 2] = '*';
-        Map[_posX, _posY - 2] = '*';
-        Map[_posX + 1, _posY - 2] = '*';
-        Map[_posX + 2, _posY - 2] = '*';
-        Map[_posX + 3, _posY - 2] = '*';
+        Map[PosX - 3, PosY - 2] = '*';
+        Map[PosX - 2, PosY - 2] = '*';
+        Map[PosX - 1, PosY - 2] = '*';
+        Map[PosX, PosY - 2] = '*';
+        Map[PosX + 1, PosY - 2] = '*';
+        Map[PosX + 2, PosY - 2] = '*';
+        Map[PosX + 3, PosY - 2] = '*';
 
-        Map[_posX - 3, _posY - 1] = '=';
-        Map[_posX, _posY - 1] = ' ';
-        Map[_posX + 3, _posY - 1] = '=';
+        Map[PosX - 3, PosY - 1] = '=';
+        Map[PosX, PosY - 1] = ' ';
+        Map[PosX + 3, PosY - 1] = '=';
 
-        Map[_posX - 3, _posY] = '*';
-        Map[_posX - 2, _posY] = '|';
-        Map[_posX + 2, _posY] = '|';
-        Map[_posX + 3, _posY] = '*';
+        Map[PosX - 3, PosY] = '*';
+        Map[PosX - 2, PosY] = '|';
+        Map[PosX + 2, PosY] = '|';
+        Map[PosX + 3, PosY] = '*';
 
-        Map[_posX - 3, _posY + 1] = '*';
-        Map[_posX - 2, _posY + 1] = '|';
-        Map[_posX - 1, _posY + 1] = underslot;
-        Map[_posX, _posY + 1] = '=';
-        Map[_posX + 1, _posY + 1] = underslot;
-        Map[_posX + 2, _posY + 1] = '|';
-        Map[_posX + 3, _posY + 1] = '*';
+        Map[PosX - 3, PosY + 1] = '*';
+        Map[PosX - 2, PosY + 1] = '|';
+        Map[PosX - 1, PosY + 1] = underslot;
+        Map[PosX, PosY + 1] = '=';
+        Map[PosX + 1, PosY + 1] = underslot;
+        Map[PosX + 2, PosY + 1] = '|';
+        Map[PosX + 3, PosY + 1] = '*';
 
-        Map[_posX - 3, _posY + 2] = '=';
-        Map[_posX - 2, _posY + 2] = '=';
-        Map[_posX - 1, _posY + 2] = '=';
-        Map[_posX, _posY + 2] = '=';
-        Map[_posX + 1, _posY + 2] = '=';
-        Map[_posX + 2, _posY + 2] = '=';
-        Map[_posX + 3, _posY + 2] = '=';
+        Map[PosX - 3, PosY + 2] = '=';
+        Map[PosX - 2, PosY + 2] = '=';
+        Map[PosX - 1, PosY + 2] = '=';
+        Map[PosX, PosY + 2] = '=';
+        Map[PosX + 1, PosY + 2] = '=';
+        Map[PosX + 2, PosY + 2] = '=';
+        Map[PosX + 3, PosY + 2] = '=';
 
-        Map[_posX - 3, _posY + 3] = '*';
-        Map[_posX - 2, _posY + 3] = '*';
-        Map[_posX - 1, _posY + 3] = '*';
-        Map[_posX, _posY + 3] = '*';
-        Map[_posX + 1, _posY + 3] = '*';
-        Map[_posX + 2, _posY + 3] = '*';
-        Map[_posX + 3, _posY + 3] = '*';
+        Map[PosX - 3, PosY + 3] = '*';
+        Map[PosX - 2, PosY + 3] = '*';
+        Map[PosX - 1, PosY + 3] = '*';
+        Map[PosX, PosY + 3] = '*';
+        Map[PosX + 1, PosY + 3] = '*';
+        Map[PosX + 2, PosY + 3] = '*';
+        Map[PosX + 3, PosY + 3] = '*';
 
         if (direction == Direction.Left)
         {
-            Map[_posX - 2, _posY - 1] = '=';
-            Map[_posX - 1, _posY - 1] = '/';
-            Map[_posX + 1, _posY - 1] = ' ';
-            Map[_posX + 2, _posY - 1] = '|';
+            Map[PosX - 2, PosY - 1] = '=';
+            Map[PosX - 1, PosY - 1] = '/';
+            Map[PosX + 1, PosY - 1] = ' ';
+            Map[PosX + 2, PosY - 1] = '|';
 
-            Map[_posX - 1, _posY] = '^';
-            Map[_posX, _posY] = spaceslot;
-            Map[_posX + 1, _posY] = spaceslot;
+            Map[PosX - 1, PosY] = '^';
+            Map[PosX, PosY] = spaceslot;
+            Map[PosX + 1, PosY] = spaceslot;
         }
         else if (direction == Direction.Right)
         {
-            Map[_posX - 2, _posY - 1] = '|';
-            Map[_posX - 1, _posY - 1] = ' ';
-            Map[_posX + 1, _posY - 1] = '\\';
-            Map[_posX + 2, _posY - 1] = '=';
+            Map[PosX - 2, PosY - 1] = '|';
+            Map[PosX - 1, PosY - 1] = ' ';
+            Map[PosX + 1, PosY - 1] = '\\';
+            Map[PosX + 2, PosY - 1] = '=';
 
-            Map[_posX - 1, _posY] = spaceslot;
-            Map[_posX, _posY] = spaceslot;
-            Map[_posX + 1, _posY] = '^';
+            Map[PosX - 1, PosY] = spaceslot;
+            Map[PosX, PosY] = spaceslot;
+            Map[PosX + 1, PosY] = '^';
         }
 
-        UpdateRow(_posY - 2);
-        UpdateRow(_posY - 1);
-        UpdateRow(_posY);
-        UpdateRow(_posY + 1);
-        UpdateRow(_posY + 2);
-        UpdateRow(_posY + 3);
+        UpdateRow(PosY - 2);
+        UpdateRow(PosY - 1);
+        UpdateRow(PosY);
+        UpdateRow(PosY + 1);
+        UpdateRow(PosY + 2);
+        UpdateRow(PosY + 3);
     }
 
     public void PlayEffect(char symbol)
     {
-        Map[_posX - 2, _posY - 1] = symbol;
-        Map[_posX - 1, _posY - 1] = symbol;
-        Map[_posX, _posY - 1] = symbol;
-        Map[_posX + 1, _posY - 1] = symbol;
-        Map[_posX + 2, _posY - 1] = symbol;
+        Map[PosX - 2, PosY - 1] = symbol;
+        Map[PosX - 1, PosY - 1] = symbol;
+        Map[PosX, PosY - 1] = symbol;
+        Map[PosX + 1, PosY - 1] = symbol;
+        Map[PosX + 2, PosY - 1] = symbol;
 
-        Map[_posX - 2, _posY] = symbol;
-        Map[_posX - 1, _posY] = symbol;
-        Map[_posX, _posY] = symbol;
-        Map[_posX + 1, _posY] = symbol;
-        Map[_posX + 2, _posY] = symbol;
+        Map[PosX - 2, PosY] = symbol;
+        Map[PosX - 1, PosY] = symbol;
+        Map[PosX, PosY] = symbol;
+        Map[PosX + 1, PosY] = symbol;
+        Map[PosX + 2, PosY] = symbol;
 
-        Map[_posX - 2, _posY + 1] = symbol;
-        Map[_posX - 1, _posY + 1] = symbol;
-        Map[_posX, _posY + 1] = symbol;
-        Map[_posX + 1, _posY + 1] = symbol;
-        Map[_posX + 2, _posY + 1] = symbol;
+        Map[PosX - 2, PosY + 1] = symbol;
+        Map[PosX - 1, PosY + 1] = symbol;
+        Map[PosX, PosY + 1] = symbol;
+        Map[PosX + 1, PosY + 1] = symbol;
+        Map[PosX + 2, PosY + 1] = symbol;
 
-        Map[_posX - 2, _posY + 2] = symbol;
-        Map[_posX - 1, _posY + 2] = symbol;
-        Map[_posX, _posY + 2] = symbol;
-        Map[_posX + 1, _posY + 2] = symbol;
-        Map[_posX + 2, _posY + 2] = symbol;
+        Map[PosX - 2, PosY + 2] = symbol;
+        Map[PosX - 1, PosY + 2] = symbol;
+        Map[PosX, PosY + 2] = symbol;
+        Map[PosX + 1, PosY + 2] = symbol;
+        Map[PosX + 2, PosY + 2] = symbol;
     }
 
     public void PlaceZelda()
@@ -1402,14 +1399,14 @@ public class LinkMovement
             }
             SetGameState(GameState.Hit);
 
-            StoreChar(_posX, _posY);
+            StoreChar(PosX, PosY);
 
             PlayEffect('*');
 
-            UpdateRow(_posY - 1);
-            UpdateRow(_posY);
-            UpdateRow(_posY + 1);
-            UpdateRow(_posY + 2);
+            UpdateRow(PosY - 1);
+            UpdateRow(PosY);
+            UpdateRow(PosY + 1);
+            UpdateRow(PosY + 2);
         }
     }
 

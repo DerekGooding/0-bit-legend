@@ -255,7 +255,7 @@ public class EnemyMovement
                 enemy.Build(posX, posY, _prev1[index]);
                 break;
             case EnemyType.Fireball:
-                enemy.Build(posX, posY, Direction.None);
+                enemy.Build(posX, posY, Direction.Up);
                 break;
         }
     }

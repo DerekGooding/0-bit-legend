@@ -90,7 +90,7 @@ public static partial class MainProgram
                     HandleWaiting();
                     break;
                 case GameState.Attacking:
-                    HandleAttacking();
+                    LinkMovement.Attack();
                     break;
                 case GameState.Hit:
                     HandleHit();
@@ -128,7 +128,7 @@ public static partial class MainProgram
         }
         else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
         {
-            LinkMovement.Attack(LinkMovement.GetPrev());
+            LinkMovement.Attack();
             State = GameState.Attacking;
         }
 
@@ -552,12 +552,22 @@ public static partial class MainProgram
             }
         }
     }
-
-    private static void HandleAttacking() => LinkMovement.Attack(LinkMovement.GetPrev());
-
     private static void HandleWaiting()
     {
         Thread.Sleep(100);
+
+        if (CurrentMap is 0 or 4 or 8)
+        {
+            LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
+            Thread.Sleep(50);
+        }
+        else if (CurrentMap is 6 or 7 or 9)
+        {
+            LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
+            Thread.Sleep(50);
+        }
+
+        LinkMovement.MovementWait--;
         if (LinkMovement.MovementWait <= 0)
         {
             if (CurrentMap == 0)
@@ -585,30 +595,6 @@ public static partial class MainProgram
                 LoadMap(8, 51, 20, Direction.Down);
             }
             State = GameState.Idle;
-        }
-        else
-        {
-            if (CurrentMap is 0 or 4 or 8)
-            {
-                LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
-                Thread.Sleep(50);
-            }
-            else if (CurrentMap is 6 or 7 or 9)
-            {
-                LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
-                Thread.Sleep(50);
-            }
-
-            if (LinkMovement.GetPrev() is Direction.Up or Direction.Down)
-            {
-                LinkMovement.SetPrev(Direction.None);
-            }
-            else
-            {
-                LinkMovement.MovementWait--;
-                if (LinkMovement.MovementWait <= 0)
-                    State = GameState.Idle;
-            }
         }
     }
 
@@ -1000,11 +986,10 @@ public static partial class MainProgram
         _start = true;
     }
 
-    public static void Wait(int time)
+    public static void WaitForTransition(int time = 2)
     {
         State = GameState.Waiting;
-        if(LinkMovement.MovementWait == 0)
-            LinkMovement.MovementWait = time;
+        LinkMovement.MovementWait = time;
     }
 
     public static void UpdateRow(int row)
