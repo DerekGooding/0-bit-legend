@@ -158,21 +158,10 @@ public class EnemyMovement
 
         if (InBounds(type, posX, posY))
         {
+            var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
+            var blocking2 = new char[] { '|', '_', '\\' };
             Clear(index, type);
-            if (type == EnemyType.Dragon
-                || ((type == EnemyType.Spider || type == EnemyType.Bat ||
-                (!IsTouching(enemy, posX, posY, '=')
-                    && !IsTouching(enemy, posX, posY, 'X')))
-                    && !IsTouching(enemy, posX, posY, 't')
-                    && !IsTouching(enemy, posX, posY, 'n')
-                    && !IsTouching(enemy, posX, posY, 'B')
-                    && !IsTouching(enemy, posX, posY, '{')
-                    && !IsTouching(enemy, posX, posY, '}')
-                    && !IsTouching(enemy, posX, posY, '|')
-                    && !IsTouching(enemy, posX, posY, '/')
-                    && !IsTouching(enemy, posX, posY, '\\')
-                    && !IsTouching(enemy, posX, posY, '_')
-                    && !IsTouching(enemy, posX, posY, '~')))
+            if (type == EnemyType.Dragon || type == EnemyType.Spider || type == EnemyType.Bat || (!enemy.IsTouching(posX, posY, blocking)))
             {
                 _prev1[index] = direction;
 
@@ -226,9 +215,7 @@ public class EnemyMovement
 
                 return true;
             }
-            else if (IsTouching(enemy, posX, posY, '|')
-                || IsTouching(enemy, posX, posY, '_')
-                || IsTouching(enemy, posX, posY, '\\'))
+            else if (enemy.IsTouching(posX, posY, blocking2))
             {
                 MainProgram.LinkMovement.Hit();
                 if (type == EnemyType.Fireball)
@@ -567,8 +554,6 @@ public class EnemyMovement
 
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
-
-    public bool IsTouching(IEnemy enemy, int posX, int posY, char symbol) => enemy.IsTouching(posX, posY, symbol);
 
     public int GetIndex(int posX, int posY)
     {
