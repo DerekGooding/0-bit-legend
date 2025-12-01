@@ -1,5 +1,4 @@
 using _0_Bit_Legend.Model;
-using System.IO.Pipes;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
@@ -330,7 +329,6 @@ public class LinkMovement
     public void MoveUp(int posX, int posY)
     {
         _prev = Direction.Up;
-
         if (_posX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
         {
             if (posY > 1)
@@ -1030,7 +1028,7 @@ public class LinkMovement
         _debounce = false;
     }
 
-    public void SpawnLink(int posX, int posY)
+    public void SpawnLink(int posX, int posY, Direction direction)
     {
         _posX = posX;
         _posY = posY;
@@ -1058,7 +1056,22 @@ public class LinkMovement
         _storage_map[17] = Map[posX, posY + 2];
         _storage_map[18] = Map[posX + 1, posY + 2];
         _storage_map[19] = Map[posX + 2, posY + 2];
-        MoveUp(posX, posY);
+
+        switch (direction)
+        {
+            case Direction.Up:
+                MoveUp(posX, posY);
+                break;
+            case Direction.Down:
+                MoveDown(posX, posY);
+                break;
+            case Direction.Left:
+                MoveLeft(posX, posY);
+                break;
+            case Direction.Right:
+                MoveRight(posX, posY);
+                break;
+        }
     }
 
     public void BuildChar(int posX, int posY, Direction direction)
