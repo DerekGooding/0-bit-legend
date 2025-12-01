@@ -59,4 +59,19 @@ public class Octorok : IEnemy
         }
         return false;
     }
+
+    public bool IsTouching(int posX, int posY, char[] symbols)
+    {
+        for (var i = 0; i < 4; i++)
+        {
+            for (var j = 0; j < 3; j++)
+            {
+                if (symbols.Any(x => x == Map[posX + i, posY + j]))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

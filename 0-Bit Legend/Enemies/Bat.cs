@@ -53,4 +53,19 @@ public class Bat : IEnemy
         }
         return false;
     }
+
+    public bool IsTouching(int posX, int posY, char[] symbols)
+    {
+        for (var i = 0; i < 5; i++)
+        {
+            for (var j = 0; j < 2; j++)
+            {
+                if (symbols.Any(x => x == Map[posX + i, posY + j]))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

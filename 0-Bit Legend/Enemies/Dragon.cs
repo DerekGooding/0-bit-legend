@@ -29,4 +29,6 @@ public class Dragon : IEnemy
     }
 
     public bool IsTouching(int posX, int posY, char symbol) => false;
+
+    public bool IsTouching(int posX, int posY, char[] symbols) => false;
 }

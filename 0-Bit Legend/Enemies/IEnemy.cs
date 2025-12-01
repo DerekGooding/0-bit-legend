@@ -8,4 +8,6 @@ public interface IEnemy
     public void Build(int posX, int posY, Direction previousIndex);
 
     public bool IsTouching(int posX, int posY, char symbol);
+
+    public bool IsTouching(int posX, int posY, char[] symbols);
 }
