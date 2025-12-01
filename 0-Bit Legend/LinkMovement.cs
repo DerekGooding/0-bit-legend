@@ -22,8 +22,8 @@ public class LinkMovement
     private bool _debounce;
     private bool _spawnRupee;
 
-    public int GetPosX() => _posX;
-    public int GetPosY() => _posY;
+    public int PosX => _posX;
+    public int PosY => _posY;
     public Direction GetPrev() => _prev;
     public Direction GetPrev2() => _prev2;
     public void SetPosX(int posX) => _posX = posX;

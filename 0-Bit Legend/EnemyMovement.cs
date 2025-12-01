@@ -87,7 +87,7 @@ public class EnemyMovement
             if (_sRType == EnemyType.Dragon)
             {
                 SetFlag(Model.GameFlag.Dragon, true);
-                LoadMap(12, MainProgram.LinkMovement.GetPosX(), MainProgram.LinkMovement.GetPosY(), MainProgram.LinkMovement.GetPrev());
+                LoadMap(12, MainProgram.LinkMovement.PosX, MainProgram.LinkMovement.PosY, MainProgram.LinkMovement.GetPrev());
             }
         }
         return true;

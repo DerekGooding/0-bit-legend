@@ -128,19 +128,19 @@ public static class MainProgram
                     {
                         if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveUp(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1);
+                            LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
                         }
                         else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveLeft(LinkMovement.GetPosX() - 2, LinkMovement.GetPosY());
+                            LinkMovement.MoveLeft(LinkMovement.PosX - 2, LinkMovement.PosY);
                         }
                         else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveDown(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1);
+                            LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
                         }
                         else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
                         {
-                            LinkMovement.MoveRight(LinkMovement.GetPosX() + 2, LinkMovement.GetPosY());
+                            LinkMovement.MoveRight(LinkMovement.PosX + 2, LinkMovement.PosY);
                         }
                         else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
                         {
@@ -605,12 +605,12 @@ public static class MainProgram
                             {
                                 if (CurrentMap is 0 or 4 or 8)
                                 {
-                                    LinkMovement.MoveUp(LinkMovement.GetPosX(), LinkMovement.GetPosY() - 1);
+                                    LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
                                     Thread.Sleep(50);
                                 }
                                 else if (CurrentMap is 6 or 7 or 9)
                                 {
-                                    LinkMovement.MoveDown(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 1);
+                                    LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
                                     Thread.Sleep(50);
                                 }
 
@@ -636,21 +636,21 @@ public static class MainProgram
                     Thread.Sleep(100);
                     SetFlag(GameFlag.Hit, false);
 
-                    if (LinkMovement.GetPrev() == Direction.Up && LinkMovement.GetPosY() < 27)
+                    if (LinkMovement.GetPrev() == Direction.Up && LinkMovement.PosY < 27)
                     {
-                        LinkMovement.MoveUp(LinkMovement.GetPosX(), LinkMovement.GetPosY() + 3);
+                        LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY + 3);
                     }
-                    else if (LinkMovement.GetPrev() == Direction.Left && LinkMovement.GetPosX() < 94)
+                    else if (LinkMovement.GetPrev() == Direction.Left && LinkMovement.PosX < 94)
                     {
-                        LinkMovement.MoveLeft(LinkMovement.GetPosX() + 6, LinkMovement.GetPosY());
+                        LinkMovement.MoveLeft(LinkMovement.PosX + 6, LinkMovement.PosY);
                     }
-                    else if (LinkMovement.GetPrev() == Direction.Down && LinkMovement.GetPosY() > 3)
+                    else if (LinkMovement.GetPrev() == Direction.Down && LinkMovement.PosY > 3)
                     {
-                        LinkMovement.MoveDown(LinkMovement.GetPosX(), LinkMovement.GetPosY() -3);
+                        LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY -3);
                     }
-                    else if (LinkMovement.GetPrev() == Direction.Right && LinkMovement.GetPosX() > 7)
+                    else if (LinkMovement.GetPrev() == Direction.Right && LinkMovement.PosX > 7)
                     {
-                        LinkMovement.MoveRight(LinkMovement.GetPosX() -6, LinkMovement.GetPosY());
+                        LinkMovement.MoveRight(LinkMovement.PosX -6, LinkMovement.PosY);
                     }
                 }
             }
@@ -675,10 +675,10 @@ public static class MainProgram
                     {
                         LinkMovement.PlayEffect('+');
                     }
-                    UpdateRow(LinkMovement.GetPosY() - 1);
-                    UpdateRow(LinkMovement.GetPosY());
-                    UpdateRow(LinkMovement.GetPosY() + 1);
-                    UpdateRow(LinkMovement.GetPosY() + 2);
+                    UpdateRow(LinkMovement.PosY - 1);
+                    UpdateRow(LinkMovement.PosY);
+                    UpdateRow(LinkMovement.PosY + 1);
+                    UpdateRow(LinkMovement.PosY + 2);
                 }
                 else if (_frames == 25)
                 {
@@ -727,7 +727,7 @@ public static class MainProgram
                     UpdateRow(32 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLeft(LinkMovement.GetPosX(), LinkMovement.GetPosY());
+                    LinkMovement.MoveLeft(LinkMovement.PosX, LinkMovement.PosY);
                 }
                 else if (_frames < 30)
                 {
@@ -740,7 +740,7 @@ public static class MainProgram
                     UpdateRow(45 - _frames);
 
                     LinkMovement.PlaceZelda();
-                    LinkMovement.MoveLeft(LinkMovement.GetPosX(), LinkMovement.GetPosY());
+                    LinkMovement.MoveLeft(LinkMovement.PosX, LinkMovement.PosY);
                 }
                 else if (_frames == 30)
                 {
