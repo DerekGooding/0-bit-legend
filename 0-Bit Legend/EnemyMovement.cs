@@ -196,7 +196,7 @@ public class EnemyMovement
                 }
 
                 Store(index, type, posX, posY);
-                Build(index, type, posX, posY);
+                Build(index, enemy, posX, posY);
 
                 UpdateRow(posY);
                 UpdateRow(posY + 1);
@@ -224,7 +224,7 @@ public class EnemyMovement
                 }
                 else
                 {
-                    Build(index, type, _posX[index], _posY[index]);
+                    Build(index, enemy, _posX[index], _posY[index]);
                 }
             }
             else
@@ -235,31 +235,27 @@ public class EnemyMovement
                 }
                 else
                 {
-                    Build(index, type, _posX[index], _posY[index]);
+                    Build(index, enemy, _posX[index], _posY[index]);
                 }
             }
         }
         return false;
     }
 
-    public void Build(int index, EnemyType type, int posX, int posY)
+    public void Build(int index, IEnemy enemy, int posX, int posY)
     {
-        switch (type)
+        switch (enemy.Type)
         {
             case EnemyType.Octorok:
-                new Octorok().Build(posX, posY, _prev2[index]);
-                break;
             case EnemyType.Spider:
-                new Spider().Build(posX, posY, _prev2[index]);
-                break;
             case EnemyType.Bat:
-                new Bat().Build(posX, posY, _prev2[index]);
+                enemy.Build(posX, posY, _prev2[index]);
                 break;
             case EnemyType.Dragon:
-                new Dragon().Build(posX, posY, _prev1[index]);
+                enemy.Build(posX, posY, _prev1[index]);
                 break;
             case EnemyType.Fireball:
-                new Fireball().Build(posX, posY, Direction.None);
+                enemy.Build(posX, posY, Direction.None);
                 break;
         }
     }
