@@ -34,21 +34,20 @@ public class LinkMovement
 
     public void Attack(Direction prev, bool attacking)
     {
-        if (prev == Direction.Up)
+        switch (prev)
         {
-            HandleAttackUp(attacking);
-        }
-        else if (prev == Direction.Left)
-        {
-            HandleAttackLeft(attacking);
-        }
-        else if (prev == Direction.Down)
-        {
-            HandleAttackDown(attacking);
-        }
-        else if (prev == Direction.Right)
-        {
-            HandleAttackRight(attacking);
+            case Direction.Up:
+                HandleAttackUp(attacking);
+                break;
+            case Direction.Left:
+                HandleAttackLeft(attacking);
+                break;
+            case Direction.Down:
+                HandleAttackDown(attacking);
+                break;
+            case Direction.Right:
+                HandleAttackRight(attacking);
+                break;
         }
     }
 
