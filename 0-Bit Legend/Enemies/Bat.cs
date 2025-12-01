@@ -37,4 +37,20 @@ public class Bat : IEnemy
             Map[posX + 4, posY + 1] = '}';
         }
     }
+
+    public bool IsTouching(int posX, int posY, char symbol)
+    {
+        //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
+        for (var i = 0; i < 5; i++)
+        {
+            for (var j = 0; j < 2; j++)
+            {
+                if (Map[posX + i, posY + j] == symbol)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
