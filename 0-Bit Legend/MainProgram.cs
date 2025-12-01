@@ -1,3 +1,4 @@
+using _0_Bit_Legend.Maps;
 using _0_Bit_Legend.Model;
 using System.Runtime.InteropServices;
 
@@ -106,7 +107,7 @@ public static class MainProgram
             }
 
             // Clear remaining lines at the bottom of the console
-            var lastGameLine = 4 + 33; // Game content goes from line 4 to line 36 (inclusive), so next line is 37
+            const int lastGameLine = 4 + 33; // Game content goes from line 4 to line 36 (inclusive), so next line is 37
             for (var i = lastGameLine; i < Console.WindowHeight; i++)
             {
                 Console.SetCursorPosition(0, i);
@@ -610,7 +611,7 @@ public static class MainProgram
                                     Thread.Sleep(50);
                                 }
 
-                                if (LinkMovement.GetPrev() == Direction.Up || LinkMovement.GetPrev() == Direction.Down)
+                                if (LinkMovement.GetPrev() is Direction.Up or Direction.Down)
                                 {
                                     LinkMovement.SetPrev(Direction.None);
                                 }
@@ -1107,11 +1108,11 @@ public static class MainProgram
             ? $"{_hud.AsSpan(0, 196)}X       =                 X#{_hud.AsSpan(224)}" : $"{_hud.AsSpan(0, 196)}X                         X#{_hud.AsSpan(224)}";
     }
 
-    public static void Tabs(int tabs)
-    {
-        for (var x = 0; x < tabs; x++)
-        {
-            Console.Write("  ");
-        }
-    }
+    //public static void Tabs(int tabs)
+    //{
+    //    for (var x = 0; x < tabs; x++)
+    //    {
+    //        Console.Write("  ");
+    //    }
+    //}
 }

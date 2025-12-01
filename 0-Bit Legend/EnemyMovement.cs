@@ -47,7 +47,7 @@ public class EnemyMovement
     public void SetMotion(int index, int value) => _motion[index] = value;
 
 
-    public bool TakeDamage(int posX, int posY, Direction prev, int damage)
+    public bool TakeDamage(int posX, int posY, Direction prev, int _)
     {
         var index = GetIndex(posX, posY);
         MainProgram.LinkMovement.StoreSword(prev);

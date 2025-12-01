@@ -17,7 +17,10 @@ public class Dragon : IEnemy
         {
             for (var j = 0; j < 12; j++)
             {
-                if (Map[posX + j, posY + i] == '/' || Map[posX + j, posY + i] == '\\' || Map[posX + j, posY + i] == '|' || Map[posX + j, posY + i] == '_' && !debounce)
+                if (Map[posX + j, posY + i] == '/'
+                    || Map[posX + j, posY + i] == '\\'
+                    || Map[posX + j, posY + i] == '|'
+                    || (Map[posX + j, posY + i] == '_' && !debounce))
                 {
                     debounce = true;
                     MainProgram.LinkMovement.Hit();
