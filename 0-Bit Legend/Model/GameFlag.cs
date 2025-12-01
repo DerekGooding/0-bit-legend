@@ -7,11 +7,9 @@ public enum GameFlag
     HasSword = 1 << 0,
     HasArmor = 1 << 1,
     HasRaft = 1 << 2,
-    GameOver = 1 << 3,
-    Door1 = 1 << 4,
-    Door2 = 1 << 5,
-    Door3 = 1 << 6,
-    Text = 1 << 7,
-    Dragon = 1 << 8,
-    Hit = 1 << 9
+    Door1 = 1 << 3,
+    Door2 = 1 << 4,
+    Door3 = 1 << 5,
+    Text = 1 << 6,
+    Dragon = 1 << 7,
 }

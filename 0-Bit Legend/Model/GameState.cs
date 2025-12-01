@@ -2,6 +2,7 @@
 {
     Idle,
     Waiting,
+    Attacking,
     Hit,
     Dead,
     GameOver

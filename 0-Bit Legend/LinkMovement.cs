@@ -34,30 +34,30 @@ public class LinkMovement
 
     public int MovementWait;
 
-    public void Attack(Direction direction, bool attacking)
+    public void Attack(Direction direction)
     {
         switch (direction)
         {
             case Direction.Up:
-                HandleAttackUp(attacking);
+                HandleAttackUp();
                 break;
             case Direction.Left:
-                HandleAttackLeft(attacking);
+                HandleAttackLeft();
                 break;
             case Direction.Down:
-                HandleAttackDown(attacking);
+                HandleAttackDown();
                 break;
             case Direction.Right:
-                HandleAttackRight(attacking);
+                HandleAttackRight();
                 break;
         }
     }
 
-    private void HandleAttackUp(bool attacking)
+    private void HandleAttackUp()
     {
         //if (_posY > 3)
         //    return;
-        if (!attacking)
+        if (State != GameState.Attacking)
         {
             _storage_sword[0] = Map[_posX - 1, _posY - 2];
             _storage_sword[1] = Map[_posX, _posY - 2];
@@ -73,6 +73,7 @@ public class LinkMovement
 
             _preHitPosX = _posX;
             _preHitPosY = _posY;
+            SetGameState(GameState.Idle);
         }
         else
         {
@@ -101,11 +102,11 @@ public class LinkMovement
         UpdateRow(_preHitPosY - 3);
         UpdateRow(_preHitPosY - 4);
     }
-    private void HandleAttackLeft(bool attacking)
+    private void HandleAttackLeft()
     {
         //if(_posX > 4)
         //    return;
-        if (!attacking)
+        if (State != GameState.Attacking)
         {
             _storage_sword[0] = Map[_posX - 3, _posY];
             _storage_sword[1] = Map[_posX - 3, _posY + 1];
@@ -123,6 +124,7 @@ public class LinkMovement
 
             _preHitPosX = _posX;
             _preHitPosY = _posY;
+            SetGameState(GameState.Idle);
         }
         else
         {
@@ -154,11 +156,11 @@ public class LinkMovement
         UpdateRow(_preHitPosY + 1);
         UpdateRow(_preHitPosY + 2);
     }
-    private void HandleAttackDown(bool attacking)
+    private void HandleAttackDown()
     {
         //if (_posY + 4 < 33)
         //    return;
-        if (!attacking)
+        if (State != GameState.Attacking)
         {
             _storage_sword[0] = Map[_posX - 1, _posY + 3];
             _storage_sword[1] = Map[_posX, _posY + 3];
@@ -174,6 +176,7 @@ public class LinkMovement
 
             _preHitPosX = _posX;
             _preHitPosY = _posY;
+            SetGameState(GameState.Idle);
         }
         else
         {
@@ -202,11 +205,11 @@ public class LinkMovement
         UpdateRow(_preHitPosY + 4);
         UpdateRow(_preHitPosY + 5);
     }
-    private void HandleAttackRight(bool attacking)
+    private void HandleAttackRight()
     {
         //if (_posX + 6 < 102)
         //    return;
-        if (!attacking)
+        if (State != GameState.Attacking)
         {
             _storage_sword[0] = Map[_posX + 3, _posY];
             _storage_sword[1] = Map[_posX + 3, _posY + 1];
@@ -224,6 +227,7 @@ public class LinkMovement
 
             _preHitPosX = _posX;
             _preHitPosY = _posY;
+            SetGameState(GameState.Idle);
         }
         else
         {
@@ -460,7 +464,7 @@ public class LinkMovement
                 UpdateRow(_posY + 2);
 
                 LoadMap(13, 58, 15, Direction.Left);
-                SetFlag(GameFlag.GameOver, true);
+                SetGameState(GameState.GameOver);
             }
             else
             {
@@ -1396,7 +1400,7 @@ public class LinkMovement
             {
                 Health--;
             }
-            SetFlag(GameFlag.Hit, true);
+            SetGameState(GameState.Hit);
 
             StoreChar(_posX, _posY);
 

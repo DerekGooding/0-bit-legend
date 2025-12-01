@@ -10,7 +10,7 @@ public static partial class MainProgram
     public static EnemyMovement EnemyMovement { get; } = new();
 
     private static GameFlag _flags = GameFlag.None;
-    private static GameState _state = GameState.Idle;
+    public static GameState State { get; private set; } = GameState.Idle;
 
     private static readonly List<IMap> _maps = [];
 
@@ -32,7 +32,6 @@ public static partial class MainProgram
 
     private static int _frames;
     private static string _hud = "";
-    private static bool _attacking;
     private static bool _start;
 
     private static string _credits = string.Empty;
@@ -82,24 +81,26 @@ public static partial class MainProgram
             DrawHud();
             DrawGame();
 
-            if (Health > 0 && !HasFlag(GameFlag.GameOver))
+            switch (State)
             {
-                if (!HasFlag(GameFlag.Hit))
-                {
+                case GameState.Idle:
                     HandleMovement();
-                }
-                else
-                {
+                    break;
+                case GameState.Waiting:
+                    HandleWaiting();
+                    break;
+                case GameState.Attacking:
+                    HandleAttacking();
+                    break;
+                case GameState.Hit:
                     HandleHit();
-                }
-            }
-            else if (Health <= 0)
-            {
-                HandleDeath();
-            }
-            else if (HasFlag(GameFlag.GameOver))
-            {
-                HandleGameOver();
+                    break;
+                case GameState.Dead:
+                    HandleDeath();
+                    break;
+                case GameState.GameOver:
+                    HandleGameOver();
+                    break;
             }
 
             // Frame Rate: ~ 12 FPS
@@ -109,81 +110,177 @@ public static partial class MainProgram
 
     private static void HandleMovement()
     {
-        if (!_attacking)
+        if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
         {
-            if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
-            {
-                LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
-            }
-            else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
-            {
-                LinkMovement.MoveLeft(LinkMovement.PosX - 2, LinkMovement.PosY);
-            }
-            else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
-            {
-                LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
-            }
-            else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
-            {
-                LinkMovement.MoveRight(LinkMovement.PosX + 2, LinkMovement.PosY);
-            }
-            else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
-            {
-                LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
-                _attacking = true;
-            }
+            LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
+        }
+        else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
+        {
+            LinkMovement.MoveLeft(LinkMovement.PosX - 2, LinkMovement.PosY);
+        }
+        else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
+        {
+            LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
+        }
+        else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
+        {
+            LinkMovement.MoveRight(LinkMovement.PosX + 2, LinkMovement.PosY);
+        }
+        else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
+        {
+            LinkMovement.Attack(LinkMovement.GetPrev());
+            State = GameState.Attacking;
+        }
 
-            if (!HasFlag(GameFlag.Hit) && waitEnemies <= 0)
+        if (waitEnemies <= 0)
+        {
+            waitEnemies = 2;
+            for (var i = 0; i < EnemyMovement.GetTotal(); i++)
             {
-                waitEnemies = 2;
-                for (var i = 0; i < EnemyMovement.GetTotal(); i++)
+                var passed = false;
+                var rnd1 = Random.Shared.Next(10);
+
+                if (EnemyMovement.GetEnemyType(i) == EnemyType.Octorok)
                 {
-                    var passed = false;
-                    var rnd1 = Random.Shared.Next(10);
+                    if (rnd1 > 2)
+                    {
+                        if (EnemyMovement.GetPrev1(i) == Direction.Up)
+                        {
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i),
+                                                            EnemyMovement.GetPosY(i) - 1,
+                                                            Direction.Up,
+                                                            -1,
+                                                            false);
+                        }
+                        else if (EnemyMovement.GetPrev1(i) == Direction.Left)
+                        {
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i) - 2,
+                                                            EnemyMovement.GetPosY(i),
+                                                            Direction.Left,
+                                                            -1,
+                                                            false);
+                        }
+                        else if (EnemyMovement.GetPrev1(i) == Direction.Down)
+                        {
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i),
+                                                            EnemyMovement.GetPosY(i) + 1,
+                                                            Direction.Down,
+                                                            -1,
+                                                            false);
+                        }
+                        else if (EnemyMovement.GetPrev1(i) == Direction.Right)
+                        {
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i) + 2,
+                                                            EnemyMovement.GetPosY(i),
+                                                            Direction.Right,
+                                                            -1,
+                                                            false);
+                        }
+                    }
+                    else
+                    {
+                        passed = true;
+                    }
 
-                    if (EnemyMovement.GetEnemyType(i) == EnemyType.Octorok)
+                    if (passed)
+                    {
+                        var rnd2 = Random.Shared.Next(4) + 1;
+                        if (rnd2 == 1)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i),
+                                                EnemyMovement.GetPosY(i) - 1,
+                                                Direction.Up,
+                                                -1,
+                                                false);
+                        }
+                        else if (rnd2 == 2)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i) - 2,
+                                                EnemyMovement.GetPosY(i),
+                                                Direction.Left,
+                                                -1,
+                                                false);
+                        }
+                        else if (rnd2 == 3)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i),
+                                                EnemyMovement.GetPosY(i) + 1,
+                                                Direction.Down,
+                                                -1,
+                                                false);
+                        }
+                        else if (rnd2 == 4)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i) + 2,
+                                                EnemyMovement.GetPosY(i),
+                                                Direction.Right,
+                                                -1,
+                                                false);
+                        }
+                    }
+                }
+                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Spider)
+                {
+                    EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
+                    if (EnemyMovement.GetMotion(i) > 0)
                     {
                         if (rnd1 > 2)
                         {
                             if (EnemyMovement.GetPrev1(i) == Direction.Up)
                             {
                                 passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i),
-                                                             EnemyMovement.GetPosY(i) - 1,
-                                                             Direction.Up,
-                                                             -1,
-                                                             false);
+                                                                EnemyMovement.GetEnemyType(i),
+                                                                EnemyMovement.GetPosX(i) - 2,
+                                                                EnemyMovement.GetPosY(i) - 1,
+                                                                Direction.Up,
+                                                                -1,
+                                                                false);
                             }
                             else if (EnemyMovement.GetPrev1(i) == Direction.Left)
                             {
                                 passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i) - 2,
-                                                             EnemyMovement.GetPosY(i),
-                                                             Direction.Left,
-                                                             -1,
-                                                             false);
+                                                                EnemyMovement.GetEnemyType(i),
+                                                                EnemyMovement.GetPosX(i) + 2,
+                                                                EnemyMovement.GetPosY(i) - 1,
+                                                                Direction.Left,
+                                                                -1,
+                                                                false);
                             }
                             else if (EnemyMovement.GetPrev1(i) == Direction.Down)
                             {
                                 passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i),
-                                                             EnemyMovement.GetPosY(i) + 1,
-                                                             Direction.Down,
-                                                             -1,
-                                                             false);
+                                                                EnemyMovement.GetEnemyType(i),
+                                                                EnemyMovement.GetPosX(i) - 2,
+                                                                EnemyMovement.GetPosY(i) + 1,
+                                                                Direction.Down,
+                                                                -1,
+                                                                false);
                             }
                             else if (EnemyMovement.GetPrev1(i) == Direction.Right)
                             {
                                 passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i) + 2,
-                                                             EnemyMovement.GetPosY(i),
-                                                             Direction.Right,
-                                                             -1,
-                                                             false);
+                                                                EnemyMovement.GetEnemyType(i),
+                                                                EnemyMovement.GetPosX(i) + 2,
+                                                                EnemyMovement.GetPosY(i) + 1,
+                                                                Direction.Right,
+                                                                -1,
+                                                                false);
                             }
                         }
                         else
@@ -197,430 +294,328 @@ public static partial class MainProgram
                             if (rnd2 == 1)
                             {
                                 EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i),
-                                                   EnemyMovement.GetPosY(i) - 1,
-                                                   Direction.Up,
-                                                   -1,
-                                                   false);
+                                                    EnemyMovement.GetEnemyType(i),
+                                                    EnemyMovement.GetPosX(i) - 2,
+                                                    EnemyMovement.GetPosY(i) - 1,
+                                                    Direction.Up,
+                                                    -1,
+                                                    false);
                             }
                             else if (rnd2 == 2)
                             {
                                 EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i) - 2,
-                                                   EnemyMovement.GetPosY(i),
-                                                   Direction.Left,
-                                                   -1,
-                                                   false);
+                                                    EnemyMovement.GetEnemyType(i),
+                                                    EnemyMovement.GetPosX(i) + 2,
+                                                    EnemyMovement.GetPosY(i) - 1,
+                                                    Direction.Left,
+                                                    -1,
+                                                    false);
                             }
                             else if (rnd2 == 3)
                             {
                                 EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i),
-                                                   EnemyMovement.GetPosY(i) + 1,
-                                                   Direction.Down,
-                                                   -1,
-                                                   false);
+                                                    EnemyMovement.GetEnemyType(i),
+                                                    EnemyMovement.GetPosX(i) - 2,
+                                                    EnemyMovement.GetPosY(i) + 1,
+                                                    Direction.Down,
+                                                    -1,
+                                                    false);
                             }
                             else if (rnd2 == 4)
                             {
                                 EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i) + 2,
-                                                   EnemyMovement.GetPosY(i),
-                                                   Direction.Right,
-                                                   -1,
-                                                   false);
+                                                    EnemyMovement.GetEnemyType(i),
+                                                    EnemyMovement.GetPosX(i) + 2,
+                                                    EnemyMovement.GetPosY(i) + 1,
+                                                    Direction.Right,
+                                                    -1,
+                                                    false);
                             }
                         }
                     }
-                    else if (EnemyMovement.GetEnemyType(i) == EnemyType.Spider)
+                    else if (EnemyMovement.GetMotion(i) <= -5)
                     {
-                        EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
-                        if (EnemyMovement.GetMotion(i) > 0)
-                        {
-                            if (rnd1 > 2)
-                            {
-                                if (EnemyMovement.GetPrev1(i) == Direction.Up)
-                                {
-                                    passed = !EnemyMovement.Move(i,
-                                                                 EnemyMovement.GetEnemyType(i),
-                                                                 EnemyMovement.GetPosX(i) - 2,
-                                                                 EnemyMovement.GetPosY(i) - 1,
-                                                                 Direction.Up,
-                                                                 -1,
-                                                                 false);
-                                }
-                                else if (EnemyMovement.GetPrev1(i) == Direction.Left)
-                                {
-                                    passed = !EnemyMovement.Move(i,
-                                                                 EnemyMovement.GetEnemyType(i),
-                                                                 EnemyMovement.GetPosX(i) + 2,
-                                                                 EnemyMovement.GetPosY(i) - 1,
-                                                                 Direction.Left,
-                                                                 -1,
-                                                                 false);
-                                }
-                                else if (EnemyMovement.GetPrev1(i) == Direction.Down)
-                                {
-                                    passed = !EnemyMovement.Move(i,
-                                                                 EnemyMovement.GetEnemyType(i),
-                                                                 EnemyMovement.GetPosX(i) - 2,
-                                                                 EnemyMovement.GetPosY(i) + 1,
-                                                                 Direction.Down,
-                                                                 -1,
-                                                                 false);
-                                }
-                                else if (EnemyMovement.GetPrev1(i) == Direction.Right)
-                                {
-                                    passed = !EnemyMovement.Move(i,
-                                                                 EnemyMovement.GetEnemyType(i),
-                                                                 EnemyMovement.GetPosX(i) + 2,
-                                                                 EnemyMovement.GetPosY(i) + 1,
-                                                                 Direction.Right,
-                                                                 -1,
-                                                                 false);
-                                }
-                            }
-                            else
-                            {
-                                passed = true;
-                            }
-
-                            if (passed)
-                            {
-                                var rnd2 = Random.Shared.Next(4) + 1;
-                                if (rnd2 == 1)
-                                {
-                                    EnemyMovement.Move(i,
-                                                       EnemyMovement.GetEnemyType(i),
-                                                       EnemyMovement.GetPosX(i) - 2,
-                                                       EnemyMovement.GetPosY(i) - 1,
-                                                       Direction.Up,
-                                                       -1,
-                                                       false);
-                                }
-                                else if (rnd2 == 2)
-                                {
-                                    EnemyMovement.Move(i,
-                                                       EnemyMovement.GetEnemyType(i),
-                                                       EnemyMovement.GetPosX(i) + 2,
-                                                       EnemyMovement.GetPosY(i) - 1,
-                                                       Direction.Left,
-                                                       -1,
-                                                       false);
-                                }
-                                else if (rnd2 == 3)
-                                {
-                                    EnemyMovement.Move(i,
-                                                       EnemyMovement.GetEnemyType(i),
-                                                       EnemyMovement.GetPosX(i) - 2,
-                                                       EnemyMovement.GetPosY(i) + 1,
-                                                       Direction.Down,
-                                                       -1,
-                                                       false);
-                                }
-                                else if (rnd2 == 4)
-                                {
-                                    EnemyMovement.Move(i,
-                                                       EnemyMovement.GetEnemyType(i),
-                                                       EnemyMovement.GetPosX(i) + 2,
-                                                       EnemyMovement.GetPosY(i) + 1,
-                                                       Direction.Right,
-                                                       -1,
-                                                       false);
-                                }
-                            }
-                        }
-                        else if (EnemyMovement.GetMotion(i) <= -5)
-                        {
-                            EnemyMovement.SetMotion(i, 10);
-                        }
+                        EnemyMovement.SetMotion(i, 10);
                     }
-                    else if (EnemyMovement.GetEnemyType(i) == EnemyType.Bat)
-                    {
-                        if (rnd1 > 4)
-                        {
-                            if (EnemyMovement.GetPrev1(i) == Direction.Up)
-                            {
-                                passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i) - 2,
-                                                             EnemyMovement.GetPosY(i) - 1,
-                                                             Direction.Up,
-                                                             -1,
-                                                             false);
-                            }
-                            else if (EnemyMovement.GetPrev1(i) == Direction.Left)
-                            {
-                                passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i) + 2,
-                                                             EnemyMovement.GetPosY(i) - 1,
-                                                             Direction.Left,
-                                                             -1,
-                                                             false);
-                            }
-                            else if (EnemyMovement.GetPrev1(i) == Direction.Down)
-                            {
-                                passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i) - 2,
-                                                             EnemyMovement.GetPosY(i) + 1,
-                                                             Direction.Down,
-                                                             -1,
-                                                             false);
-                            }
-                            else if (EnemyMovement.GetPrev1(i) == Direction.Right)
-                            {
-                                passed = !EnemyMovement.Move(i,
-                                                             EnemyMovement.GetEnemyType(i),
-                                                             EnemyMovement.GetPosX(i) + 2,
-                                                             EnemyMovement.GetPosY(i) + 1,
-                                                             Direction.Right,
-                                                             -1,
-                                                             false);
-                            }
-                        }
-                        else
-                        {
-                            passed = true;
-                        }
-
-                        if (passed)
-                        {
-                            var rnd2 = Random.Shared.Next(4) + 1;
-                            if (rnd2 == 1)
-                            {
-                                EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i) - 2,
-                                                   EnemyMovement.GetPosY(i) - 1,
-                                                   Direction.Up,
-                                                   -1,
-                                                   false);
-                            }
-                            else if (rnd2 == 2)
-                            {
-                                EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i) + 2,
-                                                   EnemyMovement.GetPosY(i) - 1,
-                                                   Direction.Left,
-                                                   -1,
-                                                   false);
-                            }
-                            else if (rnd2 == 3)
-                            {
-                                EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i) - 2,
-                                                   EnemyMovement.GetPosY(i) + 1,
-                                                   Direction.Down,
-                                                   -1,
-                                                   false);
-                            }
-                            else if (rnd2 == 4)
-                            {
-                                EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i) + 2,
-                                                   EnemyMovement.GetPosY(i) + 1,
-                                                   Direction.Right,
-                                                   -1,
-                                                   false);
-                            }
-                        }
-                    }
-                    else if (EnemyMovement.GetEnemyType(i) == EnemyType.Dragon && waitDragon <= 0)
-                    {
-                        waitDragon = 4;
-                        EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
-
-                        var phase = Direction.Left;
-                        var speed = 1;
-                        if (EnemyMovement.GetMotion(i) <= 1)
-                        {
-                            phase = Direction.Right;
-                            speed = 0;
-                            if (EnemyMovement.GetMotion(i) <= 0)
-                            {
-                                EnemyMovement.Move(-1,
-                                                   EnemyType.Fireball,
-                                                   EnemyMovement.GetPosX(i) - 3,
-                                                   EnemyMovement.GetPosY(i) + 3,
-                                                   Direction.Up,
-                                                   -1,
-                                                   true);
-                                EnemyMovement.Move(-1,
-                                                   EnemyType.Fireball,
-                                                   EnemyMovement.GetPosX(i) - 3,
-                                                   EnemyMovement.GetPosY(i) + 1,
-                                                   Direction.Left,
-                                                   -1,
-                                                   true);
-                                EnemyMovement.Move(-1,
-                                                   EnemyType.Fireball,
-                                                   EnemyMovement.GetPosX(i) - 3,
-                                                   EnemyMovement.GetPosY(i) - 1,
-                                                   Direction.Down,
-                                                   -1,
-                                                   true);
-                                EnemyMovement.SetMotion(i, 12);
-                            }
-                        }
-
-                        if (EnemyMovement.GetPosY(i) <= 7)
-                        {
-                            EnemyMovement.Move(i,
-                                               EnemyMovement.GetEnemyType(i),
-                                               EnemyMovement.GetPosX(i),
-                                               EnemyMovement.GetPosY(i) + speed,
-                                               phase,
-                                               -1,
-                                               false);
-                        }
-                        else if (EnemyMovement.GetPosY(i) >= 19)
-                        {
-                            EnemyMovement.Move(
-                                i,
-                                EnemyMovement.GetEnemyType(i),
-                                EnemyMovement.GetPosX(i),
-                                EnemyMovement.GetPosY(i) - speed,
-                                phase,
-                                -1,
-                                false);
-                        }
-                        else
-                        {
-                            if (rnd1 <= 4)
-                            {
-                                EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i),
-                                                   EnemyMovement.GetPosY(i) + speed,
-                                                   phase,
-                                                   -1,
-                                                   false);
-                            }
-                            else
-                            {
-                                EnemyMovement.Move(i,
-                                                   EnemyMovement.GetEnemyType(i),
-                                                   EnemyMovement.GetPosX(i),
-                                                   EnemyMovement.GetPosY(i) - speed,
-                                                   phase,
-                                                   -1,
-                                                   false);
-                            }
-                        }
-                    }
-                    else if (EnemyMovement.GetEnemyType(i) == EnemyType.Fireball)
+                }
+                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Bat)
+                {
+                    if (rnd1 > 4)
                     {
                         if (EnemyMovement.GetPrev1(i) == Direction.Up)
                         {
-                            EnemyMovement.Move(i,
-                                               EnemyMovement.GetEnemyType(i),
-                                               EnemyMovement.GetPosX(i) - 3,
-                                               EnemyMovement.GetPosY(i) - 2,
-                                               Direction.Up,
-                                               -1,
-                                               false);
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i) - 2,
+                                                            EnemyMovement.GetPosY(i) - 1,
+                                                            Direction.Up,
+                                                            -1,
+                                                            false);
                         }
                         else if (EnemyMovement.GetPrev1(i) == Direction.Left)
                         {
-                            EnemyMovement.Move(i,
-                                               EnemyMovement.GetEnemyType(i),
-                                               EnemyMovement.GetPosX(i) - 3,
-                                               EnemyMovement.GetPosY(i),
-                                               Direction.Left,
-                                               -1,
-                                               false);
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i) + 2,
+                                                            EnemyMovement.GetPosY(i) - 1,
+                                                            Direction.Left,
+                                                            -1,
+                                                            false);
                         }
                         else if (EnemyMovement.GetPrev1(i) == Direction.Down)
                         {
-                            EnemyMovement.Move(i,
-                                               EnemyMovement.GetEnemyType(i),
-                                               EnemyMovement.GetPosX(i) - 3,
-                                               EnemyMovement.GetPosY(i) + 2,
-                                               Direction.Down,
-                                               -1,
-                                               false);
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i) - 2,
+                                                            EnemyMovement.GetPosY(i) + 1,
+                                                            Direction.Down,
+                                                            -1,
+                                                            false);
                         }
+                        else if (EnemyMovement.GetPrev1(i) == Direction.Right)
+                        {
+                            passed = !EnemyMovement.Move(i,
+                                                            EnemyMovement.GetEnemyType(i),
+                                                            EnemyMovement.GetPosX(i) + 2,
+                                                            EnemyMovement.GetPosY(i) + 1,
+                                                            Direction.Right,
+                                                            -1,
+                                                            false);
+                        }
+                    }
+                    else
+                    {
+                        passed = true;
+                    }
+
+                    if (passed)
+                    {
+                        var rnd2 = Random.Shared.Next(4) + 1;
+                        if (rnd2 == 1)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i) - 2,
+                                                EnemyMovement.GetPosY(i) - 1,
+                                                Direction.Up,
+                                                -1,
+                                                false);
+                        }
+                        else if (rnd2 == 2)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i) + 2,
+                                                EnemyMovement.GetPosY(i) - 1,
+                                                Direction.Left,
+                                                -1,
+                                                false);
+                        }
+                        else if (rnd2 == 3)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i) - 2,
+                                                EnemyMovement.GetPosY(i) + 1,
+                                                Direction.Down,
+                                                -1,
+                                                false);
+                        }
+                        else if (rnd2 == 4)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i) + 2,
+                                                EnemyMovement.GetPosY(i) + 1,
+                                                Direction.Right,
+                                                -1,
+                                                false);
+                        }
+                    }
+                }
+                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Dragon && waitDragon <= 0)
+                {
+                    waitDragon = 4;
+                    EnemyMovement.SetMotion(i, EnemyMovement.GetMotion(i) - 1);
+
+                    var phase = Direction.Left;
+                    var speed = 1;
+                    if (EnemyMovement.GetMotion(i) <= 1)
+                    {
+                        phase = Direction.Right;
+                        speed = 0;
+                        if (EnemyMovement.GetMotion(i) <= 0)
+                        {
+                            EnemyMovement.Move(-1,
+                                                EnemyType.Fireball,
+                                                EnemyMovement.GetPosX(i) - 3,
+                                                EnemyMovement.GetPosY(i) + 3,
+                                                Direction.Up,
+                                                -1,
+                                                true);
+                            EnemyMovement.Move(-1,
+                                                EnemyType.Fireball,
+                                                EnemyMovement.GetPosX(i) - 3,
+                                                EnemyMovement.GetPosY(i) + 1,
+                                                Direction.Left,
+                                                -1,
+                                                true);
+                            EnemyMovement.Move(-1,
+                                                EnemyType.Fireball,
+                                                EnemyMovement.GetPosX(i) - 3,
+                                                EnemyMovement.GetPosY(i) - 1,
+                                                Direction.Down,
+                                                -1,
+                                                true);
+                            EnemyMovement.SetMotion(i, 12);
+                        }
+                    }
+
+                    if (EnemyMovement.GetPosY(i) <= 7)
+                    {
+                        EnemyMovement.Move(i,
+                                            EnemyMovement.GetEnemyType(i),
+                                            EnemyMovement.GetPosX(i),
+                                            EnemyMovement.GetPosY(i) + speed,
+                                            phase,
+                                            -1,
+                                            false);
+                    }
+                    else if (EnemyMovement.GetPosY(i) >= 19)
+                    {
+                        EnemyMovement.Move(
+                            i,
+                            EnemyMovement.GetEnemyType(i),
+                            EnemyMovement.GetPosX(i),
+                            EnemyMovement.GetPosY(i) - speed,
+                            phase,
+                            -1,
+                            false);
+                    }
+                    else
+                    {
+                        if (rnd1 <= 4)
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i),
+                                                EnemyMovement.GetPosY(i) + speed,
+                                                phase,
+                                                -1,
+                                                false);
+                        }
+                        else
+                        {
+                            EnemyMovement.Move(i,
+                                                EnemyMovement.GetEnemyType(i),
+                                                EnemyMovement.GetPosX(i),
+                                                EnemyMovement.GetPosY(i) - speed,
+                                                phase,
+                                                -1,
+                                                false);
+                        }
+                    }
+                }
+                else if (EnemyMovement.GetEnemyType(i) == EnemyType.Fireball)
+                {
+                    if (EnemyMovement.GetPrev1(i) == Direction.Up)
+                    {
+                        EnemyMovement.Move(i,
+                                            EnemyMovement.GetEnemyType(i),
+                                            EnemyMovement.GetPosX(i) - 3,
+                                            EnemyMovement.GetPosY(i) - 2,
+                                            Direction.Up,
+                                            -1,
+                                            false);
+                    }
+                    else if (EnemyMovement.GetPrev1(i) == Direction.Left)
+                    {
+                        EnemyMovement.Move(i,
+                                            EnemyMovement.GetEnemyType(i),
+                                            EnemyMovement.GetPosX(i) - 3,
+                                            EnemyMovement.GetPosY(i),
+                                            Direction.Left,
+                                            -1,
+                                            false);
+                    }
+                    else if (EnemyMovement.GetPrev1(i) == Direction.Down)
+                    {
+                        EnemyMovement.Move(i,
+                                            EnemyMovement.GetEnemyType(i),
+                                            EnemyMovement.GetPosX(i) - 3,
+                                            EnemyMovement.GetPosY(i) + 2,
+                                            Direction.Down,
+                                            -1,
+                                            false);
                     }
                 }
             }
         }
+    }
+
+    private static void HandleAttacking() => LinkMovement.Attack(LinkMovement.GetPrev());
+
+    private static void HandleWaiting()
+    {
+        Thread.Sleep(100);
+        if (LinkMovement.MovementWait <= 0)
+        {
+            if (CurrentMap == 0)
+            {
+                LoadMap(6, 50, 29, Direction.Up);
+            }
+            else if (CurrentMap == 4)
+            {
+                LoadMap(7, 50, 30, Direction.Up);
+            }
+            else if (CurrentMap == 8)
+            {
+                LoadMap(9, 50, 30, Direction.Up);
+            }
+            else if (CurrentMap == 6)
+            {
+                LoadMap(0, 16, 9, Direction.Down);
+            }
+            else if (CurrentMap == 7)
+            {
+                LoadMap(4, 86, 10, Direction.Down);
+            }
+            else if (CurrentMap == 9)
+            {
+                LoadMap(8, 51, 20, Direction.Down);
+            }
+            State = GameState.Idle;
+        }
         else
         {
-            LinkMovement.Attack(LinkMovement.GetPrev(), _attacking);
-            if (LinkMovement.GetPrev() == Direction.None)
+            if (CurrentMap is 0 or 4 or 8)
             {
-                if (LinkMovement.MovementWait <= 0)
-                {
-                    if (CurrentMap == 0)
-                    {
-                        LoadMap(6, 50, 29, Direction.Up);
-                    }
-                    else if (CurrentMap == 4)
-                    {
-                        LoadMap(7, 50, 30, Direction.Up);
-                    }
-                    else if (CurrentMap == 8)
-                    {
-                        LoadMap(9, 50, 30, Direction.Up);
-                    }
-                    else if (CurrentMap == 6)
-                    {
-                        LoadMap(0, 16, 9, Direction.Down);
-                    }
-                    else if (CurrentMap == 7)
-                    {
-                        LoadMap(4, 86, 10, Direction.Down);
-                    }
-                    else if (CurrentMap == 9)
-                    {
-                        LoadMap(8, 51, 20, Direction.Down);
-                    }
-                    _attacking = false;
-                }
-                else
-                {
-                    if (CurrentMap is 0 or 4 or 8)
-                    {
-                        LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
-                        Thread.Sleep(50);
-                    }
-                    else if (CurrentMap is 6 or 7 or 9)
-                    {
-                        LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
-                        Thread.Sleep(50);
-                    }
+                LinkMovement.MoveUp(LinkMovement.PosX, LinkMovement.PosY - 1);
+                Thread.Sleep(50);
+            }
+            else if (CurrentMap is 6 or 7 or 9)
+            {
+                LinkMovement.MoveDown(LinkMovement.PosX, LinkMovement.PosY + 1);
+                Thread.Sleep(50);
+            }
 
-                    if (LinkMovement.GetPrev() is Direction.Up or Direction.Down)
-                    {
-                        LinkMovement.SetPrev(Direction.None);
-                    }
-                    else
-                    {
-                        LinkMovement.MovementWait--;
-                    }
-                }
+            if (LinkMovement.GetPrev() is Direction.Up or Direction.Down)
+            {
+                LinkMovement.SetPrev(Direction.None);
             }
             else
             {
-                _attacking = false;
+                LinkMovement.MovementWait--;
+                if (LinkMovement.MovementWait <= 0)
+                    State = GameState.Idle;
             }
-            Thread.Sleep(100);
         }
     }
 
     private static void HandleHit()
     {
         Thread.Sleep(100);
-        SetFlag(GameFlag.Hit, false);
+        State = GameState.Idle;
 
         if (LinkMovement.GetPrev() == Direction.Up && LinkMovement.PosY < 27)
         {
@@ -1007,10 +1002,9 @@ public static partial class MainProgram
 
     public static void Wait(int time)
     {
-        _attacking = true;
+        State = GameState.Waiting;
         if(LinkMovement.MovementWait == 0)
             LinkMovement.MovementWait = time;
-        LinkMovement.SetPrev(Direction.None);
     }
 
     public static void UpdateRow(int row)
@@ -1039,7 +1033,7 @@ public static partial class MainProgram
     {
         for (var i = 0; i < 33; i++)
         {
-            if (Health > 0 && !HasFlag(GameFlag.GameOver))
+            if (State is not GameState.Dead and not GameState.GameOver)
             {
                 if (i is > 5 and < 28)
                 {
@@ -1079,4 +1073,6 @@ public static partial class MainProgram
         else
             _flags &= ~flag;
     }
+
+    public static void SetGameState(GameState state) => State = state;
 }
