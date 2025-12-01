@@ -7,7 +7,7 @@ public static class MainProgram
 {
     public static PlayerController PlayerController { get; } = new();
     public static EnemyManager EnemyManager { get; } = new();
-    private static InputController _inputController = new();
+    private static readonly InputController _inputController = new();
 
     private static GameFlag _flags = GameFlag.None;
     public static GameState State { get; private set; } = GameState.Idle;

@@ -6,7 +6,7 @@ namespace _0_Bit_Legend.Enemies;
 public class Dragon : IEnemy
 {
     public EnemyType Type => EnemyType.Dragon;
-    public void Build(int posX, int posY, Direction previousIndex)
+    public void Draw(int posX, int posY, Direction previousIndex)
     {
         var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
         if (previousIndex == Direction.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";

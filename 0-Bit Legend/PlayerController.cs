@@ -21,6 +21,8 @@ public class PlayerController
 
     public int PosX { get; private set; }
     public int PosY { get; private set; }
+    public int MovementWait;
+
     public Direction GetPrev() => _prev;
     public Direction GetPrev2() => _prev2;
     public void SetPosX(int posX) => PosX = posX;
@@ -30,7 +32,7 @@ public class PlayerController
     public void SetPrev(Direction prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
-    public int MovementWait;
+
 
     public void Attack()
     {
@@ -1092,118 +1094,7 @@ public class PlayerController
 
     public void BuildChar(int posX, int posY, Direction direction)
     {
-        var spaceslot = ' ';
-        var underslot = '_';
-        if (HasFlag(GameFlag.HasArmor))
-        {
-            spaceslot = '#';
-            underslot = '#';
-        }
 
-        if (direction == Direction.Up)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = '_';
-            Map[posX, posY - 1] = '_';
-            Map[posX + 1, posY - 1] = '_';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = '|';
-            Map[posX - 1, posY] = spaceslot;
-            Map[posX, posY] = '=';
-            Map[posX + 1, posY] = spaceslot;
-            Map[posX + 2, posY] = '|';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = '^';
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = ' ';
-            Map[posX - 1, posY + 2] = '\\';
-            Map[posX, posY + 2] = '_';
-            Map[posX + 1, posY + 2] = '/';
-            Map[posX + 2, posY + 2] = ' ';
-        }
-        else if (direction == Direction.Left)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = ' ';
-            Map[posX, posY - 1] = '/';
-            Map[posX + 1, posY - 1] = '\\';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = ' ';
-            Map[posX - 1, posY] = '/';
-            Map[posX, posY] = ' ';
-            Map[posX + 1, posY] = ' ';
-            Map[posX + 2, posY] = '|';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = '^';
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = spaceslot;
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = '|';
-            Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = '=';
-            Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = '|';
-        }
-        else if (direction == Direction.Down)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = ' ';
-            Map[posX, posY - 1] = '_';
-            Map[posX + 1, posY - 1] = ' ';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = ' ';
-            Map[posX - 1, posY] = '/';
-            Map[posX, posY] = ' ';
-            Map[posX + 1, posY] = '\\';
-            Map[posX + 2, posY] = ' ';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = '^';
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = '|';
-            Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = '=';
-            Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = '|';
-        }
-        else if (direction == Direction.Right)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = '/';
-            Map[posX, posY - 1] = '\\';
-            Map[posX + 1, posY - 1] = ' ';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = '|';
-            Map[posX - 1, posY] = ' ';
-            Map[posX, posY] = ' ';
-            Map[posX + 1, posY] = '\\';
-            Map[posX + 2, posY] = ' ';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = spaceslot;
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = '|';
-            Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = '=';
-            Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = '|';
-        }
     }
 
     public void StoreChar(int posX, int posY)

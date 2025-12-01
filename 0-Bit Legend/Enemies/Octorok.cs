@@ -6,7 +6,7 @@ namespace _0_Bit_Legend.Enemies;
 public class Octorok : IEnemy
 {
     public EnemyType Type => EnemyType.Octorok;
-    public void Build(int posX, int posY, Direction previousIndex)
+    public void Draw(int posX, int posY, Direction previousIndex)
     {
         if (previousIndex == Direction.Left)
         {

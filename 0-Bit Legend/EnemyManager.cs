@@ -249,13 +249,13 @@ public class EnemyManager
             case EnemyType.Octorok:
             case EnemyType.Spider:
             case EnemyType.Bat:
-                enemy.Build(posX, posY, _prev2[index]);
+                enemy.Draw(posX, posY, _prev2[index]);
                 break;
             case EnemyType.Dragon:
-                enemy.Build(posX, posY, _prev1[index]);
+                enemy.Draw(posX, posY, _prev1[index]);
                 break;
             case EnemyType.Fireball:
-                enemy.Build(posX, posY, Direction.Up);
+                enemy.Draw(posX, posY, Direction.Up);
                 break;
         }
     }
