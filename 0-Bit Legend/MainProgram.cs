@@ -1,13 +1,13 @@
 using _0_Bit_Legend.Maps;
 using _0_Bit_Legend.Model;
-using System.Runtime.InteropServices;
 
 namespace _0_Bit_Legend;
 
-public static partial class MainProgram
+public static class MainProgram
 {
     public static PlayerController PlayerController { get; } = new();
     public static EnemyManager EnemyManager { get; } = new();
+    private static InputController _inputController = new();
 
     private static GameFlag _flags = GameFlag.None;
     public static GameState State { get; private set; } = GameState.Idle;
@@ -35,26 +35,6 @@ public static partial class MainProgram
     private static bool _start;
 
     private static string _credits = string.Empty;
-
-    // Win32 API to check key state
-    [LibraryImport("user32.dll")]
-    private static partial short GetAsyncKeyState(int vKey);
-
-    // WASD keys
-    const int VK_W = 0x57;
-    const int VK_A = 0x41;
-    const int VK_S = 0x53;
-    const int VK_D = 0x44;
-
-    // Arrow keys
-    const int VK_UP = 0x26;
-    const int VK_LEFT = 0x25;
-    const int VK_DOWN = 0x28;
-    const int VK_RIGHT = 0x27;
-
-    // Attack keys
-    const int VK_LSHIFT = 0xA0;
-    const int VK_RSHIFT = 0xA1;
 
     public static void Main()
     {
@@ -110,23 +90,27 @@ public static partial class MainProgram
 
     private static void HandleMovement()
     {
-        if ((GetAsyncKeyState(VK_W) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) != 0)
+        var rawInput = _inputController.GetInputState();
+        switch (ResolveCardinalDirection(rawInput))
         {
-            PlayerController.MoveUp(PlayerController.PosX, PlayerController.PosY - 1);
+            case InputType.Up:
+                PlayerController.MoveUp(PlayerController.PosX, PlayerController.PosY - 1);
+                break;
+
+            case InputType.Down:
+                PlayerController.MoveDown(PlayerController.PosX, PlayerController.PosY + 1);
+                break;
+
+            case InputType.Left:
+                PlayerController.MoveLeft(PlayerController.PosX - 2, PlayerController.PosY);
+                break;
+
+            case InputType.Right:
+                PlayerController.MoveRight(PlayerController.PosX + 2, PlayerController.PosY);
+                break;
         }
-        else if ((GetAsyncKeyState(VK_A) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) != 0)
-        {
-            PlayerController.MoveLeft(PlayerController.PosX - 2, PlayerController.PosY);
-        }
-        else if ((GetAsyncKeyState(VK_S) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) != 0)
-        {
-            PlayerController.MoveDown(PlayerController.PosX, PlayerController.PosY + 1);
-        }
-        else if ((GetAsyncKeyState(VK_D) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0)
-        {
-            PlayerController.MoveRight(PlayerController.PosX + 2, PlayerController.PosY);
-        }
-        else if (((GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RSHIFT) & 0x8000) != 0) && HasFlag(GameFlag.HasSword))
+
+        if (HasFlag(GameFlag.HasSword) && (rawInput & InputType.Attack) != 0)
         {
             PlayerController.Attack();
             State = GameState.Attacking;
@@ -1060,4 +1044,28 @@ public static partial class MainProgram
     }
 
     public static void SetGameState(GameState state) => State = state;
+
+    private static InputType ResolveCardinalDirection(InputType input)
+    {
+        var vertical = input & (InputType.Up | InputType.Down);
+        var horizontal = input & (InputType.Left | InputType.Right);
+
+        if (vertical != InputType.None)
+        {
+            if ((vertical & InputType.Up) != 0)
+                return InputType.Up;
+
+            return InputType.Down;
+        }
+
+        if (horizontal != InputType.None)
+        {
+            if ((horizontal & InputType.Left) != 0)
+                return InputType.Left;
+
+            return InputType.Right;
+        }
+
+        return InputType.None;
+    }
 }
