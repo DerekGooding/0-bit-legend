@@ -847,7 +847,7 @@ public static class MainProgram
         // Load the map
         for (var i = 0; i < 33; i++)
         {
-            _strs[i] = "";
+            _strs[i] = string.Empty;
             for (var j = 0; j < 102; j++)
             {
                 if (map[val] != '#')
