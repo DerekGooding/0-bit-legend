@@ -168,6 +168,4 @@ public class Link : IEntity
     }
 
     public bool IsTouching(int posX, int posY, char[] symbols) => throw new NotImplementedException();
-
-    
 }

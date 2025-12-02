@@ -11,7 +11,7 @@ public class EnemyManager
     private readonly List<DirectionType> _prev1 = [];
     private readonly List<DirectionType> _prev2 = [];
 
-    private readonly List<EnemyType> _type = [];
+    private readonly List<IEnemy> _enemies = [];
     private readonly List<int> _hp = [];
 
     private readonly List<int> _motion = [];
@@ -28,7 +28,8 @@ public class EnemyManager
 
     public int GetPosY(int index) => _positions[index].Y;
 
-    public EnemyType GetEnemyType(int index) => _type[index];
+    public IEnemy GetEnemy(int index) => _enemies[index];
+    public EnemyType GetEnemyType(int index) => _enemies[index].Type;
 
     public int GetTotal() => _positions.Count;
 
@@ -46,12 +47,12 @@ public class EnemyManager
         var index = GetIndex(posX, posY);
         MainProgram.PlayerController.StoreSword(prev);
 
-        if (index == -1 || _type[index] == EnemyType.Fireball)
+        if (index == -1 || _enemies[index] is Fireball)
         {
             return false;
         }
 
-        if (_type[index] == EnemyType.Dragon)
+        if (_enemies[index] is Dragon)
         {
             waitDragon++;
 
@@ -71,9 +72,9 @@ public class EnemyManager
         if (_hp[index] <= 0)
         {
             _storedRupeePosition = new(_positions[index].X + 2, _positions[index].Y + 1);
-            _sRType = _type[index];
+            _sRType = _enemies[index].Type;
 
-            Remove(index, _type[index]);
+            Remove(index, _enemies[index]);
 
             MainProgram.PlayerController.SetSpawnRupee(true);
 
@@ -86,7 +87,7 @@ public class EnemyManager
         return true;
     }
 
-    public bool Move(int index, EnemyType type, int posX, int posY, DirectionType direction, int motion, bool spawn)
+    public bool Move(int index, EnemyType type, int posX, int posY, DirectionType direction, int motion, bool spawn = false)
     {
         if (index == -1)
         {
@@ -112,7 +113,7 @@ public class EnemyManager
             _prev1.Add(direction);
             _prev2.Add(direction);
 
-            _type.Add(type);
+            _enemies.Add(enemy);
             _hp.Add(1);
 
             _motion.Add(motion);
@@ -152,7 +153,7 @@ public class EnemyManager
         {
             var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
             var blocking2 = new char[] { '|', '_', '\\' };
-            Clear(index, type);
+            Clear(index, enemy);
             if (type == EnemyType.Dragon || type == EnemyType.Spider || type == EnemyType.Bat || (!enemy.IsTouching(posX, posY, blocking)))
             {
                 _prev1[index] = direction;
@@ -187,7 +188,7 @@ public class EnemyManager
                     }
                 }
 
-                Store(index, type, posX, posY);
+                Store(index, enemy, posX, posY);
                 Build(index, enemy, posX, posY);
 
                 UpdateRow(posY);
@@ -211,7 +212,7 @@ public class EnemyManager
                 MainProgram.PlayerController.Hit();
                 if (type == EnemyType.Fireball)
                 {
-                    Remove(GetIndex(_positions[index].X, _positions[index].Y), type);
+                    Remove(GetIndex(_positions[index].X, _positions[index].Y), enemy);
                 }
                 else
                 {
@@ -222,7 +223,7 @@ public class EnemyManager
             {
                 if (type == EnemyType.Fireball)
                 {
-                    Remove(GetIndex(_positions[index].X, _positions[index].Y), type);
+                    Remove(GetIndex(_positions[index].X, _positions[index].Y), enemy);
                 }
                 else
                 {
@@ -251,9 +252,10 @@ public class EnemyManager
         }
     }
 
-    public void Store(int index, EnemyType type, int posX, int posY)
+    public void Store(int index, IEnemy enemy, int posX, int posY)
     {
-        Clear(index, type);
+        Clear(index, enemy);
+        var type = enemy.Type;
 
         if (type == EnemyType.Octorok)
         {
@@ -325,8 +327,10 @@ public class EnemyManager
         }
     }
 
-    public void Clear(int index, EnemyType type)
+    public void Clear(int index, IEnemy enemy)
     {
+        var type = enemy.Type;
+
         if (type == EnemyType.Octorok)
         {
             Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
@@ -402,9 +406,10 @@ public class EnemyManager
         }
     }
 
-    public void Remove(int index, EnemyType type)
+    public void Remove(int index, IEnemy enemy)
     {
-        Clear(index, type);
+        Clear(index, enemy);
+        var type = enemy.Type;
 
         UpdateRow(_positions[index].Y);
         UpdateRow(_positions[index].Y + 1);
@@ -419,7 +424,7 @@ public class EnemyManager
         }
 
         _positions.RemoveAt(index);
-        _type.RemoveAt(index);
+        _enemies.RemoveAt(index);
         _prev1.RemoveAt(index);
         _prev2.RemoveAt(index);
         _hp.RemoveAt(index);
@@ -552,27 +557,27 @@ public class EnemyManager
         {
             var inPosX = 0;
             var inPosY = 0;
-            if (_type[i] == EnemyType.Octorok)
+            if (_enemies[i].Type == EnemyType.Octorok)
             {
                 inPosX = 4;
                 inPosY = 3;
             }
-            else if (_type[i] == EnemyType.Spider)
+            else if (_enemies[i].Type == EnemyType.Spider)
             {
                 inPosX = 5;
                 inPosY = 3;
             }
-            else if (_type[i] == EnemyType.Bat)
+            else if (_enemies[i].Type == EnemyType.Bat)
             {
                 inPosX = 5;
                 inPosY = 2;
             }
-            else if (_type[i] == EnemyType.Dragon)
+            else if (_enemies[i].Type == EnemyType.Dragon)
             {
                 inPosX = 12;
                 inPosY = 7;
             }
-            else if (_type[i] == EnemyType.Fireball)
+            else if (_enemies[i].Type == EnemyType.Fireball)
             {
                 inPosX = 3;
                 inPosY = 2;

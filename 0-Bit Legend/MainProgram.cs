@@ -8,6 +8,7 @@ public static class MainProgram
     public static PlayerController PlayerController { get; } = new();
     public static EnemyManager EnemyManager { get; } = new();
     private static readonly InputController _inputController = new();
+    private static readonly Credits _creditObject = new();
 
     private static GameFlag _flags = GameFlag.None;
     public static GameState State { get; private set; } = GameState.Idle;
@@ -35,7 +36,6 @@ public static class MainProgram
     private static bool _start;
 
     private static string _credits = string.Empty;
-    private static Credits _creditObject = new Credits();
 
     public static void Main()
     {
@@ -834,7 +834,7 @@ public static class MainProgram
 
         while (EnemyManager.GetTotal() != 0)
         {
-            EnemyManager.Remove(0, EnemyManager.GetEnemyType(0));
+            EnemyManager.Remove(0, EnemyManager.GetEnemy(0));
         }
 
         // Load the map
