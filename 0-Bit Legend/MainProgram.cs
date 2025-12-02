@@ -16,6 +16,9 @@ public static class MainProgram
 
     private static readonly List<IMap> _maps = [];
 
+    //Testing purposes until loading maps is properly abstracted/DI
+    public static void AddMap(IMap map) => _maps.Add(map);
+
     public static char[,] Map { get; } = new char[102, 33];
     public static int CurrentMap { get; private set; }
 
@@ -606,7 +609,6 @@ public static class MainProgram
             PlayerController.MoveLeft(3);
         }
     }
-
     private static void HandleDeath()
     {
         if (_frames <= 16)
@@ -663,10 +665,10 @@ public static class MainProgram
             {
                 LoadMap(9, 50, 25, DirectionType.Up);
             }
+            State = GameState.Idle;
         }
         _frames++;
     }
-
     private static void HandleGameOver()
     {
         if (HasFlag(GameFlag.HasArmor)) _credits = string.Concat(_creditObject.WinArmor);

@@ -1,4 +1,5 @@
-﻿using _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend;
+using _0_Bit_Legend.Maps;
 using System.Reflection;
 
 namespace _0_bit_legend.Tests;
@@ -51,5 +52,18 @@ public sealed class MapTests
         Assert.IsTrue(isCoherant, $"{implementationType.Name} does not have equal width on every line. @ line {index}");
         Assert.IsTrue(isWidth, $"{implementationType.Name} does not have proper width. Width: {width} instead of 103");
         Assert.IsTrue(isHeight, $"{implementationType.Name} does not have proper height. Height: {height} instead of 33");
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(AllImplementations))]
+    public void Map_Loads(Type implementationType)
+    {
+        var instance = (IMap)Activator.CreateInstance(implementationType)!;
+        var width = instance.Raw[0].Length;
+        var height = instance.Raw.Length;
+        var incoherantLine = instance.Raw.FirstOrDefault(x => x.Length != width);
+        MainProgram.AddMap(instance);
+
+        MainProgram.LoadMap(0, 52, 18, _0_Bit_Legend.Model.Enums.DirectionType.Up);
     }
 }
