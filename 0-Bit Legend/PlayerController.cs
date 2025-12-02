@@ -1,12 +1,14 @@
 using _0_Bit_Legend.Model.Enums;
+using _0_Bit_Legend.Model;
 using static _0_Bit_Legend.MainProgram;
+using _0_Bit_Legend.Enemies;
 
 namespace _0_Bit_Legend;
 
 public class PlayerController
 {
-    private int _preHitPosX;
-    private int _preHitPosY;
+    private Vector2 _preHitPosition = Vector2.Zero;
+    private readonly Link _player = new Link();
 
     private readonly char[] _storage_map = new string(' ', 20).ToArray();
     private static readonly char[] _storage_sword = new char[6];
@@ -19,20 +21,21 @@ public class PlayerController
     private bool _spawnRupee;
     private bool _swingingSword;
 
-    public int PosX { get; private set; }
-    public int PosY { get; private set; }
+    public Vector2 Position { get; private set; }
     public int MovementWait;
 
     public Direction GetPrev() => _prev;
     public Direction GetPrev2() => _prev2;
-    public void SetPosX(int posX) => PosX = posX;
-    public void SetPosY(int posY) => PosY = posY;
-    public void SetPreHitPosX(int posX) => _preHitPosX = posX;
-    public void SetPreHitPosY(int posY) => _preHitPosY = posY;
+    public void SetPositions(Vector2 pos) => Position = pos;
+    public void SetPreHitPosition(Vector2 pos) => _preHitPosition = pos;
     public void SetPrev(Direction prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
-
+    //Temporary rename fix, TODO removed
+    private int PosX => Position.X;
+    private int PosY => Position.Y;
+    private int _preHitPosX => _preHitPosition.X;
+    private int _preHitPosY => _preHitPosition.Y;
 
     public void Attack()
     {
@@ -1092,10 +1095,7 @@ public class PlayerController
         }
     }
 
-    public void BuildChar(int posX, int posY, Direction direction)
-    {
-
-    }
+    public void BuildChar(int posX, int posY, Direction direction) => _player.Draw(posX, posY, direction);
 
     public void StoreChar(int posX, int posY)
     {
