@@ -1,11 +1,13 @@
 ﻿using _0_Bit_Legend.Model.Enums;
-using static _0_Bit_Legend.MainProgram;
 
-namespace _0_Bit_Legend.Enemies;
+namespace _0_Bit_Legend.Entities;
 
 public class Link : IEntity
 {
-    public void Draw(int posX, int posY, Direction direction)
+    public Vector2 Position { get; set; } = Vector2.Zero;
+    public DirectionType Direction { get; set; }
+
+    public void Draw(int posX, int posY, DirectionType direction)
     {
         var spaceslot = ' ';
         var underslot = '_';
@@ -15,7 +17,7 @@ public class Link : IEntity
             underslot = '#';
         }
 
-        if (direction == Direction.Up)
+        if (direction == DirectionType.Up)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '_';
@@ -41,7 +43,7 @@ public class Link : IEntity
             Map[posX + 1, posY + 2] = '/';
             Map[posX + 2, posY + 2] = ' ';
         }
-        else if (direction == Direction.Left)
+        else if (direction == DirectionType.Left)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -67,7 +69,7 @@ public class Link : IEntity
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == Direction.Down)
+        else if (direction == DirectionType.Down)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -93,7 +95,7 @@ public class Link : IEntity
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == Direction.Right)
+        else if (direction == DirectionType.Right)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '/';
@@ -168,4 +170,6 @@ public class Link : IEntity
     }
 
     public bool IsTouching(int posX, int posY, char[] symbols) => throw new NotImplementedException();
+
+    
 }

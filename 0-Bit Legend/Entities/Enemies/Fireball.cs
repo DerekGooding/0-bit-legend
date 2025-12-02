@@ -1,13 +1,13 @@
-﻿using _0_Bit_Legend.Entities.Enemies;
-using _0_Bit_Legend.Model.Enums;
-using static _0_Bit_Legend.MainProgram;
+﻿using _0_Bit_Legend.Model.Enums;
 
-namespace _0_Bit_Legend.Enemies;
+namespace _0_Bit_Legend.Entities.Enemies;
 
 public class Fireball : IEnemy
 {
     public EnemyType Type => EnemyType.Fireball;
-    public void Draw(int posX, int posY, Direction _)
+    public Vector2 Position { get; set; } = Vector2.Zero;
+    public DirectionType Direction { get; set; }
+    public void Draw(int posX, int posY, DirectionType _)
     {
         Map[posX + 0, posY] = 'F';
         Map[posX + 1, posY] = 'F';

@@ -1,3 +1,4 @@
+using _0_Bit_Legend.Content;
 using _0_Bit_Legend.Maps;
 using _0_Bit_Legend.Model.Enums;
 
@@ -35,15 +36,16 @@ public static class MainProgram
     private static bool _start;
 
     private static string _credits = string.Empty;
+    private static Credits _creditObject = new Credits();
 
     public static void Main()
     {
         InitializeMaps();
 
         Console.CursorVisible = false;
-        LoadMap(0, 52, 18, Direction.Up);
+        LoadMap(0, 52, 18, DirectionType.Up);
 
-        _credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^  |                                               #                                           ~~~~~~ |_=_|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|  ^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|_=_|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
+        _credits = string.Concat(_creditObject.Lose);
         while (_frames < 118)
         {
             waitEnemies--;
@@ -128,43 +130,43 @@ public static class MainProgram
                 {
                     if (rnd1 > 2)
                     {
-                        if (EnemyManager.GetPrev1(i) == Direction.Up)
+                        if (EnemyManager.GetPrev1(i) == DirectionType.Up)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i),
                                                             EnemyManager.GetPosY(i) - 1,
-                                                            Direction.Up,
+                                                            DirectionType.Up,
                                                             -1,
                                                             false);
                         }
-                        else if (EnemyManager.GetPrev1(i) == Direction.Left)
+                        else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i) - 2,
                                                             EnemyManager.GetPosY(i),
-                                                            Direction.Left,
+                                                            DirectionType.Left,
                                                             -1,
                                                             false);
                         }
-                        else if (EnemyManager.GetPrev1(i) == Direction.Down)
+                        else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i),
                                                             EnemyManager.GetPosY(i) + 1,
-                                                            Direction.Down,
+                                                            DirectionType.Down,
                                                             -1,
                                                             false);
                         }
-                        else if (EnemyManager.GetPrev1(i) == Direction.Right)
+                        else if (EnemyManager.GetPrev1(i) == DirectionType.Right)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i) + 2,
                                                             EnemyManager.GetPosY(i),
-                                                            Direction.Right,
+                                                            DirectionType.Right,
                                                             -1,
                                                             false);
                         }
@@ -183,7 +185,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i),
                                                 EnemyManager.GetPosY(i) - 1,
-                                                Direction.Up,
+                                                DirectionType.Up,
                                                 -1,
                                                 false);
                         }
@@ -193,7 +195,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i) - 2,
                                                 EnemyManager.GetPosY(i),
-                                                Direction.Left,
+                                                DirectionType.Left,
                                                 -1,
                                                 false);
                         }
@@ -203,7 +205,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i),
                                                 EnemyManager.GetPosY(i) + 1,
-                                                Direction.Down,
+                                                DirectionType.Down,
                                                 -1,
                                                 false);
                         }
@@ -213,7 +215,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i) + 2,
                                                 EnemyManager.GetPosY(i),
-                                                Direction.Right,
+                                                DirectionType.Right,
                                                 -1,
                                                 false);
                         }
@@ -226,43 +228,43 @@ public static class MainProgram
                     {
                         if (rnd1 > 2)
                         {
-                            if (EnemyManager.GetPrev1(i) == Direction.Up)
+                            if (EnemyManager.GetPrev1(i) == DirectionType.Up)
                             {
                                 passed = !EnemyManager.Move(i,
                                                                 EnemyManager.GetEnemyType(i),
                                                                 EnemyManager.GetPosX(i) - 2,
                                                                 EnemyManager.GetPosY(i) - 1,
-                                                                Direction.Up,
+                                                                DirectionType.Up,
                                                                 -1,
                                                                 false);
                             }
-                            else if (EnemyManager.GetPrev1(i) == Direction.Left)
+                            else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
                             {
                                 passed = !EnemyManager.Move(i,
                                                                 EnemyManager.GetEnemyType(i),
                                                                 EnemyManager.GetPosX(i) + 2,
                                                                 EnemyManager.GetPosY(i) - 1,
-                                                                Direction.Left,
+                                                                DirectionType.Left,
                                                                 -1,
                                                                 false);
                             }
-                            else if (EnemyManager.GetPrev1(i) == Direction.Down)
+                            else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
                             {
                                 passed = !EnemyManager.Move(i,
                                                                 EnemyManager.GetEnemyType(i),
                                                                 EnemyManager.GetPosX(i) - 2,
                                                                 EnemyManager.GetPosY(i) + 1,
-                                                                Direction.Down,
+                                                                DirectionType.Down,
                                                                 -1,
                                                                 false);
                             }
-                            else if (EnemyManager.GetPrev1(i) == Direction.Right)
+                            else if (EnemyManager.GetPrev1(i) == DirectionType.Right)
                             {
                                 passed = !EnemyManager.Move(i,
                                                                 EnemyManager.GetEnemyType(i),
                                                                 EnemyManager.GetPosX(i) + 2,
                                                                 EnemyManager.GetPosY(i) + 1,
-                                                                Direction.Right,
+                                                                DirectionType.Right,
                                                                 -1,
                                                                 false);
                             }
@@ -281,7 +283,7 @@ public static class MainProgram
                                                     EnemyManager.GetEnemyType(i),
                                                     EnemyManager.GetPosX(i) - 2,
                                                     EnemyManager.GetPosY(i) - 1,
-                                                    Direction.Up,
+                                                    DirectionType.Up,
                                                     -1,
                                                     false);
                             }
@@ -291,7 +293,7 @@ public static class MainProgram
                                                     EnemyManager.GetEnemyType(i),
                                                     EnemyManager.GetPosX(i) + 2,
                                                     EnemyManager.GetPosY(i) - 1,
-                                                    Direction.Left,
+                                                    DirectionType.Left,
                                                     -1,
                                                     false);
                             }
@@ -301,7 +303,7 @@ public static class MainProgram
                                                     EnemyManager.GetEnemyType(i),
                                                     EnemyManager.GetPosX(i) - 2,
                                                     EnemyManager.GetPosY(i) + 1,
-                                                    Direction.Down,
+                                                    DirectionType.Down,
                                                     -1,
                                                     false);
                             }
@@ -311,7 +313,7 @@ public static class MainProgram
                                                     EnemyManager.GetEnemyType(i),
                                                     EnemyManager.GetPosX(i) + 2,
                                                     EnemyManager.GetPosY(i) + 1,
-                                                    Direction.Right,
+                                                    DirectionType.Right,
                                                     -1,
                                                     false);
                             }
@@ -326,43 +328,43 @@ public static class MainProgram
                 {
                     if (rnd1 > 4)
                     {
-                        if (EnemyManager.GetPrev1(i) == Direction.Up)
+                        if (EnemyManager.GetPrev1(i) == DirectionType.Up)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i) - 2,
                                                             EnemyManager.GetPosY(i) - 1,
-                                                            Direction.Up,
+                                                            DirectionType.Up,
                                                             -1,
                                                             false);
                         }
-                        else if (EnemyManager.GetPrev1(i) == Direction.Left)
+                        else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i) + 2,
                                                             EnemyManager.GetPosY(i) - 1,
-                                                            Direction.Left,
+                                                            DirectionType.Left,
                                                             -1,
                                                             false);
                         }
-                        else if (EnemyManager.GetPrev1(i) == Direction.Down)
+                        else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i) - 2,
                                                             EnemyManager.GetPosY(i) + 1,
-                                                            Direction.Down,
+                                                            DirectionType.Down,
                                                             -1,
                                                             false);
                         }
-                        else if (EnemyManager.GetPrev1(i) == Direction.Right)
+                        else if (EnemyManager.GetPrev1(i) == DirectionType.Right)
                         {
                             passed = !EnemyManager.Move(i,
                                                             EnemyManager.GetEnemyType(i),
                                                             EnemyManager.GetPosX(i) + 2,
                                                             EnemyManager.GetPosY(i) + 1,
-                                                            Direction.Right,
+                                                            DirectionType.Right,
                                                             -1,
                                                             false);
                         }
@@ -381,7 +383,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i) - 2,
                                                 EnemyManager.GetPosY(i) - 1,
-                                                Direction.Up,
+                                                DirectionType.Up,
                                                 -1,
                                                 false);
                         }
@@ -391,7 +393,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i) + 2,
                                                 EnemyManager.GetPosY(i) - 1,
-                                                Direction.Left,
+                                                DirectionType.Left,
                                                 -1,
                                                 false);
                         }
@@ -401,7 +403,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i) - 2,
                                                 EnemyManager.GetPosY(i) + 1,
-                                                Direction.Down,
+                                                DirectionType.Down,
                                                 -1,
                                                 false);
                         }
@@ -411,7 +413,7 @@ public static class MainProgram
                                                 EnemyManager.GetEnemyType(i),
                                                 EnemyManager.GetPosX(i) + 2,
                                                 EnemyManager.GetPosY(i) + 1,
-                                                Direction.Right,
+                                                DirectionType.Right,
                                                 -1,
                                                 false);
                         }
@@ -422,11 +424,11 @@ public static class MainProgram
                     waitDragon = 4;
                     EnemyManager.SetMotion(i, EnemyManager.GetMotion(i) - 1);
 
-                    var phase = Direction.Left;
+                    var phase = DirectionType.Left;
                     var speed = 1;
                     if (EnemyManager.GetMotion(i) <= 1)
                     {
-                        phase = Direction.Right;
+                        phase = DirectionType.Right;
                         speed = 0;
                         if (EnemyManager.GetMotion(i) <= 0)
                         {
@@ -434,21 +436,21 @@ public static class MainProgram
                                                 EnemyType.Fireball,
                                                 EnemyManager.GetPosX(i) - 3,
                                                 EnemyManager.GetPosY(i) + 3,
-                                                Direction.Up,
+                                                DirectionType.Up,
                                                 -1,
                                                 true);
                             EnemyManager.Move(-1,
                                                 EnemyType.Fireball,
                                                 EnemyManager.GetPosX(i) - 3,
                                                 EnemyManager.GetPosY(i) + 1,
-                                                Direction.Left,
+                                                DirectionType.Left,
                                                 -1,
                                                 true);
                             EnemyManager.Move(-1,
                                                 EnemyType.Fireball,
                                                 EnemyManager.GetPosX(i) - 3,
                                                 EnemyManager.GetPosY(i) - 1,
-                                                Direction.Down,
+                                                DirectionType.Down,
                                                 -1,
                                                 true);
                             EnemyManager.SetMotion(i, 12);
@@ -502,33 +504,33 @@ public static class MainProgram
                 }
                 else if (EnemyManager.GetEnemyType(i) == EnemyType.Fireball)
                 {
-                    if (EnemyManager.GetPrev1(i) == Direction.Up)
+                    if (EnemyManager.GetPrev1(i) == DirectionType.Up)
                     {
                         EnemyManager.Move(i,
                                             EnemyManager.GetEnemyType(i),
                                             EnemyManager.GetPosX(i) - 3,
                                             EnemyManager.GetPosY(i) - 2,
-                                            Direction.Up,
+                                            DirectionType.Up,
                                             -1,
                                             false);
                     }
-                    else if (EnemyManager.GetPrev1(i) == Direction.Left)
+                    else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
                     {
                         EnemyManager.Move(i,
                                             EnemyManager.GetEnemyType(i),
                                             EnemyManager.GetPosX(i) - 3,
                                             EnemyManager.GetPosY(i),
-                                            Direction.Left,
+                                            DirectionType.Left,
                                             -1,
                                             false);
                     }
-                    else if (EnemyManager.GetPrev1(i) == Direction.Down)
+                    else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
                     {
                         EnemyManager.Move(i,
                                             EnemyManager.GetEnemyType(i),
                                             EnemyManager.GetPosX(i) - 3,
                                             EnemyManager.GetPosY(i) + 2,
-                                            Direction.Down,
+                                            DirectionType.Down,
                                             -1,
                                             false);
                     }
@@ -556,27 +558,27 @@ public static class MainProgram
         {
             if (CurrentMap == 0)
             {
-                LoadMap(6, 50, 29, Direction.Up);
+                LoadMap(6, 50, 29, DirectionType.Up);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(7, 50, 30, Direction.Up);
+                LoadMap(7, 50, 30, DirectionType.Up);
             }
             else if (CurrentMap == 8)
             {
-                LoadMap(9, 50, 30, Direction.Up);
+                LoadMap(9, 50, 30, DirectionType.Up);
             }
             else if (CurrentMap == 6)
             {
-                LoadMap(0, 16, 9, Direction.Down);
+                LoadMap(0, 16, 9, DirectionType.Down);
             }
             else if (CurrentMap == 7)
             {
-                LoadMap(4, 86, 10, Direction.Down);
+                LoadMap(4, 86, 10, DirectionType.Down);
             }
             else if (CurrentMap == 9)
             {
-                LoadMap(8, 51, 20, Direction.Down);
+                LoadMap(8, 51, 20, DirectionType.Down);
             }
             State = GameState.Idle;
         }
@@ -587,19 +589,19 @@ public static class MainProgram
         Thread.Sleep(100);
         State = GameState.Idle;
 
-        if (PlayerController.GetPrev() == Direction.Up && PlayerController.Position.Y < 27)
+        if (PlayerController.GetPrev() == DirectionType.Up && PlayerController.Position.Y < 27)
         {
             PlayerController.MoveDown(3);
         }
-        else if (PlayerController.GetPrev() == Direction.Left && PlayerController.Position.X < 94)
+        else if (PlayerController.GetPrev() == DirectionType.Left && PlayerController.Position.X < 94)
         {
             PlayerController.MoveRight(3);
         }
-        else if (PlayerController.GetPrev() == Direction.Down && PlayerController.Position.Y > 3)
+        else if (PlayerController.GetPrev() == DirectionType.Down && PlayerController.Position.Y > 3)
         {
             PlayerController.MoveUp(3);
         }
-        else if (PlayerController.GetPrev() == Direction.Right && PlayerController.Position.X > 7)
+        else if (PlayerController.GetPrev() == DirectionType.Right && PlayerController.Position.X > 7)
         {
             PlayerController.MoveLeft(3);
         }
@@ -655,11 +657,11 @@ public static class MainProgram
 
             if (CurrentMap <= 8)
             {
-                LoadMap(0, 52, 15, Direction.Up);
+                LoadMap(0, 52, 15, DirectionType.Up);
             }
             else
             {
-                LoadMap(9, 50, 25, Direction.Up);
+                LoadMap(9, 50, 25, DirectionType.Up);
             }
         }
         _frames++;
@@ -667,7 +669,7 @@ public static class MainProgram
 
     private static void HandleGameOver()
     {
-        if (HasFlag(GameFlag.HasArmor)) _credits = "                                  THANKS   LINK,                                                      #                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #                                                                                                      #                                            =<>=    /\\                                                #                                            s^^s   /  |                                               #                                           ss~~ss |^##|                                               #                                           ~~~~~~ |#=#|                                               #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                              Awake,  my  young  Hero,                                                #                              For  peace  waits  not  on  the  morrow.                                #                              Now  go;  take  this  into  the  unknown:                               #                              It's  dangerous  to  go  alone!                                         #                                                                                                      #                              The  moon  sets,  and  the  moon  rises;                                #                              Darkness  only  this  night  comprises.                                 #                              What's  to  hope  with  a  quest  so  foggy?                            #                              It's  a  secret  to  everybody!                                         #                                                                                                      #                              Finally,  peace  returns  to  Hyrule.                                   #                              And  when  calamity  fell  succesful,                                   #                              The  dream  of  a  legend  lifted  clear:                               #                              Another  quest  will  start  from  here!                                #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                           ==================== STAFF =====================                           #                           =                                              =                           #                           =                                              =                           #                           =      PRODUCER....     Jayden Newman          =                           #                           =                                              =                           #                           =                                              =                           #                           =      PROGRAMMER.....   Jayden Newman         =                           #                           =                                              =                           #                           =                                              =                           #                           =      DESIGNER....    Jayden Newman           =                           #                           =                                              =                           #                           =                                              =                           #                           =                 <***>                        =                           #                           =          FFF     S^SSS>                      =                           #                           =          FFF     *S  SS>                     =                           #                           =                     =S>                      =                           #                           =                    =*SSSS**>                 =                           #                           =                    =*SSSSS*                  =                           #                           =                    ===  ==                   =                           #                           =                                              =                           #                           =                                              =                           #                           =      INSPIRATION...   Nintendo's             =                           #                           =                       The Legend of Zelda    =                           #                           =                                              =                           #                           =     ttt                                      =                           #                           =     tt^t                                     =                           #                           =     tttt                                     =                           #                           =                                              =                           #                           ================================================                           #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                            0-Bit  Legend                                             #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         =====================================================                        #                         =~~~~                ~~            ~~            ~~~=                        #                         =~    ~~~   ~~~~~~~~~MM~~~~~M~~~         ~~~~~~     =                        #                         =  ~~      ~~~~MM~~~MMMM~~~MMM~M~~~~~               =                        #                         =~~  ~~~~~~~~MMMMMMMMMMMM~MMMMMMM~~MM~~~~~     ~~MMM=                        #                         =MM~~~      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM=                        #                         =MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM...  ...MMMM=                        #                         =...     .......                   .....   .........=                        #                         =()......     ... ()......  ..()..()..()()()   ()()(=                        #                         =()() ()()  ()()..()()..()()()()()  ()   ()()()    (=                        #                         =()      /\\ ()()()()         ()()()     ()()   ()()(=                        #                         =  ()   |  \\ - ()  ()()()()  ()  ()()    ()()()()   =                        #                         =   XXXX|##^|-SSS ()()   () ()()()   ()  () ()()()  =                        #                         = XXXXXX|#=#|-XXX      ()    ()()  ()() ()()()() () =                        #                         =XXXXXXXXXXXXXXXX ()  ()()()() ()()() ()()  ()()    =                        #                         =XXXXXXXXXXXXXXX  ()()()()()()()()()()()()()()()()()=                        #                         =====================================================                        #";
+        if (HasFlag(GameFlag.HasArmor)) _credits = string.Concat(_creditObject.WinArmor);
 
         if (_frames < 13)
         {
@@ -759,7 +761,7 @@ public static class MainProgram
         _maps.Add(new Castle5());
     }
 
-    public static void LoadMap(int mapNum, int posX, int posY, Direction direction)
+    public static void LoadMap(int mapNum, int posX, int posY, DirectionType direction)
     {
         var map = string.Concat(_maps[mapNum].Raw);
 
@@ -875,30 +877,30 @@ public static class MainProgram
 
         if (mapNum == 1)
         {
-            EnemyManager.Move(-1, EnemyType.Octorok, 75, 13, Direction.Left, -1, true);
-            EnemyManager.Move(-1, EnemyType.Octorok, 9, 12, Direction.Right, -1, true);
-            EnemyManager.Move(-1, EnemyType.Octorok, 23, 26, Direction.Left, -1, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 75, 13, DirectionType.Left, -1, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 9, 12, DirectionType.Right, -1, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 23, 26, DirectionType.Left, -1, true);
         }
         else if (mapNum == 2)
         {
-            EnemyManager.Move(-1, EnemyType.Octorok, 59, 23, Direction.Right, -1, true);
-            EnemyManager.Move(-1, EnemyType.Spider, 76, 6, Direction.Left, 5, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 59, 23, DirectionType.Right, -1, true);
+            EnemyManager.Move(-1, EnemyType.Spider, 76, 6, DirectionType.Left, 5, true);
         }
         else if (mapNum == 3)
         {
-            EnemyManager.Move(-1, EnemyType.Spider, 44, 25, Direction.Left, 6, true);
-            EnemyManager.Move(-1, EnemyType.Octorok, 38, 14, Direction.Right, -1, true);
-            EnemyManager.Move(-1, EnemyType.Octorok, 83, 9, Direction.Left, -1, true);
+            EnemyManager.Move(-1, EnemyType.Spider, 44, 25, DirectionType.Left, 6, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 38, 14, DirectionType.Right, -1, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 83, 9, DirectionType.Left, -1, true);
         }
         else if (mapNum == 4)
         {
-            EnemyManager.Move(-1, EnemyType.Octorok, 35, 23, Direction.Left, -1, true);
-            EnemyManager.Move(-1, EnemyType.Octorok, 69, 6, Direction.Left, -1, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 35, 23, DirectionType.Left, -1, true);
+            EnemyManager.Move(-1, EnemyType.Octorok, 69, 6, DirectionType.Left, -1, true);
         }
         else if (mapNum == 5)
         {
-            EnemyManager.Move(-1, EnemyType.Spider, 81, 9, Direction.Left, 4, true);
-            EnemyManager.Move(-1, EnemyType.Spider, 32, 5, Direction.Right, 6, true);
+            EnemyManager.Move(-1, EnemyType.Spider, 81, 9, DirectionType.Left, 4, true);
+            EnemyManager.Move(-1, EnemyType.Spider, 32, 5, DirectionType.Right, 6, true);
         }
         else if (mapNum == 8)
         {
@@ -910,43 +912,43 @@ public static class MainProgram
         {
             if (cEnemies1 >= 1)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 70, 11, Direction.Left, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 70, 11, DirectionType.Left, -1, true);
             }
             if (cEnemies1 >= 2)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 32, 9, Direction.Right, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 32, 9, DirectionType.Right, -1, true);
             }
             if (cEnemies1 >= 3)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 53, 15, Direction.Left, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 53, 15, DirectionType.Left, -1, true);
             }
             if (cEnemies1 >= 4)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 20, 20, Direction.Right, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 20, 20, DirectionType.Right, -1, true);
             }
         }
         else if (mapNum == 11)
         {
             if (cEnemies2 >= 1)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 27, 9, Direction.Left, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 27, 9, DirectionType.Left, -1, true);
             }
             if (cEnemies2 >= 2)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 56, 20, Direction.Right, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 56, 20, DirectionType.Right, -1, true);
             }
             if (cEnemies2 >= 3)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 73, 15, Direction.Left, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 73, 15, DirectionType.Left, -1, true);
             }
             if (cEnemies2 >= 4)
             {
-                EnemyManager.Move(-1, EnemyType.Bat, 18, 11, Direction.Right, -1, true);
+                EnemyManager.Move(-1, EnemyType.Bat, 18, 11, DirectionType.Right, -1, true);
             }
         }
         else if (mapNum == 12)
         {
-            if (!HasFlag(GameFlag.Dragon)) EnemyManager.Move(-1, EnemyType.Dragon, 71, 13, Direction.Left, 12, true);
+            if (!HasFlag(GameFlag.Dragon)) EnemyManager.Move(-1, EnemyType.Dragon, 71, 13, DirectionType.Left, 12, true);
         }
 
         if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)

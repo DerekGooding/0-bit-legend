@@ -1,21 +1,19 @@
 using _0_Bit_Legend.Model.Enums;
-using _0_Bit_Legend.Model;
-using static _0_Bit_Legend.MainProgram;
-using _0_Bit_Legend.Enemies;
+using _0_Bit_Legend.Entities;
 
 namespace _0_Bit_Legend;
 
 public class PlayerController
 {
     private Vector2 _preHitPosition = Vector2.Zero;
-    private readonly Link _player = new Link();
+    private readonly Link _player = new();
 
     private readonly char[] _storage_map = new string(' ', 20).ToArray();
     private static readonly char[] _storage_sword = new char[6];
     private static readonly char[] _storage_detect_enemy = new char[6];
 
-    private Direction _prev = Direction.Up;
-    private Direction _prev2 = Direction.Left;
+    private DirectionType _prev = DirectionType.Up;
+    private DirectionType _prev2 = DirectionType.Left;
 
     private bool _debounce;
     private bool _spawnRupee;
@@ -24,33 +22,33 @@ public class PlayerController
     public Vector2 Position { get; private set; }
     public int MovementWait;
 
-    public Direction GetPrev() => _prev;
-    public Direction GetPrev2() => _prev2;
+    public DirectionType GetPrev() => _prev;
+    public DirectionType GetPrev2() => _prev2;
     public void SetPosition(Vector2 pos) => Position = pos;
     public void SetPreHitPosition(Vector2 pos) => _preHitPosition = pos;
-    public void SetPrev(Direction prev) => _prev = prev;
+    public void SetPrev(DirectionType prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
     //Temporary rename fix, TODO removed
     private int PosX => Position.X;
     private int PosY => Position.Y;
-    private int _preHitPosX => _preHitPosition.X;
-    private int _preHitPosY => _preHitPosition.Y;
+    private int PreHitPosX => _preHitPosition.X;
+    private int PreHitPosY => _preHitPosition.Y;
 
     public void Attack()
     {
         switch (_prev)
         {
-            case Direction.Up:
+            case DirectionType.Up:
                 HandleAttackUp();
                 break;
-            case Direction.Left:
+            case DirectionType.Left:
                 HandleAttackLeft();
                 break;
-            case Direction.Down:
+            case DirectionType.Down:
                 HandleAttackDown();
                 break;
-            case Direction.Right:
+            case DirectionType.Right:
                 HandleAttackRight();
                 break;
         }
@@ -79,30 +77,30 @@ public class PlayerController
         }
         else
         {
-            _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY - 2];
-            _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY - 2];
-            _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY - 2];
-            _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY - 3];
-            _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY - 4];
+            _storage_detect_enemy[0] = Map[PreHitPosX - 1, PreHitPosY - 2];
+            _storage_detect_enemy[1] = Map[PreHitPosX, PreHitPosY - 2];
+            _storage_detect_enemy[2] = Map[PreHitPosX + 1, PreHitPosY - 2];
+            _storage_detect_enemy[3] = Map[PreHitPosX, PreHitPosY - 3];
+            _storage_detect_enemy[4] = Map[PreHitPosX, PreHitPosY - 4];
 
             var swordArr = new int[2, 5];
-            swordArr[0, 0] = _preHitPosX - 1;
-            swordArr[1, 0] = _preHitPosY - 2;
-            swordArr[0, 1] = _preHitPosX;
-            swordArr[1, 1] = _preHitPosY - 2;
-            swordArr[0, 2] = _preHitPosX + 1;
-            swordArr[1, 2] = _preHitPosY - 2;
-            swordArr[0, 3] = _preHitPosX;
-            swordArr[1, 3] = _preHitPosY - 3;
-            swordArr[0, 4] = _preHitPosX;
-            swordArr[1, 4] = _preHitPosY - 4;
+            swordArr[0, 0] = PreHitPosX - 1;
+            swordArr[1, 0] = PreHitPosY - 2;
+            swordArr[0, 1] = PreHitPosX;
+            swordArr[1, 1] = PreHitPosY - 2;
+            swordArr[0, 2] = PreHitPosX + 1;
+            swordArr[1, 2] = PreHitPosY - 2;
+            swordArr[0, 3] = PreHitPosX;
+            swordArr[1, 3] = PreHitPosY - 3;
+            swordArr[0, 4] = PreHitPosX;
+            swordArr[1, 4] = PreHitPosY - 4;
 
-            Stab(swordArr, Direction.Up, 5, 1);
+            Stab(swordArr, DirectionType.Up, 5, 1);
         }
 
-        UpdateRow(_preHitPosY - 2);
-        UpdateRow(_preHitPosY - 3);
-        UpdateRow(_preHitPosY - 4);
+        UpdateRow(PreHitPosY - 2);
+        UpdateRow(PreHitPosY - 3);
+        UpdateRow(PreHitPosY - 4);
     }
     private void HandleAttackLeft()
     {
@@ -129,33 +127,33 @@ public class PlayerController
         }
         else
         {
-            _storage_detect_enemy[0] = Map[_preHitPosX - 3, _preHitPosY];
-            _storage_detect_enemy[1] = Map[_preHitPosX - 3, _preHitPosY + 1];
-            _storage_detect_enemy[2] = Map[_preHitPosX - 3, _preHitPosY + 2];
-            _storage_detect_enemy[3] = Map[_preHitPosX - 4, _preHitPosY + 1];
-            _storage_detect_enemy[4] = Map[_preHitPosX - 5, _preHitPosY + 1];
-            _storage_detect_enemy[5] = Map[_preHitPosX - 6, _preHitPosY + 1];
+            _storage_detect_enemy[0] = Map[PreHitPosX - 3, PreHitPosY];
+            _storage_detect_enemy[1] = Map[PreHitPosX - 3, PreHitPosY + 1];
+            _storage_detect_enemy[2] = Map[PreHitPosX - 3, PreHitPosY + 2];
+            _storage_detect_enemy[3] = Map[PreHitPosX - 4, PreHitPosY + 1];
+            _storage_detect_enemy[4] = Map[PreHitPosX - 5, PreHitPosY + 1];
+            _storage_detect_enemy[5] = Map[PreHitPosX - 6, PreHitPosY + 1];
 
             var swordArr = new int[2, 6];
-            swordArr[0, 0] = _preHitPosX - 3;
-            swordArr[1, 0] = _preHitPosY;
-            swordArr[0, 1] = _preHitPosX - 3;
-            swordArr[1, 1] = _preHitPosY + 1;
-            swordArr[0, 2] = _preHitPosX - 3;
-            swordArr[1, 2] = _preHitPosY + 2;
-            swordArr[0, 3] = _preHitPosX - 4;
-            swordArr[1, 3] = _preHitPosY + 1;
-            swordArr[0, 4] = _preHitPosX - 5;
-            swordArr[1, 4] = _preHitPosY + 1;
-            swordArr[0, 5] = _preHitPosX - 6;
-            swordArr[1, 5] = _preHitPosY + 1;
+            swordArr[0, 0] = PreHitPosX - 3;
+            swordArr[1, 0] = PreHitPosY;
+            swordArr[0, 1] = PreHitPosX - 3;
+            swordArr[1, 1] = PreHitPosY + 1;
+            swordArr[0, 2] = PreHitPosX - 3;
+            swordArr[1, 2] = PreHitPosY + 2;
+            swordArr[0, 3] = PreHitPosX - 4;
+            swordArr[1, 3] = PreHitPosY + 1;
+            swordArr[0, 4] = PreHitPosX - 5;
+            swordArr[1, 4] = PreHitPosY + 1;
+            swordArr[0, 5] = PreHitPosX - 6;
+            swordArr[1, 5] = PreHitPosY + 1;
 
-            Stab(swordArr, Direction.Left, 6, 1);
+            Stab(swordArr, DirectionType.Left, 6, 1);
         }
 
-        UpdateRow(_preHitPosY);
-        UpdateRow(_preHitPosY + 1);
-        UpdateRow(_preHitPosY + 2);
+        UpdateRow(PreHitPosY);
+        UpdateRow(PreHitPosY + 1);
+        UpdateRow(PreHitPosY + 2);
     }
     private void HandleAttackDown()
     {
@@ -180,30 +178,30 @@ public class PlayerController
         }
         else
         {
-            _storage_detect_enemy[0] = Map[_preHitPosX - 1, _preHitPosY + 3];
-            _storage_detect_enemy[1] = Map[_preHitPosX, _preHitPosY + 3];
-            _storage_detect_enemy[2] = Map[_preHitPosX + 1, _preHitPosY + 3];
-            _storage_detect_enemy[3] = Map[_preHitPosX, _preHitPosY + 4];
-            _storage_detect_enemy[4] = Map[_preHitPosX, _preHitPosY + 5];
+            _storage_detect_enemy[0] = Map[PreHitPosX - 1, PreHitPosY + 3];
+            _storage_detect_enemy[1] = Map[PreHitPosX, PreHitPosY + 3];
+            _storage_detect_enemy[2] = Map[PreHitPosX + 1, PreHitPosY + 3];
+            _storage_detect_enemy[3] = Map[PreHitPosX, PreHitPosY + 4];
+            _storage_detect_enemy[4] = Map[PreHitPosX, PreHitPosY + 5];
 
             var swordArr = new int[2, 5];
-            swordArr[0, 0] = _preHitPosX - 1;
-            swordArr[1, 0] = _preHitPosY + 3;
-            swordArr[0, 1] = _preHitPosX;
-            swordArr[1, 1] = _preHitPosY + 3;
-            swordArr[0, 2] = _preHitPosX + 1;
-            swordArr[1, 2] = _preHitPosY + 3;
-            swordArr[0, 3] = _preHitPosX;
-            swordArr[1, 3] = _preHitPosY + 4;
-            swordArr[0, 4] = _preHitPosX;
-            swordArr[1, 4] = _preHitPosY + 5;
+            swordArr[0, 0] = PreHitPosX - 1;
+            swordArr[1, 0] = PreHitPosY + 3;
+            swordArr[0, 1] = PreHitPosX;
+            swordArr[1, 1] = PreHitPosY + 3;
+            swordArr[0, 2] = PreHitPosX + 1;
+            swordArr[1, 2] = PreHitPosY + 3;
+            swordArr[0, 3] = PreHitPosX;
+            swordArr[1, 3] = PreHitPosY + 4;
+            swordArr[0, 4] = PreHitPosX;
+            swordArr[1, 4] = PreHitPosY + 5;
 
-            Stab(swordArr, Direction.Down, 5, 1);
+            Stab(swordArr, DirectionType.Down, 5, 1);
         }
 
-        UpdateRow(_preHitPosY + 3);
-        UpdateRow(_preHitPosY + 4);
-        UpdateRow(_preHitPosY + 5);
+        UpdateRow(PreHitPosY + 3);
+        UpdateRow(PreHitPosY + 4);
+        UpdateRow(PreHitPosY + 5);
     }
     private void HandleAttackRight()
     {
@@ -230,36 +228,36 @@ public class PlayerController
         }
         else
         {
-            _storage_detect_enemy[0] = Map[_preHitPosX + 3, _preHitPosY];
-            _storage_detect_enemy[1] = Map[_preHitPosX + 3, _preHitPosY + 1];
-            _storage_detect_enemy[2] = Map[_preHitPosX + 3, _preHitPosY + 2];
-            _storage_detect_enemy[3] = Map[_preHitPosX + 4, _preHitPosY + 1];
-            _storage_detect_enemy[4] = Map[_preHitPosX + 5, _preHitPosY + 1];
-            _storage_detect_enemy[5] = Map[_preHitPosX + 6, _preHitPosY + 1];
+            _storage_detect_enemy[0] = Map[PreHitPosX + 3, PreHitPosY];
+            _storage_detect_enemy[1] = Map[PreHitPosX + 3, PreHitPosY + 1];
+            _storage_detect_enemy[2] = Map[PreHitPosX + 3, PreHitPosY + 2];
+            _storage_detect_enemy[3] = Map[PreHitPosX + 4, PreHitPosY + 1];
+            _storage_detect_enemy[4] = Map[PreHitPosX + 5, PreHitPosY + 1];
+            _storage_detect_enemy[5] = Map[PreHitPosX + 6, PreHitPosY + 1];
 
             var swordArr = new int[2, 6];
-            swordArr[0, 0] = _preHitPosX + 3;
-            swordArr[1, 0] = _preHitPosY;
-            swordArr[0, 1] = _preHitPosX + 3;
-            swordArr[1, 1] = _preHitPosY + 1;
-            swordArr[0, 2] = _preHitPosX + 3;
-            swordArr[1, 2] = _preHitPosY + 2;
-            swordArr[0, 3] = _preHitPosX + 4;
-            swordArr[1, 3] = _preHitPosY + 1;
-            swordArr[0, 4] = _preHitPosX + 5;
-            swordArr[1, 4] = _preHitPosY + 1;
-            swordArr[0, 5] = _preHitPosX + 6;
-            swordArr[1, 5] = _preHitPosY + 1;
+            swordArr[0, 0] = PreHitPosX + 3;
+            swordArr[1, 0] = PreHitPosY;
+            swordArr[0, 1] = PreHitPosX + 3;
+            swordArr[1, 1] = PreHitPosY + 1;
+            swordArr[0, 2] = PreHitPosX + 3;
+            swordArr[1, 2] = PreHitPosY + 2;
+            swordArr[0, 3] = PreHitPosX + 4;
+            swordArr[1, 3] = PreHitPosY + 1;
+            swordArr[0, 4] = PreHitPosX + 5;
+            swordArr[1, 4] = PreHitPosY + 1;
+            swordArr[0, 5] = PreHitPosX + 6;
+            swordArr[1, 5] = PreHitPosY + 1;
 
-            Stab(swordArr, Direction.Right, 6, 1);
+            Stab(swordArr, DirectionType.Right, 6, 1);
         }
 
-        UpdateRow(_preHitPosY);
-        UpdateRow(_preHitPosY + 1);
-        UpdateRow(_preHitPosY + 2);
+        UpdateRow(PreHitPosY);
+        UpdateRow(PreHitPosY + 1);
+        UpdateRow(PreHitPosY + 2);
     }
 
-    public void Stab(int[,] swordArr, Direction prev, int amt, int dmg)
+    public void Stab(int[,] swordArr, DirectionType prev, int amt, int dmg)
     {
         var hit = false;
         for (var i = 0; i < amt; i++)
@@ -284,7 +282,7 @@ public class PlayerController
         _swingingSword = false;
     }
 
-    public void StoreSword(Direction prev)
+    public void StoreSword(DirectionType prev)
     {
         char[] convert = ['t', '^', 'n', '0', 'B', '{', '}', 'F', 'S', '>', '*'];
         for (var i = 0; i < 6; i++)
@@ -295,45 +293,45 @@ public class PlayerController
             }
         }
 
-        if (prev == Direction.Up)
+        if (prev == DirectionType.Up)
         {
-            Map[_preHitPosX - 1, _preHitPosY - 2] = _storage_sword[0];
-            Map[_preHitPosX, _preHitPosY - 2] = _storage_sword[1];
-            Map[_preHitPosX + 1, _preHitPosY - 2] = _storage_sword[2];
-            Map[_preHitPosX, _preHitPosY - 3] = _storage_sword[3];
-            Map[_preHitPosX, _preHitPosY - 4] = _storage_sword[4];
+            Map[PreHitPosX - 1, PreHitPosY - 2] = _storage_sword[0];
+            Map[PreHitPosX, PreHitPosY - 2] = _storage_sword[1];
+            Map[PreHitPosX + 1, PreHitPosY - 2] = _storage_sword[2];
+            Map[PreHitPosX, PreHitPosY - 3] = _storage_sword[3];
+            Map[PreHitPosX, PreHitPosY - 4] = _storage_sword[4];
         }
-        else if (prev == Direction.Left)
+        else if (prev == DirectionType.Left)
         {
-            Map[_preHitPosX - 3, _preHitPosY] = _storage_sword[0];
-            Map[_preHitPosX - 3, _preHitPosY + 1] = _storage_sword[1];
-            Map[_preHitPosX - 3, _preHitPosY + 2] = _storage_sword[2];
-            Map[_preHitPosX - 4, _preHitPosY + 1] = _storage_sword[3];
-            Map[_preHitPosX - 5, _preHitPosY + 1] = _storage_sword[4];
-            Map[_preHitPosX - 6, _preHitPosY + 1] = _storage_sword[5];
+            Map[PreHitPosX - 3, PreHitPosY] = _storage_sword[0];
+            Map[PreHitPosX - 3, PreHitPosY + 1] = _storage_sword[1];
+            Map[PreHitPosX - 3, PreHitPosY + 2] = _storage_sword[2];
+            Map[PreHitPosX - 4, PreHitPosY + 1] = _storage_sword[3];
+            Map[PreHitPosX - 5, PreHitPosY + 1] = _storage_sword[4];
+            Map[PreHitPosX - 6, PreHitPosY + 1] = _storage_sword[5];
         }
-        else if (prev == Direction.Down)
+        else if (prev == DirectionType.Down)
         {
-            Map[_preHitPosX - 1, _preHitPosY + 3] = _storage_sword[0];
-            Map[_preHitPosX, _preHitPosY + 3] = _storage_sword[1];
-            Map[_preHitPosX + 1, _preHitPosY + 3] = _storage_sword[2];
-            Map[_preHitPosX, _preHitPosY + 4] = _storage_sword[3];
-            Map[_preHitPosX, _preHitPosY + 5] = _storage_sword[4];
+            Map[PreHitPosX - 1, PreHitPosY + 3] = _storage_sword[0];
+            Map[PreHitPosX, PreHitPosY + 3] = _storage_sword[1];
+            Map[PreHitPosX + 1, PreHitPosY + 3] = _storage_sword[2];
+            Map[PreHitPosX, PreHitPosY + 4] = _storage_sword[3];
+            Map[PreHitPosX, PreHitPosY + 5] = _storage_sword[4];
         }
-        else if (prev == Direction.Right)
+        else if (prev == DirectionType.Right)
         {
-            Map[_preHitPosX + 3, _preHitPosY] = _storage_sword[0];
-            Map[_preHitPosX + 3, _preHitPosY + 1] = _storage_sword[1];
-            Map[_preHitPosX + 3, _preHitPosY + 2] = _storage_sword[2];
-            Map[_preHitPosX + 4, _preHitPosY + 1] = _storage_sword[3];
-            Map[_preHitPosX + 5, _preHitPosY + 1] = _storage_sword[4];
-            Map[_preHitPosX + 6, _preHitPosY + 1] = _storage_sword[5];
+            Map[PreHitPosX + 3, PreHitPosY] = _storage_sword[0];
+            Map[PreHitPosX + 3, PreHitPosY + 1] = _storage_sword[1];
+            Map[PreHitPosX + 3, PreHitPosY + 2] = _storage_sword[2];
+            Map[PreHitPosX + 4, PreHitPosY + 1] = _storage_sword[3];
+            Map[PreHitPosX + 5, PreHitPosY + 1] = _storage_sword[4];
+            Map[PreHitPosX + 6, PreHitPosY + 1] = _storage_sword[5];
         }
     }
 
     public void MoveUp(int magnitude = 1)
     {
-        _prev = Direction.Up;
+        _prev = DirectionType.Up;
         var posY = PosY - magnitude;
         var posX = PosX;
 
@@ -356,7 +354,7 @@ public class PlayerController
             }
             else
             {
-                LoadMap(4, 21, 29, Direction.Up);
+                LoadMap(4, 21, 29, DirectionType.Up);
             }
         }
         else if (posY >= 1 && !(PosX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
@@ -368,14 +366,14 @@ public class PlayerController
             if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
             {
                 SetFlag(GameFlag.HasSword, true);
-                LoadMap(6, posX, posY, Direction.Up);
+                LoadMap(6, posX, posY, DirectionType.Up);
             }
             else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
-                LoadMap(7, posX, posY, Direction.Up);
+                LoadMap(7, posX, posY, DirectionType.Up);
             }
             else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 5)
             {
@@ -387,7 +385,7 @@ public class PlayerController
                 Rupees -= 25;
 
                 SetFlag(GameFlag.HasArmor, true);
-                LoadMap(7, posX, posY, Direction.Up);
+                LoadMap(7, posX, posY, DirectionType.Up);
             }
             else if (CurrentMap == 9
                 && IsTouching(posX, posY, 'X')
@@ -397,7 +395,7 @@ public class PlayerController
                 && cEnemies2 <= 0
                 && !_debounce)
             {
-                LoadMap(12, 50, 24, Direction.Up);
+                LoadMap(12, 50, 24, DirectionType.Up);
             }
             else if (CurrentMap == 9 && PosX >= 48 && PosX <= 52 && PosY == 7 && !HasFlag(GameFlag.Door3) && Keys > 0)
             {
@@ -405,7 +403,7 @@ public class PlayerController
                 Keys--;
 
                 SetFlag(GameFlag.Door3, true);
-                LoadMap(9, PosX, PosY, Direction.Up);
+                LoadMap(9, PosX, PosY, DirectionType.Up);
             }
 
             if (!IsTouching(posX, posY, '=')
@@ -430,7 +428,7 @@ public class PlayerController
                 }
 
                 StoreChar(posX, posY);
-                BuildChar(posX, posY, Direction.Up);
+                BuildChar(posX, posY, DirectionType.Up);
 
                 UpdateRow(posY - 1);
                 UpdateRow(posY);
@@ -448,7 +446,7 @@ public class PlayerController
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(PosX, PosY, Direction.Up);
+                BuildChar(PosX, PosY, DirectionType.Up);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -459,19 +457,19 @@ public class PlayerController
             }
             else if (CurrentMap == 13 && IsTouching(posX, posY, '~'))
             {
-                BuildChar(PosX, PosY, Direction.Up);
+                BuildChar(PosX, PosY, DirectionType.Up);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                LoadMap(13, 58, 15, Direction.Left);
+                LoadMap(13, 58, 15, DirectionType.Left);
                 SetGameState(GameState.GameOver);
             }
             else
             {
-                BuildChar(PosX, PosY, Direction.Up);
+                BuildChar(PosX, PosY, DirectionType.Up);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -488,40 +486,40 @@ public class PlayerController
         {
             if (CurrentMap == 0)
             {
-                LoadMap(1, 63, 29, Direction.Up);
+                LoadMap(1, 63, 29, DirectionType.Up);
             }
             else if (CurrentMap == 2)
             {
                 if (posX > 29)
                 {
-                    LoadMap(4, 55, 30, Direction.Up);
+                    LoadMap(4, 55, 30, DirectionType.Up);
                 }
                 else if (posX == 21)
                 {
-                    LoadMap(4, 21, 29, Direction.Up);
+                    LoadMap(4, 21, 29, DirectionType.Up);
                 }
                 else
                 {
-                    LoadMap(4, 10, 29, Direction.Up);
+                    LoadMap(4, 10, 29, DirectionType.Up);
                 }
             }
             else if (CurrentMap == 3)
             {
-                LoadMap(5, 49, 30, Direction.Up);
+                LoadMap(5, 49, 30, DirectionType.Up);
             }
         }
         if (HasFlag(GameFlag.Text))
         {
             SetFlag(GameFlag.Text, false);
-            LoadMap(9, posX, posY, Direction.Up);
+            LoadMap(9, posX, posY, DirectionType.Up);
         }
 
         _debounce = false;
     }
     public void MoveLeft(int magnitude = 1)
     {
-        _prev = Direction.Left;
-        _prev2 = Direction.Left;
+        _prev = DirectionType.Left;
+        _prev2 = DirectionType.Left;
         var posY = PosY;
         var posX = PosX - (magnitude * 2);
 
@@ -533,14 +531,14 @@ public class PlayerController
             if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
             {
                 SetFlag(GameFlag.HasSword, true);
-                LoadMap(6, posX, posY, Direction.Left);
+                LoadMap(6, posX, posY, DirectionType.Left);
             }
             else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
-                LoadMap(7, posX, posY, Direction.Left);
+                LoadMap(7, posX, posY, DirectionType.Left);
             }
             else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
             {
@@ -552,7 +550,7 @@ public class PlayerController
                 Rupees -= 25;
 
                 SetFlag(GameFlag.HasArmor, true);
-                LoadMap(7, posX, posY, Direction.Left);
+                LoadMap(7, posX, posY, DirectionType.Left);
             }
             else if (CurrentMap == 9
                 && IsTouching(posX, posY, 'X')
@@ -560,7 +558,7 @@ public class PlayerController
                 && HasFlag(GameFlag.Door1)
                 && !_debounce)
             {
-                LoadMap(10, 87, 15, Direction.Left);
+                LoadMap(10, 87, 15, DirectionType.Left);
             }
             else if (CurrentMap == 9 && PosX == 14 && PosY >= 14 && PosY <= 16 && !HasFlag(GameFlag.Door1) && Keys > 0)
             {
@@ -568,7 +566,7 @@ public class PlayerController
                 Keys--;
 
                 SetFlag(GameFlag.Door1, true);
-                LoadMap(9, PosX, PosY, Direction.Left);
+                LoadMap(9, PosX, PosY, DirectionType.Left);
             }
 
             if (!IsTouching(posX, posY, '=')
@@ -585,7 +583,7 @@ public class PlayerController
                 && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
             {
                 StoreChar(posX, posY);
-                BuildChar(posX, posY, Direction.Left);
+                BuildChar(posX, posY, DirectionType.Left);
 
                 UpdateRow(posY - 1);
                 UpdateRow(posY);
@@ -603,7 +601,7 @@ public class PlayerController
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(PosX, PosY, Direction.Left);
+                BuildChar(PosX, PosY, DirectionType.Left);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -628,13 +626,13 @@ public class PlayerController
                 UpdateRow(PosY + 2);
 
                 Position = new(21, Position.Y);
-                DeployRaft(Direction.Left);
+                DeployRaft(DirectionType.Left);
                 wait = 150;
             }
             else if (PosX == 21 && ((posY > 11 && CurrentMap == 4)
                 || CurrentMap == 2) && ((CurrentMap == 2 && posY < 25) || CurrentMap == 4))
             {
-                BuildChar(PosX, PosY, Direction.Left);
+                BuildChar(PosX, PosY, DirectionType.Left);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -652,7 +650,7 @@ public class PlayerController
                 Position = new(11, Position.Y);
                 posX = 11;
 
-                BuildChar(posX, posY, Direction.Left);
+                BuildChar(posX, posY, DirectionType.Left);
 
                 UpdateRow(posY - 2);
                 UpdateRow(posY - 1);
@@ -663,15 +661,15 @@ public class PlayerController
             }
             else if (CurrentMap == 11 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
             {
-                LoadMap(9, 86, 15, Direction.Left);
+                LoadMap(9, 86, 15, DirectionType.Left);
             }
             else if (CurrentMap == 13 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
             {
-                LoadMap(12, 86, 15, Direction.Left);
+                LoadMap(12, 86, 15, DirectionType.Left);
             }
             else
             {
-                BuildChar(PosX, PosY, Direction.Left);
+                BuildChar(PosX, PosY, DirectionType.Left);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -684,36 +682,36 @@ public class PlayerController
         {
             if (CurrentMap == 0)
             {
-                LoadMap(2, 99, 12, Direction.Left);
+                LoadMap(2, 99, 12, DirectionType.Left);
             }
             else if (CurrentMap == 3)
             {
-                LoadMap(0, 98, 17, Direction.Left);
+                LoadMap(0, 98, 17, DirectionType.Left);
             }
             else if (CurrentMap == 1)
             {
-                LoadMap(4, 98, 13, Direction.Left);
+                LoadMap(4, 98, 13, DirectionType.Left);
             }
             else if (CurrentMap == 5)
             {
-                LoadMap(1, 98, 16, Direction.Left);
+                LoadMap(1, 98, 16, DirectionType.Left);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(8, 99, 16, Direction.Left);
+                LoadMap(8, 99, 16, DirectionType.Left);
             }
         }
         if (HasFlag(GameFlag.Text))
         {
             SetFlag(GameFlag.Text, false);
-            LoadMap(9, posX, posY, Direction.Up);
+            LoadMap(9, posX, posY, DirectionType.Up);
         }
 
         _debounce = false;
     }
     public void MoveDown(int magnitude = 1)
     {
-        _prev = Direction.Down;
+        _prev = DirectionType.Down;
         var posY = PosY + magnitude;
         var posX = PosX;
 
@@ -736,7 +734,7 @@ public class PlayerController
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(2, 21, 2, Direction.Down);
+                LoadMap(2, 21, 2, DirectionType.Down);
             }
         }
         else if (posY <= 29)
@@ -755,7 +753,7 @@ public class PlayerController
                 && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
             {
                 StoreChar(posX, posY);
-                BuildChar(posX, posY, Direction.Down);
+                BuildChar(posX, posY, DirectionType.Down);
 
                 UpdateRow(posY - 1);
                 UpdateRow(posY);
@@ -773,7 +771,7 @@ public class PlayerController
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(PosX, PosY, Direction.Down);
+                BuildChar(PosX, PosY, DirectionType.Down);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -784,18 +782,18 @@ public class PlayerController
             }
             else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
             {
-                BuildChar(PosX, PosY, Direction.Down);
+                BuildChar(PosX, PosY, DirectionType.Down);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                LoadMap(9, 50, 9, Direction.Down);
+                LoadMap(9, 50, 9, DirectionType.Down);
             }
             else
             {
-                BuildChar(PosX, PosY, Direction.Down);
+                BuildChar(PosX, PosY, DirectionType.Down);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -807,40 +805,40 @@ public class PlayerController
         {
             if (CurrentMap == 1)
             {
-                LoadMap(0, 63, 1, Direction.Down);
+                LoadMap(0, 63, 1, DirectionType.Down);
             }
             else if (CurrentMap == 4)
             {
                 if (posX > 29)
                 {
-                    LoadMap(2, 55, 1, Direction.Down);
+                    LoadMap(2, 55, 1, DirectionType.Down);
                 }
                 else if (posX == 21)
                 {
-                    LoadMap(2, 21, 2, Direction.Down);
+                    LoadMap(2, 21, 2, DirectionType.Down);
                 }
                 else
                 {
-                    LoadMap(2, 10, 2, Direction.Down);
+                    LoadMap(2, 10, 2, DirectionType.Down);
                 }
             }
             else if (CurrentMap == 5)
             {
-                LoadMap(3, 49, 2, Direction.Down);
+                LoadMap(3, 49, 2, DirectionType.Down);
             }
             else if (CurrentMap == 6)
             {
-                LoadMap(0, 16, 6, Direction.Down);
+                LoadMap(0, 16, 6, DirectionType.Down);
                 //WaitForTransition();
             }
             else if (CurrentMap == 7)
             {
-                LoadMap(4, 86, 7, Direction.Down);
+                LoadMap(4, 86, 7, DirectionType.Down);
                 //WaitForTransition();
             }
             else if (CurrentMap == 9)
             {
-                LoadMap(8, 51, 17, Direction.Down);
+                LoadMap(8, 51, 17, DirectionType.Down);
                 //WaitForTransition();
             }
         }
@@ -849,8 +847,8 @@ public class PlayerController
     }
     public void MoveRight(int magnitude = 1)
     {
-        _prev = Direction.Right;
-        _prev2 = Direction.Right;
+        _prev = DirectionType.Right;
+        _prev2 = DirectionType.Right;
         var posY = PosY;
         var posX = PosX + (magnitude * 2);
 
@@ -863,14 +861,14 @@ public class PlayerController
             if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 's')))
             {
                 SetFlag(GameFlag.HasSword, true);
-                LoadMap(6, posX, posY, Direction.Right);
+                LoadMap(6, posX, posY, DirectionType.Right);
             }
             else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
-                LoadMap(7, posX, posY, Direction.Right);
+                LoadMap(7, posX, posY, DirectionType.Right);
             }
             else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
             {
@@ -882,7 +880,7 @@ public class PlayerController
                 Rupees -= 25;
 
                 SetFlag(GameFlag.HasArmor, true);
-                LoadMap(7, posX, posY, Direction.Right);
+                LoadMap(7, posX, posY, DirectionType.Right);
             }
             else if (CurrentMap == 9
                 && IsTouching(posX, posY, 'X')
@@ -891,7 +889,7 @@ public class PlayerController
                 && !_debounce)
             {
                 persist = false;
-                LoadMap(11, 14, 15, Direction.Right);
+                LoadMap(11, 14, 15, DirectionType.Right);
             }
             else if (CurrentMap == 9 && PosX == 86 && PosY >= 14 && PosY <= 16 && !HasFlag(GameFlag.Door2) && Keys > 0)
             {
@@ -899,7 +897,7 @@ public class PlayerController
                 Keys--;
 
                 SetFlag(GameFlag.Door2, true);
-                LoadMap(9, PosX, PosY, Direction.Right);
+                LoadMap(9, PosX, PosY, DirectionType.Right);
             }
 
             if (!IsTouching(posX, posY, '=')
@@ -917,7 +915,7 @@ public class PlayerController
                 && persist)
             {
                 StoreChar(posX, posY);
-                BuildChar(posX, posY, Direction.Right);
+                BuildChar(posX, posY, DirectionType.Right);
 
                 UpdateRow(posY - 1);
                 UpdateRow(posY);
@@ -935,7 +933,7 @@ public class PlayerController
                 || IsTouching(posX, posY, '<')
                 || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
-                BuildChar(PosX, PosY, Direction.Right);
+                BuildChar(PosX, PosY, DirectionType.Right);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -960,12 +958,12 @@ public class PlayerController
                 UpdateRow(PosY + 2);
 
                 Position = new(21, Position.Y);
-                DeployRaft(Direction.Right);
+                DeployRaft(DirectionType.Right);
                 wait = 150;
             }
             else if (PosX == 21 && posY < 25 && ((posY > 3 && CurrentMap == 2) || (posY < 25 && CurrentMap == 4)))
             {
-                BuildChar(PosX, PosY, Direction.Right);
+                BuildChar(PosX, PosY, DirectionType.Right);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -983,7 +981,7 @@ public class PlayerController
                 Position = new(30, Position.Y);
                 posX = 30;
 
-                BuildChar(posX, posY, Direction.Right);
+                BuildChar(posX, posY, DirectionType.Right);
 
                 UpdateRow(posY - 2);
                 UpdateRow(posY - 1);
@@ -994,15 +992,15 @@ public class PlayerController
             }
             else if (CurrentMap == 10 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
             {
-                LoadMap(9, 14, 15, Direction.Right);
+                LoadMap(9, 14, 15, DirectionType.Right);
             }
             else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
             {
-                LoadMap(13, 15, 15, Direction.Right);
+                LoadMap(13, 15, 15, DirectionType.Right);
             }
             else
             {
-                BuildChar(PosX, PosY, Direction.Right);
+                BuildChar(PosX, PosY, DirectionType.Right);
 
                 UpdateRow(PosY - 1);
                 UpdateRow(PosY);
@@ -1014,34 +1012,34 @@ public class PlayerController
         {
             if (CurrentMap == 2)
             {
-                LoadMap(0, 4, 12, Direction.Right);
+                LoadMap(0, 4, 12, DirectionType.Right);
             }
             else if (CurrentMap == 0)
             {
-                LoadMap(3, 2, 18, Direction.Right);
+                LoadMap(3, 2, 18, DirectionType.Right);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(1, 2, 13, Direction.Right);
+                LoadMap(1, 2, 13, DirectionType.Right);
             }
             else if (CurrentMap == 1)
             {
-                LoadMap(5, 2, 15, Direction.Right);
+                LoadMap(5, 2, 15, DirectionType.Right);
             }
             else if (CurrentMap == 8)
             {
-                LoadMap(4, 2, 16, Direction.Right);
+                LoadMap(4, 2, 16, DirectionType.Right);
             }
         }
         if (HasFlag(GameFlag.Text))
         {
             SetFlag(GameFlag.Text, false);
-            LoadMap(9, posX, posY, Direction.Up);
+            LoadMap(9, posX, posY, DirectionType.Up);
         }
         _debounce = false;
     }
 
-    public void SpawnLink(int posX, int posY, Direction direction)
+    public void SpawnLink(int posX, int posY, DirectionType direction)
     {
         Position = new(posX, posY);
 
@@ -1071,22 +1069,22 @@ public class PlayerController
 
         switch (direction)
         {
-            case Direction.Up:
+            case DirectionType.Up:
                 MoveUp(0);
                 break;
-            case Direction.Down:
+            case DirectionType.Down:
                 MoveDown(0);
                 break;
-            case Direction.Left:
+            case DirectionType.Left:
                 MoveLeft(0);
                 break;
-            case Direction.Right:
+            case DirectionType.Right:
                 MoveRight(0);
                 break;
         }
     }
 
-    public void BuildChar(int posX, int posY, Direction direction) => _player.Draw(posX, posY, direction);
+    public void BuildChar(int posX, int posY, DirectionType direction) => _player.Draw(posX, posY, direction);
 
     public void StoreChar(int posX, int posY)
     {
@@ -1144,7 +1142,7 @@ public class PlayerController
         _storage_map[19] = Map[posX + 2, posY + 2];
     }
 
-    public void DeployRaft(Direction direction)
+    public void DeployRaft(DirectionType direction)
     {
         var spaceslot = ' ';
         var underslot = '_';
@@ -1195,7 +1193,7 @@ public class PlayerController
         Map[PosX + 2, PosY + 3] = '*';
         Map[PosX + 3, PosY + 3] = '*';
 
-        if (direction == Direction.Left)
+        if (direction == DirectionType.Left)
         {
             Map[PosX - 2, PosY - 1] = '=';
             Map[PosX - 1, PosY - 1] = '/';
@@ -1206,7 +1204,7 @@ public class PlayerController
             Map[PosX, PosY] = spaceslot;
             Map[PosX + 1, PosY] = spaceslot;
         }
-        else if (direction == Direction.Right)
+        else if (direction == DirectionType.Right)
         {
             Map[PosX - 2, PosY - 1] = '|';
             Map[PosX - 1, PosY - 1] = ' ';

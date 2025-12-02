@@ -1,10 +1,13 @@
 ﻿using _0_Bit_Legend.Model.Enums;
 
-namespace _0_Bit_Legend.Enemies;
+namespace _0_Bit_Legend.Entities;
 
 public interface IEntity
 {
-    public void Draw(int posX, int posY, Direction previousIndex);
+    public Vector2 Position { get; set; }
+    public DirectionType Direction { get; set; }
+
+    public void Draw(int posX, int posY, DirectionType previousIndex);
 
     public bool IsTouching(int posX, int posY, char symbol);
 

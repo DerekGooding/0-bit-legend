@@ -1,6 +1,6 @@
 ﻿namespace _0_Bit_Legend.Model.Enums;
 
-public enum Direction
+public enum DirectionType
 {
     Up,
     Down,

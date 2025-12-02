@@ -1,8 +1,5 @@
-﻿using _0_Bit_Legend.Enemies;
-using _0_Bit_Legend.Entities.Enemies;
-using _0_Bit_Legend.Model;
+﻿using _0_Bit_Legend.Entities.Enemies;
 using _0_Bit_Legend.Model.Enums;
-using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
 
@@ -12,8 +9,8 @@ public class EnemyManager
     private readonly List<Vector2> _positions = [];
     private readonly List<char[]> _map_storage = [];
 
-    private readonly List<Direction> _prev1 = [];
-    private readonly List<Direction> _prev2 = [];
+    private readonly List<DirectionType> _prev1 = [];
+    private readonly List<DirectionType> _prev2 = [];
 
     private readonly List<EnemyType> _type = [];
     private readonly List<int> _hp = [];
@@ -36,16 +33,16 @@ public class EnemyManager
 
     public int GetTotal() => _positions.Count;
 
-    public Direction GetPrev1(int index) => _prev1[index];
+    public DirectionType GetPrev1(int index) => _prev1[index];
 
-    public Direction GetPrev2(int index) => _prev2[index];
+    public DirectionType GetPrev2(int index) => _prev2[index];
 
     public int GetMotion(int index) => _motion[index];
 
     public void SetMotion(int index, int value) => _motion[index] = value;
 
 
-    public bool TakeDamage(int posX, int posY, Direction prev, int _)
+    public bool TakeDamage(int posX, int posY, DirectionType prev, int _)
     {
         var index = GetIndex(posX, posY);
         MainProgram.PlayerController.StoreSword(prev);
@@ -90,7 +87,7 @@ public class EnemyManager
         return true;
     }
 
-    public bool Move(int index, EnemyType type, int posX, int posY, Direction direction, int motion, bool spawn)
+    public bool Move(int index, EnemyType type, int posX, int posY, DirectionType direction, int motion, bool spawn)
     {
         if (index == -1)
         {
@@ -163,31 +160,31 @@ public class EnemyManager
 
                 if (type == EnemyType.Octorok)
                 {
-                    if (direction is Direction.Left or Direction.Right)
+                    if (direction is DirectionType.Left or DirectionType.Right)
                     {
                         _prev2[index] = direction;
                     }
                 }
                 else if (type == EnemyType.Spider)
                 {
-                    if (direction is Direction.Up or Direction.Down)
+                    if (direction is DirectionType.Up or DirectionType.Down)
                     {
-                        _prev2[index] = Direction.Left;
+                        _prev2[index] = DirectionType.Left;
                     }
-                    else if (direction is Direction.Left or Direction.Right)
+                    else if (direction is DirectionType.Left or DirectionType.Right)
                     {
-                        _prev2[index] = Direction.Right;
+                        _prev2[index] = DirectionType.Right;
                     }
                 }
                 else if (type == EnemyType.Bat)
                 {
-                    if (_prev2[index] == Direction.Right)
+                    if (_prev2[index] == DirectionType.Right)
                     {
-                        _prev2[index] = Direction.Left;
+                        _prev2[index] = DirectionType.Left;
                     }
-                    else if (_prev2[index] == Direction.Left)
+                    else if (_prev2[index] == DirectionType.Left)
                     {
-                        _prev2[index] = Direction.Right;
+                        _prev2[index] = DirectionType.Right;
                     }
                 }
 
@@ -250,7 +247,7 @@ public class EnemyManager
                 enemy.Draw(posX, posY, _prev1[index]);
                 break;
             case EnemyType.Fireball:
-                enemy.Draw(posX, posY, Direction.Up);
+                enemy.Draw(posX, posY, DirectionType.Up);
                 break;
         }
     }

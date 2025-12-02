@@ -1,15 +1,16 @@
 ﻿using _0_Bit_Legend.Model.Enums;
-using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend.Entities.Enemies;
 
 public class Dragon : IEnemy
 {
     public EnemyType Type => EnemyType.Dragon;
-    public void Draw(int posX, int posY, Direction previousIndex)
+    public Vector2 Position { get; set; } = Vector2.Zero;
+    public DirectionType Direction { get; set; }
+    public void Draw(int posX, int posY, DirectionType previousIndex)
     {
         var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
-        if (previousIndex == Direction.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
+        if (previousIndex == DirectionType.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
 
         var debounce = false;
         var value = 0;

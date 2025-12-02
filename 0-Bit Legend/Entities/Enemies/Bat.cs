@@ -1,14 +1,15 @@
 ﻿using _0_Bit_Legend.Model.Enums;
-using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend.Entities.Enemies;
 
 public class Bat : IEnemy
 {
     public EnemyType Type => EnemyType.Bat;
-    public void Draw(int posX, int posY, Direction previousIndex)
+    public Vector2 Position { get; set; } = Vector2.Zero;
+    public DirectionType Direction { get; set; }
+    public void Draw(int posX, int posY, DirectionType previousIndex)
     {
-        if (previousIndex == Direction.Left)
+        if (previousIndex == DirectionType.Left)
         {
             Map[posX + 0, posY] = '{';
             Map[posX + 1, posY] = 't';
