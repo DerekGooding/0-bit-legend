@@ -1,4 +1,5 @@
-﻿using _0_Bit_Legend.Model.Enums;
+﻿using _0_Bit_Legend.Entities.Enemies;
+using _0_Bit_Legend.Model.Enums;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend.Enemies;

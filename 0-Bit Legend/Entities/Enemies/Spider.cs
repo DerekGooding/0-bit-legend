@@ -1,7 +1,7 @@
 ﻿using _0_Bit_Legend.Model.Enums;
 using static _0_Bit_Legend.MainProgram;
 
-namespace _0_Bit_Legend.Enemies;
+namespace _0_Bit_Legend.Entities.Enemies;
 
 public class Spider : IEnemy
 {

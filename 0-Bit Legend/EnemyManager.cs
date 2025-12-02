@@ -1,4 +1,5 @@
 ﻿using _0_Bit_Legend.Enemies;
+using _0_Bit_Legend.Entities.Enemies;
 using _0_Bit_Legend.Model;
 using _0_Bit_Legend.Model.Enums;
 using static _0_Bit_Legend.MainProgram;
@@ -9,7 +10,6 @@ public class EnemyManager
 {
     // Enemy
     private readonly List<Vector2> _positions = [];
-
     private readonly List<char[]> _map_storage = [];
 
     private readonly List<Direction> _prev1 = [];
@@ -24,8 +24,7 @@ public class EnemyManager
     private readonly List<Vector2> _rupeePositions = [];
     private readonly List<char[]> _rupee_storage = [];
 
-    private int _sRPosX;
-    private int _sRPosY;
+    private Vector2 _storedRupeePosition = Vector2.Zero;
     private EnemyType _sRType = EnemyType.None;
 
     //    Methods    //
@@ -75,8 +74,7 @@ public class EnemyManager
         _hp[index]--;
         if (_hp[index] <= 0)
         {
-            _sRPosX = _positions[index].X + 2;
-            _sRPosY = _positions[index].Y + 1;
+            _storedRupeePosition = new(_positions[index].X + 2, _positions[index].Y + 1);
             _sRType = _type[index];
 
             Remove(index, _type[index]);
@@ -450,33 +448,35 @@ public class EnemyManager
         if (_sRType != EnemyType.Dragon && _sRType != EnemyType.Bat && Random.Shared.Next(2) == 1)
         {
             var rupee_storage_copy = new char[9];
+            var sRPosX = _storedRupeePosition.X;
+            var sRPosY = _storedRupeePosition.Y;
 
             var value = 0;
             for (var i = 0; i < 3; i++)
             {
                 for (var j = 0; j < 3; j++)
                 {
-                    rupee_storage_copy[value] = Map[_sRPosX - 1 + j, _sRPosY - 1 + i] is not '-' and not 'S'
-                        ? Map[_sRPosX - 1 + j, _sRPosY - 1 + i]
+                    rupee_storage_copy[value] = Map[sRPosX - 1 + j, sRPosY - 1 + i] is not '-' and not 'S'
+                        ? Map[sRPosX - 1 + j, sRPosY - 1 + i]
                         : ' ';
                     value++;
                 }
             }
 
-            _rupeePositions.Add(new(_sRPosX, _sRPosY));
+            _rupeePositions.Add(new(sRPosX, sRPosY));
             _rupee_storage.Add(rupee_storage_copy);
 
-            Map[_sRPosX, _sRPosY]
+            Map[sRPosX, sRPosY]
                 = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? 'V' : 'R';
 
-            Map[_sRPosX - 1, _sRPosY] = 'R';
-            Map[_sRPosX + 1, _sRPosY] = 'R';
-            Map[_sRPosX, _sRPosY - 1] = 'r';
-            Map[_sRPosX, _sRPosY + 1] = 'r';
+            Map[sRPosX - 1, sRPosY] = 'R';
+            Map[sRPosX + 1, sRPosY] = 'R';
+            Map[sRPosX, sRPosY - 1] = 'r';
+            Map[sRPosX, sRPosY + 1] = 'r';
 
-            UpdateRow(_sRPosY - 1);
-            UpdateRow(_sRPosY);
-            UpdateRow(_sRPosY + 1);
+            UpdateRow(sRPosY - 1);
+            UpdateRow(sRPosY);
+            UpdateRow(sRPosY + 1);
         }
     }
 
