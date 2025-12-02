@@ -62,8 +62,29 @@ public sealed class MapTests
         var width = instance.Raw[0].Length;
         var height = instance.Raw.Length;
         var incoherantLine = instance.Raw.FirstOrDefault(x => x.Length != width);
-        MainProgram.AddMap(instance);
+        MainProgram.SetMapZero(instance);
 
-        MainProgram.LoadMap(0, 52, 18, _0_Bit_Legend.Model.Enums.DirectionType.Up);
+
+        using var _ = new ConsoleSilencer();
+
+
+        MainProgram.LoadMap(0, 50, 29, _0_Bit_Legend.Model.Enums.DirectionType.Up);
+    }
+
+
+    public sealed class ConsoleSilencer : IDisposable
+    {
+        private readonly TextWriter _original;
+
+        public ConsoleSilencer()
+        {
+            _original = Console.Out;
+            Console.SetOut(TextWriter.Null);
+        }
+
+        public void Dispose()
+        {
+            Console.SetOut(_original);
+        }
     }
 }

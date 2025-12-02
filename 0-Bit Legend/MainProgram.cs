@@ -17,7 +17,11 @@ public static class MainProgram
     private static readonly List<IMap> _maps = [];
 
     //Testing purposes until loading maps is properly abstracted/DI
-    public static void AddMap(IMap map) => _maps.Add(map);
+    public static void SetMapZero(IMap map)
+    {
+        _maps.Clear();
+        _maps.Add(map);
+    }
 
     public static char[,] Map { get; } = new char[102, 33];
     public static int CurrentMap { get; private set; }
@@ -565,7 +569,7 @@ public static class MainProgram
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(7, 50, 30, DirectionType.Up);
+                LoadMap(7, 50, 29, DirectionType.Up);
             }
             else if (CurrentMap == 8)
             {
