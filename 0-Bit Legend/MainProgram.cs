@@ -587,19 +587,19 @@ public static class MainProgram
         Thread.Sleep(100);
         State = GameState.Idle;
 
-        if (PlayerController.GetPrev() == Direction.Up && PlayerController.PosY < 27)
+        if (PlayerController.GetPrev() == Direction.Up && PlayerController.Position.Y < 27)
         {
             PlayerController.MoveDown(3);
         }
-        else if (PlayerController.GetPrev() == Direction.Left && PlayerController.PosX < 94)
+        else if (PlayerController.GetPrev() == Direction.Left && PlayerController.Position.X < 94)
         {
             PlayerController.MoveRight(3);
         }
-        else if (PlayerController.GetPrev() == Direction.Down && PlayerController.PosY > 3)
+        else if (PlayerController.GetPrev() == Direction.Down && PlayerController.Position.Y > 3)
         {
             PlayerController.MoveUp(3);
         }
-        else if (PlayerController.GetPrev() == Direction.Right && PlayerController.PosX > 7)
+        else if (PlayerController.GetPrev() == Direction.Right && PlayerController.Position.X > 7)
         {
             PlayerController.MoveLeft(3);
         }
@@ -626,10 +626,10 @@ public static class MainProgram
             {
                 PlayerController.PlayEffect('+');
             }
-            UpdateRow(PlayerController.PosY - 1);
-            UpdateRow(PlayerController.PosY);
-            UpdateRow(PlayerController.PosY + 1);
-            UpdateRow(PlayerController.PosY + 2);
+            UpdateRow(PlayerController.Position.Y - 1);
+            UpdateRow(PlayerController.Position.Y);
+            UpdateRow(PlayerController.Position.Y + 1);
+            UpdateRow(PlayerController.Position.Y + 2);
         }
         else if (_frames == 25)
         {
@@ -951,8 +951,7 @@ public static class MainProgram
 
         if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
         {
-            PlayerController.SetPosX(posX);
-            PlayerController.SetPosY(posY);
+            PlayerController.SetPosition(new(posX, posY));
             PlayerController.DeployRaft(PlayerController.GetPrev2());
         }
         else

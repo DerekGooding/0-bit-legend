@@ -26,7 +26,7 @@ public class PlayerController
 
     public Direction GetPrev() => _prev;
     public Direction GetPrev2() => _prev2;
-    public void SetPositions(Vector2 pos) => Position = pos;
+    public void SetPosition(Vector2 pos) => Position = pos;
     public void SetPreHitPosition(Vector2 pos) => _preHitPosition = pos;
     public void SetPrev(Direction prev) => _prev = prev;
     public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
@@ -74,8 +74,7 @@ public class PlayerController
             Map[PosX, PosY - 3] = 'S';
             Map[PosX, PosY - 4] = 'S';
 
-            _preHitPosX = PosX;
-            _preHitPosY = PosY;
+            _preHitPosition = new(PosX, PosY);
             _swingingSword = true;
         }
         else
@@ -125,8 +124,7 @@ public class PlayerController
             Map[PosX - 5, PosY + 1] = 'S';
             Map[PosX - 6, PosY + 1] = 'S';
 
-            _preHitPosX = PosX;
-            _preHitPosY = PosY;
+            _preHitPosition = new(PosX, PosY);
             _swingingSword = true;
         }
         else
@@ -177,8 +175,7 @@ public class PlayerController
             Map[PosX, PosY + 4] = 'S';
             Map[PosX, PosY + 5] = 'S';
 
-            _preHitPosX = PosX;
-            _preHitPosY = PosY;
+            _preHitPosition = new(PosX, PosY);
             _swingingSword = true;
         }
         else
@@ -228,8 +225,7 @@ public class PlayerController
             Map[PosX + 5, PosY + 1] = 'S';
             Map[PosX + 6, PosY + 1] = 'S';
 
-            _preHitPosX = PosX;
-            _preHitPosY = PosY;
+            _preHitPosition = new(PosX, PosY);
             _swingingSword = true;
         }
         else
@@ -353,7 +349,7 @@ public class PlayerController
                     }
                 }
 
-                PosY--;
+                Position = new(Position.X, Position.Y - 1);
                 DeployRaft(_prev2);
 
                 UpdateRow(PosY + 4);
@@ -441,8 +437,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                PosX = posX;
-                PosY = posY;
+                Position = new(posX, posY);
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -597,8 +592,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                PosX = posX;
-                PosY = posY;
+                Position = new(posX, posY); Position = new(posX, posY);
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -633,7 +627,7 @@ public class PlayerController
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                PosX = 21;
+                Position = new(21, Position.Y);
                 DeployRaft(Direction.Left);
                 wait = 150;
             }
@@ -655,7 +649,7 @@ public class PlayerController
                     }
                 }
 
-                PosX = 11;
+                Position = new(11, Position.Y);
                 posX = 11;
 
                 BuildChar(posX, posY, Direction.Left);
@@ -735,7 +729,7 @@ public class PlayerController
                     }
                 }
 
-                PosY++;
+                Position = new(Position.X, Position.Y + 1);
                 DeployRaft(_prev2);
 
                 UpdateRow(PosY - 3);
@@ -768,8 +762,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                PosX = posX;
-                PosY = posY;
+                Position = new(posX, posY);
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -931,8 +924,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                PosX = posX;
-                PosY = posY;
+                Position = new(posX, posY);
             }
             else if (IsTouching(posX, posY, 't')
                 || IsTouching(posX, posY, 'n')
@@ -967,7 +959,7 @@ public class PlayerController
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                PosX = 21;
+                Position = new(21, Position.Y);
                 DeployRaft(Direction.Right);
                 wait = 150;
             }
@@ -988,7 +980,7 @@ public class PlayerController
                     }
                 }
 
-                PosX = 30;
+                Position = new(30, Position.Y);
                 posX = 30;
 
                 BuildChar(posX, posY, Direction.Right);
@@ -1051,8 +1043,7 @@ public class PlayerController
 
     public void SpawnLink(int posX, int posY, Direction direction)
     {
-        PosX = posX;
-        PosY = posY;
+        Position = new(posX, posY);
 
         _storage_map[0] = Map[posX - 2, posY - 1];
         _storage_map[1] = Map[posX - 1, posY - 1];

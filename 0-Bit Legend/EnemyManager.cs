@@ -84,7 +84,7 @@ public class EnemyManager
             if (_sRType == EnemyType.Dragon)
             {
                 SetFlag(GameFlag.Dragon, true);
-                LoadMap(12, MainProgram.PlayerController.PosX, MainProgram.PlayerController.PosY, MainProgram.PlayerController.GetPrev());
+                LoadMap(12, MainProgram.PlayerController.Position.X, MainProgram.PlayerController.Position.Y, MainProgram.PlayerController.GetPrev());
             }
         }
         return true;
