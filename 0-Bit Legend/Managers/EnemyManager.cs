@@ -1,6 +1,6 @@
 ﻿using _0_Bit_Legend.Entities.Enemies;
 
-namespace _0_Bit_Legend;
+namespace _0_Bit_Legend.Managers;
 
 public class EnemyManager
 {
@@ -149,7 +149,7 @@ public class EnemyManager
             _map_storage.Add(storage_copy);
         }
 
-        if (InBounds(type, posX, posY))
+        if (InBounds(enemy, posX, posY))
         {
             var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
             var blocking2 = new char[] { '|', '_', '\\' };
@@ -523,33 +523,7 @@ public class EnemyManager
         }
     }
 
-    public bool InBounds(EnemyType type, int posX, int posY)
-    {
-        var inPosX = 0;
-        var inPosY = 0;
-        if (type == EnemyType.Octorok)
-        {
-            inPosX = posX + 3;
-            inPosY = posY + 2;
-        }
-        else if (type == EnemyType.Spider)
-        {
-            inPosX = posX + 4;
-            inPosY = posY + 2;
-        }
-        else if (type == EnemyType.Bat)
-        {
-            inPosX = posX + 4;
-            inPosY = posY + 1;
-        }
-        else if (type == EnemyType.Fireball)
-        {
-            inPosX = posX + 3;
-            inPosY = posY + 1;
-        }
-
-        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
-    }
+    public bool InBounds(IEnemy enemy, int posX, int posY) => enemy.InBounds(posX, posY);
 
     public int GetIndex(int posX, int posY)
     {

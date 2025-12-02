@@ -30,6 +30,8 @@ public class Dragon : IEnemy
         }
     }
 
+    public bool InBounds(int posX, int posY) => posX > 0 && posY > 0;
+
     public bool IsTouching(int posX, int posY, char symbol) => false;
 
     public bool IsTouching(int posX, int posY, char[] symbols) => false;

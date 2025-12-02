@@ -3,4 +3,6 @@
 public interface IEnemy : IEntity
 {
     public EnemyType Type { get; }
+
+    public bool InBounds(int posX, int posY);
 }

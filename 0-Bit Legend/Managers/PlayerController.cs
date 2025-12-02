@@ -1,6 +1,6 @@
 using _0_Bit_Legend.Entities;
 
-namespace _0_Bit_Legend;
+namespace _0_Bit_Legend.Managers;
 
 public class PlayerController
 {

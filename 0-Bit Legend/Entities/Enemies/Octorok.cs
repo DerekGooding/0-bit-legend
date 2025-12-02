@@ -43,6 +43,14 @@ public class Octorok : IEnemy
         }
     }
 
+    public bool InBounds(int posX, int posY)
+    {
+        var inPosX = posX + 3;
+        var inPosY = posY + 2;
+
+        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
+    }
+
     public bool IsTouching(int posX, int posY, char symbol)
     {
         //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX, posY + 2] == symbol || Map[posX + 1, posY + 2] == symbol || Map[posX + 2, posY + 2] == symbol || Map[posX + 3, posY + 2] == symbol))
