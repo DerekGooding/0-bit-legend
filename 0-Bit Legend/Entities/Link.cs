@@ -1,6 +1,4 @@
-﻿using _0_Bit_Legend.Model.Enums;
-
-namespace _0_Bit_Legend.Entities;
+﻿namespace _0_Bit_Legend.Entities;
 
 public class Link : IEntity
 {

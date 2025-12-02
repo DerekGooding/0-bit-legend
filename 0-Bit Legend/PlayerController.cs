@@ -1,4 +1,3 @@
-using _0_Bit_Legend.Model.Enums;
 using _0_Bit_Legend.Entities;
 
 namespace _0_Bit_Legend;
