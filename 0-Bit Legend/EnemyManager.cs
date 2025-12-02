@@ -1,5 +1,6 @@
 ﻿using _0_Bit_Legend.Enemies;
 using _0_Bit_Legend.Model;
+using _0_Bit_Legend.Model.Enums;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;
@@ -7,8 +8,7 @@ namespace _0_Bit_Legend;
 public class EnemyManager
 {
     // Enemy
-    private readonly List<int> _posX = [];
-    private readonly List<int> _posY = [];
+    private readonly List<Vector2> _positions = [];
 
     private readonly List<char[]> _map_storage = [];
 
@@ -21,8 +21,7 @@ public class EnemyManager
     private readonly List<int> _motion = [];
 
     // Rupee
-    private readonly List<int> _rPosX = [];
-    private readonly List<int> _rPosY = [];
+    private readonly List<Vector2> _rupeePositions = [];
     private readonly List<char[]> _rupee_storage = [];
 
     private int _sRPosX;
@@ -30,13 +29,13 @@ public class EnemyManager
     private EnemyType _sRType = EnemyType.None;
 
     //    Methods    //
-    public int GetPosX(int index) => _posX[index];
+    public int GetPosX(int index) => _positions[index].X;
 
-    public int GetPosY(int index) => _posY[index];
+    public int GetPosY(int index) => _positions[index].Y;
 
     public EnemyType GetEnemyType(int index) => _type[index];
 
-    public int GetTotal() => _posX.ToArray().Length;
+    public int GetTotal() => _positions.Count;
 
     public Direction GetPrev1(int index) => _prev1[index];
 
@@ -76,8 +75,8 @@ public class EnemyManager
         _hp[index]--;
         if (_hp[index] <= 0)
         {
-            _sRPosX = _posX[index] + 2;
-            _sRPosY = _posY[index] + 1;
+            _sRPosX = _positions[index].X + 2;
+            _sRPosY = _positions[index].Y + 1;
             _sRType = _type[index];
 
             Remove(index, _type[index]);
@@ -86,7 +85,7 @@ public class EnemyManager
 
             if (_sRType == EnemyType.Dragon)
             {
-                SetFlag(Model.GameFlag.Dragon, true);
+                SetFlag(GameFlag.Dragon, true);
                 LoadMap(12, MainProgram.PlayerController.PosX, MainProgram.PlayerController.PosY, MainProgram.PlayerController.GetPrev());
             }
         }
@@ -114,8 +113,7 @@ public class EnemyManager
 
         if (spawn)
         {
-            _posX.Add(posX);
-            _posY.Add(posY);
+            _positions.Add(new(posX, posY));
 
             _prev1.Add(direction);
             _prev2.Add(direction);
@@ -210,8 +208,7 @@ public class EnemyManager
                     UpdateRow(posY + 6);
                 }
 
-                _posX[index] = posX;
-                _posY[index] = posY;
+                _positions[index] = new(posX, posY);
 
                 return true;
             }
@@ -220,22 +217,22 @@ public class EnemyManager
                 MainProgram.PlayerController.Hit();
                 if (type == EnemyType.Fireball)
                 {
-                    Remove(GetIndex(_posX[index], _posY[index]), type);
+                    Remove(GetIndex(_positions[index].X, _positions[index].Y), type);
                 }
                 else
                 {
-                    Build(index, enemy, _posX[index], _posY[index]);
+                    Build(index, enemy, _positions[index].X, _positions[index].Y);
                 }
             }
             else
             {
                 if (type == EnemyType.Fireball)
                 {
-                    Remove(GetIndex(_posX[index], _posY[index]), type);
+                    Remove(GetIndex(_positions[index].X, _positions[index].Y), type);
                 }
                 else
                 {
-                    Build(index, enemy, _posX[index], _posY[index]);
+                    Build(index, enemy, _positions[index].X, _positions[index].Y);
                 }
             }
         }
@@ -321,16 +318,16 @@ public class EnemyManager
             }
         }
 
-        UpdateRow(_posY[index]);
-        UpdateRow(_posY[index] + 1);
-        UpdateRow(_posY[index] + 2);
+        UpdateRow(_positions[index].Y);
+        UpdateRow(_positions[index].Y + 1);
+        UpdateRow(_positions[index].Y + 2);
 
         if (type == EnemyType.Dragon)
         {
-            UpdateRow(_posY[index] + 3);
-            UpdateRow(_posY[index] + 4);
-            UpdateRow(_posY[index] + 5);
-            UpdateRow(_posY[index] + 6);
+            UpdateRow(_positions[index].Y + 3);
+            UpdateRow(_positions[index].Y + 4);
+            UpdateRow(_positions[index].Y + 5);
+            UpdateRow(_positions[index].Y + 6);
         }
     }
 
@@ -338,54 +335,54 @@ public class EnemyManager
     {
         if (type == EnemyType.Octorok)
         {
-            Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
-            Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
-            Map[_posX[index] + 2, _posY[index]] = _map_storage[index][2];
-            Map[_posX[index] + 3, _posY[index]] = _map_storage[index][3];
+            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
+            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
+            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
+            Map[_positions[index].X + 3, _positions[index].Y] = _map_storage[index][3];
 
-            Map[_posX[index] + 0, _posY[index] + 1] = _map_storage[index][4];
-            Map[_posX[index] + 1, _posY[index] + 1] = _map_storage[index][5];
-            Map[_posX[index] + 2, _posY[index] + 1] = _map_storage[index][6];
-            Map[_posX[index] + 3, _posY[index] + 1] = _map_storage[index][7];
+            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][4];
+            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][5];
+            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][6];
+            Map[_positions[index].X + 3, _positions[index].Y + 1] = _map_storage[index][7];
 
-            Map[_posX[index] + 0, _posY[index] + 2] = _map_storage[index][8];
-            Map[_posX[index] + 1, _posY[index] + 2] = _map_storage[index][9];
-            Map[_posX[index] + 2, _posY[index] + 2] = _map_storage[index][10];
-            Map[_posX[index] + 3, _posY[index] + 2] = _map_storage[index][11];
+            Map[_positions[index].X + 0, _positions[index].Y + 2] = _map_storage[index][8];
+            Map[_positions[index].X + 1, _positions[index].Y + 2] = _map_storage[index][9];
+            Map[_positions[index].X + 2, _positions[index].Y + 2] = _map_storage[index][10];
+            Map[_positions[index].X + 3, _positions[index].Y + 2] = _map_storage[index][11];
         }
         else if (type == EnemyType.Spider)
         {
-            Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
-            Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
-            Map[_posX[index] + 2, _posY[index]] = _map_storage[index][2];
-            Map[_posX[index] + 3, _posY[index]] = _map_storage[index][3];
-            Map[_posX[index] + 4, _posY[index]] = _map_storage[index][4];
+            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
+            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
+            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
+            Map[_positions[index].X + 3, _positions[index].Y] = _map_storage[index][3];
+            Map[_positions[index].X + 4, _positions[index].Y] = _map_storage[index][4];
 
-            Map[_posX[index] + 0, _posY[index] + 1] = _map_storage[index][5];
-            Map[_posX[index] + 1, _posY[index] + 1] = _map_storage[index][6];
-            Map[_posX[index] + 2, _posY[index] + 1] = _map_storage[index][7];
-            Map[_posX[index] + 3, _posY[index] + 1] = _map_storage[index][8];
-            Map[_posX[index] + 4, _posY[index] + 1] = _map_storage[index][9];
+            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][5];
+            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][6];
+            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][7];
+            Map[_positions[index].X + 3, _positions[index].Y + 1] = _map_storage[index][8];
+            Map[_positions[index].X + 4, _positions[index].Y + 1] = _map_storage[index][9];
 
-            Map[_posX[index] + 0, _posY[index] + 2] = _map_storage[index][10];
-            Map[_posX[index] + 1, _posY[index] + 2] = _map_storage[index][11];
-            Map[_posX[index] + 2, _posY[index] + 2] = _map_storage[index][12];
-            Map[_posX[index] + 3, _posY[index] + 2] = _map_storage[index][13];
-            Map[_posX[index] + 4, _posY[index] + 2] = _map_storage[index][14];
+            Map[_positions[index].X + 0, _positions[index].Y + 2] = _map_storage[index][10];
+            Map[_positions[index].X + 1, _positions[index].Y + 2] = _map_storage[index][11];
+            Map[_positions[index].X + 2, _positions[index].Y + 2] = _map_storage[index][12];
+            Map[_positions[index].X + 3, _positions[index].Y + 2] = _map_storage[index][13];
+            Map[_positions[index].X + 4, _positions[index].Y + 2] = _map_storage[index][14];
         }
         else if (type == EnemyType.Bat)
         {
-            Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
-            Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
-            Map[_posX[index] + 2, _posY[index]] = _map_storage[index][2];
-            Map[_posX[index] + 3, _posY[index]] = _map_storage[index][3];
-            Map[_posX[index] + 4, _posY[index]] = _map_storage[index][4];
+            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
+            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
+            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
+            Map[_positions[index].X + 3, _positions[index].Y] = _map_storage[index][3];
+            Map[_positions[index].X + 4, _positions[index].Y] = _map_storage[index][4];
 
-            Map[_posX[index] + 0, _posY[index] + 1] = _map_storage[index][5];
-            Map[_posX[index] + 1, _posY[index] + 1] = _map_storage[index][6];
-            Map[_posX[index] + 2, _posY[index] + 1] = _map_storage[index][7];
-            Map[_posX[index] + 3, _posY[index] + 1] = _map_storage[index][8];
-            Map[_posX[index] + 4, _posY[index] + 1] = _map_storage[index][9];
+            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][5];
+            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][6];
+            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][7];
+            Map[_positions[index].X + 3, _positions[index].Y + 1] = _map_storage[index][8];
+            Map[_positions[index].X + 4, _positions[index].Y + 1] = _map_storage[index][9];
         }
         else if (type == EnemyType.Dragon)
         {
@@ -394,20 +391,20 @@ public class EnemyManager
             {
                 for (var j = 0; j < 12; j++)
                 {
-                    Map[_posX[index] + j, _posY[index] + i] = ' ';
+                    Map[_positions[index].X + j, _positions[index].Y + i] = ' ';
                     value++;
                 }
             }
         }
         else if (type == EnemyType.Fireball)
         {
-            Map[_posX[index] + 0, _posY[index]] = _map_storage[index][0];
-            Map[_posX[index] + 1, _posY[index]] = _map_storage[index][1];
-            Map[_posX[index] + 2, _posY[index]] = _map_storage[index][2];
+            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
+            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
+            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
 
-            Map[_posX[index] + 0, _posY[index] + 1] = _map_storage[index][3];
-            Map[_posX[index] + 1, _posY[index] + 1] = _map_storage[index][4];
-            Map[_posX[index] + 2, _posY[index] + 1] = _map_storage[index][5];
+            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][3];
+            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][4];
+            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][5];
         }
     }
 
@@ -415,20 +412,19 @@ public class EnemyManager
     {
         Clear(index, type);
 
-        UpdateRow(_posY[index]);
-        UpdateRow(_posY[index] + 1);
-        UpdateRow(_posY[index] + 2);
+        UpdateRow(_positions[index].Y);
+        UpdateRow(_positions[index].Y + 1);
+        UpdateRow(_positions[index].Y + 2);
 
         if (type == EnemyType.Dragon)
         {
-            UpdateRow(_posY[index] + 3);
-            UpdateRow(_posY[index] + 4);
-            UpdateRow(_posY[index] + 5);
-            UpdateRow(_posY[index] + 6);
+            UpdateRow(_positions[index].Y + 3);
+            UpdateRow(_positions[index].Y + 4);
+            UpdateRow(_positions[index].Y + 5);
+            UpdateRow(_positions[index].Y + 6);
         }
 
-        _posX.RemoveAt(index);
-        _posY.RemoveAt(index);
+        _positions.RemoveAt(index);
         _type.RemoveAt(index);
         _prev1.RemoveAt(index);
         _prev2.RemoveAt(index);
@@ -467,8 +463,7 @@ public class EnemyManager
                 }
             }
 
-            _rPosX.Add(_sRPosX);
-            _rPosY.Add(_sRPosY);
+            _rupeePositions.Add(new(_sRPosX, _sRPosY));
             _rupee_storage.Add(rupee_storage_copy);
 
             Map[_sRPosX, _sRPosY]
@@ -487,11 +482,16 @@ public class EnemyManager
 
     public void RemoveRupee(int posX, int posY)
     {
-        for (var i = 0; i < _rPosX.ToArray().Length; i++)
+        //Always reverse order for removing from lists.
+        //Bottom up so when the reorganize, you don't break things in the middle of a loop.
+        for (var i = _rupeePositions.Count - 1; i >= 0; i--) 
         {
-            if (posX >= _rPosX[i] - 1 && posX <= _rPosX[i] + 1 && posY >= _rPosY[i] - 1 && posY <= _rPosY[i] + 1)
+            var position = _rupeePositions[i];
+            var X = position.X;
+            var Y = position.Y;
+            if (posX >= X - 1 && posX <= X + 1 && posY >= Y - 1 && posY <= Y + 1)
             {
-                if (Map[_rPosX[i], _rPosY[i]] == 'V')
+                if (Map[X, Y] == 'V')
                 {
                     Rupees += 5;
                 }
@@ -500,24 +500,23 @@ public class EnemyManager
                     Rupees++;
                 }
 
-                Map[_rPosX[i] - 1, _rPosY[i] - 1] = _rupee_storage[i][0];
-                Map[_rPosX[i] + 0, _rPosY[i] - 1] = _rupee_storage[i][1];
-                Map[_rPosX[i] + 1, _rPosY[i] - 1] = _rupee_storage[i][2];
+                Map[X - 1, Y - 1] = _rupee_storage[i][0];
+                Map[X + 0, Y - 1] = _rupee_storage[i][1];
+                Map[X + 1, Y - 1] = _rupee_storage[i][2];
 
-                Map[_rPosX[i] - 1, _rPosY[i]] = _rupee_storage[i][3];
-                Map[_rPosX[i] + 0, _rPosY[i]] = _rupee_storage[i][4];
-                Map[_rPosX[i] + 1, _rPosY[i]] = _rupee_storage[i][5];
+                Map[X - 1, Y ] = _rupee_storage[i][3];
+                Map[X + 0, Y ] = _rupee_storage[i][4];
+                Map[X + 1, Y ] = _rupee_storage[i][5];
 
-                Map[_rPosX[i] - 1, _rPosY[i] + 1] = _rupee_storage[i][6];
-                Map[_rPosX[i] + 0, _rPosY[i] + 1] = _rupee_storage[i][7];
-                Map[_rPosX[i] + 1, _rPosY[i] + 1] = _rupee_storage[i][8];
+                Map[X - 1, Y + 1] = _rupee_storage[i][6];
+                Map[X + 0, Y + 1] = _rupee_storage[i][7];
+                Map[X + 1, Y + 1] = _rupee_storage[i][8];
 
-                UpdateRow(_rPosY[i] - 1);
-                UpdateRow(_rPosY[i]);
-                UpdateRow(_rPosY[i] + 1);
+                UpdateRow(Y - 1);
+                UpdateRow(Y);
+                UpdateRow(Y + 1);
 
-                _rPosX.RemoveAt(i);
-                _rPosY.RemoveAt(i);
+                _rupeePositions.RemoveAt(i);
                 _rupee_storage.RemoveAt(i);
             }
         }
@@ -583,7 +582,9 @@ public class EnemyManager
                 inPosY = 2;
             }
 
-            if (posX >= _posX[i] && posX <= _posX[i] + inPosX && posY >= _posY[i] && posY <= _posY[i] + inPosY)
+            var position = _positions[i];
+
+            if (posX >= position.X && posX <= position.X + inPosX && posY >= position.Y && posY <= position.Y + inPosY)
             {
                 return i;
             }

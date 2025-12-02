@@ -1,4 +1,4 @@
-﻿using _0_Bit_Legend.Model;
+﻿using _0_Bit_Legend.Model.Enums;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend.Enemies;
@@ -167,8 +167,5 @@ public class Link : IEntity
         return false;
     }
 
-    public bool IsTouching(int posX, int posY, char[] symbols)
-    {
-        throw new NotImplementedException();
-    }
+    public bool IsTouching(int posX, int posY, char[] symbols) => throw new NotImplementedException();
 }

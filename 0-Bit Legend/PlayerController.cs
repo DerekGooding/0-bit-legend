@@ -1,4 +1,4 @@
-using _0_Bit_Legend.Model;
+using _0_Bit_Legend.Model.Enums;
 using static _0_Bit_Legend.MainProgram;
 
 namespace _0_Bit_Legend;

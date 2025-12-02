@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Model;
+﻿namespace _0_Bit_Legend.Model.Enums;
 
 [Flags]
 public enum GameFlag
