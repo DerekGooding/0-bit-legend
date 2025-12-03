@@ -5,7 +5,7 @@ public class Link : IEntity
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
 
-    public void Draw(DirectionType direction)
+    public void Draw()
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -18,7 +18,7 @@ public class Link : IEntity
             underslot = '#';
         }
 
-        if (direction == DirectionType.Up)
+        if (Direction == DirectionType.Up)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '_';
@@ -44,7 +44,7 @@ public class Link : IEntity
             Map[posX + 1, posY + 2] = '/';
             Map[posX + 2, posY + 2] = ' ';
         }
-        else if (direction == DirectionType.Left)
+        else if (Direction == DirectionType.Left)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -70,7 +70,7 @@ public class Link : IEntity
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == DirectionType.Down)
+        else if (Direction == DirectionType.Down)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = ' ';
@@ -96,7 +96,7 @@ public class Link : IEntity
             Map[posX + 1, posY + 2] = underslot;
             Map[posX + 2, posY + 2] = '|';
         }
-        else if (direction == DirectionType.Right)
+        else if (Direction == DirectionType.Right)
         {
             Map[posX - 2, posY - 1] = ' ';
             Map[posX - 1, posY - 1] = '/';
