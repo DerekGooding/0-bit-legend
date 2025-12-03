@@ -55,8 +55,6 @@ public class PlayerController
 
     private void HandleAttackUp()
     {
-        //if (PosY > 3)
-        //    return;
         if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX - 1, PosY - 2];
@@ -103,8 +101,6 @@ public class PlayerController
     }
     private void HandleAttackLeft()
     {
-        //if (PosY > 4)
-        //    return;
         if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX - 3, PosY];
@@ -156,8 +152,6 @@ public class PlayerController
     }
     private void HandleAttackDown()
     {
-        //if (PosY + 4 < 33)
-        //    return;
         if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX - 1, PosY + 3];
@@ -204,8 +198,6 @@ public class PlayerController
     }
     private void HandleAttackRight()
     {
-        //if (PosY + 6 < 102)
-        //    return;
         if (!_swingingSword)
         {
             _storage_sword[0] = Map[PosX + 3, PosY];

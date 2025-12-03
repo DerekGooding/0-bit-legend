@@ -29,7 +29,7 @@ public static class MainProgram
     private static readonly string[] _strs = new string[33];
 
     public static double Health { get; set; } = 3;
-    public static int Rupees { get; set; }
+    public static int Rupees { get; set; } = 100;
     public static int Keys { get; set; }
 
     public static int cEnemies1 = 4;
@@ -980,6 +980,8 @@ public static class MainProgram
 
     public static void UpdateRow(int row)
     {
+        if (row > 32)
+            return;
         var line = "";
         for (var x = 0; x < 102; x++)
         {
