@@ -5,7 +5,7 @@ public interface IEntity
     public Vector2 Position { get; set; }
     public DirectionType Direction { get; set; }
 
-    public void Draw(DirectionType previousIndex);
+    public void Draw();
 
     public bool IsTouching(char symbol);
 

@@ -1,16 +1,31 @@
 ﻿namespace _0_Bit_Legend.Entities.Enemies;
 
-public class Bat : IEnemy
+public class Bat : BaseEnemy
 {
-    public EnemyType Type => EnemyType.Bat;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
-    public void Draw(DirectionType previousIndex)
+    public override EnemyType Type { get; } = EnemyType.Bat;
+    public override char[] MapStorage { get; } = new string(' ', 10).ToCharArray();
+
+    public override void Clear()
+    {
+        Map[Position.X + 0, Position.Y] = MapStorage[0];
+        Map[Position.X + 1, Position.Y] = MapStorage[1];
+        Map[Position.X + 2, Position.Y] = MapStorage[2];
+        Map[Position.X + 3, Position.Y] = MapStorage[3];
+        Map[Position.X + 4, Position.Y] = MapStorage[4];
+
+        Map[Position.X + 0, Position.Y + 1] = MapStorage[5];
+        Map[Position.X + 1, Position.Y + 1] = MapStorage[6];
+        Map[Position.X + 2, Position.Y + 1] = MapStorage[7];
+        Map[Position.X + 3, Position.Y + 1] = MapStorage[8];
+        Map[Position.X + 4, Position.Y + 1] = MapStorage[9];
+    }
+
+    public override void Draw()
     {
         var posX = Position.X;
         var posY = Position.Y;
 
-        if (previousIndex == DirectionType.Left)
+        if (Prev2 == DirectionType.Left)
         {
             Map[posX + 0, posY] = '{';
             Map[posX + 1, posY] = 't';
@@ -40,16 +55,19 @@ public class Bat : IEnemy
         }
     }
 
-    public bool InBounds(int posX, int posY)
+    public override bool InBounds(Vector2 position)
     {
-        var inPosX = posX + 4;
-        var inPosY = posY + 1;
+        var inPosX = position.X + 4;
+        var inPosY = position.Y + 1;
 
-        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
+        return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(char symbol)
+    public override bool IsTouching(char symbol)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
         for (var i = 0; i < 5; i++)
         {
@@ -64,8 +82,11 @@ public class Bat : IEnemy
         return false;
     }
 
-    public bool IsTouching(char[] symbols)
+    public override bool IsTouching(char[] symbols)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         for (var i = 0; i < 5; i++)
         {
             for (var j = 0; j < 2; j++)
@@ -78,4 +99,7 @@ public class Bat : IEnemy
         }
         return false;
     }
+
+    public override void Move() => throw new NotImplementedException();
+    public override void TakeDamage() => throw new NotImplementedException();
 }

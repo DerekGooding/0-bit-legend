@@ -1,16 +1,34 @@
 ﻿namespace _0_Bit_Legend.Entities.Enemies;
 
-public class Octorok : IEnemy
+public class Octorok : BaseEnemy
 {
-    public EnemyType Type => EnemyType.Octorok;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
-    public void Draw(DirectionType previousIndex)
+    public override EnemyType Type { get; } = EnemyType.Octorok;
+    public override char[] MapStorage { get; } = new string(' ', 12).ToCharArray();
+
+    public override void Clear()
+    {
+        Map[Position.X + 0, Position.Y] = MapStorage[0];
+        Map[Position.X + 1, Position.Y] = MapStorage[1];
+        Map[Position.X + 2, Position.Y] = MapStorage[2];
+        Map[Position.X + 3, Position.Y] = MapStorage[3];
+
+        Map[Position.X + 0, Position.Y + 1] = MapStorage[4];
+        Map[Position.X + 1, Position.Y + 1] = MapStorage[5];
+        Map[Position.X + 2, Position.Y + 1] = MapStorage[6];
+        Map[Position.X + 3, Position.Y + 1] = MapStorage[7];
+
+        Map[Position.X + 0, Position.Y + 2] = MapStorage[8];
+        Map[Position.X + 1, Position.Y + 2] = MapStorage[9];
+        Map[Position.X + 2, Position.Y + 2] = MapStorage[10];
+        Map[Position.X + 3, Position.Y + 2] = MapStorage[11];
+    }
+
+    public override void Draw()
     {
         var posX = Position.X;
         var posY = Position.Y;
 
-        if (previousIndex == DirectionType.Left)
+        if (Prev2 == DirectionType.Left)
         {
             Map[posX + 0, posY] = ' ';
             Map[posX + 1, posY] = 't';
@@ -46,15 +64,15 @@ public class Octorok : IEnemy
         }
     }
 
-    public bool InBounds(int posX, int posY)
+    public override bool InBounds(Vector2 position)
     {
-        var inPosX = posX + 3;
-        var inPosY = posY + 2;
+        var inPosX = position.X + 3;
+        var inPosY = position.Y + 2;
 
-        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
+        return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(char symbol)
+    public override bool IsTouching(char symbol)
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -73,7 +91,7 @@ public class Octorok : IEnemy
         return false;
     }
 
-    public bool IsTouching(char[] symbols)
+    public override bool IsTouching(char[] symbols)
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -90,4 +108,6 @@ public class Octorok : IEnemy
         }
         return false;
     }
+
+    public override void Move() => throw new NotImplementedException();
 }

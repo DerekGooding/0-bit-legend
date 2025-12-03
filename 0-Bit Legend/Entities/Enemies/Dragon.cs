@@ -1,17 +1,32 @@
 ﻿namespace _0_Bit_Legend.Entities.Enemies;
 
-public class Dragon : IEnemy
+public class Dragon : BaseEnemy
 {
-    public EnemyType Type => EnemyType.Dragon;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
-    public void Draw(DirectionType previousIndex)
+    public Dragon() => Hp = 3;
+
+    public override EnemyType Type => EnemyType.Dragon;
+    public override char[] MapStorage { get; } = new string(' ', 84).ToCharArray();
+
+    public override void Clear()
+    {
+        var value = 0;
+        for (var i = 0; i < 7; i++)
+        {
+            for (var j = 0; j < 12; j++)
+            {
+                Map[Position.X + j, Position.Y + i] = ' ';
+                value++;
+            }
+        }
+    }
+
+    public override void Draw()
     {
         var posX = Position.X;
         var posY = Position.Y;
 
         var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
-        if (previousIndex == DirectionType.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
+        if (Prev1 == DirectionType.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
 
         var debounce = false;
         var value = 0;
@@ -25,7 +40,7 @@ public class Dragon : IEnemy
                     || (Map[posX + j, posY + i] == '_' && !debounce))
                 {
                     debounce = true;
-                    MainProgram.PlayerController.Hit();
+                    PlayerController.Hit();
                 }
                 Map[posX + j, posY + i] = dragon[value];
                 value++;
@@ -33,9 +48,35 @@ public class Dragon : IEnemy
         }
     }
 
-    public bool InBounds(int posX, int posY) => posX > 0 && posY > 0;
+    public override bool InBounds(Vector2 position) => position.X > 0 && position.Y > 0;
 
-    public bool IsTouching(char symbol) => false;
+    public override bool IsTouching(char symbol) => false;
 
-    public bool IsTouching(char[] symbols) => false;
+    public override bool IsTouching(char[] symbols) => false;
+    public override void Move() => throw new NotImplementedException();
+    public override void TakeDamage()
+    {
+        waitDragon++;
+
+        var value = 0;
+        const string dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
+        for (var i = 0; i < 7; i++)
+        {
+            for (var j = 0; j < 12; j++)
+            {
+                Map[Position.X + j, Position.Y + i] = dragon[value];
+                value++;
+            }
+        }
+
+        base.TakeDamage();
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        SetFlag(GameFlag.Dragon, true);
+        LoadMap(12, PlayerController.Position.X, PlayerController.Position.Y, PlayerController.GetPrev());
+    }
 }

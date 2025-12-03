@@ -92,7 +92,7 @@ public class PlayerController
             swordArr[0, 4] = PreHitPosX;
             swordArr[1, 4] = PreHitPosY - 4;
 
-            Stab(swordArr, DirectionType.Up, 5, 1);
+            Stab(swordArr, DirectionType.Up, 5);
         }
 
         UpdateRow(PreHitPosY - 2);
@@ -143,7 +143,7 @@ public class PlayerController
             swordArr[0, 5] = PreHitPosX - 6;
             swordArr[1, 5] = PreHitPosY + 1;
 
-            Stab(swordArr, DirectionType.Left, 6, 1);
+            Stab(swordArr, DirectionType.Left, 6);
         }
 
         UpdateRow(PreHitPosY);
@@ -189,7 +189,7 @@ public class PlayerController
             swordArr[0, 4] = PreHitPosX;
             swordArr[1, 4] = PreHitPosY + 5;
 
-            Stab(swordArr, DirectionType.Down, 5, 1);
+            Stab(swordArr, DirectionType.Down, 5);
         }
 
         UpdateRow(PreHitPosY + 3);
@@ -240,7 +240,7 @@ public class PlayerController
             swordArr[0, 5] = PreHitPosX + 6;
             swordArr[1, 5] = PreHitPosY + 1;
 
-            Stab(swordArr, DirectionType.Right, 6, 1);
+            Stab(swordArr, DirectionType.Right, 6);
         }
 
         UpdateRow(PreHitPosY);
@@ -248,7 +248,7 @@ public class PlayerController
         UpdateRow(PreHitPosY + 2);
     }
 
-    public void Stab(int[,] swordArr, DirectionType prev, int amt, int dmg)
+    public void Stab(int[,] swordArr, DirectionType prev, int amt)
     {
         var hit = false;
         for (var i = 0; i < amt; i++)
@@ -257,10 +257,10 @@ public class PlayerController
             if (detect.Any(x => x == _storage_sword[i]) || detect.Any(x => x == _storage_detect_enemy[i]))
             {
                 hit = true;
-                if (MainProgram.EnemyManager.TakeDamage(swordArr[0, i], swordArr[1, i], prev, dmg) && _spawnRupee)
+                if (MainProgram.EnemyManager.TakeDamage(new (swordArr[0, i], swordArr[1, i]), prev) && _spawnRupee)
                 {
                     _spawnRupee = false;
-                    MainProgram.EnemyManager.SpawnRupee();
+                    //MainProgram.EnemyManager.SpawnRupee(); TODO => move to enemy.Die
                 }
                 break;
             }

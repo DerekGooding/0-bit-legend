@@ -4,190 +4,113 @@ namespace _0_Bit_Legend.Managers;
 
 public class EnemyManager
 {
-    // Enemy
-    private readonly List<Vector2> _positions = [];
-    private readonly List<char[]> _map_storage = [];
-
-    private readonly List<DirectionType> _prev1 = [];
-    private readonly List<DirectionType> _prev2 = [];
-
     private readonly List<IEnemy> _enemies = [];
-    private readonly List<int> _hp = [];
-
-    private readonly List<int> _motion = [];
 
     // Rupee
     private readonly List<Vector2> _rupeePositions = [];
     private readonly List<char[]> _rupee_storage = [];
 
     private Vector2 _storedRupeePosition = Vector2.Zero;
-    private EnemyType _sRType = EnemyType.None;
 
-    public int GetPosX(int index) => _positions[index].X;
-    public int GetPosY(int index) => _positions[index].Y;
+    public void SetStoredRupeePosition(Vector2 storedRupeePosition) => _storedRupeePosition = storedRupeePosition;
+
+    public int GetPosX(int index) => _enemies[index].Position.X;
+    public int GetPosY(int index) => _enemies[index].Position.Y;
 
     public IEnemy GetEnemy(int index) => _enemies[index];
     public EnemyType GetEnemyType(int index) => _enemies[index].Type;
 
-    public int GetTotal() => _positions.Count;
+    public int GetTotal() => _enemies.Count;
 
-    public DirectionType GetPrev1(int index) => _prev1[index];
+    public DirectionType GetPrev1(int index) => _enemies[index].Prev1;
 
-    public DirectionType GetPrev2(int index) => _prev2[index];
+    public DirectionType GetPrev2(int index) => _enemies[index].Prev2;
 
-    public int GetMotion(int index) => _motion[index];
+    public int GetMotion(int index) => _enemies[index].Motion;
 
-    public void SetMotion(int index, int value) => _motion[index] = value;
+    public void SetMotion(int index, int value) => _enemies[index].Motion = value;
 
 
-    public bool TakeDamage(int posX, int posY, DirectionType prev, int _)
+    public bool TakeDamage(Vector2 target, DirectionType prev)
     {
-        var index = GetIndex(posX, posY);
+        var enemy = GetEnemyAt(target);
         MainProgram.PlayerController.StoreSword(prev);
 
-        if (index == -1 || _enemies[index] is Fireball)
-        {
-            return false;
-        }
+        enemy.TakeDamage();
 
-        if (_enemies[index] is Dragon)
-        {
-            waitDragon++;
-
-            var value = 0;
-            const string dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
-            for (var i = 0; i < 7; i++)
-            {
-                for (var j = 0; j < 12; j++)
-                {
-                    Map[GetPosX(index) + j, GetPosY(index) + i] = dragon[value];
-                    value++;
-                }
-            }
-        }
-
-        _hp[index]--;
-        if (_hp[index] <= 0)
-        {
-            _storedRupeePosition = new(_positions[index].X + 2, _positions[index].Y + 1);
-            _sRType = _enemies[index].Type;
-
-            Remove(index, _enemies[index]);
-
-            MainProgram.PlayerController.SetSpawnRupee(true);
-
-            if (_sRType == EnemyType.Dragon)
-            {
-                SetFlag(GameFlag.Dragon, true);
-                LoadMap(12, MainProgram.PlayerController.Position.X, MainProgram.PlayerController.Position.Y, MainProgram.PlayerController.GetPrev());
-            }
-        }
         return true;
     }
 
-    public bool Move(int index, EnemyType type, int posX, int posY, DirectionType direction, int motion, bool spawn = false)
+    public void SpawnEnemy(EnemyType type, Vector2 position, DirectionType direction, int motion)
     {
-        if (index == -1)
-        {
-            index = GetTotal();
-        }
-
-        IEnemy? enemy = type switch
+        IEnemy enemy = type switch
         {
             EnemyType.Octorok => new Octorok(),
             EnemyType.Spider => new Spider(),
             EnemyType.Bat => new Bat(),
             EnemyType.Dragon => new Dragon(),
             EnemyType.Fireball => new Fireball(),
-            _ => null
+            _ => throw new ArgumentOutOfRangeException(nameof(type), "Invalid enemy type")
         };
-        if(enemy is null)
-            throw new ArgumentOutOfRangeException(nameof(type), "Invalid enemy type");
 
-        if (spawn)
-        {
-            _positions.Add(new(posX, posY));
+        enemy.Position = position;
+        enemy.Direction = direction;
+        enemy.Motion = motion;
+        enemy.Prev1 = direction;
+        enemy.Prev2 = direction;
 
-            _prev1.Add(direction);
-            _prev2.Add(direction);
+        _enemies.Add(enemy);
+    }
 
-            _enemies.Add(enemy);
-            _hp.Add(1);
+    public bool Move(IEnemy enemy, Vector2 position, DirectionType direction, int motion)
+    {
+        var type = enemy.Type;
+        enemy.Motion = motion;
 
-            _motion.Add(motion);
+        var posX = position.X;
+        var posY = position.Y;
 
-            char[] storage_copy;
-            if (type == EnemyType.Octorok)
-            {
-                storage_copy = new char[12];
-            }
-            else if (type == EnemyType.Spider)
-            {
-                storage_copy = new char[15];
-            }
-            else if (type == EnemyType.Bat)
-            {
-                storage_copy = new char[10];
-            }
-            else if (type == EnemyType.Dragon)
-            {
-                storage_copy = new char[84];
-                _hp[GetTotal() - 1] = 3;
-            }
-            else
-            {
-                storage_copy = type == EnemyType.Fireball ? (new char[6]) : (new char[12]);
-            }
-
-            for (var i = 0; i < storage_copy.Length; i++)
-            {
-                storage_copy[i] = ' ';
-            }
-
-            _map_storage.Add(storage_copy);
-        }
-
-        if (InBounds(enemy, posX, posY))
+        if (InBounds(enemy, position))
         {
             var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
             var blocking2 = new char[] { '|', '_', '\\' };
-            Clear(index, enemy);
-            if (type == EnemyType.Dragon || type == EnemyType.Spider || type == EnemyType.Bat || (!enemy.IsTouching(posX, posY, blocking)))
+            enemy.Clear();
+            if (type == EnemyType.Dragon || type == EnemyType.Spider || type == EnemyType.Bat || (!enemy.IsTouching(blocking)))
             {
-                _prev1[index] = direction;
+                enemy.Prev1 = direction;
 
                 if (type == EnemyType.Octorok)
                 {
                     if (direction is DirectionType.Left or DirectionType.Right)
                     {
-                        _prev2[index] = direction;
+                        enemy.Prev2 = direction;
                     }
                 }
                 else if (type == EnemyType.Spider)
                 {
                     if (direction is DirectionType.Up or DirectionType.Down)
                     {
-                        _prev2[index] = DirectionType.Left;
+                        enemy.Prev2 = DirectionType.Left;
                     }
                     else if (direction is DirectionType.Left or DirectionType.Right)
                     {
-                        _prev2[index] = DirectionType.Right;
+                        enemy.Prev2 = DirectionType.Right;
                     }
                 }
                 else if (type == EnemyType.Bat)
                 {
-                    if (_prev2[index] == DirectionType.Right)
+                    if (enemy.Prev2 == DirectionType.Right)
                     {
-                        _prev2[index] = DirectionType.Left;
+                        enemy.Prev2 = DirectionType.Left;
                     }
-                    else if (_prev2[index] == DirectionType.Left)
+                    else if (enemy.Prev2 == DirectionType.Left)
                     {
-                        _prev2[index] = DirectionType.Right;
+                        enemy.Prev2 = DirectionType.Right;
                     }
                 }
 
-                Store(index, enemy, posX, posY);
-                Build(index, enemy, posX, posY);
+                Store(enemy);
+                enemy.Draw();
 
                 UpdateRow(posY);
                 UpdateRow(posY + 1);
@@ -201,59 +124,43 @@ public class EnemyManager
                     UpdateRow(posY + 6);
                 }
 
-                _positions[index] = new(posX, posY);
+                enemy.Position = new(posX, posY);
 
                 return true;
             }
-            else if (enemy.IsTouching(posX, posY, blocking2))
+            else if (enemy.IsTouching(blocking2))
             {
                 MainProgram.PlayerController.Hit();
                 if (type == EnemyType.Fireball)
                 {
-                    Remove(GetIndex(_positions[index].X, _positions[index].Y), enemy);
+                    Remove(enemy);
                 }
                 else
                 {
-                    Build(index, enemy, _positions[index].X, _positions[index].Y);
+                    enemy.Draw();
                 }
             }
             else
             {
                 if (type == EnemyType.Fireball)
                 {
-                    Remove(GetIndex(_positions[index].X, _positions[index].Y), enemy);
+                    Remove(enemy);
                 }
                 else
                 {
-                    Build(index, enemy, _positions[index].X, _positions[index].Y);
+                    enemy.Draw();
                 }
             }
         }
         return false;
     }
 
-    public void Build(int index, IEnemy enemy, int posX, int posY)
+    public void Store(IEnemy enemy)
     {
-        switch (enemy.Type)
-        {
-            case EnemyType.Octorok:
-            case EnemyType.Spider:
-            case EnemyType.Bat:
-                enemy.Draw(posX, posY, _prev2[index]);
-                break;
-            case EnemyType.Dragon:
-                enemy.Draw(posX, posY, _prev1[index]);
-                break;
-            case EnemyType.Fireball:
-                enemy.Draw(posX, posY, DirectionType.Up);
-                break;
-        }
-    }
-
-    public void Store(int index, IEnemy enemy, int posX, int posY)
-    {
-        Clear(index, enemy);
+        enemy.Clear();
         var type = enemy.Type;
+        var posX = enemy.Position.X;
+        var posY = enemy.Position.Y;
 
         if (type == EnemyType.Octorok)
         {
@@ -262,7 +169,7 @@ public class EnemyManager
             {
                 for (var j = 0; j < 4; j++)
                 {
-                    _map_storage[index][value] = Map[posX + j, posY + i];
+                    enemy.MapStorage[value] = Map[posX + j, posY + i];
                     value++;
                 }
             }
@@ -274,7 +181,7 @@ public class EnemyManager
             {
                 for (var j = 0; j < 5; j++)
                 {
-                    _map_storage[index][value] = Map[posX + j, posY + i];
+                    enemy.MapStorage[value] = Map[posX + j, posY + i];
                     value++;
                 }
             }
@@ -286,7 +193,7 @@ public class EnemyManager
             {
                 for (var j = 0; j < 5; j++)
                 {
-                    _map_storage[index][value] = Map[posX + j, posY + i];
+                    enemy.MapStorage[value] = Map[posX + j, posY + i];
                     value++;
                 }
             }
@@ -298,136 +205,50 @@ public class EnemyManager
             {
                 for (var j = 0; j < 3; j++)
                 {
-                    _map_storage[index][value] = Map[posX + j, posY + i];
+                    enemy.MapStorage[value] = Map[posX + j, posY + i];
                     value++;
                 }
             }
         }
 
-        for (var i = 0; i < _map_storage[index].Length; i++)
+        for (var i = 0; i < enemy.MapStorage.Length; i++)
         {
-            if (_map_storage[index][i] is '*' or 'F' or 's' or '-' or '/' or '\\' or '|' or '^' or '#' or 'r' or 'R' or 'V')
+            if (enemy.MapStorage[i] is '*' or 'F' or 's' or '-' or '/' or '\\' or '|' or '^' or '#' or 'r' or 'R' or 'V')
             {
-                _map_storage[index][i] = ' ';
+                enemy.MapStorage[i] = ' ';
             }
         }
 
-        UpdateRow(_positions[index].Y);
-        UpdateRow(_positions[index].Y + 1);
-        UpdateRow(_positions[index].Y + 2);
+        UpdateRow(posY);
+        UpdateRow(posY + 1);
+        UpdateRow(posY + 2);
 
         if (type == EnemyType.Dragon)
         {
-            UpdateRow(_positions[index].Y + 3);
-            UpdateRow(_positions[index].Y + 4);
-            UpdateRow(_positions[index].Y + 5);
-            UpdateRow(_positions[index].Y + 6);
+            UpdateRow(posY + 3);
+            UpdateRow(posY + 4);
+            UpdateRow(posY + 5);
+            UpdateRow(posY  + 6);
         }
     }
 
-    public void Clear(int index, IEnemy enemy)
+    public void Remove(IEnemy enemy)
     {
+        enemy.Clear();
         var type = enemy.Type;
 
-        if (type == EnemyType.Octorok)
-        {
-            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
-            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
-            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
-            Map[_positions[index].X + 3, _positions[index].Y] = _map_storage[index][3];
-
-            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][4];
-            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][5];
-            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][6];
-            Map[_positions[index].X + 3, _positions[index].Y + 1] = _map_storage[index][7];
-
-            Map[_positions[index].X + 0, _positions[index].Y + 2] = _map_storage[index][8];
-            Map[_positions[index].X + 1, _positions[index].Y + 2] = _map_storage[index][9];
-            Map[_positions[index].X + 2, _positions[index].Y + 2] = _map_storage[index][10];
-            Map[_positions[index].X + 3, _positions[index].Y + 2] = _map_storage[index][11];
-        }
-        else if (type == EnemyType.Spider)
-        {
-            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
-            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
-            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
-            Map[_positions[index].X + 3, _positions[index].Y] = _map_storage[index][3];
-            Map[_positions[index].X + 4, _positions[index].Y] = _map_storage[index][4];
-
-            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][5];
-            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][6];
-            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][7];
-            Map[_positions[index].X + 3, _positions[index].Y + 1] = _map_storage[index][8];
-            Map[_positions[index].X + 4, _positions[index].Y + 1] = _map_storage[index][9];
-
-            Map[_positions[index].X + 0, _positions[index].Y + 2] = _map_storage[index][10];
-            Map[_positions[index].X + 1, _positions[index].Y + 2] = _map_storage[index][11];
-            Map[_positions[index].X + 2, _positions[index].Y + 2] = _map_storage[index][12];
-            Map[_positions[index].X + 3, _positions[index].Y + 2] = _map_storage[index][13];
-            Map[_positions[index].X + 4, _positions[index].Y + 2] = _map_storage[index][14];
-        }
-        else if (type == EnemyType.Bat)
-        {
-            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
-            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
-            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
-            Map[_positions[index].X + 3, _positions[index].Y] = _map_storage[index][3];
-            Map[_positions[index].X + 4, _positions[index].Y] = _map_storage[index][4];
-
-            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][5];
-            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][6];
-            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][7];
-            Map[_positions[index].X + 3, _positions[index].Y + 1] = _map_storage[index][8];
-            Map[_positions[index].X + 4, _positions[index].Y + 1] = _map_storage[index][9];
-        }
-        else if (type == EnemyType.Dragon)
-        {
-            var value = 0;
-            for (var i = 0; i < 7; i++)
-            {
-                for (var j = 0; j < 12; j++)
-                {
-                    Map[_positions[index].X + j, _positions[index].Y + i] = ' ';
-                    value++;
-                }
-            }
-        }
-        else if (type == EnemyType.Fireball)
-        {
-            Map[_positions[index].X + 0, _positions[index].Y] = _map_storage[index][0];
-            Map[_positions[index].X + 1, _positions[index].Y] = _map_storage[index][1];
-            Map[_positions[index].X + 2, _positions[index].Y] = _map_storage[index][2];
-
-            Map[_positions[index].X + 0, _positions[index].Y + 1] = _map_storage[index][3];
-            Map[_positions[index].X + 1, _positions[index].Y + 1] = _map_storage[index][4];
-            Map[_positions[index].X + 2, _positions[index].Y + 1] = _map_storage[index][5];
-        }
-    }
-
-    public void Remove(int index, IEnemy enemy)
-    {
-        Clear(index, enemy);
-        var type = enemy.Type;
-
-        UpdateRow(_positions[index].Y);
-        UpdateRow(_positions[index].Y + 1);
-        UpdateRow(_positions[index].Y + 2);
+        UpdateRow(enemy.Position.Y);
+        UpdateRow(enemy.Position.Y + 1);
+        UpdateRow(enemy.Position.Y + 2);
 
         if (type == EnemyType.Dragon)
         {
-            UpdateRow(_positions[index].Y + 3);
-            UpdateRow(_positions[index].Y + 4);
-            UpdateRow(_positions[index].Y + 5);
-            UpdateRow(_positions[index].Y + 6);
+            UpdateRow(enemy.Position.Y + 3);
+            UpdateRow(enemy.Position.Y + 4);
+            UpdateRow(enemy.Position.Y + 5);
+            UpdateRow(enemy.Position.Y + 6);
         }
 
-        _positions.RemoveAt(index);
-        _enemies.RemoveAt(index);
-        _prev1.RemoveAt(index);
-        _prev2.RemoveAt(index);
-        _hp.RemoveAt(index);
-        _motion.RemoveAt(index);
-        _map_storage.RemoveAt(index);
 
         if (type == EnemyType.Bat)
         {
@@ -442,42 +263,44 @@ public class EnemyManager
         }
     }
 
-    public void SpawnRupee()
-    {
-        if (_sRType != EnemyType.Dragon && _sRType != EnemyType.Bat && Random.Shared.Next(2) == 1)
-        {
-            var rupee_storage_copy = new char[9];
-            var sRPosX = _storedRupeePosition.X;
-            var sRPosY = _storedRupeePosition.Y;
+    //TODO => Move to Die in enemy and handle random chance there
 
-            var value = 0;
-            for (var i = 0; i < 3; i++)
-            {
-                for (var j = 0; j < 3; j++)
-                {
-                    rupee_storage_copy[value] = Map[sRPosX - 1 + j, sRPosY - 1 + i] is not '-' and not 'S'
-                        ? Map[sRPosX - 1 + j, sRPosY - 1 + i]
-                        : ' ';
-                    value++;
-                }
-            }
+    //public void SpawnRupee()
+    //{
+    //    if (_sRType != EnemyType.Dragon && _sRType != EnemyType.Bat && Random.Shared.Next(2) == 1)
+    //    {
+    //        var rupee_storage_copy = new char[9];
+    //        var sRPosX = _storedRupeePosition.X;
+    //        var sRPosY = _storedRupeePosition.Y;
 
-            _rupeePositions.Add(new(sRPosX, sRPosY));
-            _rupee_storage.Add(rupee_storage_copy);
+    //        var value = 0;
+    //        for (var i = 0; i < 3; i++)
+    //        {
+    //            for (var j = 0; j < 3; j++)
+    //            {
+    //                rupee_storage_copy[value] = Map[sRPosX - 1 + j, sRPosY - 1 + i] is not '-' and not 'S'
+    //                    ? Map[sRPosX - 1 + j, sRPosY - 1 + i]
+    //                    : ' ';
+    //                value++;
+    //            }
+    //        }
 
-            Map[sRPosX, sRPosY]
-                = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? 'V' : 'R';
+    //        _rupeePositions.Add(new(sRPosX, sRPosY));
+    //        _rupee_storage.Add(rupee_storage_copy);
 
-            Map[sRPosX - 1, sRPosY] = 'R';
-            Map[sRPosX + 1, sRPosY] = 'R';
-            Map[sRPosX, sRPosY - 1] = 'r';
-            Map[sRPosX, sRPosY + 1] = 'r';
+    //        Map[sRPosX, sRPosY]
+    //            = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? 'V' : 'R';
 
-            UpdateRow(sRPosY - 1);
-            UpdateRow(sRPosY);
-            UpdateRow(sRPosY + 1);
-        }
-    }
+    //        Map[sRPosX - 1, sRPosY] = 'R';
+    //        Map[sRPosX + 1, sRPosY] = 'R';
+    //        Map[sRPosX, sRPosY - 1] = 'r';
+    //        Map[sRPosX, sRPosY + 1] = 'r';
+
+    //        UpdateRow(sRPosY - 1);
+    //        UpdateRow(sRPosY);
+    //        UpdateRow(sRPosY + 1);
+    //    }
+    //}
 
     public void RemoveRupee(int posX, int posY)
     {
@@ -521,10 +344,13 @@ public class EnemyManager
         }
     }
 
-    public bool InBounds(IEnemy enemy, int posX, int posY) => enemy.InBounds(posX, posY);
+    public bool InBounds(IEnemy enemy, Vector2 position) => enemy.InBounds(position);
 
-    public int GetIndex(int posX, int posY)
+    public IEnemy GetEnemyAt(Vector2 target)
     {
+        var posX = target.X;
+        var posY = target.Y;
+
         for (var i = 0; i < GetTotal(); i++)
         {
             var inPosX = 0;
@@ -555,13 +381,13 @@ public class EnemyManager
                 inPosY = 2;
             }
 
-            var position = _positions[i];
+            var position = _enemies[i].Position;
 
             if (posX >= position.X && posX <= position.X + inPosX && posY >= position.Y && posY <= position.Y + inPosY)
             {
-                return i;
+                return _enemies[i];
             }
         }
-        return -1;
+        return _enemies[0];
     }
 }

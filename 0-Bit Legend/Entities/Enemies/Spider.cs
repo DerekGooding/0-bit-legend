@@ -1,16 +1,37 @@
 ﻿namespace _0_Bit_Legend.Entities.Enemies;
 
-public class Spider : IEnemy
+public class Spider : BaseEnemy
 {
-    public EnemyType Type => EnemyType.Spider;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
-    public void Draw(DirectionType previousIndex)
+    public override EnemyType Type => EnemyType.Spider;
+    public override char[] MapStorage { get; } = new string(' ', 15).ToCharArray();
+
+    public override void Clear()
+    {
+        Map[Position.X + 0, Position.Y] = MapStorage[0];
+        Map[Position.X + 1, Position.Y] = MapStorage[1];
+        Map[Position.X + 2, Position.Y] = MapStorage[2];
+        Map[Position.X + 3, Position.Y] = MapStorage[3];
+        Map[Position.X + 4, Position.Y] = MapStorage[4];
+
+        Map[Position.X + 0, Position.Y + 1] = MapStorage[5];
+        Map[Position.X + 1, Position.Y + 1] = MapStorage[6];
+        Map[Position.X + 2, Position.Y + 1] = MapStorage[7];
+        Map[Position.X + 3, Position.Y + 1] = MapStorage[8];
+        Map[Position.X + 4, Position.Y + 1] = MapStorage[9];
+
+        Map[Position.X + 0, Position.Y + 2] = MapStorage[10];
+        Map[Position.X + 1, Position.Y + 2] = MapStorage[11];
+        Map[Position.X + 2, Position.Y + 2] = MapStorage[12];
+        Map[Position.X + 3, Position.Y + 2] = MapStorage[13];
+        Map[Position.X + 4, Position.Y + 2] = MapStorage[14];
+    }
+
+    public override void Draw()
     {
         var posX = Position.X;
         var posY = Position.Y;
 
-        if (previousIndex == DirectionType.Left)
+        if (Prev2 == DirectionType.Left)
         {
             Map[posX + 0, posY] = ' ';
             Map[posX + 1, posY] = 't';
@@ -52,15 +73,15 @@ public class Spider : IEnemy
         }
     }
 
-    public bool InBounds(int posX, int posY)
+    public override bool InBounds(Vector2 position)
     {
-        var inPosX = posX + 4;
-        var inPosY = posY + 2;
+        var inPosX = position.X + 4;
+        var inPosY = position.Y + 2;
 
-        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
+        return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(char symbol)
+    public override bool IsTouching(char symbol)
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -79,7 +100,7 @@ public class Spider : IEnemy
         return false;
     }
 
-    public bool IsTouching(char[] symbols)
+    public override bool IsTouching(char[] symbols)
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -96,4 +117,6 @@ public class Spider : IEnemy
         }
         return false;
     }
+
+    public override void Move() => throw new NotImplementedException();
 }

@@ -82,9 +82,6 @@ public sealed class MapTests
             Console.SetOut(TextWriter.Null);
         }
 
-        public void Dispose()
-        {
-            Console.SetOut(_original);
-        }
+        public void Dispose() => Console.SetOut(_original);
     }
 }

@@ -1,11 +1,22 @@
 ﻿namespace _0_Bit_Legend.Entities.Enemies;
 
-public class Fireball : IEnemy
+public class Fireball : BaseEnemy
 {
-    public EnemyType Type => EnemyType.Fireball;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
-    public void Draw(DirectionType _)
+    public override EnemyType Type => EnemyType.Fireball;
+    public override char[] MapStorage { get; } = new string(' ', 6).ToCharArray();
+
+    public override void Clear()
+    {
+        Map[Position.X + 0, Position.Y] = MapStorage[0];
+        Map[Position.X + 1, Position.Y] = MapStorage[1];
+        Map[Position.X + 2, Position.Y] = MapStorage[2];
+
+        Map[Position.X + 0, Position.Y + 1] = MapStorage[3];
+        Map[Position.X + 1, Position.Y + 1] = MapStorage[4];
+        Map[Position.X + 2, Position.Y + 1] = MapStorage[5];
+    }
+
+    public override void Draw()
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -19,15 +30,15 @@ public class Fireball : IEnemy
         Map[posX + 2, posY + 1] = 'F';
     }
 
-    public bool InBounds(int posX, int posY)
+    public override bool InBounds(Vector2 position)
     {
-        var inPosX = posX + 3;
-        var inPosY = posY + 1;
+        var inPosX = position.X + 3;
+        var inPosY = position.Y + 1;
 
-        return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
+        return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(char symbol)
+    public override bool IsTouching(char symbol)
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -46,7 +57,7 @@ public class Fireball : IEnemy
         return false;
     }
 
-    public bool IsTouching(char[] symbols)
+    public override bool IsTouching(char[] symbols)
     {
         var posX = Position.X;
         var posY = Position.Y;
@@ -62,5 +73,11 @@ public class Fireball : IEnemy
             }
         }
         return false;
+    }
+
+    public override void Move() => throw new NotImplementedException();
+    public override void TakeDamage()
+    {
+        //nothing
     }
 }

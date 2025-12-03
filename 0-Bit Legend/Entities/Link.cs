@@ -7,6 +7,9 @@ public class Link : IEntity
 
     public void Draw(DirectionType direction)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         var spaceslot = ' ';
         var underslot = '_';
         if (HasFlag(GameFlag.HasArmor))
@@ -125,7 +128,6 @@ public class Link : IEntity
     {
         var posX = Position.X;
         var posY = Position.Y;
-
 
         if (symbol == '/')
         {
