@@ -2,6 +2,7 @@
 
 public class Link : IEntity
 {
+    public int Hp { get; set; } = 3;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
 

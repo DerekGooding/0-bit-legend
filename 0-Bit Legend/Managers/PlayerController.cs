@@ -22,8 +22,8 @@ public class PlayerController
     public DirectionType GetPrev() => _prev;
     public DirectionType GetPrev2() => _prev2;
     public void SetPosition(Vector2 pos) => _player.Position = pos;
-    public void SetPreHitPosition(Vector2 pos) => _preHitPosition = pos;
-    public void SetPrev(DirectionType prev) => _prev = prev;
+
+    public (Vector2 Position, DirectionType Prev1) GetPlayerInfo() => (_player.Position, _prev);
 
     //Temporary rename fix, TODO removed
     private int PosX => _player.Position.X;
@@ -1305,5 +1305,7 @@ public class PlayerController
             UpdateRow(PosY + 1);
             UpdateRow(PosY + 2);
         }
+        if(_player.Hp <= 0)
+            SetGameState(GameState.Dead);
     }
 }

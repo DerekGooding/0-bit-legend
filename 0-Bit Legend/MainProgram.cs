@@ -50,7 +50,7 @@ public static class MainProgram
         InitializeMaps();
 
         Console.CursorVisible = false;
-        LoadMap(0, 52, 18, DirectionType.Up);
+        LoadMap(0, new(52, 18), DirectionType.Up);
 
         _credits = string.Concat(_creditObject.Lose);
         while (_frames < 118)
@@ -151,27 +151,27 @@ public static class MainProgram
         {
             if (CurrentMap == 0)
             {
-                LoadMap(6, 50, 29, DirectionType.Up);
+                LoadMap(6, new(50, 29), DirectionType.Up);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(7, 50, 29, DirectionType.Up);
+                LoadMap(7, new(50, 29), DirectionType.Up);
             }
             else if (CurrentMap == 8)
             {
-                LoadMap(9, 50, 30, DirectionType.Up);
+                LoadMap(9, new(50, 30), DirectionType.Up);
             }
             else if (CurrentMap == 6)
             {
-                LoadMap(0, 16, 9, DirectionType.Down);
+                LoadMap(0, new(16, 9), DirectionType.Down);
             }
             else if (CurrentMap == 7)
             {
-                LoadMap(4, 86, 10, DirectionType.Down);
+                LoadMap(4, new(86, 10), DirectionType.Down);
             }
             else if (CurrentMap == 9)
             {
-                LoadMap(8, 51, 20, DirectionType.Down);
+                LoadMap(8, new(51, 20), DirectionType.Down);
             }
             State = GameState.Idle;
         }
@@ -198,6 +198,7 @@ public static class MainProgram
         {
             PlayerController.MoveLeft(3);
         }
+        PlayerController.Hit();
     }
     private static void HandleDeath()
     {
@@ -249,11 +250,11 @@ public static class MainProgram
 
             if (CurrentMap <= 8)
             {
-                LoadMap(0, 52, 15, DirectionType.Up);
+                LoadMap(0, new(52, 15), DirectionType.Up);
             }
             else
             {
-                LoadMap(9, 50, 25, DirectionType.Up);
+                LoadMap(9, new(50, 25), DirectionType.Up);
             }
             State = GameState.Idle;
         }
@@ -353,7 +354,7 @@ public static class MainProgram
         _maps.Add(new Castle5());
     }
 
-    public static void LoadMap(int mapNum, int posX, int posY, DirectionType direction)
+    public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
     {
         var map = string.Concat(_maps[mapNum].Raw);
 
