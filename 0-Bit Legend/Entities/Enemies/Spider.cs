@@ -125,14 +125,7 @@ public class Spider : BaseEnemy
 
         var rnd1 = Random.Shared.Next(10);
         var passed = rnd1 <= 2;
-        var newPosition = Prev1 switch
-        {
-            DirectionType.Up => Position.Offset(-3, -2),
-            DirectionType.Left => Position.Offset(x: -3),
-            DirectionType.Down => Position.Offset(-3, +2),
-            DirectionType.Right => Position.Offset(x: 3),
-            _ => throw new NotSupportedException()
-        };
+        var newPosition = DirectionToOffset(Prev1);
 
         if (rnd1 > 2)
         {
@@ -142,24 +135,21 @@ public class Spider : BaseEnemy
         if (!passed)
             return;
 
-        var rnd2 = Random.Shared.Next(4) + 1;
-        if (rnd2 == 1)
-        {
-            MoveUp();
-        }
-        else if (rnd2 == 2)
-        {
-            MoveLeft();
-        }
-        else if (rnd2 == 3)
-        {
-            MoveDown();
-        }
-        else if (rnd2 == 4)
-        {
-            MoveRight();
-        }
+        var randomDirection = Random.Shared.RandomEnum<DirectionType>();
+        newPosition = DirectionToOffset(randomDirection);
+
+        EnemyManager.Move(this, newPosition, randomDirection, -1);
     }
+
+    private Vector2 DirectionToOffset(DirectionType type) => type switch
+    {
+        DirectionType.Up => Position.Offset(-3, -2),
+        DirectionType.Left => Position.Offset(x: -3),
+        DirectionType.Down => Position.Offset(-3, +2),
+        DirectionType.Right => Position.Offset(x: 3),
+        _ => throw new NotSupportedException()
+    };
+
     private bool SkipMoveCheck()
     {
         Motion--;
@@ -168,26 +158,5 @@ public class Spider : BaseEnemy
             Motion = 10;
         }
         return Motion > 0;
-    }
-
-    private bool MoveUp()
-    {
-        var newPosition = Position.Offset(-2, -1);
-        return !EnemyManager.Move(this, newPosition, DirectionType.Up, -1);
-    }
-    private bool MoveLeft()
-    {
-        var newPosition = Position.Offset(2, -1);
-        return !EnemyManager.Move(this, newPosition, DirectionType.Left, -1);
-    }
-    private bool MoveDown()
-    {
-        var newPosition = Position.Offset(-2 + 1);
-        return !EnemyManager.Move(this, newPosition, DirectionType.Down, -1);
-    }
-    private bool MoveRight()
-    {
-        var newPosition = Position.Offset(2, 1);
-        return !EnemyManager.Move(this, newPosition, DirectionType.Right, -1);
     }
 }
