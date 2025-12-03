@@ -54,6 +54,7 @@ public class EnemyManager
     public void Store(IEnemy enemy)
     {
         enemy.Clear();
+        _enemies.Remove(enemy);
         var type = enemy.Type;
         var posX = enemy.Position.X;
         var posY = enemy.Position.Y;
@@ -131,6 +132,7 @@ public class EnemyManager
     public void Remove(IEnemy enemy)
     {
         enemy.Clear();
+        _enemies.Remove(enemy);
         var type = enemy.Type;
 
         UpdateRow(enemy.Position.Y);
