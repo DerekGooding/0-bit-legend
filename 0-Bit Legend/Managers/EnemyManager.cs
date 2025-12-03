@@ -11,7 +11,6 @@ public class EnemyManager
     private readonly List<char[]> _rupee_storage = [];
 
     private Vector2 _storedRupeePosition = Vector2.Zero;
-
     public void SetStoredRupeePosition(Vector2 storedRupeePosition) => _storedRupeePosition = storedRupeePosition;
 
     public int GetPosX(int index) => _enemies[index].Position.X;
@@ -64,99 +63,6 @@ public class EnemyManager
     {
         foreach (var enemy in _enemies)
             enemy.Move();
-    }
-
-    public bool Move(IEnemy enemy, Vector2 position, DirectionType direction, int motion)
-    {
-        var type = enemy.Type;
-        enemy.Motion = motion;
-
-        var posX = position.X;
-        var posY = position.Y;
-
-        if (InBounds(enemy, position))
-        {
-            var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
-            var blocking2 = new char[] { '|', '_', '\\' };
-            enemy.Clear();
-            if (type == EnemyType.Dragon || type == EnemyType.Spider || type == EnemyType.Bat || (!enemy.IsTouching(blocking)))
-            {
-                enemy.Prev1 = direction;
-
-                if (type == EnemyType.Octorok)
-                {
-                    if (direction is DirectionType.Left or DirectionType.Right)
-                    {
-                        enemy.Prev2 = direction;
-                    }
-                }
-                else if (type == EnemyType.Spider)
-                {
-                    if (direction is DirectionType.Up or DirectionType.Down)
-                    {
-                        enemy.Prev2 = DirectionType.Left;
-                    }
-                    else if (direction is DirectionType.Left or DirectionType.Right)
-                    {
-                        enemy.Prev2 = DirectionType.Right;
-                    }
-                }
-                else if (type == EnemyType.Bat)
-                {
-                    if (enemy.Prev2 == DirectionType.Right)
-                    {
-                        enemy.Prev2 = DirectionType.Left;
-                    }
-                    else if (enemy.Prev2 == DirectionType.Left)
-                    {
-                        enemy.Prev2 = DirectionType.Right;
-                    }
-                }
-
-                Store(enemy);
-                enemy.Draw();
-
-                UpdateRow(posY);
-                UpdateRow(posY + 1);
-                UpdateRow(posY + 2);
-
-                if (type == EnemyType.Dragon)
-                {
-                    UpdateRow(posY + 3);
-                    UpdateRow(posY + 4);
-                    UpdateRow(posY + 5);
-                    UpdateRow(posY + 6);
-                }
-
-                enemy.Position = new(posX, posY);
-
-                return true;
-            }
-            else if (enemy.IsTouching(blocking2))
-            {
-                MainProgram.PlayerController.Hit();
-                if (type == EnemyType.Fireball)
-                {
-                    Remove(enemy);
-                }
-                else
-                {
-                    enemy.Draw();
-                }
-            }
-            else
-            {
-                if (type == EnemyType.Fireball)
-                {
-                    Remove(enemy);
-                }
-                else
-                {
-                    enemy.Draw();
-                }
-            }
-        }
-        return false;
     }
 
     public void Store(IEnemy enemy)
@@ -347,8 +253,6 @@ public class EnemyManager
             }
         }
     }
-
-    public bool InBounds(IEnemy enemy, Vector2 position) => enemy.InBounds(position);
 
     public IEnemy GetEnemyAt(Vector2 target)
     {

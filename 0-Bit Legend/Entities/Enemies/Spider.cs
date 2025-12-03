@@ -129,7 +129,7 @@ public class Spider : BaseEnemy
 
         if (rnd1 > 2)
         {
-            passed = !EnemyManager.Move(this, newPosition, Prev1, -1);
+            passed = !TryMove(newPosition, Prev1, -1);
         }
 
         if (!passed)
@@ -138,7 +138,7 @@ public class Spider : BaseEnemy
         var randomDirection = Random.Shared.RandomEnum<DirectionType>();
         newPosition = DirectionToOffset(randomDirection);
 
-        EnemyManager.Move(this, newPosition, randomDirection, -1);
+        TryMove(newPosition, randomDirection, -1);
     }
 
     private Vector2 DirectionToOffset(DirectionType type) => type switch

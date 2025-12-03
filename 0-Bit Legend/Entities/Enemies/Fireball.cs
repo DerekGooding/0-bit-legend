@@ -86,7 +86,7 @@ public class Fireball : BaseEnemy
             _ => throw new NotSupportedException()
         };
 
-        EnemyManager.Move(this, newPosition, Prev1, -1);
+        TryMove(newPosition, Prev1, -1);
     }
     public override void TakeDamage()
     {

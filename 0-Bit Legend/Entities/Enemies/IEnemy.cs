@@ -15,6 +15,7 @@ public interface IEnemy : IEntity
     public void Clear();
     public void TakeDamage();
     public void Move();
-
     public void Die();
+
+    public bool TryMove(Vector2 position, DirectionType direction, int motion);
 }
