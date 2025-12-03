@@ -100,6 +100,101 @@ public class Bat : BaseEnemy
         return false;
     }
 
-    public override void Move() => throw new NotImplementedException();
-    public override void TakeDamage() => throw new NotImplementedException();
+    public override void Move()
+    {
+        var passed = false;
+        var rnd1 = Random.Shared.Next(10);
+        if (rnd1 > 4)
+        {
+            if (EnemyManager.GetPrev1(i) == DirectionType.Up)
+            {
+                passed = !EnemyManager.Move(i,
+                                                EnemyManager.GetEnemyType(i),
+                                                EnemyManager.GetPosX(i) - 2,
+                                                EnemyManager.GetPosY(i) - 1,
+                                                DirectionType.Up,
+                                                -1,
+                                                false);
+            }
+            else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
+            {
+                passed = !EnemyManager.Move(i,
+                                                EnemyManager.GetEnemyType(i),
+                                                EnemyManager.GetPosX(i) + 2,
+                                                EnemyManager.GetPosY(i) - 1,
+                                                DirectionType.Left,
+                                                -1,
+                                                false);
+            }
+            else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
+            {
+                passed = !EnemyManager.Move(i,
+                                                EnemyManager.GetEnemyType(i),
+                                                EnemyManager.GetPosX(i) - 2,
+                                                EnemyManager.GetPosY(i) + 1,
+                                                DirectionType.Down,
+                                                -1,
+                                                false);
+            }
+            else if (EnemyManager.GetPrev1(i) == DirectionType.Right)
+            {
+                passed = !EnemyManager.Move(i,
+                                                EnemyManager.GetEnemyType(i),
+                                                EnemyManager.GetPosX(i) + 2,
+                                                EnemyManager.GetPosY(i) + 1,
+                                                DirectionType.Right,
+                                                -1,
+                                                false);
+            }
+        }
+        else
+        {
+            passed = true;
+        }
+
+        if (passed)
+        {
+            var rnd2 = Random.Shared.Next(4) + 1;
+            if (rnd2 == 1)
+            {
+                EnemyManager.Move(i,
+                                    EnemyManager.GetEnemyType(i),
+                                    EnemyManager.GetPosX(i) - 2,
+                                    EnemyManager.GetPosY(i) - 1,
+                                    DirectionType.Up,
+                                    -1,
+                                    false);
+            }
+            else if (rnd2 == 2)
+            {
+                EnemyManager.Move(i,
+                                    EnemyManager.GetEnemyType(i),
+                                    EnemyManager.GetPosX(i) + 2,
+                                    EnemyManager.GetPosY(i) - 1,
+                                    DirectionType.Left,
+                                    -1,
+                                    false);
+            }
+            else if (rnd2 == 3)
+            {
+                EnemyManager.Move(i,
+                                    EnemyManager.GetEnemyType(i),
+                                    EnemyManager.GetPosX(i) - 2,
+                                    EnemyManager.GetPosY(i) + 1,
+                                    DirectionType.Down,
+                                    -1,
+                                    false);
+            }
+            else if (rnd2 == 4)
+            {
+                EnemyManager.Move(i,
+                                    EnemyManager.GetEnemyType(i),
+                                    EnemyManager.GetPosX(i) + 2,
+                                    EnemyManager.GetPosY(i) + 1,
+                                    DirectionType.Right,
+                                    -1,
+                                    false);
+            }
+        }
+    }
 }

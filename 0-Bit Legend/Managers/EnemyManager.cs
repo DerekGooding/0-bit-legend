@@ -20,8 +20,6 @@ public class EnemyManager
     public IEnemy GetEnemy(int index) => _enemies[index];
     public EnemyType GetEnemyType(int index) => _enemies[index].Type;
 
-    public int GetTotal() => _enemies.Count;
-
     public DirectionType GetPrev1(int index) => _enemies[index].Prev1;
 
     public DirectionType GetPrev2(int index) => _enemies[index].Prev2;
@@ -29,7 +27,6 @@ public class EnemyManager
     public int GetMotion(int index) => _enemies[index].Motion;
 
     public void SetMotion(int index, int value) => _enemies[index].Motion = value;
-
 
     public bool TakeDamage(Vector2 target, DirectionType prev)
     {
@@ -60,6 +57,13 @@ public class EnemyManager
         enemy.Prev2 = direction;
 
         _enemies.Add(enemy);
+    }
+
+    public void RemoveAll() => _enemies.Clear();
+    public void MoveAll()
+    {
+        foreach (var enemy in _enemies)
+            enemy.Move();
     }
 
     public bool Move(IEnemy enemy, Vector2 position, DirectionType direction, int motion)
@@ -351,7 +355,7 @@ public class EnemyManager
         var posX = target.X;
         var posY = target.Y;
 
-        for (var i = 0; i < GetTotal(); i++)
+        for (var i = 0; i < _enemies.Count; i++)
         {
             var inPosX = 0;
             var inPosY = 0;

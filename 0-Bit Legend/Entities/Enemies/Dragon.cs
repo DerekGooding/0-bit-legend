@@ -53,7 +53,90 @@ public class Dragon : BaseEnemy
     public override bool IsTouching(char symbol) => false;
 
     public override bool IsTouching(char[] symbols) => false;
-    public override void Move() => throw new NotImplementedException();
+    public override void Move()
+    {
+        var rnd1 = Random.Shared.Next(10);
+        waitDragon = 4;
+        EnemyManager.SetMotion(i, EnemyManager.GetMotion(i) - 1);
+
+        var phase = DirectionType.Left;
+        var speed = 1;
+        if (EnemyManager.GetMotion(i) <= 1)
+        {
+            phase = DirectionType.Right;
+            speed = 0;
+            if (EnemyManager.GetMotion(i) <= 0)
+            {
+                EnemyManager.Move(-1,
+                                    EnemyType.Fireball,
+                                    EnemyManager.GetPosX(i) - 3,
+                                    EnemyManager.GetPosY(i) + 3,
+                                    DirectionType.Up,
+                                    -1,
+                                    true);
+                EnemyManager.Move(-1,
+                                    EnemyType.Fireball,
+                                    EnemyManager.GetPosX(i) - 3,
+                                    EnemyManager.GetPosY(i) + 1,
+                                    DirectionType.Left,
+                                    -1,
+                                    true);
+                EnemyManager.Move(-1,
+                                    EnemyType.Fireball,
+                                    EnemyManager.GetPosX(i) - 3,
+                                    EnemyManager.GetPosY(i) - 1,
+                                    DirectionType.Down,
+                                    -1,
+                                    true);
+                EnemyManager.SetMotion(i, 12);
+            }
+        }
+
+        if (EnemyManager.GetPosY(i) <= 7)
+        {
+            EnemyManager.Move(i,
+                                EnemyManager.GetEnemyType(i),
+                                EnemyManager.GetPosX(i),
+                                EnemyManager.GetPosY(i) + speed,
+                                phase,
+                                -1,
+                                false);
+        }
+        else if (EnemyManager.GetPosY(i) >= 19)
+        {
+            EnemyManager.Move(
+                i,
+                EnemyManager.GetEnemyType(i),
+                EnemyManager.GetPosX(i),
+                EnemyManager.GetPosY(i) - speed,
+                phase,
+                -1,
+                false);
+        }
+        else
+        {
+            if (rnd1 <= 4)
+            {
+                EnemyManager.Move(i,
+                                    EnemyManager.GetEnemyType(i),
+                                    EnemyManager.GetPosX(i),
+                                    EnemyManager.GetPosY(i) + speed,
+                                    phase,
+                                    -1,
+                                    false);
+            }
+            else
+            {
+                EnemyManager.Move(i,
+                                    EnemyManager.GetEnemyType(i),
+                                    EnemyManager.GetPosX(i),
+                                    EnemyManager.GetPosY(i) - speed,
+                                    phase,
+                                    -1,
+                                    false);
+            }
+        }
+    }
     public override void TakeDamage()
     {
         waitDragon++;
