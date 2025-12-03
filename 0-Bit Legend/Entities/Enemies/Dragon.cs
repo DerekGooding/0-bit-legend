@@ -5,8 +5,11 @@ public class Dragon : IEnemy
     public EnemyType Type => EnemyType.Dragon;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
-    public void Draw(int posX, int posY, DirectionType previousIndex)
+    public void Draw(DirectionType previousIndex)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
         if (previousIndex == DirectionType.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
 
@@ -32,7 +35,7 @@ public class Dragon : IEnemy
 
     public bool InBounds(int posX, int posY) => posX > 0 && posY > 0;
 
-    public bool IsTouching(int posX, int posY, char symbol) => false;
+    public bool IsTouching(char symbol) => false;
 
-    public bool IsTouching(int posX, int posY, char[] symbols) => false;
+    public bool IsTouching(char[] symbols) => false;
 }

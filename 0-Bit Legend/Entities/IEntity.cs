@@ -5,9 +5,9 @@ public interface IEntity
     public Vector2 Position { get; set; }
     public DirectionType Direction { get; set; }
 
-    public void Draw(int posX, int posY, DirectionType previousIndex);
+    public void Draw(DirectionType previousIndex);
 
-    public bool IsTouching(int posX, int posY, char symbol);
+    public bool IsTouching(char symbol);
 
-    public bool IsTouching(int posX, int posY, char[] symbols);
+    public bool IsTouching(char[] symbols);
 }

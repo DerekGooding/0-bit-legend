@@ -5,8 +5,11 @@ public class Fireball : IEnemy
     public EnemyType Type => EnemyType.Fireball;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
-    public void Draw(int posX, int posY, DirectionType _)
+    public void Draw(DirectionType _)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         Map[posX + 0, posY] = 'F';
         Map[posX + 1, posY] = 'F';
         Map[posX + 2, posY] = 'F';
@@ -24,8 +27,11 @@ public class Fireball : IEnemy
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(int posX, int posY, char symbol)
+    public bool IsTouching(char symbol)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol))))
         for (var i = 0; i < 3; i++)
         {
@@ -40,8 +46,11 @@ public class Fireball : IEnemy
         return false;
     }
 
-    public bool IsTouching(int posX, int posY, char[] symbols)
+    public bool IsTouching(char[] symbols)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         for (var i = 0; i < 3; i++)
         {
             for (var j = 0; j < 2; j++)

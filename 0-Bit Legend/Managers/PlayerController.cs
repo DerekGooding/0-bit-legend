@@ -350,28 +350,28 @@ public class PlayerController
         }
         else if (posY >= 1 && !(PosX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
         {
-            IsTouching(posX, posY, 'r');
+            _player.IsTouching(posX, posY, 'r');
             StoreChar(PosX, PosY);
             var inCave = false;
 
-            if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
+            if (CurrentMap == 6 && (_player.IsTouching(posX, posY, '-') || _player.IsTouching(posX, posY, 'S')))
             {
                 SetFlag(GameFlag.HasSword, true);
                 LoadMap(6, posX, posY, DirectionType.Up);
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, '*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
                 LoadMap(7, posX, posY, DirectionType.Up);
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 5)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, 'Y') && Rupees >= 5)
             {
                 Rupees -= 10;
                 Keys++;
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, '#') && Rupees >= 15)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, '#') && Rupees >= 15)
             {
                 Rupees -= 25;
 
@@ -379,8 +379,8 @@ public class PlayerController
                 LoadMap(7, posX, posY, DirectionType.Up);
             }
             else if (CurrentMap == 9
-                && IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, '=')
+                && _player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, '=')
                 && HasFlags([GameFlag.Door1, GameFlag.Door2, GameFlag.Door3])
                 && cEnemies1 <= 0
                 && cEnemies2 <= 0
@@ -397,23 +397,23 @@ public class PlayerController
                 LoadMap(9, PosX, PosY, DirectionType.Up);
             }
 
-            if (!IsTouching(posX, posY, '=')
-                && !IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, 't')
-                && !IsTouching(posX, posY, 'n')
-                && !IsTouching(posX, posY, 'B')
-                && !IsTouching(posX, posY, '{')
-                && !IsTouching(posX, posY, '}')
-                && !IsTouching(posX, posY, 'S')
-                && !IsTouching(posX, posY, '<')
-                && !IsTouching(posX, posY, '>')
-                && !IsTouching(posX, posY, '*')
-                && !(IsTouching(posX, posY, 'F') && CurrentMap != 7)
-                && !IsTouching(posX, posY, '~')
+            if (!_player.IsTouching(posX, posY, '=')
+                && !_player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, 't')
+                && !_player.IsTouching(posX, posY, 'n')
+                && !_player.IsTouching(posX, posY, 'B')
+                && !_player.IsTouching(posX, posY, '{')
+                && !_player.IsTouching(posX, posY, '}')
+                && !_player.IsTouching(posX, posY, 'S')
+                && !_player.IsTouching(posX, posY, '<')
+                && !_player.IsTouching(posX, posY, '>')
+                && !_player.IsTouching(posX, posY, '*')
+                && !(_player.IsTouching(posX, posY, 'F') && CurrentMap != 7)
+                && !_player.IsTouching(posX, posY, '~')
                 && !((CurrentMap == 6 || CurrentMap == 7) && posY < 17)
-                && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
+                && ((CurrentMap >= 9 && !_player.IsTouching(posX, posY, '/')) || CurrentMap < 9))
             {
-                if (IsTouching(posX, posY, '/'))
+                if (_player.IsTouching(posX, posY, '/'))
                 {
                     inCave = true;
                 }
@@ -428,14 +428,14 @@ public class PlayerController
 
                 Position = new(posX, posY);
             }
-            else if (IsTouching(posX, posY, 't')
-                || IsTouching(posX, posY, 'n')
-                || IsTouching(posX, posY, 'B')
-                || IsTouching(posX, posY, '{')
-                || IsTouching(posX, posY, '}')
-                || IsTouching(posX, posY, 'S')
-                || IsTouching(posX, posY, '<')
-                || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
+            else if (_player.IsTouching(posX, posY, 't')
+                || _player.IsTouching(posX, posY, 'n')
+                || _player.IsTouching(posX, posY, 'B')
+                || _player.IsTouching(posX, posY, '{')
+                || _player.IsTouching(posX, posY, '}')
+                || _player.IsTouching(posX, posY, 'S')
+                || _player.IsTouching(posX, posY, '<')
+                || (_player.IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
                 BuildChar(PosX, PosY, DirectionType.Up);
 
@@ -446,7 +446,7 @@ public class PlayerController
 
                 Hit();
             }
-            else if (CurrentMap == 13 && IsTouching(posX, posY, '~'))
+            else if (CurrentMap == 13 && _player.IsTouching(posX, posY, '~'))
             {
                 BuildChar(PosX, PosY, DirectionType.Up);
 
@@ -516,27 +516,27 @@ public class PlayerController
 
         if (posX >= 2)
         {
-            IsTouching(posX, posY, 'r');
+            _player.IsTouching(posX, posY, 'r');
             StoreChar(PosX, PosY);
 
-            if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 'S')))
+            if (CurrentMap == 6 && (_player.IsTouching(posX, posY, '-') || _player.IsTouching(posX, posY, 'S')))
             {
                 SetFlag(GameFlag.HasSword, true);
                 LoadMap(6, posX, posY, DirectionType.Left);
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, '*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
                 LoadMap(7, posX, posY, DirectionType.Left);
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, 'Y') && Rupees >= 10)
             {
                 Rupees -= 10;
                 Keys++;
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, '#') && Rupees >= 25)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, '#') && Rupees >= 25)
             {
                 Rupees -= 25;
 
@@ -544,8 +544,8 @@ public class PlayerController
                 LoadMap(7, posX, posY, DirectionType.Left);
             }
             else if (CurrentMap == 9
-                && IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, '=')
+                && _player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, '=')
                 && HasFlag(GameFlag.Door1)
                 && !_debounce)
             {
@@ -560,18 +560,18 @@ public class PlayerController
                 LoadMap(9, PosX, PosY, DirectionType.Left);
             }
 
-            if (!IsTouching(posX, posY, '=')
-                && !IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, 't')
-                && !IsTouching(posX, posY, 'n')
-                && !IsTouching(posX, posY, 'B')
-                && !IsTouching(posX, posY, '{')
-                && !IsTouching(posX, posY, '}')
-                && !IsTouching(posX, posY, 'S')
-                && !IsTouching(posX, posY, '<')
-                && !(IsTouching(posX, posY, 'F') && CurrentMap != 7)
-                && !IsTouching(posX, posY, '~')
-                && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
+            if (!_player.IsTouching(posX, posY, '=')
+                && !_player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, 't')
+                && !_player.IsTouching(posX, posY, 'n')
+                && !_player.IsTouching(posX, posY, 'B')
+                && !_player.IsTouching(posX, posY, '{')
+                && !_player.IsTouching(posX, posY, '}')
+                && !_player.IsTouching(posX, posY, 'S')
+                && !_player.IsTouching(posX, posY, '<')
+                && !(_player.IsTouching(posX, posY, 'F') && CurrentMap != 7)
+                && !_player.IsTouching(posX, posY, '~')
+                && ((CurrentMap >= 9 && !_player.IsTouching(posX, posY, '/')) || CurrentMap < 9))
             {
                 StoreChar(posX, posY);
                 BuildChar(posX, posY, DirectionType.Left);
@@ -583,14 +583,14 @@ public class PlayerController
 
                 Position = new(posX, posY); Position = new(posX, posY);
             }
-            else if (IsTouching(posX, posY, 't')
-                || IsTouching(posX, posY, 'n')
-                || IsTouching(posX, posY, 'B')
-                || IsTouching(posX, posY, '{')
-                || IsTouching(posX, posY, '}')
-                || IsTouching(posX, posY, 'S')
-                || IsTouching(posX, posY, '<')
-                || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
+            else if (_player.IsTouching(posX, posY, 't')
+                || _player.IsTouching(posX, posY, 'n')
+                || _player.IsTouching(posX, posY, 'B')
+                || _player.IsTouching(posX, posY, '{')
+                || _player.IsTouching(posX, posY, '}')
+                || _player.IsTouching(posX, posY, 'S')
+                || _player.IsTouching(posX, posY, '<')
+                || (_player.IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
                 BuildChar(PosX, PosY, DirectionType.Left);
 
@@ -601,13 +601,13 @@ public class PlayerController
 
                 Hit();
             }
-            else if (IsTouching(posX, posY, '~')
+            else if (_player.IsTouching(posX, posY, '~')
                 && PosX != 21
                 && HasFlag(GameFlag.HasRaft)
-                && !IsTouching(posX, posY, '=')
-                && !IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, 't')
-                && !IsTouching(posX, posY, 'n'))
+                && !_player.IsTouching(posX, posY, '=')
+                && !_player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, 't')
+                && !_player.IsTouching(posX, posY, 'n'))
             {
                 StoreChar(PosX, PosY);
 
@@ -650,11 +650,11 @@ public class PlayerController
                 UpdateRow(posY + 2);
                 UpdateRow(posY + 3);
             }
-            else if (CurrentMap == 11 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
+            else if (CurrentMap == 11 && _player.IsTouching(posX, posY, 'X') && !_player.IsTouching(posX, posY, '='))
             {
                 LoadMap(9, 86, 15, DirectionType.Left);
             }
-            else if (CurrentMap == 13 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
+            else if (CurrentMap == 13 && _player.IsTouching(posX, posY, 'X') && !_player.IsTouching(posX, posY, '='))
             {
                 LoadMap(12, 86, 15, DirectionType.Left);
             }
@@ -731,17 +731,17 @@ public class PlayerController
         else if (posY <= 29)
         {
             if (//!IsTouching(posX, posY, '=')
-                !IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, 't')
-                && !IsTouching(posX, posY, 'n')
-                && !IsTouching(posX, posY, 'B')
-                && !IsTouching(posX, posY, '{')
-                && !IsTouching(posX, posY, '}')
-                && !IsTouching(posX, posY, 'S')
-                && !IsTouching(posX, posY, '<')
-                && !(IsTouching(posX, posY, 'F') && CurrentMap != 7)
-                && !IsTouching(posX, posY, '~')
-                && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9))
+                !_player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, 't')
+                && !_player.IsTouching(posX, posY, 'n')
+                && !_player.IsTouching(posX, posY, 'B')
+                && !_player.IsTouching(posX, posY, '{')
+                && !_player.IsTouching(posX, posY, '}')
+                && !_player.IsTouching(posX, posY, 'S')
+                && !_player.IsTouching(posX, posY, '<')
+                && !(_player.IsTouching(posX, posY, 'F') && CurrentMap != 7)
+                && !_player.IsTouching(posX, posY, '~')
+                && ((CurrentMap >= 9 && !_player.IsTouching(posX, posY, '/')) || CurrentMap < 9))
             {
                 StoreChar(posX, posY);
                 BuildChar(posX, posY, DirectionType.Down);
@@ -753,14 +753,14 @@ public class PlayerController
 
                 Position = new(posX, posY);
             }
-            else if (IsTouching(posX, posY, 't')
-                || IsTouching(posX, posY, 'n')
-                || IsTouching(posX, posY, 'B')
-                || IsTouching(posX, posY, '{')
-                || IsTouching(posX, posY, '}')
-                || IsTouching(posX, posY, 'S')
-                || IsTouching(posX, posY, '<')
-                || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
+            else if (_player.IsTouching(posX, posY, 't')
+                || _player.IsTouching(posX, posY, 'n')
+                || _player.IsTouching(posX, posY, 'B')
+                || _player.IsTouching(posX, posY, '{')
+                || _player.IsTouching(posX, posY, '}')
+                || _player.IsTouching(posX, posY, 'S')
+                || _player.IsTouching(posX, posY, '<')
+                || (_player.IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
                 BuildChar(PosX, PosY, DirectionType.Down);
 
@@ -771,7 +771,7 @@ public class PlayerController
 
                 Hit();
             }
-            else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
+            else if (CurrentMap == 12 && _player.IsTouching(posX, posY, 'X') && !_player.IsTouching(posX, posY, '='))
             {
                 BuildChar(PosX, PosY, DirectionType.Down);
 
@@ -845,28 +845,28 @@ public class PlayerController
 
         if (posX <= 99)
         {
-            IsTouching(posX, posY, 'r');
+            _player.IsTouching(posX, posY, 'r');
             StoreChar(PosX, PosY);
 
             var persist = true;
-            if (CurrentMap == 6 && (IsTouching(posX, posY, '-') || IsTouching(posX, posY, 's')))
+            if (CurrentMap == 6 && (_player.IsTouching(posX, posY, '-') || _player.IsTouching(posX, posY, 's')))
             {
                 SetFlag(GameFlag.HasSword, true);
                 LoadMap(6, posX, posY, DirectionType.Right);
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, '*') && Rupees >= 35)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, '*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
                 LoadMap(7, posX, posY, DirectionType.Right);
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, 'Y') && Rupees >= 10)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, 'Y') && Rupees >= 10)
             {
                 Rupees -= 10;
                 Keys++;
             }
-            else if (CurrentMap == 7 && IsTouching(posX, posY, '#') && Rupees >= 25)
+            else if (CurrentMap == 7 && _player.IsTouching(posX, posY, '#') && Rupees >= 25)
             {
                 Rupees -= 25;
 
@@ -874,8 +874,8 @@ public class PlayerController
                 LoadMap(7, posX, posY, DirectionType.Right);
             }
             else if (CurrentMap == 9
-                && IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, '=')
+                && _player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, '=')
                 && HasFlag(GameFlag.Door2)
                 && !_debounce)
             {
@@ -891,18 +891,18 @@ public class PlayerController
                 LoadMap(9, PosX, PosY, DirectionType.Right);
             }
 
-            if (!IsTouching(posX, posY, '=')
-                && !IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, 't')
-                && !IsTouching(posX, posY, 'n')
-                && !IsTouching(posX, posY, 'B')
-                && !IsTouching(posX, posY, '{')
-                && !IsTouching(posX, posY, '}')
-                && !IsTouching(posX, posY, 'S')
-                && !IsTouching(posX, posY, '<')
-                && !(IsTouching(posX, posY, 'F') && CurrentMap != 7)
-                && !IsTouching(posX, posY, '~')
-                && ((CurrentMap >= 9 && !IsTouching(posX, posY, '/')) || CurrentMap < 9)
+            if (!_player.IsTouching(posX, posY, '=')
+                && !_player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, 't')
+                && !_player.IsTouching(posX, posY, 'n')
+                && !_player.IsTouching(posX, posY, 'B')
+                && !_player.IsTouching(posX, posY, '{')
+                && !_player.IsTouching(posX, posY, '}')
+                && !_player.IsTouching(posX, posY, 'S')
+                && !_player.IsTouching(posX, posY, '<')
+                && !(_player.IsTouching(posX, posY, 'F') && CurrentMap != 7)
+                && !_player.IsTouching(posX, posY, '~')
+                && ((CurrentMap >= 9 && !_player.IsTouching(posX, posY, '/')) || CurrentMap < 9)
                 && persist)
             {
                 StoreChar(posX, posY);
@@ -915,14 +915,14 @@ public class PlayerController
 
                 Position = new(posX, posY);
             }
-            else if (IsTouching(posX, posY, 't')
-                || IsTouching(posX, posY, 'n')
-                || IsTouching(posX, posY, 'B')
-                || IsTouching(posX, posY, '{')
-                || IsTouching(posX, posY, '}')
-                || IsTouching(posX, posY, 'S')
-                || IsTouching(posX, posY, '<')
-                || (IsTouching(posX, posY, 'F') && CurrentMap != 7))
+            else if (_player.IsTouching(posX, posY, 't')
+                || _player.IsTouching(posX, posY, 'n')
+                || _player.IsTouching(posX, posY, 'B')
+                || _player.IsTouching(posX, posY, '{')
+                || _player.IsTouching(posX, posY, '}')
+                || _player.IsTouching(posX, posY, 'S')
+                || _player.IsTouching(posX, posY, '<')
+                || (_player.IsTouching(posX, posY, 'F') && CurrentMap != 7))
             {
                 BuildChar(PosX, PosY, DirectionType.Right);
 
@@ -933,13 +933,13 @@ public class PlayerController
 
                 Hit();
             }
-            else if (IsTouching(posX, posY, '~')
+            else if (_player.IsTouching(posX, posY, '~')
                 && PosX != 21
                 && HasFlag(GameFlag.HasRaft)
-                && !IsTouching(posX, posY, '=')
-                && !IsTouching(posX, posY, 'X')
-                && !IsTouching(posX, posY, 't')
-                && !IsTouching(posX, posY, 'n'))
+                && !_player.IsTouching(posX, posY, '=')
+                && !_player.IsTouching(posX, posY, 'X')
+                && !_player.IsTouching(posX, posY, 't')
+                && !_player.IsTouching(posX, posY, 'n'))
             {
                 StoreChar(PosX, PosY);
 
@@ -981,11 +981,11 @@ public class PlayerController
                 UpdateRow(posY + 2);
                 UpdateRow(posY + 3);
             }
-            else if (CurrentMap == 10 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
+            else if (CurrentMap == 10 && _player.IsTouching(posX, posY, 'X') && !_player.IsTouching(posX, posY, '='))
             {
                 LoadMap(9, 14, 15, DirectionType.Right);
             }
-            else if (CurrentMap == 12 && IsTouching(posX, posY, 'X') && !IsTouching(posX, posY, '='))
+            else if (CurrentMap == 12 && _player.IsTouching(posX, posY, 'X') && !_player.IsTouching(posX, posY, '='))
             {
                 LoadMap(13, 15, 15, DirectionType.Right);
             }
@@ -1296,51 +1296,5 @@ public class PlayerController
             UpdateRow(PosY + 1);
             UpdateRow(PosY + 2);
         }
-    }
-
-    public bool IsTouching(int posX, int posY, char symbol)
-    {
-        if (symbol == '/')
-        {
-            return Map[posX, posY - 1] == '/';
-        }
-
-        if (Map[posX - 2, posY - 1] == symbol
-            || Map[posX - 1, posY - 1] == symbol
-            || Map[posX, posY - 1] == symbol
-            || Map[posX + 1, posY - 1] == symbol
-            || Map[posX + 2, posY - 1] == symbol
-            || Map[posX - 2, posY] == symbol
-            || Map[posX - 1, posY] == symbol
-            || Map[posX, posY] == symbol
-            || Map[posX + 1, posY] == symbol
-            || Map[posX + 2, posY] == symbol
-            || Map[posX - 2, posY + 1] == symbol
-            || Map[posX - 1, posY + 1] == symbol
-            || Map[posX, posY + 1] == symbol
-            || Map[posX + 1, posY + 1] == symbol
-            || Map[posX + 2, posY + 1] == symbol
-            || Map[posX - 2, posY + 2] == symbol
-            || Map[posX - 1, posY + 2] == symbol
-            || Map[posX, posY + 2] == symbol
-            || Map[posX + 1, posY + 2] == symbol
-            || Map[posX + 2, posY + 2] == symbol)
-        {
-            if (symbol is 'R' or 'r')
-            {
-                for (var i = 0; i < 4; i++)
-                {
-                    for (var j = 0; j < 5; j++)
-                    {
-                        if (Map[posX - 2 + j, posY - 1 + i] is 'R' or 'r')
-                        {
-                            MainProgram.EnemyManager.RemoveRupee(posX - 2 + j, posY - 1 + i);
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
     }
 }

@@ -5,7 +5,7 @@ public class Link : IEntity
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
 
-    public void Draw(int posX, int posY, DirectionType direction)
+    public void Draw(DirectionType direction)
     {
         var spaceslot = ' ';
         var underslot = '_';
@@ -121,8 +121,12 @@ public class Link : IEntity
         }
     }
 
-    public bool IsTouching(int posX, int posY, char symbol)
+    public bool IsTouching(char symbol)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
+
         if (symbol == '/')
         {
             return Map[posX, posY - 1] == '/';
@@ -157,7 +161,7 @@ public class Link : IEntity
                     {
                         if (Map[posX - 2 + j, posY - 1 + i] is 'R' or 'r')
                         {
-                            MainProgram.EnemyManager.RemoveRupee(posX - 2 + j, posY - 1 + i);
+                            EnemyManager.RemoveRupee(posX - 2 + j, posY - 1 + i);
                         }
                     }
                 }
@@ -167,5 +171,5 @@ public class Link : IEntity
         return false;
     }
 
-    public bool IsTouching(int posX, int posY, char[] symbols) => throw new NotImplementedException();
+    public bool IsTouching(char[] symbols) => throw new NotImplementedException();
 }

@@ -5,8 +5,11 @@ public class Bat : IEnemy
     public EnemyType Type => EnemyType.Bat;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
-    public void Draw(int posX, int posY, DirectionType previousIndex)
+    public void Draw(DirectionType previousIndex)
     {
+        var posX = Position.X;
+        var posY = Position.Y;
+
         if (previousIndex == DirectionType.Left)
         {
             Map[posX + 0, posY] = '{';
@@ -45,7 +48,7 @@ public class Bat : IEnemy
         return posX > 0 && inPosX < 102 && posY > 0 && inPosY < 33;
     }
 
-    public bool IsTouching(int posX, int posY, char symbol)
+    public bool IsTouching(char symbol)
     {
         //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX + 3, posY] == symbol || Map[posX + 4, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol || Map[posX + 3, posY + 1] == symbol || Map[posX + 4, posY + 1] == symbol))
         for (var i = 0; i < 5; i++)
@@ -61,7 +64,7 @@ public class Bat : IEnemy
         return false;
     }
 
-    public bool IsTouching(int posX, int posY, char[] symbols)
+    public bool IsTouching(char[] symbols)
     {
         for (var i = 0; i < 5; i++)
         {
