@@ -77,37 +77,16 @@ public class Fireball : BaseEnemy
 
     public override void Move()
     {
-        var rnd1 = Random.Shared.Next(10);
-        if (EnemyManager.GetPrev1(i) == DirectionType.Up)
+        var newPosition = Prev1 switch
         {
-            EnemyManager.Move(i,
-                                EnemyManager.GetEnemyType(i),
-                                EnemyManager.GetPosX(i) - 3,
-                                EnemyManager.GetPosY(i) - 2,
-                                DirectionType.Up,
-                                -1,
-                                false);
-        }
-        else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
-        {
-            EnemyManager.Move(i,
-                                EnemyManager.GetEnemyType(i),
-                                EnemyManager.GetPosX(i) - 3,
-                                EnemyManager.GetPosY(i),
-                                DirectionType.Left,
-                                -1,
-                                false);
-        }
-        else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
-        {
-            EnemyManager.Move(i,
-                                EnemyManager.GetEnemyType(i),
-                                EnemyManager.GetPosX(i) - 3,
-                                EnemyManager.GetPosY(i) + 2,
-                                DirectionType.Down,
-                                -1,
-                                false);
-        }
+            DirectionType.Up => Position.Offset(-3, -2),
+            DirectionType.Left => Position.Offset(x: -3),
+            DirectionType.Down => Position.Offset(-3, + 2),
+            DirectionType.Right => Position.Offset(x: 3),
+            _ => throw new NotSupportedException()
+        };
+
+        EnemyManager.Move(this, newPosition, Prev1, -1);
     }
     public override void TakeDamage()
     {

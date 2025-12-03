@@ -125,25 +125,18 @@ public class Spider : BaseEnemy
 
         var rnd1 = Random.Shared.Next(10);
         var passed = rnd1 <= 2;
+        var newPosition = Prev1 switch
+        {
+            DirectionType.Up => Position.Offset(-3, -2),
+            DirectionType.Left => Position.Offset(x: -3),
+            DirectionType.Down => Position.Offset(-3, +2),
+            DirectionType.Right => Position.Offset(x: 3),
+            _ => throw new NotSupportedException()
+        };
 
         if (rnd1 > 2)
         {
-            if (Prev1 == DirectionType.Up)
-            {
-                passed = MoveUp();
-            }
-            else if (Prev1 == DirectionType.Left)
-            {
-                passed = MoveLeft();
-            }
-            else if (Prev1 == DirectionType.Down)
-            {
-                passed = MoveDown();
-            }
-            else if (Prev1 == DirectionType.Right)
-            {
-                passed = MoveRight();
-            }
+            passed = !EnemyManager.Move(this, newPosition, Prev1, -1);
         }
 
         if (!passed)
