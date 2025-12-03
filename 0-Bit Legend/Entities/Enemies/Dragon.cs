@@ -76,8 +76,8 @@ public class Dragon : BaseEnemy
         base.Die();
 
         SetFlag(GameFlag.Dragon, true);
-        var info = PlayerController.GetPlayerInfo();
-        LoadMap(12, info.Position, info.Prev1);
+        var (position, prev1) = PlayerController.GetPlayerInfo();
+        LoadMap(12, position, prev1);
     }
 
     public override void Move()

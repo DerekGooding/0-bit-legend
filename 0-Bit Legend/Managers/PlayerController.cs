@@ -331,14 +331,14 @@ public class PlayerController
                     }
                 }
 
-                Position = new(Position.X, Position.Y - 1);
+                _player.Position = new(_player.Position.X, _player.Position.Y - 1);
                 DeployRaft(_prev2);
 
                 UpdateRow(PosY + 4);
             }
             else
             {
-                LoadMap(4, 21, 29, DirectionType.Up);
+                LoadMap(4, new(21, 29), DirectionType.Up);
             }
         }
         else if (posY >= 1 && !(PosX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
@@ -350,14 +350,14 @@ public class PlayerController
             if (CurrentMap == 6 && (_player.IsTouching('-') || _player.IsTouching('S')))
             {
                 SetFlag(GameFlag.HasSword, true);
-                LoadMap(6, posX, posY, DirectionType.Up);
+                LoadMap(6, new(posX, posY), DirectionType.Up);
             }
             else if (CurrentMap == 7 && _player.IsTouching('*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
-                LoadMap(7, posX, posY, DirectionType.Up);
+                LoadMap(7, new(posX, posY), DirectionType.Up);
             }
             else if (CurrentMap == 7 && _player.IsTouching('Y') && Rupees >= 5)
             {
@@ -369,7 +369,7 @@ public class PlayerController
                 Rupees -= 25;
 
                 SetFlag(GameFlag.HasArmor, true);
-                LoadMap(7, posX, posY, DirectionType.Up);
+                LoadMap(7, new(posX, posY), DirectionType.Up);
             }
             else if (CurrentMap == 9
                 && _player.IsTouching('X')
@@ -379,7 +379,7 @@ public class PlayerController
                 && cEnemies2 <= 0
                 && !_debounce)
             {
-                LoadMap(12, 50, 24, DirectionType.Up);
+                LoadMap(12, new(50, 24), DirectionType.Up);
             }
             else if (CurrentMap == 9 && PosX >= 48 && PosX <= 52 && PosY == 7 && !HasFlag(GameFlag.Door3) && Keys > 0)
             {
@@ -387,7 +387,7 @@ public class PlayerController
                 Keys--;
 
                 SetFlag(GameFlag.Door3, true);
-                LoadMap(9, PosX, PosY, DirectionType.Up);
+                LoadMap(9, new(PosX, PosY), DirectionType.Up);
             }
 
             if (!_player.IsTouching('=')
@@ -420,7 +420,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                Position = new(posX, posY);
+                _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
                 || _player.IsTouching('n')
@@ -451,7 +451,7 @@ public class PlayerController
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                LoadMap(13, 58, 15, DirectionType.Left);
+                LoadMap(13, new(58, 15), DirectionType.Left);
                 SetGameState(GameState.GameOver);
             }
             else
@@ -474,32 +474,32 @@ public class PlayerController
         {
             if (CurrentMap == 0)
             {
-                LoadMap(1, 63, 29, DirectionType.Up);
+                LoadMap(1, new(63, 29), DirectionType.Up);
             }
             else if (CurrentMap == 2)
             {
                 if (posX > 29)
                 {
-                    LoadMap(4, 55, 30, DirectionType.Up);
+                    LoadMap(4, new(55, 30), DirectionType.Up);
                 }
                 else if (posX == 21)
                 {
-                    LoadMap(4, 21, 29, DirectionType.Up);
+                    LoadMap(4, new(21, 29), DirectionType.Up);
                 }
                 else
                 {
-                    LoadMap(4, 10, 29, DirectionType.Up);
+                    LoadMap(4, new(10, 29), DirectionType.Up);
                 }
             }
             else if (CurrentMap == 3)
             {
-                LoadMap(5, 49, 30, DirectionType.Up);
+                LoadMap(5, new(49, 30), DirectionType.Up);
             }
         }
         if (HasFlag(GameFlag.Text))
         {
             SetFlag(GameFlag.Text, false);
-            LoadMap(9, posX, posY, DirectionType.Up);
+            LoadMap(9, new(posX, posY), DirectionType.Up);
         }
 
         _debounce = false;
@@ -519,14 +519,14 @@ public class PlayerController
             if (CurrentMap == 6 && (_player.IsTouching('-') || _player.IsTouching('S')))
             {
                 SetFlag(GameFlag.HasSword, true);
-                LoadMap(6, posX, posY, DirectionType.Left);
+                LoadMap(6, new(posX, posY), DirectionType.Left);
             }
             else if (CurrentMap == 7 && _player.IsTouching('*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
-                LoadMap(7, posX, posY, DirectionType.Left);
+                LoadMap(7, new(posX, posY), DirectionType.Left);
             }
             else if (CurrentMap == 7 && _player.IsTouching('Y') && Rupees >= 10)
             {
@@ -538,7 +538,7 @@ public class PlayerController
                 Rupees -= 25;
 
                 SetFlag(GameFlag.HasArmor, true);
-                LoadMap(7, posX, posY, DirectionType.Left);
+                LoadMap(7, new(posX, posY), DirectionType.Left);
             }
             else if (CurrentMap == 9
                 && _player.IsTouching('X')
@@ -546,7 +546,7 @@ public class PlayerController
                 && HasFlag(GameFlag.Door1)
                 && !_debounce)
             {
-                LoadMap(10, 87, 15, DirectionType.Left);
+                LoadMap(10, new(87, 15), DirectionType.Left);
             }
             else if (CurrentMap == 9 && PosX == 14 && PosY >= 14 && PosY <= 16 && !HasFlag(GameFlag.Door1) && Keys > 0)
             {
@@ -554,7 +554,7 @@ public class PlayerController
                 Keys--;
 
                 SetFlag(GameFlag.Door1, true);
-                LoadMap(9, PosX, PosY, DirectionType.Left);
+                LoadMap(9, new(PosX, PosY), DirectionType.Left);
             }
 
             if (!_player.IsTouching('=')
@@ -579,7 +579,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                Position = new(posX, posY); Position = new(posX, posY);
+                _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
                 || _player.IsTouching('n')
@@ -615,7 +615,7 @@ public class PlayerController
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                Position = new(21, Position.Y);
+                _player.Position = new(21, _player.Position.Y);
                 DeployRaft(DirectionType.Left);
                 wait = 150;
             }
@@ -638,7 +638,7 @@ public class PlayerController
                     }
                 }
 
-                Position = new(11, Position.Y);
+                _player.Position = new(11, _player.Position.Y);
                 posX = 11;
 
                 _player.Direction = DirectionType.Left;
@@ -653,11 +653,11 @@ public class PlayerController
             }
             else if (CurrentMap == 11 && _player.IsTouching('X') && !_player.IsTouching('='))
             {
-                LoadMap(9, 86, 15, DirectionType.Left);
+                LoadMap(9, new(86, 15), DirectionType.Left);
             }
             else if (CurrentMap == 13 && _player.IsTouching('X') && !_player.IsTouching('='))
             {
-                LoadMap(12, 86, 15, DirectionType.Left);
+                LoadMap(12, new(86, 15), DirectionType.Left);
             }
             else
             {
@@ -675,29 +675,29 @@ public class PlayerController
         {
             if (CurrentMap == 0)
             {
-                LoadMap(2, 99, 12, DirectionType.Left);
+                LoadMap(2, new(99, 12), DirectionType.Left);
             }
             else if (CurrentMap == 3)
             {
-                LoadMap(0, 98, 17, DirectionType.Left);
+                LoadMap(0, new(98, 17), DirectionType.Left);
             }
             else if (CurrentMap == 1)
             {
-                LoadMap(4, 98, 13, DirectionType.Left);
+                LoadMap(4, new(98, 13), DirectionType.Left);
             }
             else if (CurrentMap == 5)
             {
-                LoadMap(1, 98, 16, DirectionType.Left);
+                LoadMap(1, new(98, 16), DirectionType.Left);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(8, 99, 16, DirectionType.Left);
+                LoadMap(8, new(99, 16), DirectionType.Left);
             }
         }
         if (HasFlag(GameFlag.Text))
         {
             SetFlag(GameFlag.Text, false);
-            LoadMap(9, posX, posY, DirectionType.Up);
+            LoadMap(9, new(posX, posY), DirectionType.Up);
         }
 
         _debounce = false;
@@ -720,14 +720,14 @@ public class PlayerController
                     }
                 }
 
-                Position = new(Position.X, Position.Y + 1);
+                _player.Position = new(_player.Position.X, _player.Position.Y + 1);
                 DeployRaft(_prev2);
 
                 UpdateRow(PosY - 3);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(2, 21, 2, DirectionType.Down);
+                LoadMap(2, new(21, 2), DirectionType.Down);
             }
         }
         else if (posY <= 29)
@@ -754,7 +754,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                Position = new(posX, posY);
+                _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
                 || _player.IsTouching('n')
@@ -785,7 +785,7 @@ public class PlayerController
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                LoadMap(9, 50, 9, DirectionType.Down);
+                LoadMap(9, new(50, 9), DirectionType.Down);
             }
             else
             {
@@ -802,40 +802,40 @@ public class PlayerController
         {
             if (CurrentMap == 1)
             {
-                LoadMap(0, 63, 1, DirectionType.Down);
+                LoadMap(0, new(63, 1), DirectionType.Down);
             }
             else if (CurrentMap == 4)
             {
                 if (posX > 29)
                 {
-                    LoadMap(2, 55, 1, DirectionType.Down);
+                    LoadMap(2, new(55, 1), DirectionType.Down);
                 }
                 else if (posX == 21)
                 {
-                    LoadMap(2, 21, 2, DirectionType.Down);
+                    LoadMap(2, new(21, 2), DirectionType.Down);
                 }
                 else
                 {
-                    LoadMap(2, 10, 2, DirectionType.Down);
+                    LoadMap(2, new(10, 2), DirectionType.Down);
                 }
             }
             else if (CurrentMap == 5)
             {
-                LoadMap(3, 49, 2, DirectionType.Down);
+                LoadMap(3, new(49, 2), DirectionType.Down);
             }
             else if (CurrentMap == 6)
             {
-                LoadMap(0, 16, 6, DirectionType.Down);
+                LoadMap(0, new(16, 6), DirectionType.Down);
                 //WaitForTransition();
             }
             else if (CurrentMap == 7)
             {
-                LoadMap(4, 86, 7, DirectionType.Down);
+                LoadMap(4, new(86, 7), DirectionType.Down);
                 //WaitForTransition();
             }
             else if (CurrentMap == 9)
             {
-                LoadMap(8, 51, 17, DirectionType.Down);
+                LoadMap(8, new(51, 17), DirectionType.Down);
                 //WaitForTransition();
             }
         }
@@ -858,14 +858,14 @@ public class PlayerController
             if (CurrentMap == 6 && (_player.IsTouching('-') || _player.IsTouching('s')))
             {
                 SetFlag(GameFlag.HasSword, true);
-                LoadMap(6, posX, posY, DirectionType.Right);
+                LoadMap(6, new(posX, posY), DirectionType.Right);
             }
             else if (CurrentMap == 7 && _player.IsTouching('*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
                 SetFlag(GameFlag.HasRaft, true);
-                LoadMap(7, posX, posY, DirectionType.Right);
+                LoadMap(7, new(posX, posY), DirectionType.Right);
             }
             else if (CurrentMap == 7 && _player.IsTouching('Y') && Rupees >= 10)
             {
@@ -877,7 +877,7 @@ public class PlayerController
                 Rupees -= 25;
 
                 SetFlag(GameFlag.HasArmor, true);
-                LoadMap(7, posX, posY, DirectionType.Right);
+                LoadMap(7, new(posX, posY), DirectionType.Right);
             }
             else if (CurrentMap == 9
                 && _player.IsTouching('X')
@@ -886,7 +886,7 @@ public class PlayerController
                 && !_debounce)
             {
                 persist = false;
-                LoadMap(11, 14, 15, DirectionType.Right);
+                LoadMap(11, new(14, 15), DirectionType.Right);
             }
             else if (CurrentMap == 9 && PosX == 86 && PosY >= 14 && PosY <= 16 && !HasFlag(GameFlag.Door2) && Keys > 0)
             {
@@ -894,7 +894,7 @@ public class PlayerController
                 Keys--;
 
                 SetFlag(GameFlag.Door2, true);
-                LoadMap(9, PosX, PosY, DirectionType.Right);
+                LoadMap(9, new(PosX, PosY), DirectionType.Right);
             }
 
             if (!_player.IsTouching('=')
@@ -920,7 +920,7 @@ public class PlayerController
                 UpdateRow(posY + 1);
                 UpdateRow(posY + 2);
 
-                Position = new(posX, posY);
+                _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
                 || _player.IsTouching('n')
@@ -956,7 +956,7 @@ public class PlayerController
                 UpdateRow(PosY + 1);
                 UpdateRow(PosY + 2);
 
-                Position = new(21, Position.Y);
+                _player.Position = new(21, _player.Position.Y);
                 DeployRaft(DirectionType.Right);
                 wait = 150;
             }
@@ -978,7 +978,7 @@ public class PlayerController
                     }
                 }
 
-                Position = new(30, Position.Y);
+                _player.Position = new(30, _player.Position.Y);
                 posX = 30;
 
                 _player.Direction = DirectionType.Right;
@@ -993,11 +993,11 @@ public class PlayerController
             }
             else if (CurrentMap == 10 && _player.IsTouching('X') && !_player.IsTouching('='))
             {
-                LoadMap(9, 14, 15, DirectionType.Right);
+                LoadMap(9, new(14, 15), DirectionType.Right);
             }
             else if (CurrentMap == 12 && _player.IsTouching('X') && !_player.IsTouching('='))
             {
-                LoadMap(13, 15, 15, DirectionType.Right);
+                LoadMap(13, new(15, 15), DirectionType.Right);
             }
             else
             {
@@ -1014,36 +1014,36 @@ public class PlayerController
         {
             if (CurrentMap == 2)
             {
-                LoadMap(0, 4, 12, DirectionType.Right);
+                LoadMap(0, new(4, 12), DirectionType.Right);
             }
             else if (CurrentMap == 0)
             {
-                LoadMap(3, 2, 18, DirectionType.Right);
+                LoadMap(3, new(2, 18), DirectionType.Right);
             }
             else if (CurrentMap == 4)
             {
-                LoadMap(1, 2, 13, DirectionType.Right);
+                LoadMap(1, new(2, 13), DirectionType.Right);
             }
             else if (CurrentMap == 1)
             {
-                LoadMap(5, 2, 15, DirectionType.Right);
+                LoadMap(5, new(2, 15), DirectionType.Right);
             }
             else if (CurrentMap == 8)
             {
-                LoadMap(4, 2, 16, DirectionType.Right);
+                LoadMap(4, new(2, 16), DirectionType.Right);
             }
         }
         if (HasFlag(GameFlag.Text))
         {
             SetFlag(GameFlag.Text, false);
-            LoadMap(9, posX, posY, DirectionType.Up);
+            LoadMap(9, new(posX, posY), DirectionType.Up);
         }
         _debounce = false;
     }
 
     public void SpawnLink(Vector2 position, DirectionType direction)
     {
-        Position = position;
+        _player.Position = position;
         var posX = position.X;
         var posY = position.Y;
 

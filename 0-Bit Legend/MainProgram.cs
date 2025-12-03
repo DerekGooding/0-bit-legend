@@ -181,20 +181,21 @@ public static class MainProgram
     {
         Thread.Sleep(100);
         State = GameState.Idle;
+        var (Position, _) = PlayerController.GetPlayerInfo();
 
-        if (PlayerController.GetPrev() == DirectionType.Up && PlayerController.Position.Y < 27)
+        if (PlayerController.GetPrev() == DirectionType.Up && Position.Y < 27)
         {
             PlayerController.MoveDown(3);
         }
-        else if (PlayerController.GetPrev() == DirectionType.Left && PlayerController.Position.X < 94)
+        else if (PlayerController.GetPrev() == DirectionType.Left && Position.X < 94)
         {
             PlayerController.MoveRight(3);
         }
-        else if (PlayerController.GetPrev() == DirectionType.Down && PlayerController.Position.Y > 3)
+        else if (PlayerController.GetPrev() == DirectionType.Down && Position.Y > 3)
         {
             PlayerController.MoveUp(3);
         }
-        else if (PlayerController.GetPrev() == DirectionType.Right && PlayerController.Position.X > 7)
+        else if (PlayerController.GetPrev() == DirectionType.Right && Position.X > 7)
         {
             PlayerController.MoveLeft(3);
         }
@@ -221,10 +222,12 @@ public static class MainProgram
             {
                 PlayerController.PlayEffect('+');
             }
-            UpdateRow(PlayerController.Position.Y - 1);
-            UpdateRow(PlayerController.Position.Y);
-            UpdateRow(PlayerController.Position.Y + 1);
-            UpdateRow(PlayerController.Position.Y + 2);
+
+            var (position, _) = PlayerController.GetPlayerInfo();
+            UpdateRow(position.Y - 1);
+            UpdateRow(position.Y);
+            UpdateRow(position.Y + 1);
+            UpdateRow(position.Y + 2);
         }
         else if (_frames == 25)
         {
@@ -535,9 +538,8 @@ public static class MainProgram
         {
             if (!HasFlag(GameFlag.Dragon)) EnemyManager.SpawnEnemy(EnemyType.Dragon, new(71, 13), DirectionType.Left, 12);
         }
-        var position = new Vector2(posX, posY);
 
-        if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
+        if ((CurrentMap == 2 || CurrentMap == 4) && position.X == 21)
         {
             PlayerController.SetPosition(position);
             PlayerController.DeployRaft(PlayerController.GetPrev2());

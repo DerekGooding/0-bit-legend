@@ -68,7 +68,7 @@ public sealed class MapTests
         using var _ = new ConsoleSilencer();
 
 
-        MainProgram.LoadMap(0, 50, 29, _0_Bit_Legend.Model.Enums.DirectionType.Up);
+        MainProgram.LoadMap(0, new(50, 29), _0_Bit_Legend.Model.Enums.DirectionType.Up);
     }
 
 
