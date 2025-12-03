@@ -848,17 +848,12 @@ public static class MainProgram
         for (var i = 0; i < 33; i++)
         {
             _strs[i] = string.Empty;
-            for (var j = 0; j < 102; j++)
+            for (var j = 0; j < 103; j++)
             {
-                if (map[val] != '#')
+                if (j != 102)
                 {
                     Map[j, i] = map[val];
-
                     _strs[i] += Map[j, i];
-                }
-                else
-                {
-                    j--;
                 }
                 val++;
             }
