@@ -13,20 +13,6 @@ public class EnemyManager
     private Vector2 _storedRupeePosition = Vector2.Zero;
     public void SetStoredRupeePosition(Vector2 storedRupeePosition) => _storedRupeePosition = storedRupeePosition;
 
-    public int GetPosX(int index) => _enemies[index].Position.X;
-    public int GetPosY(int index) => _enemies[index].Position.Y;
-
-    public IEnemy GetEnemy(int index) => _enemies[index];
-    public EnemyType GetEnemyType(int index) => _enemies[index].Type;
-
-    public DirectionType GetPrev1(int index) => _enemies[index].Prev1;
-
-    public DirectionType GetPrev2(int index) => _enemies[index].Prev2;
-
-    public int GetMotion(int index) => _enemies[index].Motion;
-
-    public void SetMotion(int index, int value) => _enemies[index].Motion = value;
-
     public bool TakeDamage(Vector2 target, DirectionType prev)
     {
         var enemy = GetEnemyAt(target);

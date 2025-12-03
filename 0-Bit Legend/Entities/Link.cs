@@ -123,7 +123,6 @@ public class Link : IEntity
             Map[posX + 2, posY + 2] = '|';
         }
     }
-
     public bool IsTouching(char symbol)
     {
         var posX = Position.X;
@@ -172,6 +171,5 @@ public class Link : IEntity
         }
         return false;
     }
-
     public bool IsTouching(char[] symbols) => throw new NotImplementedException();
 }
