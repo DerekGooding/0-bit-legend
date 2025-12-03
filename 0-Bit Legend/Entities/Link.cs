@@ -162,7 +162,7 @@ public class Link : IEntity
                     {
                         if (Map[posX - 2 + j, posY - 1 + i] is 'R' or 'r')
                         {
-                            EnemyManager.RemoveRupee(posX - 2 + j, posY - 1 + i);
+                            EnemyManager.RemoveRupee(new(posX - 2 + j, posY - 1 + i));
                         }
                     }
                 }

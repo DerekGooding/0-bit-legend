@@ -29,12 +29,11 @@ public abstract class BaseEnemy : IEnemy
 
     public virtual void Die()
     {
-        EnemyManager.SetStoredRupeePosition(new(Position.X + 2, Position.Y + 1));
-
         EnemyManager.Remove(this);
-
-        PlayerController.SetSpawnRupee(true);
+        SpawnRupee(Position);
     }
+
+    public virtual void SpawnRupee(Vector2 position) { }
 
     public bool TryMove(Vector2 position, DirectionType direction, int motion)
     {

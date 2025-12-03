@@ -1,11 +1,39 @@
-﻿using System;
-
-namespace _0_Bit_Legend.Entities.Enemies;
+﻿namespace _0_Bit_Legend.Entities.Enemies;
 
 public class Octorok : BaseEnemy
 {
     public override EnemyType Type { get; } = EnemyType.Octorok;
     public override char[] MapStorage { get; } = new string(' ', 12).ToCharArray();
+
+    public override void SpawnRupee(Vector2 position)
+    {
+        var newRupee = new Rupee();
+        var sRPosX = position.X;
+        var sRPosY = position.Y;
+
+        var value = 0;
+        for (var i = 0; i < 3; i++)
+        {
+            for (var j = 0; j < 3; j++)
+            {
+                newRupee.MapStorage[value] = Map[sRPosX - 1 + j, sRPosY - 1 + i] is not '-' and not 'S'
+                    ? Map[sRPosX - 1 + j, sRPosY - 1 + i]
+                    : ' ';
+                value++;
+            }
+        }
+        newRupee.Position = new(sRPosX, sRPosY);
+        EnemyManager.AddRupee(newRupee);
+
+        Map[sRPosX - 1, sRPosY] = 'R';
+        Map[sRPosX + 1, sRPosY] = 'R';
+        Map[sRPosX, sRPosY - 1] = 'r';
+        Map[sRPosX, sRPosY + 1] = 'r';
+
+        UpdateRow(sRPosY - 1);
+        UpdateRow(sRPosY);
+        UpdateRow(sRPosY + 1);
+    }
 
     public override void Clear()
     {

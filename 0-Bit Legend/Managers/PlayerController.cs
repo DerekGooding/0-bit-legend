@@ -15,22 +15,19 @@ public class PlayerController
     private DirectionType _prev2 = DirectionType.Left;
 
     private bool _debounce;
-    private bool _spawnRupee;
     private bool _swingingSword;
 
-    public Vector2 Position { get; private set; }
     public int MovementWait;
 
     public DirectionType GetPrev() => _prev;
     public DirectionType GetPrev2() => _prev2;
-    public void SetPosition(Vector2 pos) => Position = pos;
+    public void SetPosition(Vector2 pos) => _player.Position = pos;
     public void SetPreHitPosition(Vector2 pos) => _preHitPosition = pos;
     public void SetPrev(DirectionType prev) => _prev = prev;
-    public void SetSpawnRupee(bool spawnRupee) => _spawnRupee = spawnRupee;
 
     //Temporary rename fix, TODO removed
-    private int PosX => Position.X;
-    private int PosY => Position.Y;
+    private int PosX => _player.Position.X;
+    private int PosY => _player.Position.Y;
     private int PreHitPosX => _preHitPosition.X;
     private int PreHitPosY => _preHitPosition.Y;
 
@@ -257,11 +254,7 @@ public class PlayerController
             if (detect.Any(x => x == _storage_sword[i]) || detect.Any(x => x == _storage_detect_enemy[i]))
             {
                 hit = true;
-                if (MainProgram.EnemyManager.TakeDamage(new (swordArr[0, i], swordArr[1, i]), prev) && _spawnRupee)
-                {
-                    _spawnRupee = false;
-                    //MainProgram.EnemyManager.SpawnRupee(); TODO => move to enemy.Die
-                }
+                MainProgram.EnemyManager.TakeDamage(new(swordArr[0, i], swordArr[1, i]), prev);
                 break;
             }
         }

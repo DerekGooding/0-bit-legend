@@ -1,4 +1,5 @@
-﻿using _0_Bit_Legend.Entities.Enemies;
+﻿using _0_Bit_Legend.Entities;
+using _0_Bit_Legend.Entities.Enemies;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -7,11 +8,7 @@ public class EnemyManager
     private readonly List<IEnemy> _enemies = [];
 
     // Rupee
-    private readonly List<Vector2> _rupeePositions = [];
-    private readonly List<char[]> _rupee_storage = [];
-
-    private Vector2 _storedRupeePosition = Vector2.Zero;
-    public void SetStoredRupeePosition(Vector2 storedRupeePosition) => _storedRupeePosition = storedRupeePosition;
+    private readonly List<Rupee> _rupees = [];
 
     public bool TakeDamage(Vector2 target, DirectionType prev)
     {
@@ -161,52 +158,17 @@ public class EnemyManager
         }
     }
 
-    //TODO => Move to Die in enemy and handle random chance there
-
-    //public void SpawnRupee()
-    //{
-    //    if (_sRType != EnemyType.Dragon && _sRType != EnemyType.Bat && Random.Shared.Next(2) == 1)
-    //    {
-    //        var rupee_storage_copy = new char[9];
-    //        var sRPosX = _storedRupeePosition.X;
-    //        var sRPosY = _storedRupeePosition.Y;
-
-    //        var value = 0;
-    //        for (var i = 0; i < 3; i++)
-    //        {
-    //            for (var j = 0; j < 3; j++)
-    //            {
-    //                rupee_storage_copy[value] = Map[sRPosX - 1 + j, sRPosY - 1 + i] is not '-' and not 'S'
-    //                    ? Map[sRPosX - 1 + j, sRPosY - 1 + i]
-    //                    : ' ';
-    //                value++;
-    //            }
-    //        }
-
-    //        _rupeePositions.Add(new(sRPosX, sRPosY));
-    //        _rupee_storage.Add(rupee_storage_copy);
-
-    //        Map[sRPosX, sRPosY]
-    //            = Random.Shared.Next(5) == 4 || (_sRType == EnemyType.Spider && Random.Shared.Next(10) == 9) ? 'V' : 'R';
-
-    //        Map[sRPosX - 1, sRPosY] = 'R';
-    //        Map[sRPosX + 1, sRPosY] = 'R';
-    //        Map[sRPosX, sRPosY - 1] = 'r';
-    //        Map[sRPosX, sRPosY + 1] = 'r';
-
-    //        UpdateRow(sRPosY - 1);
-    //        UpdateRow(sRPosY);
-    //        UpdateRow(sRPosY + 1);
-    //    }
-    //}
-
-    public void RemoveRupee(int posX, int posY)
+    public void RemoveRupee(Vector2 target)
     {
+        var posX = target.X;
+        var posY = target.Y;
+
         //Always reverse order for removing from lists.
         //Bottom up so when the reorganize, you don't break things in the middle of a loop.
-        for (var i = _rupeePositions.Count - 1; i >= 0; i--) 
+        for (var i = _rupees.Count - 1; i >= 0; i--)
         {
-            var position = _rupeePositions[i];
+            var rupee = _rupees[i];
+            var position = rupee.Position;
             var X = position.X;
             var Y = position.Y;
             if (posX >= X - 1 && posX <= X + 1 && posY >= Y - 1 && posY <= Y + 1)
@@ -220,24 +182,13 @@ public class EnemyManager
                     Rupees++;
                 }
 
-                Map[X - 1, Y - 1] = _rupee_storage[i][0];
-                Map[X + 0, Y - 1] = _rupee_storage[i][1];
-                Map[X + 1, Y - 1] = _rupee_storage[i][2];
-
-                Map[X - 1, Y ] = _rupee_storage[i][3];
-                Map[X + 0, Y ] = _rupee_storage[i][4];
-                Map[X + 1, Y ] = _rupee_storage[i][5];
-
-                Map[X - 1, Y + 1] = _rupee_storage[i][6];
-                Map[X + 0, Y + 1] = _rupee_storage[i][7];
-                Map[X + 1, Y + 1] = _rupee_storage[i][8];
+                rupee.Clear();
 
                 UpdateRow(Y - 1);
                 UpdateRow(Y);
                 UpdateRow(Y + 1);
 
-                _rupeePositions.RemoveAt(i);
-                _rupee_storage.RemoveAt(i);
+                _rupees.Remove(rupee);
             }
         }
     }
@@ -286,4 +237,6 @@ public class EnemyManager
         }
         return _enemies[0];
     }
+
+    public void AddRupee(Rupee rupee) => _rupees.Add(rupee);
 }

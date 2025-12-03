@@ -81,7 +81,6 @@ public class Bat : BaseEnemy
         }
         return false;
     }
-
     public override bool IsTouching(char[] symbols)
     {
         var posX = Position.X;

@@ -17,5 +17,7 @@ public interface IEnemy : IEntity
     public void Move();
     public void Die();
 
+    public void SpawnRupee(Vector2 position);
+
     public bool TryMove(Vector2 position, DirectionType direction, int motion);
 }
