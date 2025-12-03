@@ -23,9 +23,7 @@ public class EnemyManager
     private Vector2 _storedRupeePosition = Vector2.Zero;
     private EnemyType _sRType = EnemyType.None;
 
-    //    Methods    //
     public int GetPosX(int index) => _positions[index].X;
-
     public int GetPosY(int index) => _positions[index].Y;
 
     public IEnemy GetEnemy(int index) => _enemies[index];

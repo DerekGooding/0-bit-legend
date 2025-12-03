@@ -1030,9 +1030,11 @@ public class PlayerController
         _debounce = false;
     }
 
-    public void SpawnLink(int posX, int posY, DirectionType direction)
+    public void SpawnLink(Vector2 position, DirectionType direction)
     {
-        Position = new(posX, posY);
+        Position = position;
+        var posX = position.X;
+        var posY = position.Y;
 
         _storage_map[0] = Map[posX - 2, posY - 1];
         _storage_map[1] = Map[posX - 1, posY - 1];

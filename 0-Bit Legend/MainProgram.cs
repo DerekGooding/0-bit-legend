@@ -951,15 +951,16 @@ public static class MainProgram
         {
             if (!HasFlag(GameFlag.Dragon)) EnemyManager.Move(-1, EnemyType.Dragon, 71, 13, DirectionType.Left, 12, true);
         }
+        var position = new Vector2(posX, posY);
 
         if ((CurrentMap == 2 || CurrentMap == 4) && posX == 21)
         {
-            PlayerController.SetPosition(new(posX, posY));
+            PlayerController.SetPosition(position);
             PlayerController.DeployRaft(PlayerController.GetPrev2());
         }
         else
         {
-            PlayerController.SpawnLink(posX, posY, direction);
+            PlayerController.SpawnLink(position, direction);
         }
 
         if (lCText)
