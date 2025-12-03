@@ -113,59 +113,29 @@ public class Octorok : BaseEnemy
 
     public override void Move()
     {
-        var passed = false;
         var rnd1 = Random.Shared.Next(10);
-        if (rnd1 > 2)
-        {
-            if (EnemyManager.GetPrev1(i) == DirectionType.Up)
-            {
-                var newPosition = enemy.Position.Offset(y: -1);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Up, -1);
-            }
-            else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
-            {
-                var newPosition = enemy.Position.Offset(x: -2);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Left, -1);
-            }
-            else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
-            {
-                var newPosition = enemy.Position.Offset(y: 1);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Down, -1);
-            }
-            else if (EnemyManager.GetPrev1(i) == DirectionType.Right)
-            {
-                var newPosition = enemy.Position.Offset(x: 2);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Right, -1);
-            }
-        }
-        else
-        {
-            passed = true;
-        }
+        var passed = rnd1 <= 2;
+        var newPosition = DirectionToOffset(Prev1);
 
-        if (passed)
-        {
-            var rnd2 = Random.Shared.Next(4) + 1;
-            if (rnd2 == 1)
-            {
-                var newPosition = enemy.Position.Offset(y: -1);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Up, -1);
-            }
-            else if (rnd2 == 2)
-            {
-                var newPosition = enemy.Position.Offset(x: -2);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Left, -1);
-            }
-            else if (rnd2 == 3)
-            {
-                var newPosition = enemy.Position.Offset(y: 1);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Down, -1);
-            }
-            else if (rnd2 == 4)
-            {
-                var newPosition = enemy.Position.Offset(x: 2);
-                passed = !EnemyManager.Move(enemy, newPosition, DirectionType.Right, -1);
-            }
-        }
+        if (!passed)
+            passed = !TryMove(newPosition, Prev1, -1);
+
+        if (!passed)
+            return;
+
+        var randomDirection = Random.Shared.RandomEnum<DirectionType>();
+        newPosition = DirectionToOffset(randomDirection);
+
+        TryMove(newPosition, randomDirection, -1);
     }
+
+    private Vector2 DirectionToOffset(DirectionType type) => type switch
+    {
+        DirectionType.Up => Position.Offset(y: -1),
+        DirectionType.Left => Position.Offset(x: -2),
+        DirectionType.Down => Position.Offset(y: 1),
+        DirectionType.Right => Position.Offset(x: 2),
+        _ => throw new NotSupportedException()
+    };
 }
+

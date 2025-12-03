@@ -102,99 +102,29 @@ public class Bat : BaseEnemy
 
     public override void Move()
     {
-        var passed = false;
         var rnd1 = Random.Shared.Next(10);
-        if (rnd1 > 4)
-        {
-            if (EnemyManager.GetPrev1(i) == DirectionType.Up)
-            {
-                passed = !EnemyManager.Move(i,
-                                                EnemyManager.GetEnemyType(i),
-                                                EnemyManager.GetPosX(i) - 2,
-                                                EnemyManager.GetPosY(i) - 1,
-                                                DirectionType.Up,
-                                                -1,
-                                                false);
-            }
-            else if (EnemyManager.GetPrev1(i) == DirectionType.Left)
-            {
-                passed = !EnemyManager.Move(i,
-                                                EnemyManager.GetEnemyType(i),
-                                                EnemyManager.GetPosX(i) + 2,
-                                                EnemyManager.GetPosY(i) - 1,
-                                                DirectionType.Left,
-                                                -1,
-                                                false);
-            }
-            else if (EnemyManager.GetPrev1(i) == DirectionType.Down)
-            {
-                passed = !EnemyManager.Move(i,
-                                                EnemyManager.GetEnemyType(i),
-                                                EnemyManager.GetPosX(i) - 2,
-                                                EnemyManager.GetPosY(i) + 1,
-                                                DirectionType.Down,
-                                                -1,
-                                                false);
-            }
-            else if (EnemyManager.GetPrev1(i) == DirectionType.Right)
-            {
-                passed = !EnemyManager.Move(i,
-                                                EnemyManager.GetEnemyType(i),
-                                                EnemyManager.GetPosX(i) + 2,
-                                                EnemyManager.GetPosY(i) + 1,
-                                                DirectionType.Right,
-                                                -1,
-                                                false);
-            }
-        }
-        else
-        {
-            passed = true;
-        }
+        var passed = rnd1 <= 4;
+        var newPosition = DirectionToOffset(Prev1);
 
-        if (passed)
-        {
-            var rnd2 = Random.Shared.Next(4) + 1;
-            if (rnd2 == 1)
-            {
-                EnemyManager.Move(i,
-                                    EnemyManager.GetEnemyType(i),
-                                    EnemyManager.GetPosX(i) - 2,
-                                    EnemyManager.GetPosY(i) - 1,
-                                    DirectionType.Up,
-                                    -1,
-                                    false);
-            }
-            else if (rnd2 == 2)
-            {
-                EnemyManager.Move(i,
-                                    EnemyManager.GetEnemyType(i),
-                                    EnemyManager.GetPosX(i) + 2,
-                                    EnemyManager.GetPosY(i) - 1,
-                                    DirectionType.Left,
-                                    -1,
-                                    false);
-            }
-            else if (rnd2 == 3)
-            {
-                EnemyManager.Move(i,
-                                    EnemyManager.GetEnemyType(i),
-                                    EnemyManager.GetPosX(i) - 2,
-                                    EnemyManager.GetPosY(i) + 1,
-                                    DirectionType.Down,
-                                    -1,
-                                    false);
-            }
-            else if (rnd2 == 4)
-            {
-                EnemyManager.Move(i,
-                                    EnemyManager.GetEnemyType(i),
-                                    EnemyManager.GetPosX(i) + 2,
-                                    EnemyManager.GetPosY(i) + 1,
-                                    DirectionType.Right,
-                                    -1,
-                                    false);
-            }
-        }
+        if (!passed)
+            passed = !TryMove(newPosition, Prev1, -1);
+
+        if (!passed)
+            return;
+
+
+        var randomDirection = Random.Shared.RandomEnum<DirectionType>();
+        newPosition = DirectionToOffset(randomDirection);
+
+        TryMove(newPosition, randomDirection, -1);
     }
+
+    private Vector2 DirectionToOffset(DirectionType type) => type switch
+    {
+        DirectionType.Up => Position.Offset(-2, -1),
+        DirectionType.Left => Position.Offset(x: 2, -1),
+        DirectionType.Down => Position.Offset(-2, 1),
+        DirectionType.Right => Position.Offset(2, 1),
+        _ => throw new NotSupportedException()
+    };
 }

@@ -127,10 +127,8 @@ public class Spider : BaseEnemy
         var passed = rnd1 <= 2;
         var newPosition = DirectionToOffset(Prev1);
 
-        if (rnd1 > 2)
-        {
+        if (!passed)
             passed = !TryMove(newPosition, Prev1, -1);
-        }
 
         if (!passed)
             return;
