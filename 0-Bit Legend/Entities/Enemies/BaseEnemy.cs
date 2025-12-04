@@ -71,7 +71,7 @@ public abstract class BaseEnemy : IEnemy
         if (InBounds(position))
         {
             var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
-            var blocking2 = new char[] { '|', '_', '\\' };
+            var damageHit = new char[] { '|', '_', '\\' };
             Clear();
             if (Type == EnemyType.Dragon || Type == EnemyType.Spider || Type == EnemyType.Bat || (!IsTouching(blocking)))
             {
@@ -126,7 +126,7 @@ public abstract class BaseEnemy : IEnemy
 
                 return true;
             }
-            else if (IsTouching(blocking2))
+            else if (IsTouching(damageHit))
             {
                 PlayerController.Hit();
                 if (Type == EnemyType.Fireball)

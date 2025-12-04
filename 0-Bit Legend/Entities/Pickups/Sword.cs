@@ -1,6 +1,6 @@
-﻿namespace _0_Bit_Legend.Entities;
+﻿namespace _0_Bit_Legend.Entities.Pickups;
 
-public class Sword : IEntity
+public class Sword : BasePickup
 {
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }

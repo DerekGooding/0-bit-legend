@@ -1,5 +1,5 @@
-﻿using _0_Bit_Legend.Entities;
-using _0_Bit_Legend.Entities.Enemies;
+﻿using _0_Bit_Legend.Entities.Enemies;
+using _0_Bit_Legend.Entities.Pickups;
 
 namespace _0_Bit_Legend.Managers;
 

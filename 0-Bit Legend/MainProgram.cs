@@ -53,48 +53,52 @@ public static class MainProgram
         LoadMap(0, new(52, 18), DirectionType.Up);
 
         _credits = string.Concat(_creditObject.Lose);
+
         while (_frames < 118)
         {
-            waitEnemies--;
-            waitDragon--;
-
-            if (iFrames > 0)
-            {
-                iFrames--;
-            } else
-            {
-                iFrames = 0;
-            }
-
-            Console.SetCursorPosition(0, 4);
-            DrawHud();
-            DrawGame();
-
-            switch (State)
-            {
-                case GameState.Idle:
-                    HandleMovement();
-                    break;
-                case GameState.Waiting:
-                    HandleWaiting();
-                    break;
-                case GameState.Attacking:
-                    HandleAttacking();
-                    break;
-                case GameState.Hit:
-                    HandleHit();
-                    break;
-                case GameState.Dead:
-                    HandleDeath();
-                    break;
-                case GameState.GameOver:
-                    HandleGameOver();
-                    break;
-            }
+            Update();
+            Draw();
 
             // Frame Rate: ~ 12 FPS
             Thread.Sleep(83);
         }
+    }
+
+    private static void Update()
+    {
+        waitEnemies--;
+        waitDragon--;
+
+        iFrames = iFrames > 0 ? iFrames - 1 : 0;
+
+        switch (State)
+        {
+            case GameState.Idle:
+                HandleMovement();
+                break;
+            case GameState.Waiting:
+                HandleWaiting();
+                break;
+            case GameState.Attacking:
+                HandleAttacking();
+                break;
+            case GameState.Hit:
+                HandleHit();
+                break;
+            case GameState.Dead:
+                HandleDeath();
+                break;
+            case GameState.GameOver:
+                HandleGameOver();
+                break;
+        }
+    }
+
+    private static void Draw()
+    {
+        Console.SetCursorPosition(0, 4);
+        DrawHud();
+        DrawGame();
     }
 
     private static void HandleMovement()
