@@ -2,6 +2,12 @@
 
 public class Key : BasePickup, IPurchased
 {
+    public Key() => OnPickup = () =>
+    {
+        Rupees -= Cost;
+        Keys++;
+    };
+
     public int Cost { get; }
 
     public override string[] Image => _spriteSheet;
@@ -12,10 +18,7 @@ public class Key : BasePickup, IPurchased
         "FFF",
     ];
 
-    public override Action OnPickup { get; } = () =>
-    {
-
-    };
+    public override Action OnPickup { get; }
 
     public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
 }

@@ -5,7 +5,7 @@ namespace _0_Bit_Legend.Managers;
 public class PlayerController
 {
     private Vector2 _preHitPosition = Vector2.Zero;
-    private readonly Link _player = new();
+    private readonly Hero _player = new();
 
     private readonly char[] _storage_map = new string(' ', 20).ToArray();
     private static readonly char[] _storage_sword = new char[6];
@@ -18,6 +18,7 @@ public class PlayerController
     private bool _swingingSword;
 
     public int MovementWait;
+    public double Health { get => _player.Hp; set => _player.Hp = value;  }
 
     public DirectionType GetPrev() => _prev;
     public DirectionType GetPrev2() => _prev2;
@@ -1202,7 +1203,7 @@ public class PlayerController
         Map[PosX + 2, PosY + 2] = symbol;
     }
 
-    public void PlaceZelda()
+    public void PlacePrincess()
     {
         Map[50, 14] = '=';
         Map[51, 14] = '<';

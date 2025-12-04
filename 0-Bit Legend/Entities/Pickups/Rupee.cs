@@ -2,6 +2,12 @@
 
 public class Rupee : BasePickup
 {
+    public Rupee() => OnPickup = () =>
+    {
+        Rupees += 5;
+        EnemyManager.RemoveRupee(Position);
+    };
+
     public char[] MapStorage { get; } = new string(' ', 9).ToCharArray();
 
     public void Clear()
@@ -27,10 +33,7 @@ public class Rupee : BasePickup
         "FFF",
     ];
 
-    public override Action OnPickup { get; } = () =>
-    {
-
-    };
+    public override Action OnPickup { get; }
 
     public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
 }

@@ -2,6 +2,12 @@
 
 public class Sword : BasePickup
 {
+    public Sword() => OnPickup = () =>
+    {
+        SetFlag(GameFlag.HasSword);
+        PickupManager.Remove(this);
+    };
+
     public override string[] Image => _spriteSheet;
 
     private readonly string[] _spriteSheet =
@@ -10,11 +16,7 @@ public class Sword : BasePickup
         "FFF",
     ];
 
-    public override Action OnPickup { get; } = () =>
-    {
-        SetFlag(GameFlag.HasSword);
-        //PickupManager.Remove();
-    };
+    public override Action OnPickup { get; }
 
     public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
 }

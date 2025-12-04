@@ -1,8 +1,8 @@
 ﻿namespace _0_Bit_Legend.Entities;
 
-public class Link : IEntity, IBoundingBox
+public class Hero : IEntity, IBoundingBox
 {
-    public int Hp { get; set; } = 3;
+    public double Hp { get; set; } = 3;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; } = DirectionType.Up;
 

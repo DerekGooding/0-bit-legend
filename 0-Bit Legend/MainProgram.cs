@@ -29,7 +29,6 @@ public static class MainProgram
 
     private static readonly string[] _strs = new string[33];
 
-    public static double Health { get; set; } = 3;
     public static int Rupees { get; set; } = 100;
     public static int Keys { get; set; }
 
@@ -245,7 +244,7 @@ public static class MainProgram
             }
             Console.ReadKey(true);
 
-            Health = 3;
+            PlayerController.Health = 3;
             _frames = -1;
             _start = false;
 
@@ -278,7 +277,7 @@ public static class MainProgram
             UpdateRow(_frames);
             UpdateRow(32 - _frames);
 
-            PlayerController.PlaceZelda();
+            PlayerController.PlacePrincess();
             PlayerController.MoveLeft(0);
         }
         else if (_frames < 30)
@@ -291,7 +290,7 @@ public static class MainProgram
             UpdateRow(_frames - 13);
             UpdateRow(45 - _frames);
 
-            PlayerController.PlaceZelda();
+            PlayerController.PlacePrincess();
             PlayerController.MoveLeft(0);
         }
         else if (_frames == 30)
@@ -580,13 +579,14 @@ public static class MainProgram
 
     private static void DrawHud()
     {
+        var health = PlayerController.Health;
         _hud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X                         X#X    r                    X#X   RRR          {Rupees,-4}     X#X    r                    X#X                         X#X  =======       {Keys,-4}     X#X  ==  = =                X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
-        _hud = Health > 2.5
-            ? $"{_hud.AsSpan(0, 196)}X       <3  <3  <3        X#{_hud.AsSpan(224)}" : Health > 2
-            ? $"{_hud.AsSpan(0, 196)}X       <3  <3  =         X#{_hud.AsSpan(224)}" : Health > 1.5
-            ? $"{_hud.AsSpan(0, 196)}X       <3  <3            X#{_hud.AsSpan(224)}" : Health > 1
-            ? $"{_hud.AsSpan(0, 196)}X       <3  =             X#{_hud.AsSpan(224)}" : Health > 0.5
-            ? $"{_hud.AsSpan(0, 196)}X       <3                X#{_hud.AsSpan(224)}" : Health > 0
+        _hud = health > 2.5
+            ? $"{_hud.AsSpan(0, 196)}X       <3  <3  <3        X#{_hud.AsSpan(224)}" : health > 2
+            ? $"{_hud.AsSpan(0, 196)}X       <3  <3  =         X#{_hud.AsSpan(224)}" : health > 1.5
+            ? $"{_hud.AsSpan(0, 196)}X       <3  <3            X#{_hud.AsSpan(224)}" : health > 1
+            ? $"{_hud.AsSpan(0, 196)}X       <3  =             X#{_hud.AsSpan(224)}" : health > 0.5
+            ? $"{_hud.AsSpan(0, 196)}X       <3                X#{_hud.AsSpan(224)}" : health > 0
             ? $"{_hud.AsSpan(0, 196)}X       =                 X#{_hud.AsSpan(224)}" : $"{_hud.AsSpan(0, 196)}X                         X#{_hud.AsSpan(224)}";
     }
 
