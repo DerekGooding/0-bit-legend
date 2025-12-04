@@ -14,11 +14,23 @@ public class Dragon : BaseEnemy
     {
         { DirectionType.Up,
         [
-
+            "<***>       ",
+            " S^SSS>     ",
+            " *S  SS>    ",
+            "    =S>     ",
+            "   =*SSSS**>",
+            "   =*SSSSS* ",
+            "    ===  == ",
         ]},
         { DirectionType.Down,
         [
-
+            "<***>       ",
+            " F^FFF>     ",
+            " *F  FS>    ",
+            "    FF>     ",
+            "   FF*SSS**>",
+            "   F**SSSS* ",
+            "    ===  == ",
         ]},
     };
 
@@ -37,14 +49,20 @@ public class Dragon : BaseEnemy
 
     public override void Draw()
     {
+        var image = _spriteSheet[Prev1];
+
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        {
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+            }
+        }
+
         var posX = Position.X;
         var posY = Position.Y;
 
-        var dragon = "<***>        S^SSS>      *S  SS>        =S>        =*SSSS**>   =*SSSSS*     ===  == ";
-        if (Prev1 == DirectionType.Down) dragon = "<***>        F^FFF>      *F  FS>        FF>        FF*SSS**>   F**SSSS*     ===  == ";
-
         var debounce = false;
-        var value = 0;
         for (var i = 0; i < 7; i++)
         {
             for (var j = 0; j < 12; j++)
@@ -57,8 +75,6 @@ public class Dragon : BaseEnemy
                     debounce = true;
                     PlayerController.Hit();
                 }
-                Map[posX + j, posY + i] = dragon[value];
-                value++;
             }
         }
     }
