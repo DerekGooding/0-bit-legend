@@ -44,14 +44,16 @@ public class EnemyManager
     public void RemoveAll() => _enemies.Clear();
     public void MoveAll()
     {
-        foreach (var enemy in _enemies)
+        for(var i = _enemies.Count - 1; i >= 0; i--)
+        {
+            var enemy = _enemies[i];
             enemy.Move();
+        }
     }
 
     public void Store(IEnemy enemy)
     {
         enemy.Clear();
-        _enemies.Remove(enemy);
         var type = enemy.Type;
         var posX = enemy.Position.X;
         var posY = enemy.Position.Y;

@@ -4,124 +4,82 @@ public class Link : IEntity
 {
     public int Hp { get; set; } = 3;
     public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
+    public DirectionType Direction { get; set; } = DirectionType.Up;
+
+    private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
+    {
+        { DirectionType.Up,
+        [
+            " ___ ",
+            "| = |",
+            "|^ ^|",
+           @" \_/ ",
+        ]},
+        { DirectionType.Left,
+        [
+           @"  /\ ",
+            " /  |",
+            "|^  |",
+            "|_=_|",
+        ]},
+        { DirectionType.Down,
+        [
+            "  _  ",
+           @" / \ ",
+            "|^ ^|",
+            "| = |",
+        ]},
+        { DirectionType.Right,
+        [
+           @" /\  ",
+           @"|  \ ",
+            "|  ^|",
+            "|_=_|",
+        ] },
+    };
+
+    private readonly Dictionary<DirectionType, string[]> _spriteSheetArmor = new()
+    {
+        { DirectionType.Up,
+        [
+            " ___ ",
+            "|#=#|",
+            "|^#^|",
+           @" \_/ ",
+        ]},
+        { DirectionType.Left,
+        [
+           @"  /\ ",
+            " /  |",
+            "|^##|",
+            "|#=#|",
+        ]},
+        { DirectionType.Down,
+        [
+            "  _  ",
+           @" / \ ",
+            "|^#^|",
+            "|#=#|",
+        ]},
+        { DirectionType.Right,
+        [
+           @" /\  ",
+           @"|  \ ",
+            "|##^|",
+            "|#=#|",
+        ] },
+    };
 
     public void Draw()
     {
-        var posX = Position.X;
-        var posY = Position.Y;
+        var image = HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] : _spriteSheet[Direction];
 
-        var spaceslot = ' ';
-        var underslot = '_';
-        if (HasFlag(GameFlag.HasArmor))
+        for (var x = -2; x <= 2; x++)
         {
-            spaceslot = '#';
-            underslot = '#';
-        }
-
-        if (Direction == DirectionType.Up)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = '_';
-            Map[posX, posY - 1] = '_';
-            Map[posX + 1, posY - 1] = '_';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = '|';
-            Map[posX - 1, posY] = spaceslot;
-            Map[posX, posY] = '=';
-            Map[posX + 1, posY] = spaceslot;
-            Map[posX + 2, posY] = '|';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = '^';
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = ' ';
-            Map[posX - 1, posY + 2] = '\\';
-            Map[posX, posY + 2] = '_';
-            Map[posX + 1, posY + 2] = '/';
-            Map[posX + 2, posY + 2] = ' ';
-        }
-        else if (Direction == DirectionType.Left)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = ' ';
-            Map[posX, posY - 1] = '/';
-            Map[posX + 1, posY - 1] = '\\';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = ' ';
-            Map[posX - 1, posY] = '/';
-            Map[posX, posY] = ' ';
-            Map[posX + 1, posY] = ' ';
-            Map[posX + 2, posY] = '|';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = '^';
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = spaceslot;
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = '|';
-            Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = '=';
-            Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = '|';
-        }
-        else if (Direction == DirectionType.Down)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = ' ';
-            Map[posX, posY - 1] = '_';
-            Map[posX + 1, posY - 1] = ' ';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = ' ';
-            Map[posX - 1, posY] = '/';
-            Map[posX, posY] = ' ';
-            Map[posX + 1, posY] = '\\';
-            Map[posX + 2, posY] = ' ';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = '^';
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = '|';
-            Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = '=';
-            Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = '|';
-        }
-        else if (Direction == DirectionType.Right)
-        {
-            Map[posX - 2, posY - 1] = ' ';
-            Map[posX - 1, posY - 1] = '/';
-            Map[posX, posY - 1] = '\\';
-            Map[posX + 1, posY - 1] = ' ';
-            Map[posX + 2, posY - 1] = ' ';
-
-            Map[posX - 2, posY] = '|';
-            Map[posX - 1, posY] = ' ';
-            Map[posX, posY] = ' ';
-            Map[posX + 1, posY] = '\\';
-            Map[posX + 2, posY] = ' ';
-
-            Map[posX - 2, posY + 1] = '|';
-            Map[posX - 1, posY + 1] = spaceslot;
-            Map[posX, posY + 1] = spaceslot;
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = '|';
-
-            Map[posX - 2, posY + 2] = '|';
-            Map[posX - 1, posY + 2] = underslot;
-            Map[posX, posY + 2] = '=';
-            Map[posX + 1, posY + 2] = underslot;
-            Map[posX + 2, posY + 2] = '|';
+            for (var y = -1; y <= 2; y++)
+            {
+                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+            }
         }
     }
     public bool IsTouching(char symbol)
