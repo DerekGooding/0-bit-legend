@@ -14,11 +14,35 @@ public abstract class BaseEnemy : IEnemy
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
 
+    public bool InsideBoundingBox(char symbol)
+    {
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        {
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                if (Map[Position.X + x, Position.Y + y] == symbol)
+                    return true;
+            }
+        }
+        return false;
+    }
+    public bool InsideBoundingBox(char[] symbols)
+    {
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        {
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                if (symbols.Any(x => x == Map[Position.X + x, Position.Y + y]))
+                    return true;
+            }
+        }
+        return false;
+    }
     public abstract void Clear();
     public abstract void Draw();
     public abstract bool InBounds(Vector2 position);
-    public abstract bool IsTouching(char symbol);
-    public abstract bool IsTouching(char[] symbols);
+    public virtual bool IsTouching(char symbol) => InsideBoundingBox(symbol);
+    public virtual bool IsTouching(char[] symbols) => InsideBoundingBox(symbols);
     public abstract void Move();
     public virtual void TakeDamage()
     {

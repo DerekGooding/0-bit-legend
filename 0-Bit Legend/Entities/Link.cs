@@ -116,7 +116,7 @@ public class Link : IEntity, IBoundingBox
     }
     public bool IsTouching(char[] symbols) => throw new NotImplementedException();
 
-    private bool InsideBoundingBox(char symbol)
+    public bool InsideBoundingBox(char symbol)
     {
         for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
@@ -128,7 +128,7 @@ public class Link : IEntity, IBoundingBox
         }
         return false;
     }
-    private bool InsideBoundingBox(char[] symbols)
+    public bool InsideBoundingBox(char[] symbols)
     {
         for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {

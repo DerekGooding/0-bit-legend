@@ -44,43 +44,6 @@ public class Fireball : BaseEnemy
         return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
     }
 
-    public override bool IsTouching(char symbol)
-    {
-        var posX = Position.X;
-        var posY = Position.Y;
-
-        //(Map[posX, posY] == symbol || Map[posX + 1, posY] == symbol || Map[posX + 2, posY] == symbol || Map[posX, posY + 1] == symbol || Map[posX + 1, posY + 1] == symbol || Map[posX + 2, posY + 1] == symbol))))
-        for (var i = 0; i < 3; i++)
-        {
-            for (var j = 0; j < 2; j++)
-            {
-                if (Map[posX + i, posY + j] == symbol)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public override bool IsTouching(char[] symbols)
-    {
-        var posX = Position.X;
-        var posY = Position.Y;
-
-        for (var i = 0; i < 3; i++)
-        {
-            for (var j = 0; j < 2; j++)
-            {
-                if (symbols.Any(x => x ==Map[posX + i, posY + j]))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public override void Move()
     {
         var newPosition = Prev1 switch
