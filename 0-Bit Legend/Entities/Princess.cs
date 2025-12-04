@@ -6,12 +6,14 @@ public class Princess : IEntity, IBoundingBox
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; } = DirectionType.Up;
 
-    public (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -1), new(2, 2));
+    public (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -1), new(3, 2));
 
     private readonly string[] _spriteSheet =
     [
-        "FFF",
-        "FFF",
+        " =<>= ",
+        " s^^s ",
+        "ss~~ss",
+        "~~~~~~",
     ];
 
     public void Draw()
