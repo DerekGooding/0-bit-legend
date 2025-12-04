@@ -8,7 +8,7 @@ public class Dragon : BaseEnemy
     public override char[] MapStorage { get; } = new string(' ', 84).ToCharArray();
 
     //TODO
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }// = (new(0, 0), new(4, 1));
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(11, 6));
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
