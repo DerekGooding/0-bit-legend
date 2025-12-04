@@ -40,5 +40,7 @@ public class Cave1 : IMap
 ];
     public string[] FlagAdjusted => Raw;
 
+    public List<EntityLocation> EntityLocations { get; } = [];
+
     public void Load() { }
 }

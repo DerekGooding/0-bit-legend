@@ -40,5 +40,6 @@ public class Castle4 : IMap
 ];
     public string[] FlagAdjusted => Raw;
 
+    public List<EntityLocation> EntityLocations { get; } = [];
     public void Load() { }
 }

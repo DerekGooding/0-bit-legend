@@ -1,4 +1,5 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿
+namespace _0_Bit_Legend.Maps;
 
 public class Castle0 : IMap
 {
@@ -39,6 +40,8 @@ public class Castle0 : IMap
 "======================================================================================================#",
 ];
     public string[] FlagAdjusted => Raw;
+
+    public List<EntityLocation> EntityLocations { get; } = [];
 
     public void Load() { }
 }

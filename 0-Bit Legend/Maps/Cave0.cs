@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend.Entities.Pickups;
+
+namespace _0_Bit_Legend.Maps;
 
 public class Cave0 : IMap
 {
@@ -39,6 +41,9 @@ public class Cave0 : IMap
  "===================================                                ===================================#",
 ];
     public string[] FlagAdjusted => Raw;
+
+    public List<EntityLocation> EntityLocations { get; }
+        = [new(new Sword(), new(x: 30, y: 30))];
 
     public void Load() { }
 }

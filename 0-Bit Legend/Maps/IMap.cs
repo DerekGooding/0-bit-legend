@@ -7,4 +7,6 @@ public interface IMap
     public string[] FlagAdjusted { get; }
 
     public void Load() { }
+
+    public List<EntityLocation> EntityLocations { get; }
 }
