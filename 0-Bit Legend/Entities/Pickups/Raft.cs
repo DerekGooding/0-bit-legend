@@ -15,11 +15,15 @@ public class Raft : BasePickup, IPurchased
 
     private readonly string[] _spriteSheet =
 [
-        "FFF",
-        "FFF",
+        "=====",
+        "*****",
+        "=====",
+        "*****",
+        "RAFT ",
+        " x35 ",
     ];
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -2), new(2, 3));
 }

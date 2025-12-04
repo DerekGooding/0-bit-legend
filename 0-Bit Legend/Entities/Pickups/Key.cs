@@ -14,11 +14,14 @@ public class Key : BasePickup, IPurchased
 
     private readonly string[] _spriteSheet =
 [
-        "FFF",
-        "FFF",
+        "=======",
+        "==  = =",
+        "       ",
+        " Key   ",
+        " x10   ",
     ];
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -2), new(4, 2));
 }
