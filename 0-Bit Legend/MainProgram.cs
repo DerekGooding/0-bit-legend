@@ -8,6 +8,7 @@ public static class MainProgram
 {
     public static PlayerController PlayerController { get; } = new();
     public static EnemyManager EnemyManager { get; } = new();
+    public static PickupManager PickupManager { get; } = new();
     private static readonly InputController _inputController = new();
     private static readonly Credits _creditObject = new();
 
@@ -552,7 +553,7 @@ public static class MainProgram
         if (lCText)
         {
             lCText = false;
-            SetFlag(GameFlag.Text, true);
+            SetFlag(GameFlag.Text);
             wait = 750;
         }
 
@@ -626,7 +627,7 @@ public static class MainProgram
 
     public static bool HasFlag(GameFlag flag) => (_flags & flag) != 0;
     public static bool HasFlags(GameFlag[] flags) => flags.All(flag => (_flags & flag) != 0);
-    public static void SetFlag(GameFlag flag, bool value)
+    public static void SetFlag(GameFlag flag, bool value = true)
     {
         if (value)
             _flags |= flag;

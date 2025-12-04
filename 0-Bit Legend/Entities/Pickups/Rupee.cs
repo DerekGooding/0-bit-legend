@@ -2,10 +2,7 @@
 
 public class Rupee : BasePickup
 {
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
     public char[] MapStorage { get; } = new string(' ', 9).ToCharArray();
-    public void Draw() => throw new NotImplementedException();
 
     public void Clear()
     {
@@ -22,6 +19,18 @@ public class Rupee : BasePickup
         Map[Position.X + 1, Position.Y + 1] = MapStorage[8];
     }
 
-    public bool IsTouching(char[] symbols) => throw new NotImplementedException();
-    public bool IsTouching(char symbol) => throw new NotImplementedException();
+    public override string[] Image => _spriteSheet;
+
+    private readonly string[] _spriteSheet =
+[
+        "FFF",
+        "FFF",
+    ];
+
+    public override Action OnPickup { get; } = () =>
+    {
+
+    };
+
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
 }

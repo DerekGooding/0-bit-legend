@@ -2,9 +2,19 @@
 
 public class Sword : BasePickup
 {
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public DirectionType Direction { get; set; }
-    public void Draw() => throw new NotImplementedException();
-    public bool IsTouching(char[] symbols) => throw new NotImplementedException();
-    public bool IsTouching(char symbol) => throw new NotImplementedException();
+    public override string[] Image => _spriteSheet;
+
+    private readonly string[] _spriteSheet =
+[
+        "FFF",
+        "FFF",
+    ];
+
+    public override Action OnPickup { get; } = () =>
+    {
+        SetFlag(GameFlag.HasSword);
+        //PickupManager.Remove();
+    };
+
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
 }

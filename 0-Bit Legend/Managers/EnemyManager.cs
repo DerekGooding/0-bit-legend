@@ -6,8 +6,6 @@ namespace _0_Bit_Legend.Managers;
 public class EnemyManager
 {
     private readonly List<IEnemy> _enemies = [];
-
-    // Rupee
     private readonly List<Rupee> _rupees = [];
 
     public bool TakeDamage(Vector2 target, DirectionType prev)

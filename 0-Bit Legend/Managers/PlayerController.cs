@@ -349,14 +349,14 @@ public class PlayerController
 
             if (CurrentMap == 6 && (_player.IsTouching('-') || _player.IsTouching('S')))
             {
-                SetFlag(GameFlag.HasSword, true);
+                SetFlag(GameFlag.HasSword);
                 LoadMap(6, new(posX, posY), DirectionType.Up);
             }
             else if (CurrentMap == 7 && _player.IsTouching('*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
-                SetFlag(GameFlag.HasRaft, true);
+                SetFlag(GameFlag.HasRaft);
                 LoadMap(7, new(posX, posY), DirectionType.Up);
             }
             else if (CurrentMap == 7 && _player.IsTouching('Y') && Rupees >= 5)
@@ -368,7 +368,7 @@ public class PlayerController
             {
                 Rupees -= 25;
 
-                SetFlag(GameFlag.HasArmor, true);
+                SetFlag(GameFlag.HasArmor);
                 LoadMap(7, new(posX, posY), DirectionType.Up);
             }
             else if (CurrentMap == 9
@@ -506,14 +506,14 @@ public class PlayerController
 
             if (CurrentMap == 6 && (_player.IsTouching('-') || _player.IsTouching('S')))
             {
-                SetFlag(GameFlag.HasSword, true);
+                SetFlag(GameFlag.HasSword);
                 LoadMap(6, new(posX, posY), DirectionType.Left);
             }
             else if (CurrentMap == 7 && _player.IsTouching('*') && Rupees >= 35)
             {
                 Rupees -= 35;
 
-                SetFlag(GameFlag.HasRaft, true);
+                SetFlag(GameFlag.HasRaft);
                 LoadMap(7, new(posX, posY), DirectionType.Left);
             }
             else if (CurrentMap == 7 && _player.IsTouching('Y') && Rupees >= 10)
@@ -525,7 +525,7 @@ public class PlayerController
             {
                 Rupees -= 25;
 
-                SetFlag(GameFlag.HasArmor, true);
+                SetFlag(GameFlag.HasArmor);
                 LoadMap(7, new(posX, posY), DirectionType.Left);
             }
             else if (CurrentMap == 9

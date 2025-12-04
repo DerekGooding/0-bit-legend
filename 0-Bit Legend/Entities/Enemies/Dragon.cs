@@ -106,7 +106,7 @@ public class Dragon : BaseEnemy
     {
         base.Die();
 
-        SetFlag(GameFlag.Dragon, true);
+        SetFlag(GameFlag.Dragon);
         var (position, prev1) = PlayerController.GetPlayerInfo();
         LoadMap(12, position, prev1);
     }
