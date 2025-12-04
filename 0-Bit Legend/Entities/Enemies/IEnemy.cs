@@ -1,6 +1,6 @@
 ﻿namespace _0_Bit_Legend.Entities.Enemies;
 
-public interface IEnemy : IEntity
+public interface IEnemy : IEntity, IBoundingBox
 {
     public EnemyType Type { get; }
     public int Hp { get; set; }

@@ -5,6 +5,20 @@ public class Spider : BaseEnemy
     public override EnemyType Type => EnemyType.Spider;
     public override char[] MapStorage { get; } = new string(' ', 15).ToCharArray();
 
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(4, 2));
+
+    private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
+    {
+        { DirectionType.Left,
+        [
+
+        ]},
+        { DirectionType.Right,
+        [
+
+        ]},
+    };
+
     public override void SpawnRupee(Vector2 position)
     {
         var newRupee = new Rupee();

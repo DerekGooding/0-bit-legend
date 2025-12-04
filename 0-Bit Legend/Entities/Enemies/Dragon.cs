@@ -7,6 +7,21 @@ public class Dragon : BaseEnemy
     public override EnemyType Type => EnemyType.Dragon;
     public override char[] MapStorage { get; } = new string(' ', 84).ToCharArray();
 
+    //TODO
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }// = (new(0, 0), new(4, 1));
+
+    private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
+    {
+        { DirectionType.Up,
+        [
+
+        ]},
+        { DirectionType.Down,
+        [
+
+        ]},
+    };
+
     public override void Clear()
     {
         var value = 0;

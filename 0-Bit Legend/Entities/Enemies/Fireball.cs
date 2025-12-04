@@ -5,6 +5,15 @@ public class Fireball : BaseEnemy
     public override EnemyType Type => EnemyType.Fireball;
     public override char[] MapStorage { get; } = new string(' ', 6).ToCharArray();
 
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(2, 1));
+
+    private readonly string[] _spriteSheet =
+[
+        "FFF",
+        "FFF",
+    ];
+
+
     public override void Clear()
     {
         Map[Position.X + 0, Position.Y] = MapStorage[0];
@@ -18,16 +27,13 @@ public class Fireball : BaseEnemy
 
     public override void Draw()
     {
-        var posX = Position.X;
-        var posY = Position.Y;
-
-        Map[posX + 0, posY] = 'F';
-        Map[posX + 1, posY] = 'F';
-        Map[posX + 2, posY] = 'F';
-
-        Map[posX + 0, posY + 1] = 'F';
-        Map[posX + 1, posY + 1] = 'F';
-        Map[posX + 2, posY + 1] = 'F';
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        {
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                Map[Position.X + x, Position.Y + y] = _spriteSheet[y + 1][x + 2];
+            }
+        }
     }
 
     public override bool InBounds(Vector2 position)

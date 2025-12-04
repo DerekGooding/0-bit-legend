@@ -223,11 +223,7 @@ public static class MainProgram
                 PlayerController.PlayEffect('+');
             }
 
-            var (position, _) = PlayerController.GetPlayerInfo();
-            UpdateRow(position.Y - 1);
-            UpdateRow(position.Y);
-            UpdateRow(position.Y + 1);
-            UpdateRow(position.Y + 2);
+            PlayerController.UpdateLinkRows();
         }
         else if (_frames == 25)
         {

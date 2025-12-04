@@ -5,6 +5,8 @@ public abstract class BaseEnemy : IEnemy
     public abstract EnemyType Type { get; }
     public abstract char[] MapStorage { get; }
 
+    public abstract  (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }
+
     public int Hp { get; set; } = 1;
     public int Motion { get; set; }
     public DirectionType Prev1 { get; set; }

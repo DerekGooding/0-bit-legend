@@ -4,6 +4,19 @@ public class Octorok : BaseEnemy
 {
     public override EnemyType Type { get; } = EnemyType.Octorok;
     public override char[] MapStorage { get; } = new string(' ', 12).ToCharArray();
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(3, 2));
+
+    private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
+    {
+        { DirectionType.Left,
+        [
+
+        ]},
+        { DirectionType.Right,
+        [
+
+        ]},
+    };
 
     public override void SpawnRupee(Vector2 position)
     {

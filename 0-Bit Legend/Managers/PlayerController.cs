@@ -1255,7 +1255,7 @@ public class PlayerController
             SetGameState(GameState.Dead);
     }
 
-    private void UpdateLinkRows()
+    public void UpdateLinkRows()
     {
         UpdateRow(PosY - 1);
         UpdateRow(PosY);

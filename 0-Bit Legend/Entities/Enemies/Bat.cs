@@ -5,6 +5,20 @@ public class Bat : BaseEnemy
     public override EnemyType Type { get; } = EnemyType.Bat;
     public override char[] MapStorage { get; } = new string(' ', 10).ToCharArray();
 
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(4, 1));
+
+    private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
+    {
+        { DirectionType.Left,
+        [
+
+        ]},
+        { DirectionType.Right,
+        [
+
+        ]},
+    };
+
     public override void Clear()
     {
         Map[Position.X + 0, Position.Y] = MapStorage[0];
