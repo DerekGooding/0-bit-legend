@@ -29,11 +29,12 @@ public class Rupee : BasePickup
 
     private readonly string[] _spriteSheet =
 [
-        "FFF",
-        "FFF",
+        " r ",
+        "RRR",
+        " r "
     ];
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-1, -1), new(1, 1));
 }

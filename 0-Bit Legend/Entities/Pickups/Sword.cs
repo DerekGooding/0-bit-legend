@@ -12,11 +12,13 @@ public class Sword : BasePickup
 
     private readonly string[] _spriteSheet =
 [
-        "FFF",
-        "FFF",
+        " S ",
+        " S ",
+        "---",
+        " - ",
     ];
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(), new());
+    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-1, -2), new(1, 1));
 }

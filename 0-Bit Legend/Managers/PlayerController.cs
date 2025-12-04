@@ -1205,8 +1205,10 @@ public class PlayerController
 
     public void PlacePrincess()
     {
-        var princess = new Princess();
-        princess.Position = new(52, 15);
+        var princess = new Princess
+        {
+            Position = new(52, 15)
+        };
         princess.Draw();
         //Map[50, 14] = '=';
         //Map[51, 14] = '<';
