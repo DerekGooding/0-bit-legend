@@ -1,10 +1,12 @@
 ﻿namespace _0_Bit_Legend.Entities;
 
-public class Link : IEntity
+public class Link : IEntity, IBoundingBox
 {
     public int Hp { get; set; } = 3;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; } = DirectionType.Up;
+
+    public (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -1), new(2, -2));
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
@@ -74,14 +76,15 @@ public class Link : IEntity
     {
         var image = HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] : _spriteSheet[Direction];
 
-        for (var x = -2; x <= 2; x++)
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
-            for (var y = -1; y <= 2; y++)
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
             {
                 Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
             }
         }
     }
+
     public bool IsTouching(char symbol)
     {
         var posX = Position.X;
@@ -92,26 +95,7 @@ public class Link : IEntity
             return Map[posX, posY - 1] == '/';
         }
 
-        if (Map[posX - 2, posY - 1] == symbol
-            || Map[posX - 1, posY - 1] == symbol
-            || Map[posX, posY - 1] == symbol
-            || Map[posX + 1, posY - 1] == symbol
-            || Map[posX + 2, posY - 1] == symbol
-            || Map[posX - 2, posY] == symbol
-            || Map[posX - 1, posY] == symbol
-            || Map[posX, posY] == symbol
-            || Map[posX + 1, posY] == symbol
-            || Map[posX + 2, posY] == symbol
-            || Map[posX - 2, posY + 1] == symbol
-            || Map[posX - 1, posY + 1] == symbol
-            || Map[posX, posY + 1] == symbol
-            || Map[posX + 1, posY + 1] == symbol
-            || Map[posX + 2, posY + 1] == symbol
-            || Map[posX - 2, posY + 2] == symbol
-            || Map[posX - 1, posY + 2] == symbol
-            || Map[posX, posY + 2] == symbol
-            || Map[posX + 1, posY + 2] == symbol
-            || Map[posX + 2, posY + 2] == symbol)
+        if (InsideBoundingBox(symbol))
         {
             if (symbol is 'R' or 'r')
             {
@@ -131,4 +115,29 @@ public class Link : IEntity
         return false;
     }
     public bool IsTouching(char[] symbols) => throw new NotImplementedException();
+
+    private bool InsideBoundingBox(char symbol)
+    {
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        {
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                if (Map[Position.X + x, Position.Y + y] == symbol)
+                    return true;
+            }
+        }
+        return false;
+    }
+    private bool InsideBoundingBox(char[] symbols)
+    {
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        {
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                if (symbols.Any(x => x == Map[Position.X + x, Position.Y + y]))
+                    return true;
+            }
+        }
+        return false;
+    }
 }
