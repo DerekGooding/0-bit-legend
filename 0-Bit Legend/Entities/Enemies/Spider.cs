@@ -11,11 +11,15 @@ public class Spider : BaseEnemy
     {
         { DirectionType.Left,
         [
-
+            " ttt ",
+            "n00tt",
+            " nt n",
         ]},
         { DirectionType.Right,
         [
-
+            " ttt ",
+            "tt00n",
+            " ntn ",
         ]},
     };
 
@@ -72,48 +76,14 @@ public class Spider : BaseEnemy
 
     public override void Draw()
     {
-        var posX = Position.X;
-        var posY = Position.Y;
+        var image = _spriteSheet[Prev2];
 
-        if (Prev2 == DirectionType.Left)
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
-            Map[posX + 0, posY] = ' ';
-            Map[posX + 1, posY] = 't';
-            Map[posX + 2, posY] = 't';
-            Map[posX + 3, posY] = 't';
-            Map[posX + 4, posY] = ' ';
-
-            Map[posX + 0, posY + 1] = 'n';
-            Map[posX + 1, posY + 1] = '0';
-            Map[posX + 2, posY + 1] = '0';
-            Map[posX + 3, posY + 1] = 't';
-            Map[posX + 4, posY + 1] = 't';
-
-            Map[posX + 0, posY + 2] = ' ';
-            Map[posX + 1, posY + 2] = 'n';
-            Map[posX + 2, posY + 2] = 't';
-            Map[posX + 4, posY + 2] = ' ';
-            Map[posX + 3, posY + 2] = 'n';
-        }
-        else
-        {
-            Map[posX + 0, posY] = ' ';
-            Map[posX + 1, posY] = 't';
-            Map[posX + 2, posY] = 't';
-            Map[posX + 3, posY] = 't';
-            Map[posX + 4, posY] = ' ';
-
-            Map[posX + 0, posY + 1] = 't';
-            Map[posX + 1, posY + 1] = 't';
-            Map[posX + 2, posY + 1] = '0';
-            Map[posX + 3, posY + 1] = '0';
-            Map[posX + 4, posY + 1] = 'n';
-
-            Map[posX + 0, posY + 2] = ' ';
-            Map[posX + 1, posY + 2] = 'n';
-            Map[posX + 2, posY + 2] = 't';
-            Map[posX + 3, posY + 2] = 'n';
-            Map[posX + 4, posY + 2] = ' ';
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+            }
         }
     }
 

@@ -10,11 +10,15 @@ public class Octorok : BaseEnemy
     {
         { DirectionType.Left,
         [
-
+            " ttt",
+            "t^tt",
+            "tttt",
         ]},
         { DirectionType.Right,
         [
-
+            "ttt ",
+            "tt^t",
+            "tttt",
         ]},
     };
 
@@ -68,42 +72,14 @@ public class Octorok : BaseEnemy
 
     public override void Draw()
     {
-        var posX = Position.X;
-        var posY = Position.Y;
+        var image = _spriteSheet[Prev2];
 
-        if (Prev2 == DirectionType.Left)
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
-            Map[posX + 0, posY] = ' ';
-            Map[posX + 1, posY] = 't';
-            Map[posX + 2, posY] = 't';
-            Map[posX + 3, posY] = 't';
-
-            Map[posX + 0, posY + 1] = 't';
-            Map[posX + 1, posY + 1] = '^';
-            Map[posX + 2, posY + 1] = 't';
-            Map[posX + 3, posY + 1] = 't';
-
-            Map[posX + 0, posY + 2] = 't';
-            Map[posX + 1, posY + 2] = 't';
-            Map[posX + 2, posY + 2] = 't';
-            Map[posX + 3, posY + 2] = 't';
-        }
-        else
-        {
-            Map[posX + 0, posY] = 't';
-            Map[posX + 1, posY] = 't';
-            Map[posX + 2, posY] = 't';
-            Map[posX + 3, posY] = ' ';
-
-            Map[posX + 0, posY + 1] = 't';
-            Map[posX + 1, posY + 1] = 't';
-            Map[posX + 2, posY + 1] = '^';
-            Map[posX + 3, posY + 1] = 't';
-
-            Map[posX + 0, posY + 2] = 't';
-            Map[posX + 1, posY + 2] = 't';
-            Map[posX + 2, posY + 2] = 't';
-            Map[posX + 3, posY + 2] = 't';
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+            }
         }
     }
 

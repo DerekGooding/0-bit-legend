@@ -11,11 +11,13 @@ public class Bat : BaseEnemy
     {
         { DirectionType.Left,
         [
-
+            "{t t}",
+            "  B  ",
         ]},
         { DirectionType.Right,
         [
-
+            "  B  ",
+            "{t t}",
         ]},
     };
 
@@ -36,36 +38,14 @@ public class Bat : BaseEnemy
 
     public override void Draw()
     {
-        var posX = Position.X;
-        var posY = Position.Y;
+        var image = _spriteSheet[Prev2];
 
-        if (Prev2 == DirectionType.Left)
+        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
-            Map[posX + 0, posY] = '{';
-            Map[posX + 1, posY] = 't';
-            Map[posX + 2, posY] = ' ';
-            Map[posX + 3, posY] = 't';
-            Map[posX + 4, posY] = '}';
-
-            Map[posX + 0, posY + 1] = ' ';
-            Map[posX + 1, posY + 1] = ' ';
-            Map[posX + 2, posY + 1] = 'B';
-            Map[posX + 3, posY + 1] = ' ';
-            Map[posX + 4, posY + 1] = ' ';
-        }
-        else
-        {
-            Map[posX + 0, posY] = ' ';
-            Map[posX + 1, posY] = ' ';
-            Map[posX + 2, posY] = 'B';
-            Map[posX + 3, posY] = ' ';
-            Map[posX + 4, posY] = ' ';
-
-            Map[posX + 0, posY + 1] = '{';
-            Map[posX + 1, posY + 1] = 't';
-            Map[posX + 2, posY + 1] = ' ';
-            Map[posX + 3, posY + 1] = 't';
-            Map[posX + 4, posY + 1] = '}';
+            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            {
+                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+            }
         }
     }
 
