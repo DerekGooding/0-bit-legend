@@ -38,45 +38,44 @@ public class Dragon : BaseEnemy
 
         DrawToScreen(image, Position);
 
-        var posX = Position.X;
-        var posY = Position.Y;
+        //var posX = Position.X;
+        //var posY = Position.Y;
 
-        var debounce = false;
-        for (var i = 0; i < 7; i++)
-        {
-            for (var j = 0; j < 12; j++)
-            {
-                if (Map[posX + j, posY + i] == '/'
-                    || Map[posX + j, posY + i] == '\\'
-                    || Map[posX + j, posY + i] == '|'
-                    || (Map[posX + j, posY + i] == '_' && !debounce))
-                {
-                    debounce = true;
-                    PlayerController.Hit();
-                }
-            }
-        }
+        //var debounce = false;
+        //TODO => This is some additional Dragon drawing I need to include in the base image
+        //for (var i = 0; i < 7; i++)
+        //{
+        //    for (var j = 0; j < 12; j++)
+        //    {
+        //        if (Map[posX + j, posY + i] == '/'
+        //            || Map[posX + j, posY + i] == '\\'
+        //            || Map[posX + j, posY + i] == '|'
+        //            || (Map[posX + j, posY + i] == '_' && !debounce))
+        //        {
+        //            debounce = true;
+        //            PlayerController.Hit();
+        //        }
+        //    }
+        //}
     }
 
     public override bool InBounds(Vector2 position) => position.X > 0 && position.Y > 0;
-
-    public override bool IsTouching(char symbol) => false;
-
-    public override bool IsTouching(char[] symbols) => false;
     public override void TakeDamage()
     {
         waitDragon++;
 
-        var value = 0;
-        const string dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
-        for (var i = 0; i < 7; i++)
-        {
-            for (var j = 0; j < 12; j++)
-            {
-                Map[Position.X + j, Position.Y + i] = dragon[value];
-                value++;
-            }
-        }
+        //TODO => The dragon needs to show hit damage image change. 
+
+        //var value = 0;
+        //const string dragon = "*****        ******      **  ***        ***        *********   ********     ***  ** ";
+        //for (var i = 0; i < 7; i++)
+        //{
+        //    for (var j = 0; j < 12; j++)
+        //    {
+        //        Map[Position.X + j, Position.Y + i] = dragon[value];
+        //        value++;
+        //    }
+        //}
 
         base.TakeDamage();
     }

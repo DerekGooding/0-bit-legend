@@ -12,30 +12,4 @@ public abstract class BasePickup : IPickup
     public abstract Vector2 Size { get; }
 
     public void Draw() => DrawToScreen(Image, Position);
-    public bool InsideBoundingBox(char symbol)
-    {
-        for (var x = 0; x <= Size.X; x++)
-        {
-            for (var y = 0; y <= Size.Y; y++)
-            {
-                if (Map[Position.X + x, Position.Y + y] == symbol)
-                    return true;
-            }
-        }
-        return false;
-    }
-    public bool InsideBoundingBox(char[] symbols)
-    {
-        for (var x = 0; x <= Size.X; x++)
-        {
-            for (var y = 0; y <= Size.Y; y++)
-            {
-                if (symbols.Any(x => x == Map[Position.X + x, Position.Y + y]))
-                    return true;
-            }
-        }
-        return false;
-    }
-    public virtual bool IsTouching(char symbol) => InsideBoundingBox(symbol);
-    public virtual bool IsTouching(char[] symbols) => InsideBoundingBox(symbols);
 }

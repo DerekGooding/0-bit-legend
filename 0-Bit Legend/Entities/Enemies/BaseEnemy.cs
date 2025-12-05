@@ -13,34 +13,8 @@ public abstract class BaseEnemy : IEnemy
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; }
 
-    public bool InsideBoundingBox(char symbol)
-    {
-        for (var x = 0; x <= Size.X; x++)
-        {
-            for (var y = 0; y <= Size.Y; y++)
-            {
-                if (Map[Position.X + x, Position.Y + y] == symbol)
-                    return true;
-            }
-        }
-        return false;
-    }
-    public bool InsideBoundingBox(char[] symbols)
-    {
-        for (var x = 0; x <= Size.X; x++)
-        {
-            for (var y = 0; y <= Size.Y; y++)
-            {
-                if (symbols.Any(symbol => symbol == Map[Position.X + x, Position.Y + y]))
-                    return true;
-            }
-        }
-        return false;
-    }
     public abstract void Draw();
     public abstract bool InBounds(Vector2 position);
-    public virtual bool IsTouching(char symbol) => InsideBoundingBox(symbol);
-    public virtual bool IsTouching(char[] symbols) => InsideBoundingBox(symbols);
     public abstract void Move();
     public virtual void TakeDamage()
     {
@@ -68,9 +42,11 @@ public abstract class BaseEnemy : IEnemy
 
         if (InBounds(position))
         {
+            //TODO => Wall detection
+
             var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
             var damageHit = new char[] { '|', '_', '\\' };
-            if (Type == EnemyType.Dragon || Type == EnemyType.Spider || Type == EnemyType.Bat || (!IsTouching(blocking)))
+            if (Type == EnemyType.Dragon || Type == EnemyType.Spider || Type == EnemyType.Bat) // || (!IsTouching(blocking)))
             {
                 Prev1 = direction;
 
@@ -110,18 +86,19 @@ public abstract class BaseEnemy : IEnemy
 
                 return true;
             }
-            else if (IsTouching(damageHit))
-            {
-                PlayerController.Hit();
-                if (Type == EnemyType.Fireball)
-                {
-                    EnemyManager.Remove(this);
-                }
-                else
-                {
-                    Draw();
-                }
-            }
+            //TODO => Detect taking damage in the collision system
+            //else if (IsTouching(damageHit))
+            //{
+            //    PlayerController.Hit();
+            //    if (Type == EnemyType.Fireball)
+            //    {
+            //        EnemyManager.Remove(this);
+            //    }
+            //    else
+            //    {
+            //        Draw();
+            //    }
+            //}
             else
             {
                 if (Type == EnemyType.Fireball)

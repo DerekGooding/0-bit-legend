@@ -22,7 +22,8 @@ public class EnemyManager
     public bool TakeDamage(Vector2 target, DirectionType prev)
     {
         var enemy = GetEnemyAt(target);
-        MainProgram.PlayerController.StoreSword(prev);
+        //TODO => Trigger sword collapse assuming that's in the future system
+        //MainProgram.PlayerController.StoreSword(prev);
 
         enemy.TakeDamage();
 

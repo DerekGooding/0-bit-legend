@@ -25,28 +25,11 @@ public class Octorok : BaseEnemy
 
     public override void SpawnRupee(Vector2 position)
     {
-        var newRupee = new Rupee();
-        var sRPosX = position.X;
-        var sRPosY = position.Y;
-
-        var value = 0;
-        for (var i = 0; i < 3; i++)
+        var newRupee = new Rupee
         {
-            for (var j = 0; j < 3; j++)
-            {
-                newRupee.MapStorage[value] = Map[sRPosX - 1 + j, sRPosY - 1 + i] is not '-' and not 'S'
-                    ? Map[sRPosX - 1 + j, sRPosY - 1 + i]
-                    : ' ';
-                value++;
-            }
-        }
-        newRupee.Position = new(sRPosX, sRPosY);
+            Position = new(position.X, position.Y)
+        };
         EnemyManager.AddRupee(newRupee);
-
-        Map[sRPosX - 1, sRPosY] = 'R';
-        Map[sRPosX + 1, sRPosY] = 'R';
-        Map[sRPosX, sRPosY - 1] = 'r';
-        Map[sRPosX, sRPosY + 1] = 'r';
     }
 
     public override void Draw()
