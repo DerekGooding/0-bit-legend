@@ -10,9 +10,9 @@ public class MainMap0 : IMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX====================                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=#",
-"=XXXXXXXXXXXX///////XXXXXXXXXXXXXX=                                       =========XXXXXXXXXXXXXXXXXX=#",
-"=XXXXXXXXXXXX///////XXXXXXXXX======                                               =XXXXXXXXXXXXXXXXXX=#",
-"=XXXXXXXXX===///////==========                                                    =XXXXXXXXXXXXXXXXXX=#",
+"=XXXXXXXXXXXX       XXXXXXXXXXXXXX=                                       =========XXXXXXXXXXXXXXXXXX=#",
+"=XXXXXXXXXXXX       XXXXXXXXX======                                               =XXXXXXXXXXXXXXXXXX=#",
+"=XXXXXXXXX===       ==========                                                    =XXXXXXXXXXXXXXXXXX=#",
 "=XXXXXXXXX=                                                                       =XXXXXXXXXXXXXXXXXX=#",
 "=XXXXXXXXX=                                                                       =XXXXXXXXXXXXXXXXXX=#",
 "===========                                                                       =XXXXXXXXXXXXXXXXXX=#",
@@ -42,7 +42,7 @@ public class MainMap0 : IMap
 ];
     public List<EntityLocation> EntityLocations { get; } =
     [
-        new(typeof(EnterCave0), new(13,5), () => true),
+        new(typeof(EnterCave0), new(13,4), () => true),
     ];
     public void Load() { }
 }

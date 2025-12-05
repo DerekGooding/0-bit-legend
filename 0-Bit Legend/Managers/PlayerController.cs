@@ -1,5 +1,6 @@
 using _0_Bit_Legend.Entities;
 using System.Collections;
+using System.Reflection.Metadata.Ecma335;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -247,211 +248,28 @@ public class PlayerController
         //_swingingSword = false;
     }
 
-    public void MoveUp(int magnitude = 1)
+    public void MoveUp(int magnitude = 1) => Move(DirectionType.Up, magnitude);
+    public void MoveLeft(int magnitude = 1) => Move(DirectionType.Left, magnitude);
+    public void MoveDown(int magnitude = 1) => Move(DirectionType.Down, magnitude);
+    public void MoveRight(int magnitude = 1) => Move(DirectionType.Right, magnitude);
+
+    private void Move(DirectionType direction, int magnitude = 1)
     {
-        var points = GetMovePoints(DirectionType.Up);
+        var points = GetMovePoints(direction);
         if (!CanMove(points))
         {
             HandleDebugDraw(points);
             return;
         }
-        _player.Direction = DirectionType.Up;
-        _player.Position = _player.Position.Offset(0, -magnitude);
-        //if (PosX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
-        //{
-        //    if (posY > 1)
-        //    {
-        //        for (var y = PosY - 2; y <= PosY + 3; y++)
-        //        {
-        //            for (var x = PosX - 3; x <= PosX + 3; x++)
-        //            {
-        //                Map[x, y] = '~';
-        //            }
-        //        }
-
-        //        _player.Position = new(_player.Position.X, _player.Position.Y - 1);
-        //        DeployRaft(_prev2);
-        //    }
-        //    else
-        //    {
-        //        LoadMap(4, new(21, 29), DirectionType.Up);
-        //    }
-        //}
-        //else if (posY >= 1 && !(PosX == 21 && (CurrentMap == 4 || CurrentMap == 2)))
-        //{
-        //    _player.IsTouching('r');
-        //    StoreChar(new(PosX, PosY));
-        //    var inCave = false;
-
-        //    if (CurrentMap == 6 && (_player.IsTouching('-') || _player.IsTouching('S')))
-        //    {
-        //        SetFlag(GameFlag.HasSword);
-        //        LoadMap(6, new(posX, posY), DirectionType.Up);
-        //    }
-        //    else if (CurrentMap == 7 && _player.IsTouching('*') && Rupees >= 35)
-        //    {
-        //        Rupees -= 35;
-
-        //        SetFlag(GameFlag.HasRaft);
-        //        LoadMap(7, new(posX, posY), DirectionType.Up);
-        //    }
-        //    else if (CurrentMap == 7 && _player.IsTouching('Y') && Rupees >= 5)
-        //    {
-        //        Rupees -= 10;
-        //        Keys++;
-        //    }
-        //    else if (CurrentMap == 7 && _player.IsTouching('#') && Rupees >= 15)
-        //    {
-        //        Rupees -= 25;
-
-        //        SetFlag(GameFlag.HasArmor);
-        //        LoadMap(7, new(posX, posY), DirectionType.Up);
-        //    }
-        //    else if (CurrentMap == 9
-        //        && _player.IsTouching('X')
-        //        && !_player.IsTouching('=')
-        //        && HasFlags([GameFlag.Door1, GameFlag.Door2, GameFlag.Door3])
-        //        && cEnemies1 <= 0
-        //        && cEnemies2 <= 0
-        //        && !_debounce)
-        //    {
-        //        LoadMap(12, new(50, 24), DirectionType.Up);
-        //    }
-        //    else if (CurrentMap == 9 && PosX >= 48 && PosX <= 52 && PosY == 7 && !HasFlag(GameFlag.Door3) && Keys > 0)
-        //    {
-        //        _debounce = true;
-        //        Keys--;
-
-        //        SetFlag(GameFlag.Door3, true);
-        //        LoadMap(9, new(PosX, PosY), DirectionType.Up);
-        //    }
-
-        //    if (!_player.IsTouching('=')
-        //        && !_player.IsTouching('X')
-        //        && !_player.IsTouching('t')
-        //        && !_player.IsTouching('n')
-        //        && !_player.IsTouching('B')
-        //        && !_player.IsTouching('{')
-        //        && !_player.IsTouching('}')
-        //        && !_player.IsTouching('S')
-        //        && !_player.IsTouching('<')
-        //        && !_player.IsTouching('>')
-        //        && !_player.IsTouching('*')
-        //        && !(_player.IsTouching('F') && CurrentMap != 7)
-        //        && !_player.IsTouching('~')
-        //        && !((CurrentMap == 6 || CurrentMap == 7) && posY < 17)
-        //        && ((CurrentMap >= 9 && !_player.IsTouching('/')) || CurrentMap < 9))
-        //    {
-        //        if (_player.IsTouching('/'))
-        //        {
-        //            inCave = true;
-        //        }
-
-        //        StoreChar(new(posX, posY));
-        //        _player.Direction = DirectionType.Up;
-        //        _player.Draw();
-
-        //        _player.Position = new(posX, posY);
-        //    }
-        //    else if (_player.IsTouching('t')
-        //        || _player.IsTouching('n')
-        //        || _player.IsTouching('B')
-        //        || _player.IsTouching('{')
-        //        || _player.IsTouching('}')
-        //        || _player.IsTouching('S')
-        //        || _player.IsTouching('<')
-        //        || (_player.IsTouching('F') && CurrentMap != 7))
-        //    {
-        //        _player.Direction = DirectionType.Up;
-        //        _player.Draw();
-
-        //        Hit();
-        //    }
-        //    else if (CurrentMap == 13 && _player.IsTouching('~'))
-        //    {
-        //        _player.Direction = DirectionType.Up;
-        //        _player.Draw();
-
-        //        LoadMap(13, new(58, 15), DirectionType.Left);
-        //        SetGameState(GameState.GameOver);
-        //    }
-        //    else
-        //    {
-        //        _player.Direction = DirectionType.Up;
-        //        _player.Draw();
-        //    }
-
-        //    if (inCave)
-        //    {
-        //        WaitForTransition();
-        //    }
-        //}
-        //else
-        //{
-        //    if (CurrentMap == 0)
-        //    {
-        //        LoadMap(1, new(63, 29), DirectionType.Up);
-        //    }
-        //    else if (CurrentMap == 2)
-        //    {
-        //        if (posX > 29)
-        //        {
-        //            LoadMap(4, new(55, 30), DirectionType.Up);
-        //        }
-        //        else if (posX == 21)
-        //        {
-        //            LoadMap(4, new(21, 29), DirectionType.Up);
-        //        }
-        //        else
-        //        {
-        //            LoadMap(4, new(10, 29), DirectionType.Up);
-        //        }
-        //    }
-        //    else if (CurrentMap == 3)
-        //    {
-        //        LoadMap(5, new(49, 30), DirectionType.Up);
-        //    }
-        //}
-        //if (HasFlag(GameFlag.Text))
-        //{
-        //    SetFlag(GameFlag.Text, false);
-        //    LoadMap(9, new(posX, posY), DirectionType.Up);
-        //}
-
-        //_debounce = false;
-    }
-    public void MoveLeft(int magnitude = 1)
-    {
-        var points = GetMovePoints(DirectionType.Left);
-        if (!CanMove(points))
+        _player.Direction = direction;
+        _player.Position = direction switch
         {
-            HandleDebugDraw(points);
-            return;
-        }
-        _player.Direction = DirectionType.Left;
-        _player.Position = _player.Position.Offset(-magnitude * 2, 0);
-    }
-    public void MoveDown(int magnitude = 1)
-    {
-        var points = GetMovePoints(DirectionType.Down);
-        if (!CanMove(points))
-        {
-            HandleDebugDraw(points);
-            return;
-        }
-        _player.Direction = DirectionType.Down;
-        _player.Position = _player.Position.Offset(0, magnitude);
-    }
-    public void MoveRight(int magnitude = 1)
-    {
-        var points = GetMovePoints(DirectionType.Right);
-        if (!CanMove(points))
-        {
-            HandleDebugDraw(points);
-            return;
-        }
-        _player.Direction = DirectionType.Right;
-        _player.Position = _player.Position.Offset(magnitude * 2, 0);
+            DirectionType.Up => _player.Position.Offset(0, -magnitude),
+            DirectionType.Left => _player.Position.Offset(-magnitude * 2, 0),
+            DirectionType.Down => _player.Position.Offset(0, magnitude),
+            DirectionType.Right => _player.Position.Offset(magnitude * 2, 0),
+            _ => throw new Exception(),
+        };
     }
 
     public void SpawnLink(Vector2 position, DirectionType direction)
@@ -632,6 +450,12 @@ public class PlayerController
     private bool CanMove(Vector2[] points) => !points.Any(OutsideGameSpace) && !points.Any(IsBlocking);
 
     private bool IsBlocking(Vector2 point) => WallMap[point.X, point.Y];
+
+    private ICollider[] CheckCollisions(Vector2[] points)
+    {
+        //MainProgram.EntityManager.GetCollisions();
+        return [];
+    }
 
     private bool OutsideGameSpace(Vector2 point)
     => point.X < 0

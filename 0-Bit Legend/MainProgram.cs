@@ -425,10 +425,12 @@ public static class MainProgram
             Console.WriteLine("Fullscreen window to see game");
             return;
         }
+
         //DrawHud();
         DrawToScreen(_maps[CurrentMap].Raw, Vector2.Zero);
-        PlayerController.Draw();
         EntityManager.Draw();
+        PlayerController.Draw();
+
 
         if (_debugWall) DrawWallsDebug();
     }
@@ -499,7 +501,7 @@ public static class MainProgram
         (var Position, var _) = PlayerController.GetPlayerInfo();
         var result = new List<ICollider>();
 
-        result.AddRange(EntityManager.GetCollisions(Position, _heroSize));
+        result.AddRange(EntityManager.GetCollisions(new(Position, _heroSize)));
 
         return result;
     }

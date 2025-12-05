@@ -11,9 +11,9 @@ public class MainMap4 : IMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#",
-"=XXXXXXXXXXXXXXXXXXXXXXXXXXXX====================================================XX///////XXXXXXXXXXX=#",
-"=XXXXXXXXX====================                                                  =XX///////XXXXXXXXXXX=#",
-"=XXXXXXXXX=   ~~~~~~~~~~~~~~                                                    ===///////=XXXXXXXXXX=#",
+"=XXXXXXXXXXXXXXXXXXXXXXXXXXXX====================================================XX       XXXXXXXXXXX=#",
+"=XXXXXXXXX====================                                                  =XX       XXXXXXXXXXX=#",
+"=XXXXXXXXX=   ~~~~~~~~~~~~~~                                                    ===       =XXXXXXXXXX=#",
 "=XXXXXXXXX=   ~~~~~~~~~~~~~~                                                              =XXXXXXXXXX=#",
 "===========   ~~~~~~~~~~~~~~                                                              ============#",
 "              ~~~~~~~~~~~~~~                                                                          #",
@@ -42,7 +42,7 @@ public class MainMap4 : IMap
 ];
     public List<EntityLocation> EntityLocations { get; } =
     [
-        new(typeof(EnterCave1), new(84,5), () => true),
+        new(typeof(EnterCave1), new(84,4), () => true),
     ];
     public void Load() { }
 }

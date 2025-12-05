@@ -8,12 +8,12 @@ public class EntityManager
     private readonly List<IEntity> _entities = [];
     private readonly List<IEnemy> _enemies = [];
 
-    public List<ICollider> GetCollisions(Vector2 Position, Vector2 Size)
+    public List<ICollider> GetCollisions(CollisionBox collisionBox)
     {
-        var ax = Position.X;
-        var ay = Position.Y;
-        var aw = Size.X;
-        var ah = Size.Y;
+        var ax = collisionBox.Position.X;
+        var ay = collisionBox.Position.Y;
+        var aw = collisionBox.Size.X;
+        var ah = collisionBox.Size.Y;
 
         return [.. _entities.Where(b => b is ICollider c
         && Overlaps(ax, ay, aw, ah, b.Position.X, b.Position.Y, c.Size.X, c.Size.Y)).OfType<ICollider>()];
