@@ -1,12 +1,14 @@
-﻿using _0_Bit_Legend.Entities.Enemies;
+﻿using _0_Bit_Legend.Entities;
+using _0_Bit_Legend.Entities.Enemies;
 using _0_Bit_Legend.Entities.Pickups;
 
 namespace _0_Bit_Legend.Managers;
 
-public class EnemyManager
+public class EntityManager
 {
     private readonly List<IEnemy> _enemies = [];
     private readonly List<Rupee> _rupees = [];
+    private readonly List<IEntity> _entities = new List<IEntity>();
 
     public List<IEnemy> GetCollisions(Vector2 Position, Vector2 Size)
     {

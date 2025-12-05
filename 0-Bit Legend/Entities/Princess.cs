@@ -1,6 +1,6 @@
 ﻿namespace _0_Bit_Legend.Entities;
 
-public class Princess : IEntity, IBoundingBox
+public class Princess : IEntity, ICollider
 {
     public int Hp { get; set; } = 3;
     public Vector2 Position { get; set; } = Vector2.Zero;

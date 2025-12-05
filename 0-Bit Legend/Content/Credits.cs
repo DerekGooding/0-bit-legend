@@ -1,8 +1,8 @@
 ﻿namespace _0_Bit_Legend.Content;
 
-public class Credits
+public static class Credits
 {
-    public string[] Lose => [
+    public static string[] Lose => [
  "                                  THANKS   LINK,                                                      #",
  "                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #",
  "                                                                                                      #",
@@ -99,7 +99,7 @@ public class Credits
 
 ];
 
-    public string[] WinArmor => [
+    public static string[] WinArmor => [
  "                                  THANKS   LINK,                                                      #",
  "                                  YOU'RE   THE   HERO   OF   HYRULE.                                  #",
  "                                                                                                      #",

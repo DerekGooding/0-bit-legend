@@ -12,10 +12,9 @@ public static class MainProgram
     private static int _lastW = Console.WindowWidth;
     private static int _lastH = Console.WindowHeight;
     public static PlayerController PlayerController { get; } = new();
-    public static EnemyManager EnemyManager { get; } = new();
+    public static EntityManager EnemyManager { get; } = new();
     public static PickupManager PickupManager { get; } = new();
     private static readonly InputController _inputController = new();
-    private static readonly Credits _creditObject = new();
 
     private static GameFlag _flags = GameFlag.None;
     public static GameState State { get; private set; } = GameState.Idle;
@@ -50,7 +49,7 @@ public static class MainProgram
         Console.CursorVisible = false;
         LoadMap(0, new(52, 18), DirectionType.Up);
 
-        _credits = string.Concat(_creditObject.Lose);
+        _credits = string.Concat(Credits.Lose);
 
         while (true)
         {
@@ -240,7 +239,7 @@ public static class MainProgram
     }
     private static void HandleGameOver()
     {
-        if (HasFlag(GameFlag.HasArmor)) _credits = string.Concat(_creditObject.WinArmor);
+        if (HasFlag(GameFlag.HasArmor)) _credits = string.Concat(Credits.WinArmor);
 
         PlayerController.PlacePrincess();
         PlayerController.MoveLeft(0);
@@ -445,10 +444,10 @@ public static class MainProgram
     }
 
     private static Vector2 _heroSize = new(4, 3);
-    public static List<IBoundingBox> GetCollisions()
+    public static List<ICollider> GetCollisions()
     {
         (var Position, var _) = PlayerController.GetPlayerInfo();
-        var result = new List<IBoundingBox>();
+        var result = new List<ICollider>();
 
         result.AddRange(EnemyManager.GetCollisions(Position, _heroSize));
         result.AddRange(PickupManager.GetCollisions(Position, _heroSize));

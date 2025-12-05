@@ -9,7 +9,7 @@ public sealed class SpriteSheetTests
 {
     public static IEnumerable<object?[]> AllImplementations()
     {
-        var interfaceType = typeof(IBoundingBox);
+        var interfaceType = typeof(ICollider);
 
         var types = AppDomain.CurrentDomain
             .GetAssemblies()
@@ -38,7 +38,7 @@ public sealed class SpriteSheetTests
     [DynamicData(nameof(AllImplementations))]
     public void SpirtSheet_Integrety(Type implementationType)
     {
-        var instance = (IBoundingBox)Activator.CreateInstance(implementationType)!;
+        var instance = (ICollider)Activator.CreateInstance(implementationType)!;
 
         var type = instance.GetType();
         var spriteSheet = type.GetField("_spriteSheet", BindingFlags.Instance | BindingFlags.NonPublic);

@@ -1,6 +1,6 @@
 ﻿namespace _0_Bit_Legend.Entities;
 
-public class Hero : IEntity, IBoundingBox
+public class Hero : IEntity, ICollider
 {
     public double Hp { get; set; } = 3;
     private Vector2 _position = Vector2.Zero;
