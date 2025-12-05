@@ -41,6 +41,8 @@ public static class MainProgram
 
     private static string _credits = string.Empty;
 
+    public static bool RequiresRedraw = true;
+
     public static void Main()
     {
         InitializeMaps();
@@ -53,7 +55,11 @@ public static class MainProgram
         while (true)
         {
             Update();
-            Draw();
+            if(RequiresRedraw)
+            {
+                Draw();
+                RequiresRedraw = false;
+            }
 
             // Frame Rate: ~ 12 FPS
             Thread.Sleep(83);
@@ -62,6 +68,18 @@ public static class MainProgram
 
     private static void Update()
     {
+
+        var currentW = Console.WindowWidth;
+        var currentH = Console.WindowHeight;
+        if (_lastW != currentW || _lastH != currentH)
+        {
+            Console.Clear();
+            _lastW = currentW;
+            _lastH = currentH;
+            RequiresRedraw = true;
+        }
+
+
         waitEnemies--;
         waitDragon--;
 
@@ -86,13 +104,6 @@ public static class MainProgram
                 HandleGameOver();
                 break;
         }
-    }
-
-    private static void Draw()
-    {
-        Console.SetCursorPosition(0, 4);
-        //DrawHud();
-        DrawGame();
     }
 
     private static void HandleMovement()
@@ -373,18 +384,9 @@ public static class MainProgram
 
     private static void DrawHud() => DrawToScreen(Hud.GetImage(), Hud.Position);
 
-    private static void DrawGame()
+    private static void Draw()
     {
-        var currentW = Console.WindowWidth;
-        var currentH = Console.WindowHeight;
-        if(_lastW != currentW || _lastH != currentH)
-        {
-            Console.Clear();
-            _lastW = currentW;
-            _lastH = currentH;
-        }
-
-        if(currentW < GlobalMapRequirement.X || currentH < GlobalMapRequirement.Y)
+        if(_lastW < GlobalMapRequirement.X || _lastH < GlobalMapRequirement.Y)
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Fullscreen window to see game");

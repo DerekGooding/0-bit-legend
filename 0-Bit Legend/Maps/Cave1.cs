@@ -44,9 +44,9 @@ public class Cave1 : IMap
 
     public List<EntityLocation> EntityLocations { get; } =
     [
-        new(typeof(Raft), new(x: 30, y: 30), () => !HasFlag(GameFlag.HasRaft)),
-        new(typeof(Key), new(x: 50, y: 30), () => true),
-        new(typeof(Armor), new(x: 70, y: 30), () => !HasFlag(GameFlag.HasArmor)),
+        new(typeof(Raft), new(X: 30, Y: 30), () => !HasFlag(GameFlag.HasRaft)),
+        new(typeof(Key), new(X: 50, Y: 30), () => true),
+        new(typeof(Armor), new(X: 70, Y: 30), () => !HasFlag(GameFlag.HasArmor)),
     ];
 
     public void Load() { }

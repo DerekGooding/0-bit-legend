@@ -3,7 +3,17 @@
 public class Hero : IEntity, IBoundingBox
 {
     public double Hp { get; set; } = 3;
-    public Vector2 Position { get; set; } = Vector2.Zero;
+    private Vector2 _position = Vector2.Zero;
+    public Vector2 Position
+    {
+        get => _position;
+        set
+        {
+            if(_position == value) return;
+            _position = value;
+            RequiresRedraw = true;
+        }
+    }
     public DirectionType Direction { get; set; } = DirectionType.Up;
 
     public Vector2 Size { get; } = new(4, 3);
@@ -71,6 +81,7 @@ public class Hero : IEntity, IBoundingBox
             "|#=#|",
         ] },
     };
+
 
     public void Draw()
     {

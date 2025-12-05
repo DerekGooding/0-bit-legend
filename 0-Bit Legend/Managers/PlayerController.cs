@@ -4,7 +4,6 @@ namespace _0_Bit_Legend.Managers;
 
 public class PlayerController
 {
-    private Vector2 _preHitPosition = Vector2.Zero;
     private readonly Hero _player = new();
 
     private static readonly char[] _storage_sword = new char[6];
@@ -24,13 +23,6 @@ public class PlayerController
     public void SetPosition(Vector2 pos) => _player.Position = pos;
 
     public (Vector2 Position, DirectionType Prev1) GetPlayerInfo() => (_player.Position, _prev);
-
-    //Temporary rename fix, TODO removed
-    private int PosX => _player.Position.X;
-    private int PosY => _player.Position.Y;
-    private int PreHitPosX => _preHitPosition.X;
-    private int PreHitPosY => _preHitPosition.Y;
-
 
     public void Attack()
     {
