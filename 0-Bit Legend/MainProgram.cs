@@ -28,7 +28,7 @@ public static class MainProgram
     }
     public static int CurrentMap { get; private set; }
 
-    public static bool[,] WallMap { get; } = new bool[33,103];
+    public static bool[,] WallMap { get; } = new bool[103,33];
 
     public static int Rupees { get; set; } = 100;
     public static int Keys { get; set; }
@@ -40,6 +40,8 @@ public static class MainProgram
     public static int wait;
 
     private static string _credits = string.Empty;
+
+    private static bool _debugWall;
 
     public static bool RequiresRedraw = true;
 
@@ -132,6 +134,12 @@ public static class MainProgram
         {
             PlayerController.Attack();
             State = GameState.Attacking;
+        }
+
+        if ((rawInput & InputType.DebugWall) != 0)
+        {
+            _debugWall = !_debugWall;
+            RequiresRedraw = true;
         }
 
         if (waitEnemies <= 0)
@@ -390,11 +398,11 @@ public static class MainProgram
     private static void UpdateWallMap()
     {
         var map = _maps[CurrentMap].Raw;
-        for(var x = 0; x < map.Length; x++)
+        for(var y = 0; y < map.Length; y++)
         {
-            var line = map[x];
-            for(var y = 0; y < line.Length; y++)
-                WallMap[x,y] = Environments.Walls.Any(x => x == line[y]);
+            var line = map[y];
+            for(var x = 0; x < line.Length; x++)
+                WallMap[x,y] = Environments.Walls.Any(symbol => symbol == line[x]);
         }
     }
 
@@ -412,6 +420,12 @@ public static class MainProgram
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Fullscreen window to see game");
+            return;
+        }
+
+        if (_debugWall)
+        {
+            DrawWallsDebug();
             return;
         }
 
@@ -462,6 +476,24 @@ public static class MainProgram
             Console.SetCursorPosition(xOffset, yOffset + i);
             Console.Write(image[i]);
         }
+    }
+
+    private static void DrawWallsDebug()
+    {
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine("Debug Mode Enabled");
+
+        List<Vector2> walls = [];
+        for( var x = 0;x < 103; x++ )
+        {
+            for( var y = 0; y < 33; y++ )
+            {
+                if (WallMap[x,y])
+                    walls.Add(new Vector2(x,y));
+            }
+        }
+
+        PlayerController.HandleDebugDraw([.. walls]);
     }
 
     private static Vector2 _heroSize = new(4, 3);

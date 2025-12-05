@@ -13,6 +13,7 @@ public partial class InputController
     const int VK_A = 0x41;
     const int VK_S = 0x53;
     const int VK_D = 0x44;
+    const int VK_P = 0x50;
 
     // Arrow keys
     const int VK_UP = 0x26;
@@ -35,6 +36,8 @@ public partial class InputController
         { VK_LSHIFT, InputType.Attack },
         { VK_RSHIFT, InputType.Attack },
         { VK_SPACE, InputType.Attack  },
+
+        { VK_P, InputType.DebugWall },
     };
 
     public InputType GetInputState()

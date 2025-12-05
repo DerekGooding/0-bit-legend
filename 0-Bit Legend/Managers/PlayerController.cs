@@ -1,4 +1,5 @@
 using _0_Bit_Legend.Entities;
+using System.Collections;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -248,8 +249,13 @@ public class PlayerController
 
     public void MoveUp(int magnitude = 1)
     {
+        var points = GetMovePoints(DirectionType.Up);
+        if (!CanMove(points))
+        {
+            HandleDebugDraw(points);
+            return;
+        }
         _player.Direction = DirectionType.Up;
-
         _player.Position = _player.Position.Offset(0, -magnitude);
         //if (PosX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
         //{
@@ -416,16 +422,34 @@ public class PlayerController
     }
     public void MoveLeft(int magnitude = 1)
     {
+        var points = GetMovePoints(DirectionType.Left);
+        if (!CanMove(points))
+        {
+            HandleDebugDraw(points);
+            return;
+        }
         _player.Direction = DirectionType.Left;
-        _player.Position = _player.Position.Offset(-magnitude*2, 0);
+        _player.Position = _player.Position.Offset(-magnitude * 2, 0);
     }
     public void MoveDown(int magnitude = 1)
     {
+        var points = GetMovePoints(DirectionType.Down);
+        if (!CanMove(points))
+        {
+            HandleDebugDraw(points);
+            return;
+        }
         _player.Direction = DirectionType.Down;
         _player.Position = _player.Position.Offset(0, magnitude);
     }
     public void MoveRight(int magnitude = 1)
     {
+        var points = GetMovePoints(DirectionType.Right);
+        if (!CanMove(points))
+        {
+            HandleDebugDraw(points);
+            return;
+        }
         _player.Direction = DirectionType.Right;
         _player.Position = _player.Position.Offset(magnitude * 2, 0);
     }
@@ -587,8 +611,43 @@ public class PlayerController
 
     internal void Draw() => _player.Draw();
 
-    private bool InBounds()
+    private Vector2[] GetMovePoints(DirectionType direction)
     {
-        return true;
+        var bottom = _player.Position.Y + _player.Size.Y;
+        var right = _player.Position.X + _player.Size.X;
+        return direction switch
+        {
+            DirectionType.Up =>
+            [.. Enumerable.Range(_player.Position.X, _player.Size.X + 1).Select(p => new Vector2(p, _player.Position.Y - 1))],
+            DirectionType.Down =>
+            [.. Enumerable.Range(_player.Position.X, _player.Size.X + 1).Select(p => new Vector2(p, bottom + 1))],
+            DirectionType.Left =>
+            [.. Enumerable.Range(_player.Position.Y, _player.Size.Y + 1).Select(p => new Vector2(_player.Position.X - 2, p))],
+            DirectionType.Right =>
+            [.. Enumerable.Range(_player.Position.Y, _player.Size.Y + 1).Select(p => new Vector2(right + 2, p))],
+            _ => throw new Exception()
+        };
+    }
+
+    private bool CanMove(Vector2[] points) => !points.Any(OutsideGameSpace) && !points.Any(IsBlocking);
+
+    private bool IsBlocking(Vector2 point) => WallMap[point.X, point.Y];
+
+    private bool OutsideGameSpace(Vector2 point)
+    => point.X < GlobalMapOffset.X
+    || point.X > GlobalMapRequirement.X
+    || point.Y < GlobalMapOffset.Y
+    || point.Y > GlobalMapRequirement.Y;
+
+    public void HandleDebugDraw(Vector2[] points)
+    {
+        Console.BackgroundColor = ConsoleColor.Red;
+        foreach (var point in points)
+        {
+            Console.SetCursorPosition(point.X + GlobalMapOffset.X, point.Y + GlobalMapOffset.Y);
+
+            Console.Write(' ');
+        }
+        Console.BackgroundColor = ConsoleColor.Black;
     }
 }

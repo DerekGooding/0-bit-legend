@@ -9,4 +9,5 @@ public enum InputType
     Left = 1 << 2,
     Right = 1 << 3,
     Attack = 1 << 4,
+    DebugWall = 1 << 5,
 }
