@@ -2,7 +2,7 @@
 
 namespace _0_Bit_Legend.Entities.Triggers;
 
-public class EnterCave0: IEntity, ICollider
+public class EnterCave0 : IEntity, ICollider
 {
     public Action OnContact { get; } = () =>
     {
@@ -10,10 +10,13 @@ public class EnterCave0: IEntity, ICollider
         LoadMap(6, new(50, 18), DirectionType.Up);
     };
 
-    public Vector2 Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public DirectionType Direction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Vector2 Position { get; set; }
+    public DirectionType Direction { get; set; }
 
-    public Vector2 Size => throw new NotImplementedException();
+    public Vector2 Size { get; }
 
-    public void Draw() => throw new NotImplementedException();
+    public void Draw()
+    {
+
+    }
 }
