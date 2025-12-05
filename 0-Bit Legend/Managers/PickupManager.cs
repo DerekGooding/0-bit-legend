@@ -6,6 +6,17 @@ public class PickupManager
 {
     private readonly List<IPickup> _pickups = [];
 
+    public List<IPickup> GetCollisions(Vector2 Position, Vector2 Size)
+    {
+        var ax = Position.X;
+        var ay = Position.Y;
+        var aw = Size.X;
+        var ah = Size.Y;
+
+
+        return [.. _pickups.Where(b => Overlaps(ax, ay, aw, ah, b.Position.X, b.Position.Y, b.Size.X, b.Size.Y))];
+    }
+
     public void RemoveAll() => _pickups.Clear();
     public void Remove(IPickup pickup)
     {

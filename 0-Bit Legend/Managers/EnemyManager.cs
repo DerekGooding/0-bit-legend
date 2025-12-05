@@ -1,6 +1,5 @@
 ﻿using _0_Bit_Legend.Entities.Enemies;
 using _0_Bit_Legend.Entities.Pickups;
-using _0_Bit_Legend.Maps;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -8,6 +7,17 @@ public class EnemyManager
 {
     private readonly List<IEnemy> _enemies = [];
     private readonly List<Rupee> _rupees = [];
+
+    public List<IEnemy> GetCollisions(Vector2 Position, Vector2 Size)
+    {
+        var ax = Position.X;
+        var ay = Position.Y;
+        var aw = Size.X;
+        var ah = Size.Y;
+
+
+        return [.. _enemies.Where(b => Overlaps(ax, ay, aw, ah, b.Position.X, b.Position.Y, b.Size.X, b.Size.Y))];
+    }
 
     public bool TakeDamage(Vector2 target, DirectionType prev)
     {

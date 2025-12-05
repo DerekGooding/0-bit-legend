@@ -1,4 +1,5 @@
 using _0_Bit_Legend.Content;
+using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Managers;
 using _0_Bit_Legend.Maps;
 
@@ -6,8 +7,8 @@ namespace _0_Bit_Legend;
 
 public static class MainProgram
 {
-    public static Vector2 GlobalMapOffset = new(50, 4);
-    public static Vector2 GlobalMapRequirement = new(50 + 103, 33 + 4);
+    public readonly static Vector2 GlobalMapOffset = new(50, 4);
+    public readonly static Vector2 GlobalMapRequirement = new(50 + 103, 33 + 4);
     private static int _lastW = Console.WindowWidth;
     private static int _lastH = Console.WindowHeight;
     public static PlayerController PlayerController { get; } = new();
@@ -27,8 +28,6 @@ public static class MainProgram
         _maps.Clear();
         _maps.Add(map);
     }
-
-    public static char[,] Map { get; } = new char[102, 33];
     public static int CurrentMap { get; private set; }
 
     public static int Rupees { get; set; } = 100;
@@ -39,11 +38,6 @@ public static class MainProgram
     public static int waitEnemies = 1;
     public static int waitDragon = 1;
     public static int wait;
-    public static int iFrames;
-
-    private static int _frames;
-    private static string _hud = "";
-    //private static bool _start;
 
     private static string _credits = string.Empty;
 
@@ -56,7 +50,7 @@ public static class MainProgram
 
         _credits = string.Concat(_creditObject.Lose);
 
-        while (_frames < 118)
+        while (true)
         {
             Update();
             Draw();
@@ -70,8 +64,6 @@ public static class MainProgram
     {
         waitEnemies--;
         waitDragon--;
-
-        iFrames = iFrames > 0 ? iFrames - 1 : 0;
 
         switch (State)
         {
@@ -209,88 +201,46 @@ public static class MainProgram
     }
     private static void HandleDeath()
     {
-        if (_frames <= 16)
-        {
-            Thread.Sleep(50);
-            for (var i = 0; i < 102; i++)
-            {
-                Map[i, _frames] = ' ';
-                Map[i, 32 - _frames] = ' ';
-            }
+        Thread.Sleep(50);
+        PlayerController.PlayEffect('*');
+        PlayerController.PlayEffect('+');
 
-            if (_frames % 2 == 0)
-            {
-                PlayerController.PlayEffect('*');
-            }
-            else
-            {
-                PlayerController.PlayEffect('+');
-            }
-        }
-        else if (_frames == 26)
+        while (Console.KeyAvailable)
         {
-            while (Console.KeyAvailable)
-            {
-                Console.ReadKey(true);
-            }
             Console.ReadKey(true);
-
-            PlayerController.Health = 3;
-            _frames = -1;
-            //_start = false;
-
-            cEnemies1 = 4;
-            cEnemies2 = 4;
-
-            if (CurrentMap <= 8)
-            {
-                LoadMap(0, new(52, 15), DirectionType.Up);
-            }
-            else
-            {
-                LoadMap(9, new(50, 25), DirectionType.Up);
-            }
-            State = GameState.Idle;
         }
-        _frames++;
+        Console.ReadKey(true);
+
+        PlayerController.Health = 3;
+
+        cEnemies1 = 4;
+        cEnemies2 = 4;
+
+        if (CurrentMap <= 8)
+        {
+            LoadMap(0, new(52, 15), DirectionType.Up);
+        }
+        else
+        {
+            LoadMap(9, new(50, 25), DirectionType.Up);
+        }
+        State = GameState.Idle;
+
     }
     private static void HandleGameOver()
     {
         if (HasFlag(GameFlag.HasArmor)) _credits = string.Concat(_creditObject.WinArmor);
 
-        if (_frames < 13)
-        {
-            for (var i = 0; i < 32; i++)
-            {
-                Map[_frames, i] = ' ';
-                Map[101 - _frames, i] = ' ';
-            }
+        PlayerController.PlacePrincess();
+        PlayerController.MoveLeft(0);
 
-            PlayerController.PlacePrincess();
-            PlayerController.MoveLeft(0);
-        }
-        else if (_frames < 30)
-        {
-            for (var i = 0; i < 102; i++)
-            {
-                Map[i, _frames - 13] = ' ';
-                Map[i, 45 - _frames] = ' ';
-            }
+        PlayerController.PlacePrincess();
+        PlayerController.MoveLeft(0);
 
-            PlayerController.PlacePrincess();
-            PlayerController.MoveLeft(0);
-        }
-        else if (_frames is > 30 and < 111)
-        {
-            if (_frames == 31) Thread.Sleep(3500);
+        Thread.Sleep(3500);
+        Thread.Sleep(600);
+        Thread.Sleep(600);
 
-            Thread.Sleep(600);
-        }
-        else if (_frames is >= 111 and < 117)
-        {
-            Thread.Sleep(600);
-        }
-        _frames++;
     }
 
     private static void InitializeMaps()
@@ -315,24 +265,9 @@ public static class MainProgram
 
     public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
     {
-        var map = string.Concat(_maps[mapNum].Raw);
-        var val = 0;
-
         CurrentMap = mapNum;
         EnemyManager.RemoveAll();
         PickupManager.RemoveAll();
-
-        for (var i = 0; i < 33; i++)
-        {
-            for (var j = 0; j < 103; j++)
-            {
-                if (j != 102)
-                {
-                    Map[j, i] = map[val];
-                }
-                val++;
-            }
-        }
 
         if (mapNum == 1)
         {
@@ -436,19 +371,7 @@ public static class MainProgram
         PlayerController.MovementWait = time;
     }
 
-    private static void DrawHud()
-    {
-        Console.SetCursorPosition(0, 10);
-        var health = PlayerController.Health;
-        _hud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X                         X#X    r                    X#X   RRR          {Rupees,-4}     X#X    r                    X#X                         X#X  =======       {Keys,-4}     X#X  ==  = =                X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
-        _hud = health > 2.5
-            ? $"{_hud.AsSpan(0, 196)}X       <3  <3  <3        X#{_hud.AsSpan(224)}" : health > 2
-            ? $"{_hud.AsSpan(0, 196)}X       <3  <3  =         X#{_hud.AsSpan(224)}" : health > 1.5
-            ? $"{_hud.AsSpan(0, 196)}X       <3  <3            X#{_hud.AsSpan(224)}" : health > 1
-            ? $"{_hud.AsSpan(0, 196)}X       <3  =             X#{_hud.AsSpan(224)}" : health > 0.5
-            ? $"{_hud.AsSpan(0, 196)}X       <3                X#{_hud.AsSpan(224)}" : health > 0
-            ? $"{_hud.AsSpan(0, 196)}X       =                 X#{_hud.AsSpan(224)}" : $"{_hud.AsSpan(0, 196)}X                         X#{_hud.AsSpan(224)}";
-    }
+    private static void DrawHud() => DrawToScreen(Hud.GetImage(), Hud.Position);
 
     private static void DrawGame()
     {
@@ -468,6 +391,7 @@ public static class MainProgram
             return;
         }
 
+        //DrawHud();
         DrawToScreen(_maps[CurrentMap].Raw, Vector2.Zero);
 
         PlayerController.Draw();
@@ -517,4 +441,22 @@ public static class MainProgram
             Console.Write(image[i]);
         }
     }
+
+    private static Vector2 _heroSize = new(4, 3);
+    public static List<IBoundingBox> GetCollisions()
+    {
+        (var Position, var _) = PlayerController.GetPlayerInfo();
+        var result = new List<IBoundingBox>();
+
+        result.AddRange(EnemyManager.GetCollisions(Position, _heroSize));
+        result.AddRange(PickupManager.GetCollisions(Position, _heroSize));
+
+        return result;
+    }
+
+    public static bool Overlaps(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+        => ax < bx + bw &&
+               bx < ax + aw &&
+               ay < by + bh &&
+               by < ay + ah;
 }
