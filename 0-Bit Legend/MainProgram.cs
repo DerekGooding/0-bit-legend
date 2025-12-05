@@ -8,7 +8,10 @@ namespace _0_Bit_Legend;
 public static class MainProgram
 {
     public readonly static Vector2 GlobalMapOffset = new(50, 4);
-    public readonly static Vector2 GlobalMapRequirement = new(50 + 103, 33 + 4);
+    public readonly static Vector2 GlobalSize = new(103, 33);
+    public readonly static Vector2 GlobalMapRequirement =
+        new(GlobalMapOffset.X + GlobalSize.X, GlobalMapRequirement.Y + GlobalSize.Y);
+
     private static int _lastW = Console.WindowWidth;
     private static int _lastH = Console.WindowHeight;
     public static PlayerController PlayerController { get; } = new();
@@ -422,18 +425,12 @@ public static class MainProgram
             Console.WriteLine("Fullscreen window to see game");
             return;
         }
-
-        if (_debugWall)
-        {
-            DrawWallsDebug();
-            return;
-        }
-
         //DrawHud();
         DrawToScreen(_maps[CurrentMap].Raw, Vector2.Zero);
-
         PlayerController.Draw();
         EntityManager.Draw();
+
+        if (_debugWall) DrawWallsDebug();
     }
 
     public static bool HasFlag(GameFlag flag) => (_flags & flag) != 0;

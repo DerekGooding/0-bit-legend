@@ -634,10 +634,10 @@ public class PlayerController
     private bool IsBlocking(Vector2 point) => WallMap[point.X, point.Y];
 
     private bool OutsideGameSpace(Vector2 point)
-    => point.X < GlobalMapOffset.X
-    || point.X > GlobalMapRequirement.X
-    || point.Y < GlobalMapOffset.Y
-    || point.Y > GlobalMapRequirement.Y;
+    => point.X < 0
+    || point.X > GlobalSize.X
+    || point.Y < 0
+    || point.Y > GlobalSize.Y;
 
     public void HandleDebugDraw(Vector2[] points)
     {
