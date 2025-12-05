@@ -277,6 +277,17 @@ public static class MainProgram
         CurrentMap = mapNum;
         EntityManager.RemoveAll();
 
+        var map = _maps[mapNum];
+        foreach(var item in map.EntityLocations)
+        {
+            if (!item.IsActive.Invoke()) continue;
+            var obj = Activator.CreateInstance(item.EntityType);
+            if (obj is not IEntity entity)
+                throw new Exception("Error in map data. Non-entity in EntityLocation list");
+            entity.Position = item.Position;
+            EntityManager.Add(entity);
+        }
+
         if (mapNum == 1)
         {
             EntityManager.SpawnEnemy(EnemyType.Octorok, new(75, 13), DirectionType.Left, -1);

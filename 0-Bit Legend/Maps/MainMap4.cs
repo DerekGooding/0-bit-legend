@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend.Entities.Triggers;
+
+namespace _0_Bit_Legend.Maps;
 
 public class MainMap4 : IMap
 {
@@ -38,7 +40,9 @@ public class MainMap4 : IMap
 "=XXX=         ~~~~~~~~~~~~~~ =XXXXXXXXXXXX=                      =XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=#",
 "=====         ~~~~~~~~~~~~~~ ==============                      =====================================#",
 ];
-    public string[] FlagAdjusted => Raw;
-    public List<EntityLocation> EntityLocations { get; } = [];
+    public List<EntityLocation> EntityLocations { get; } =
+    [
+        new(typeof(EnterCave1), new(84,5), () => true),
+    ];
     public void Load() { }
 }
