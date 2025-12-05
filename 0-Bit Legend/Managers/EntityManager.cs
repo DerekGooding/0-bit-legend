@@ -6,6 +6,7 @@ namespace _0_Bit_Legend.Managers;
 public class EntityManager
 {
     private readonly List<IEntity> _entities = [];
+    private readonly List<IEnemy> _enemies = [];
 
     public List<ICollider> GetCollisions(Vector2 Position, Vector2 Size)
     {
@@ -48,37 +49,48 @@ public class EntityManager
         enemy.Prev2 = direction;
 
         _entities.Add(enemy);
+        _enemies.Add(enemy);
     }
 
-    public void RemoveAll() => _entities.Clear();
+    public void RemoveAll()
+    {
+        _entities.Clear();
+        _enemies.Clear();
+    }
+
     public void MoveAll()
     {
-        var enemies = _entities.OfType<IEnemy>().ToList();
-        for(var i = enemies.Count - 1; i >= 0; i--)
+        for(var i = _enemies.Count - 1; i >= 0; i--)
         {
-            var enemy = enemies[i];
+            var enemy = _enemies[i];
             enemy.Move();
         }
     }
 
     public void Remove(IEntity entity)
     {
-        if(entity is  Bat)
-        {
-            if (CurrentMap == 10)
-            {
-                cEnemies1--;
-            }
-            else if (CurrentMap == 11)
-            {
-                cEnemies2--;
-            }
-        }
-
         _entities.Remove(entity);
+        if (entity is not IEnemy enemy) return;
+
+        _enemies.Remove(enemy);
+        if(enemy.Type != EnemyType.Bat) return;
+
+        if (CurrentMap == 10)
+        {
+            cEnemies1--;
+        }
+        else if (CurrentMap == 11)
+        {
+            cEnemies2--;
+        }
     }
 
-    public void Add(IEntity entity) => _entities.Add(entity);
+    public void Add(IEntity entity)
+    {
+        if(entity is IEnemy enemy)
+            _enemies.Add(enemy);
+        _entities.Add(entity);
+    }
 
     internal void Draw()
     {
