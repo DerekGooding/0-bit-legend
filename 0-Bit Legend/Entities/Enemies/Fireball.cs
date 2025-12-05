@@ -4,7 +4,7 @@ public class Fireball : BaseEnemy
 {
     public override EnemyType Type => EnemyType.Fireball;
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(2, 1));
+    public override Vector2 Size { get; } = new(2, 1);
 
     private readonly string[] _spriteSheet =
 [
@@ -12,16 +12,7 @@ public class Fireball : BaseEnemy
         "FFF",
     ];
 
-    public override void Draw()
-    {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = _spriteSheet[y][x];
-            }
-        }
-    }
+    public override void Draw() => DrawToScreen(_spriteSheet, Position);
 
     public override bool InBounds(Vector2 position)
     {

@@ -25,5 +25,5 @@ public class Raft : BasePickup, IPurchased
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -2), new(2, 3));
+    public override Vector2 Size { get; } = new(4, 5);
 }

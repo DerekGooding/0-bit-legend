@@ -9,27 +9,14 @@ public abstract class BasePickup : IPickup
     public abstract string[] Image { get; }
     public abstract Action OnPickup { get; }
 
-    public abstract (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }
+    public abstract Vector2 Size { get; }
 
-    public void Draw()
-    {
-        var xOffset = 0 - BoundingBox.TopLeft.X;
-        var yOffset = 0 - BoundingBox.TopLeft.Y;
-
-
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = Image[y + yOffset][x + xOffset];
-            }
-        }
-    }
+    public void Draw() => DrawToScreen(Image, Position);
     public bool InsideBoundingBox(char symbol)
     {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        for (var x = 0; x <= Size.X; x++)
         {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            for (var y = 0; y <= Size.Y; y++)
             {
                 if (Map[Position.X + x, Position.Y + y] == symbol)
                     return true;
@@ -39,9 +26,9 @@ public abstract class BasePickup : IPickup
     }
     public bool InsideBoundingBox(char[] symbols)
     {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        for (var x = 0; x <= Size.X; x++)
         {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            for (var y = 0; y <= Size.Y; y++)
             {
                 if (symbols.Any(x => x == Map[Position.X + x, Position.Y + y]))
                     return true;

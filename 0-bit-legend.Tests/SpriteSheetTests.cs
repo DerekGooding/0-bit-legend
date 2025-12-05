@@ -48,8 +48,8 @@ public sealed class SpriteSheetTests
             Assert.IsNotNull(spriteSheet);
             return;
         }
-        var expectedLineCount = BoundingY(instance);
-        var expectedLineLength = BoundingX(instance);
+        var expectedLineCount = instance.Size.Y + 1;
+        var expectedLineLength = instance.Size.X + 1;
 
         if (spriteSheet.FieldType == typeof(Dictionary<DirectionType, string[]>))
         {
@@ -75,7 +75,4 @@ public sealed class SpriteSheetTests
                 Assert.AreEqual(expectedLineLength, line.Length);
         }
     }
-
-    private int BoundingX(IBoundingBox boundingBox) => boundingBox.BoundingBox.BottomRight.X - boundingBox.BoundingBox.TopLeft.X + 1;
-    private int BoundingY(IBoundingBox boundingBox) => boundingBox.BoundingBox.BottomRight.Y - boundingBox.BoundingBox.TopLeft.Y + 1;
 }

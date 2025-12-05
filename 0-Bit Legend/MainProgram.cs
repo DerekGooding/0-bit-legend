@@ -7,6 +7,9 @@ namespace _0_Bit_Legend;
 public static class MainProgram
 {
     public static Vector2 GlobalMapOffset = new(50, 4);
+    public static Vector2 GlobalMapRequirement = new(50 + 103, 33 + 4);
+    private static int _lastW = Console.WindowWidth;
+    private static int _lastH = Console.WindowHeight;
     public static PlayerController PlayerController { get; } = new();
     public static EnemyManager EnemyManager { get; } = new();
     public static PickupManager PickupManager { get; } = new();
@@ -449,26 +452,28 @@ public static class MainProgram
 
     private static void DrawGame()
     {
-        var blankLine = new string(' ', 102 + GlobalMapOffset.X);
-        Console.SetCursorPosition(0, 0);
-        Console.WriteLine(blankLine);
-        Console.WriteLine(blankLine);
-        Console.WriteLine(blankLine);
-        Console.WriteLine(blankLine);
-        var lineCount = GlobalMapOffset.Y;
+        var currentW = Console.WindowWidth;
+        var currentH = Console.WindowHeight;
+        if(_lastW != currentW || _lastH != currentH)
+        {
+            Console.Clear();
+            _lastW = currentW;
+            _lastH = currentH;
+        }
+
+        if(currentW < GlobalMapRequirement.X || currentH < GlobalMapRequirement.Y)
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("Fullscreen window to see game");
+            return;
+        }
+
+        DrawToScreen(_maps[CurrentMap].Raw, Vector2.Zero);
 
         PlayerController.Draw();
         EnemyManager.Draw();
         PickupManager.Draw();
 
-        foreach (var line in _maps[CurrentMap].Raw)
-        {
-            try
-            {
-                Console.SetCursorPosition(GlobalMapOffset.X, lineCount++);
-                Console.Write(line);
-            } catch { }
-        }
     }
 
     public static bool HasFlag(GameFlag flag) => (_flags & flag) != 0;
@@ -499,5 +504,17 @@ public static class MainProgram
         }
 
         return InputType.None;
+    }
+
+    public static void DrawToScreen(string[] image, Vector2 position)
+    {
+        var xOffset = position.X + GlobalMapOffset.X;
+        var yOffset = position.Y + GlobalMapOffset.Y;
+
+        for( var i = 0; i < image.Length; i++ )
+        {
+            Console.SetCursorPosition(xOffset, yOffset + i);
+            Console.Write(image[i]);
+        }
     }
 }

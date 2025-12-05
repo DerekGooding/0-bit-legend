@@ -23,5 +23,5 @@ public class Key : BasePickup, IPurchased
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -2), new(4, 2));
+    public override Vector2 Size { get; } = new(6, 4);
 }

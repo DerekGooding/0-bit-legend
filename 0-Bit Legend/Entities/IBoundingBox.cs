@@ -2,7 +2,8 @@
 
 public interface IBoundingBox
 {
-    public (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }
+    //Origin point is top left corner of object
+    public Vector2 Size { get; }
 
     public bool InsideBoundingBox(char symbol);
 

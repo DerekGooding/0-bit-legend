@@ -4,7 +4,7 @@ public abstract class BaseEnemy : IEnemy
 {
     public abstract EnemyType Type { get; }
 
-    public abstract  (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }
+    public abstract  Vector2 Size { get; }
 
     public int Hp { get; set; } = 1;
     public int Motion { get; set; }
@@ -15,9 +15,9 @@ public abstract class BaseEnemy : IEnemy
 
     public bool InsideBoundingBox(char symbol)
     {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        for (var x = 0; x <= Size.X; x++)
         {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            for (var y = 0; y <= Size.Y; y++)
             {
                 if (Map[Position.X + x, Position.Y + y] == symbol)
                     return true;
@@ -27,9 +27,9 @@ public abstract class BaseEnemy : IEnemy
     }
     public bool InsideBoundingBox(char[] symbols)
     {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        for (var x = 0; x <= Size.X; x++)
         {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            for (var y = 0; y <= Size.Y; y++)
             {
                 if (symbols.Any(symbol => symbol == Map[Position.X + x, Position.Y + y]))
                     return true;

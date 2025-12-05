@@ -6,7 +6,7 @@ public class Hero : IEntity, IBoundingBox
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; } = DirectionType.Up;
 
-    public (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -1), new(2, 2));
+    public Vector2 Size { get; } = new(4, 3);
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
@@ -74,18 +74,8 @@ public class Hero : IEntity, IBoundingBox
 
     public void Draw()
     {
-        var xOffset = 0 - BoundingBox.TopLeft.X;
-        var yOffset = 0 - BoundingBox.TopLeft.Y;
-
         var image = HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] : _spriteSheet[Direction];
-
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = image[y + yOffset][x + xOffset];
-            }
-        }
+        DrawToScreen(image, Position);
     }
 
     public bool IsTouching(char symbol)
@@ -121,9 +111,9 @@ public class Hero : IEntity, IBoundingBox
 
     public bool InsideBoundingBox(char symbol)
     {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        for (var x = 0; x < Size.X; x++)
         {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            for (var y = 0; y < Size.Y; y++)
             {
                 if (Map[Position.X + x, Position.Y + y] == symbol)
                     return true;
@@ -133,9 +123,9 @@ public class Hero : IEntity, IBoundingBox
     }
     public bool InsideBoundingBox(char[] symbols)
     {
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
+        for (var x = 0; x <= Size.X; x++)
         {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
+            for (var y = 0; y <= Size.Y; y++)
             {
                 if (symbols.Any(x => x == Map[Position.X + x, Position.Y + y]))
                     return true;

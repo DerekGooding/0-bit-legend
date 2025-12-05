@@ -6,7 +6,7 @@ public class Dragon : BaseEnemy
 
     public override EnemyType Type => EnemyType.Dragon;
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(11, 6));
+    public override Vector2 Size { get; } = new(11, 6);
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
@@ -36,13 +36,7 @@ public class Dragon : BaseEnemy
     {
         var image = _spriteSheet[Prev1];
 
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = image[y][x];
-            }
-        }
+        DrawToScreen(image, Position);
 
         var posX = Position.X;
         var posY = Position.Y;

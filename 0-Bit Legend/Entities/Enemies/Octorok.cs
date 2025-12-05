@@ -5,7 +5,7 @@ namespace _0_Bit_Legend.Entities.Enemies;
 public class Octorok : BaseEnemy
 {
     public override EnemyType Type { get; } = EnemyType.Octorok;
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(3, 2));
+    public override Vector2 Size { get; } = new(3, 2);
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
@@ -53,13 +53,7 @@ public class Octorok : BaseEnemy
     {
         var image = _spriteSheet[Prev2];
 
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = image[y][x];
-            }
-        }
+        DrawToScreen(image, Position);
     }
 
     public override bool InBounds(Vector2 position)

@@ -6,7 +6,7 @@ public class Princess : IEntity, IBoundingBox
     public Vector2 Position { get; set; } = Vector2.Zero;
     public DirectionType Direction { get; set; } = DirectionType.Up;
 
-    public (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-2, -1), new(3, 2));
+    public Vector2 Size { get; } = new(5, 3);
 
     private readonly string[] _spriteSheet =
     [
@@ -16,19 +16,7 @@ public class Princess : IEntity, IBoundingBox
         "~~~~~~",
     ];
 
-    public void Draw()
-    {
-        var xOffset = 0 - BoundingBox.TopLeft.X;
-        var yOffset = 0 - BoundingBox.TopLeft.Y;
-
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = _spriteSheet[y + yOffset][x + xOffset];
-            }
-        }
-    }
+    public void Draw() => DrawToScreen(_spriteSheet, Position);
 
     public bool InsideBoundingBox(char symbol) => false;
     public bool InsideBoundingBox(char[] symbols) => false;

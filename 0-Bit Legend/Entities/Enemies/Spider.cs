@@ -6,7 +6,7 @@ public class Spider : BaseEnemy
 {
     public override EnemyType Type => EnemyType.Spider;
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(4, 2));
+    public override Vector2 Size { get; } = new(4, 2);
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
@@ -54,13 +54,7 @@ public class Spider : BaseEnemy
     {
         var image = _spriteSheet[Prev2];
 
-        for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
-        {
-            for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
-            {
-                Map[Position.X + x, Position.Y + y] = image[y][x];
-            }
-        }
+        DrawToScreen(image, Position);
     }
 
     public override bool InBounds(Vector2 position)

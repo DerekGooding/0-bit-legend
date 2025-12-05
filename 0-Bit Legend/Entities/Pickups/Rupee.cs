@@ -21,5 +21,5 @@ public class Rupee : BasePickup
 
     public override Action OnPickup { get; }
 
-    public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(-1, -1), new(1, 1));
+    public override Vector2 Size { get; } = new(2, 2);
 }
