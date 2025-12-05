@@ -5,7 +5,7 @@ public class Sword : BasePickup
     public Sword() => OnPickup = () =>
     {
         SetFlag(GameFlag.HasSword);
-        PickupManager.Remove(this);
+        EntityManager.Remove(this);
     };
 
     public override string[] Image => _spriteSheet;

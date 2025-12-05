@@ -27,7 +27,7 @@ public abstract class BaseEnemy : IEnemy
 
     public virtual void Die()
     {
-        EnemyManager.Remove(this);
+        EntityManager.Remove(this);
         SpawnRupee(Position);
     }
 
@@ -103,7 +103,7 @@ public abstract class BaseEnemy : IEnemy
             {
                 if (Type == EnemyType.Fireball)
                 {
-                    EnemyManager.Remove(this);
+                    EntityManager.Remove(this);
                 }
                 else
                 {

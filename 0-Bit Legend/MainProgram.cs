@@ -12,8 +12,7 @@ public static class MainProgram
     private static int _lastW = Console.WindowWidth;
     private static int _lastH = Console.WindowHeight;
     public static PlayerController PlayerController { get; } = new();
-    public static EntityManager EnemyManager { get; } = new();
-    public static PickupManager PickupManager { get; } = new();
+    public static EntityManager EntityManager { get; } = new();
     private static readonly InputController _inputController = new();
 
     private static GameFlag _flags = GameFlag.None;
@@ -136,7 +135,7 @@ public static class MainProgram
         if (waitEnemies <= 0)
         {
             waitEnemies = 2;
-            EnemyManager.MoveAll();
+            EntityManager.MoveAll();
         }
     }
     private static void HandleWaiting()
@@ -276,35 +275,34 @@ public static class MainProgram
     public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
     {
         CurrentMap = mapNum;
-        EnemyManager.RemoveAll();
-        PickupManager.RemoveAll();
+        EntityManager.RemoveAll();
 
         if (mapNum == 1)
         {
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(75, 13), DirectionType.Left, -1);
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(9, 12), DirectionType.Right, -1);
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(23, 26), DirectionType.Left, -1);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(75, 13), DirectionType.Left, -1);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(9, 12), DirectionType.Right, -1);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(23, 26), DirectionType.Left, -1);
         }
         else if (mapNum == 2)
         {
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(59, 23), DirectionType.Right, -1);
-            EnemyManager.SpawnEnemy(EnemyType.Spider, new(76, 6), DirectionType.Left, 5);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(59, 23), DirectionType.Right, -1);
+            EntityManager.SpawnEnemy(EnemyType.Spider, new(76, 6), DirectionType.Left, 5);
         }
         else if (mapNum == 3)
         {
-            EnemyManager.SpawnEnemy(EnemyType.Spider, new(44, 25), DirectionType.Left, 6);
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(38, 14), DirectionType.Right, -1);
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(83, 9), DirectionType.Left, -1);
+            EntityManager.SpawnEnemy(EnemyType.Spider, new(44, 25), DirectionType.Left, 6);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(38, 14), DirectionType.Right, -1);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(83, 9), DirectionType.Left, -1);
         }
         else if (mapNum == 4)
         {
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(35, 23), DirectionType.Left, -1);
-            EnemyManager.SpawnEnemy(EnemyType.Octorok, new(69, 6), DirectionType.Left, -1);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(35, 23), DirectionType.Left, -1);
+            EntityManager.SpawnEnemy(EnemyType.Octorok, new(69, 6), DirectionType.Left, -1);
         }
         else if (mapNum == 5)
         {
-            EnemyManager.SpawnEnemy(EnemyType.Spider, new(81, 9), DirectionType.Left, 4);
-            EnemyManager.SpawnEnemy(EnemyType.Spider, new(32, 5), DirectionType.Right, 6);
+            EntityManager.SpawnEnemy(EnemyType.Spider, new(81, 9), DirectionType.Left, 4);
+            EntityManager.SpawnEnemy(EnemyType.Spider, new(32, 5), DirectionType.Right, 6);
         }
         else if (mapNum == 8)
         {
@@ -316,43 +314,43 @@ public static class MainProgram
         {
             if (cEnemies1 >= 1)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(70, 11), DirectionType.Left, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(70, 11), DirectionType.Left, -1);
             }
             if (cEnemies1 >= 2)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(32, 9), DirectionType.Right, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(32, 9), DirectionType.Right, -1);
             }
             if (cEnemies1 >= 3)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(53, 15), DirectionType.Left, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(53, 15), DirectionType.Left, -1);
             }
             if (cEnemies1 >= 4)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(20, 20), DirectionType.Right, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(20, 20), DirectionType.Right, -1);
             }
         }
         else if (mapNum == 11)
         {
             if (cEnemies2 >= 1)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(27, 9), DirectionType.Left, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(27, 9), DirectionType.Left, -1);
             }
             if (cEnemies2 >= 2)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(56, 20), DirectionType.Right, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(56, 20), DirectionType.Right, -1);
             }
             if (cEnemies2 >= 3)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(73, 15), DirectionType.Left, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(73, 15), DirectionType.Left, -1);
             }
             if (cEnemies2 >= 4)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Bat, new(18, 11), DirectionType.Right, -1);
+                EntityManager.SpawnEnemy(EnemyType.Bat, new(18, 11), DirectionType.Right, -1);
             }
         }
         else if (mapNum == 12)
         {
-            if (!HasFlag(GameFlag.Dragon)) EnemyManager.SpawnEnemy(EnemyType.Dragon, new(71, 13), DirectionType.Left, 12);
+            if (!HasFlag(GameFlag.Dragon)) EntityManager.SpawnEnemy(EnemyType.Dragon, new(71, 13), DirectionType.Left, 12);
         }
 
         if ((CurrentMap == 2 || CurrentMap == 4) && position.X == 21)
@@ -396,9 +394,7 @@ public static class MainProgram
         DrawToScreen(_maps[CurrentMap].Raw, Vector2.Zero);
 
         PlayerController.Draw();
-        EnemyManager.Draw();
-        PickupManager.Draw();
-
+        EntityManager.Draw();
     }
 
     public static bool HasFlag(GameFlag flag) => (_flags & flag) != 0;
@@ -449,8 +445,7 @@ public static class MainProgram
         (var Position, var _) = PlayerController.GetPlayerInfo();
         var result = new List<ICollider>();
 
-        result.AddRange(EnemyManager.GetCollisions(Position, _heroSize));
-        result.AddRange(PickupManager.GetCollisions(Position, _heroSize));
+        result.AddRange(EntityManager.GetCollisions(Position, _heroSize));
 
         return result;
     }

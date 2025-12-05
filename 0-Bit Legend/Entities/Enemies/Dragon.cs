@@ -103,9 +103,9 @@ public class Dragon : BaseEnemy
             speed = 0;
             if (Motion <= 0)
             {
-                EnemyManager.SpawnEnemy(EnemyType.Fireball, new(Position.X - 3, Position.Y + 3), DirectionType.Up, -1);
-                EnemyManager.SpawnEnemy(EnemyType.Fireball, new(Position.X - 3, Position.Y + 1), DirectionType.Left, -1);
-                EnemyManager.SpawnEnemy(EnemyType.Fireball, new(Position.X - 3, Position.Y - 1), DirectionType.Down, -1);
+                EntityManager.SpawnEnemy(EnemyType.Fireball, new(Position.X - 3, Position.Y + 3), DirectionType.Up, -1);
+                EntityManager.SpawnEnemy(EnemyType.Fireball, new(Position.X - 3, Position.Y + 1), DirectionType.Left, -1);
+                EntityManager.SpawnEnemy(EnemyType.Fireball, new(Position.X - 3, Position.Y - 1), DirectionType.Down, -1);
                 Motion = 12;
             }
         }

@@ -234,7 +234,7 @@ public class PlayerController
             if (detect.Any(x => x == _storage_sword[i]) || detect.Any(x => x == _storage_detect_enemy[i]))
             {
                 hit = true;
-                MainProgram.EnemyManager.TakeDamage(new(swordArr[0, i], swordArr[1, i]), prev);
+                MainProgram.EntityManager.TakeDamage(new(swordArr[0, i], swordArr[1, i]), prev);
                 break;
             }
         }

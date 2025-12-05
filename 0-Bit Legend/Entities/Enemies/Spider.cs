@@ -30,7 +30,7 @@ public class Spider : BaseEnemy
         {
             Position = new(position.X, position.Y)
         };
-        EnemyManager.AddRupee(newRupee);
+        EntityManager.Add(newRupee);
     }
 
     public override void Draw()

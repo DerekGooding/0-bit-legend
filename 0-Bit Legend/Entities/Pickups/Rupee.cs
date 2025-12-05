@@ -5,7 +5,7 @@ public class Rupee : BasePickup
     public Rupee() => OnPickup = () =>
     {
         Rupees += 5;
-        EnemyManager.RemoveRupee(Position);
+        EntityManager.Remove(this);
     };
 
     public char[] MapStorage { get; } = new string(' ', 9).ToCharArray();

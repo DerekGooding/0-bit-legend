@@ -6,7 +6,7 @@ public class Raft : BasePickup, IPurchased
     {
         Rupees -= Cost;
         SetFlag(GameFlag.HasRaft);
-        PickupManager.Remove(this);
+        EntityManager.Remove(this);
     };
 
     public int Cost { get; }

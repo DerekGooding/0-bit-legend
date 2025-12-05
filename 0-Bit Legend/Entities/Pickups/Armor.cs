@@ -7,7 +7,7 @@ public class Armor : BasePickup, IPurchased
     {
         Rupees -= Cost;
         SetFlag(GameFlag.HasArmor);
-        PickupManager.Remove(this);
+        EntityManager.Remove(this);
     };
 
     public int Cost { get; }
