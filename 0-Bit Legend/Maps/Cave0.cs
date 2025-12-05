@@ -42,8 +42,10 @@ public class Cave0 : IMap
 ];
     public string[] FlagAdjusted => Raw;
 
-    public List<EntityLocation> EntityLocations { get; }
-        = [new(new Sword(), new(x: 30, y: 30))];
+    public List<EntityLocation> EntityLocations { get; } =
+    [
+        new(typeof(Sword), new(x: 30, y: 30), () => !HasFlag(GameFlag.HasSword)), 
+    ];
 
     public void Load() { }
 }

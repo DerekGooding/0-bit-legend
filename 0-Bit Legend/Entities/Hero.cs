@@ -74,13 +74,16 @@ public class Hero : IEntity, IBoundingBox
 
     public void Draw()
     {
+        var xOffset = 0 - BoundingBox.TopLeft.X;
+        var yOffset = 0 - BoundingBox.TopLeft.Y;
+
         var image = HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] : _spriteSheet[Direction];
 
         for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
             for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
             {
-                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+                Map[Position.X + x, Position.Y + y] = image[y + yOffset][x + xOffset];
             }
         }
     }

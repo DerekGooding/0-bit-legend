@@ -13,11 +13,15 @@ public abstract class BasePickup : IPickup
 
     public void Draw()
     {
+        var xOffset = 0 - BoundingBox.TopLeft.X;
+        var yOffset = 0 - BoundingBox.TopLeft.Y;
+
+
         for (var x = BoundingBox.TopLeft.X; x <= BoundingBox.BottomRight.X; x++)
         {
             for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
             {
-                Map[Position.X + x, Position.Y + y] = Image[y + 1][x + 2];
+                Map[Position.X + x, Position.Y + y] = Image[y + yOffset][x + xOffset];
             }
         }
     }

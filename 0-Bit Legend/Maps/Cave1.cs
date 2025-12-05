@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend.Entities.Pickups;
+
+namespace _0_Bit_Legend.Maps;
 
 public class Cave1 : IMap
 {
@@ -40,7 +42,12 @@ public class Cave1 : IMap
 ];
     public string[] FlagAdjusted => Raw;
 
-    public List<EntityLocation> EntityLocations { get; } = [];
+    public List<EntityLocation> EntityLocations { get; } =
+    [
+        new(typeof(Raft), new(x: 30, y: 30), () => !HasFlag(GameFlag.HasRaft)),
+        new(typeof(Key), new(x: 50, y: 30), () => true),
+        new(typeof(Armor), new(x: 70, y: 30), () => !HasFlag(GameFlag.HasArmor)),
+    ];
 
     public void Load() { }
 }

@@ -84,7 +84,7 @@ public class Spider : BaseEnemy
         {
             for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
             {
-                Map[Position.X + x, Position.Y + y] = image[y + 1][x + 2];
+                Map[Position.X + x, Position.Y + y] = image[y][x];
             }
         }
     }

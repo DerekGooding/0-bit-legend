@@ -32,7 +32,7 @@ public abstract class BaseEnemy : IEnemy
         {
             for (var y = BoundingBox.TopLeft.Y; y <= BoundingBox.BottomRight.Y; y++)
             {
-                if (symbols.Any(x => x == Map[Position.X + x, Position.Y + y]))
+                if (symbols.Any(symbol => symbol == Map[Position.X + x, Position.Y + y]))
                     return true;
             }
         }
