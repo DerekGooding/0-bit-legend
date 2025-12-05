@@ -28,6 +28,8 @@ public static class MainProgram
     }
     public static int CurrentMap { get; private set; }
 
+    public static bool[,] WallMap { get; } = new bool[33,103];
+
     public static int Rupees { get; set; } = 100;
     public static int Keys { get; set; }
 
@@ -275,6 +277,7 @@ public static class MainProgram
     public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
     {
         CurrentMap = mapNum;
+        UpdateWallMap();
         EntityManager.RemoveAll();
 
         var map = _maps[mapNum];
@@ -382,6 +385,17 @@ public static class MainProgram
         //}
 
         //_start = true;
+    }
+
+    private static void UpdateWallMap()
+    {
+        var map = _maps[CurrentMap].Raw;
+        for(var x = 0; x < map.Length; x++)
+        {
+            var line = map[x];
+            for(var y = 0; y < line.Length; y++)
+                WallMap[x,y] = Environments.Walls.Any(x => x == line[y]);
+        }
     }
 
     public static void WaitForTransition(int time = 2)

@@ -248,8 +248,8 @@ public class PlayerController
 
     public void MoveUp(int magnitude = 1)
     {
-        _prev = DirectionType.Up;
         _player.Direction = DirectionType.Up;
+
         _player.Position = _player.Position.Offset(0, -magnitude);
         //if (PosX == 21 && ((CurrentMap == 4 && posY > 9) || CurrentMap == 2))
         //{
@@ -416,21 +416,16 @@ public class PlayerController
     }
     public void MoveLeft(int magnitude = 1)
     {
-        _prev = DirectionType.Left;
-        _prev2 = DirectionType.Left;
         _player.Direction = DirectionType.Left;
         _player.Position = _player.Position.Offset(-magnitude*2, 0);
     }
     public void MoveDown(int magnitude = 1)
     {
-        _prev = DirectionType.Down;
         _player.Direction = DirectionType.Down;
         _player.Position = _player.Position.Offset(0, magnitude);
     }
     public void MoveRight(int magnitude = 1)
     {
-        _prev = DirectionType.Right;
-        _prev2 = DirectionType.Right;
         _player.Direction = DirectionType.Right;
         _player.Position = _player.Position.Offset(magnitude * 2, 0);
     }
@@ -565,12 +560,12 @@ public class PlayerController
 
     public void PlacePrincess()
     {
-        //TODO => We need to handle other entities like doors and princesses
         var princess = new Princess
         {
             Position = new(52, 15)
         };
-        princess.Draw();
+        MainProgram.EntityManager.Add(princess);
+        RequiresRedraw = true;
     }
 
     public void Hit()
@@ -591,4 +586,9 @@ public class PlayerController
     }
 
     internal void Draw() => _player.Draw();
+
+    private bool InBounds()
+    {
+        return true;
+    }
 }
