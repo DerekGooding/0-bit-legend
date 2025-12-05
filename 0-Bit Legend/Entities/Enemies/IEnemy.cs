@@ -5,14 +5,12 @@ public interface IEnemy : IEntity, IBoundingBox
     public EnemyType Type { get; }
     public int Hp { get; set; }
     public int Motion { get; set; }
-    public char[] MapStorage { get; }
 
     public DirectionType Prev1 { get; set; }
     public DirectionType Prev2 { get; set; }
 
     public bool InBounds(Vector2 position);
 
-    public void Clear();
     public void TakeDamage();
     public void Move();
     public void Die();

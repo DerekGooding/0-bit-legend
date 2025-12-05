@@ -92,10 +92,6 @@ public class PlayerController
 
             Stab(swordArr, DirectionType.Up, 5);
         }
-
-        UpdateRow(PreHitPosY - 2);
-        UpdateRow(PreHitPosY - 3);
-        UpdateRow(PreHitPosY - 4);
     }
     private void HandleAttackLeft()
     {
@@ -143,10 +139,6 @@ public class PlayerController
 
             Stab(swordArr, DirectionType.Left, 6);
         }
-
-        UpdateRow(PreHitPosY);
-        UpdateRow(PreHitPosY + 1);
-        UpdateRow(PreHitPosY + 2);
     }
     private void HandleAttackDown()
     {
@@ -189,10 +181,6 @@ public class PlayerController
 
             Stab(swordArr, DirectionType.Down, 5);
         }
-
-        UpdateRow(PreHitPosY + 3);
-        UpdateRow(PreHitPosY + 4);
-        UpdateRow(PreHitPosY + 5);
     }
     private void HandleAttackRight()
     {
@@ -240,10 +228,6 @@ public class PlayerController
 
             Stab(swordArr, DirectionType.Right, 6);
         }
-
-        UpdateRow(PreHitPosY);
-        UpdateRow(PreHitPosY + 1);
-        UpdateRow(PreHitPosY + 2);
     }
 
     public void Stab(int[,] swordArr, DirectionType prev, int amt)
@@ -334,8 +318,6 @@ public class PlayerController
 
                 _player.Position = new(_player.Position.X, _player.Position.Y - 1);
                 DeployRaft(_prev2);
-
-                UpdateRow(PosY + 4);
             }
             else
             {
@@ -416,8 +398,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Up;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
@@ -432,16 +412,12 @@ public class PlayerController
                 _player.Direction = DirectionType.Up;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 Hit();
             }
             else if (CurrentMap == 13 && _player.IsTouching('~'))
             {
                 _player.Direction = DirectionType.Up;
                 _player.Draw();
-
-                UpdateLinkRows();
 
                 LoadMap(13, new(58, 15), DirectionType.Left);
                 SetGameState(GameState.GameOver);
@@ -450,8 +426,6 @@ public class PlayerController
             {
                 _player.Direction = DirectionType.Up;
                 _player.Draw();
-
-                UpdateLinkRows();
             }
 
             if (inCave)
@@ -563,8 +537,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Left;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
@@ -579,8 +551,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Left;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 Hit();
             }
             else if (_player.IsTouching('~')
@@ -593,8 +563,6 @@ public class PlayerController
             {
                 StoreChar(new(PosX, PosY));
 
-                UpdateLinkRows();
-
                 _player.Position = new(21, _player.Position.Y);
                 DeployRaft(DirectionType.Left);
                 wait = 150;
@@ -604,8 +572,6 @@ public class PlayerController
             {
                 _player.Direction = DirectionType.Left;
                 _player.Draw();
-
-                UpdateLinkRows();
 
                 for (var y = PosY - 2; y <= PosY + 3; y++)
                 {
@@ -620,13 +586,6 @@ public class PlayerController
 
                 _player.Direction = DirectionType.Left;
                 _player.Draw();
-
-                UpdateRow(posY - 2);
-                UpdateRow(posY - 1);
-                UpdateRow(posY);
-                UpdateRow(posY + 1);
-                UpdateRow(posY + 2);
-                UpdateRow(posY + 3);
             }
             else if (CurrentMap == 11 && _player.IsTouching('X') && !_player.IsTouching('='))
             {
@@ -640,8 +599,6 @@ public class PlayerController
             {
                 _player.Direction = DirectionType.Left;
                 _player.Draw();
-
-                UpdateLinkRows();
             }
 
         }
@@ -696,8 +653,6 @@ public class PlayerController
 
                 _player.Position = new(_player.Position.X, _player.Position.Y + 1);
                 DeployRaft(_prev2);
-
-                UpdateRow(PosY - 3);
             }
             else if (CurrentMap == 4)
             {
@@ -723,8 +678,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Down;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
@@ -739,8 +692,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Down;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 Hit();
             }
             else if (CurrentMap == 12 && _player.IsTouching('X') && !_player.IsTouching('='))
@@ -748,16 +699,12 @@ public class PlayerController
                 _player.Direction = DirectionType.Down;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 LoadMap(9, new(50, 9), DirectionType.Down);
             }
             else
             {
                 _player.Direction = DirectionType.Down;
                 _player.Draw();
-
-                UpdateLinkRows();
             }
         }
         else
@@ -877,8 +824,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Right;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 _player.Position = new(posX, posY);
             }
             else if (_player.IsTouching('t')
@@ -893,8 +838,6 @@ public class PlayerController
                 _player.Direction = DirectionType.Right;
                 _player.Draw();
 
-                UpdateLinkRows();
-
                 Hit();
             }
             else if (_player.IsTouching('~')
@@ -907,8 +850,6 @@ public class PlayerController
             {
                 StoreChar(new(PosX, PosY));
 
-                UpdateLinkRows();
-
                 _player.Position = new(21, _player.Position.Y);
                 DeployRaft(DirectionType.Right);
                 wait = 150;
@@ -917,8 +858,6 @@ public class PlayerController
             {
                 _player.Direction = DirectionType.Right;
                 _player.Draw();
-
-                UpdateLinkRows();
 
                 for (var y = PosY - 2; y <= PosY + 3; y++)
                 {
@@ -933,13 +872,6 @@ public class PlayerController
 
                 _player.Direction = DirectionType.Right;
                 _player.Draw();
-
-                UpdateRow(posY - 2);
-                UpdateRow(posY - 1);
-                UpdateRow(posY);
-                UpdateRow(posY + 1);
-                UpdateRow(posY + 2);
-                UpdateRow(posY + 3);
             }
             else if (CurrentMap == 10 && _player.IsTouching('X') && !_player.IsTouching('='))
             {
@@ -953,8 +885,6 @@ public class PlayerController
             {
                 _player.Direction = DirectionType.Right;
                 _player.Draw();
-
-                UpdateLinkRows();
             }
         }
         else
@@ -1064,11 +994,6 @@ public class PlayerController
         Map[PosX + 1, PosY + 2] = _storage_map[18];
         Map[PosX + 2, PosY + 2] = _storage_map[19];
 
-        UpdateRow(PosY - 1);
-        UpdateRow(PosY);
-        UpdateRow(PosY + 1);
-        UpdateRow(PosY + 2);
-
         _storage_map[0] = Map[posX - 2, posY - 1];
         _storage_map[1] = Map[posX - 1, posY - 1];
         _storage_map[2] = Map[posX, posY - 1];
@@ -1167,13 +1092,6 @@ public class PlayerController
             Map[PosX, PosY] = spaceslot;
             Map[PosX + 1, PosY] = '^';
         }
-
-        UpdateRow(PosY - 2);
-        UpdateRow(PosY - 1);
-        UpdateRow(PosY);
-        UpdateRow(PosY + 1);
-        UpdateRow(PosY + 2);
-        UpdateRow(PosY + 3);
     }
 
     public void PlayEffect(char symbol)
@@ -1254,18 +1172,10 @@ public class PlayerController
             StoreChar(_player.Position);
 
             PlayEffect('*');
-
-            UpdateLinkRows();
         }
         if(_player.Hp <= 0)
             SetGameState(GameState.Dead);
     }
 
-    public void UpdateLinkRows()
-    {
-        UpdateRow(PosY - 1);
-        UpdateRow(PosY);
-        UpdateRow(PosY + 1);
-        UpdateRow(PosY + 2);
-    }
+    internal void Draw() => _player.Draw();
 }

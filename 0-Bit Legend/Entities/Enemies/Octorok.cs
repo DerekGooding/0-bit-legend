@@ -5,7 +5,6 @@ namespace _0_Bit_Legend.Entities.Enemies;
 public class Octorok : BaseEnemy
 {
     public override EnemyType Type { get; } = EnemyType.Octorok;
-    public override char[] MapStorage { get; } = new string(' ', 12).ToCharArray();
     public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(3, 2));
 
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
@@ -48,28 +47,6 @@ public class Octorok : BaseEnemy
         Map[sRPosX + 1, sRPosY] = 'R';
         Map[sRPosX, sRPosY - 1] = 'r';
         Map[sRPosX, sRPosY + 1] = 'r';
-
-        UpdateRow(sRPosY - 1);
-        UpdateRow(sRPosY);
-        UpdateRow(sRPosY + 1);
-    }
-
-    public override void Clear()
-    {
-        Map[Position.X + 0, Position.Y] = MapStorage[0];
-        Map[Position.X + 1, Position.Y] = MapStorage[1];
-        Map[Position.X + 2, Position.Y] = MapStorage[2];
-        Map[Position.X + 3, Position.Y] = MapStorage[3];
-
-        Map[Position.X + 0, Position.Y + 1] = MapStorage[4];
-        Map[Position.X + 1, Position.Y + 1] = MapStorage[5];
-        Map[Position.X + 2, Position.Y + 1] = MapStorage[6];
-        Map[Position.X + 3, Position.Y + 1] = MapStorage[7];
-
-        Map[Position.X + 0, Position.Y + 2] = MapStorage[8];
-        Map[Position.X + 1, Position.Y + 2] = MapStorage[9];
-        Map[Position.X + 2, Position.Y + 2] = MapStorage[10];
-        Map[Position.X + 3, Position.Y + 2] = MapStorage[11];
     }
 
     public override void Draw()

@@ -3,7 +3,6 @@
 public class Fireball : BaseEnemy
 {
     public override EnemyType Type => EnemyType.Fireball;
-    public override char[] MapStorage { get; } = new string(' ', 6).ToCharArray();
 
     public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(2, 1));
 
@@ -12,18 +11,6 @@ public class Fireball : BaseEnemy
         "FFF",
         "FFF",
     ];
-
-
-    public override void Clear()
-    {
-        Map[Position.X + 0, Position.Y] = MapStorage[0];
-        Map[Position.X + 1, Position.Y] = MapStorage[1];
-        Map[Position.X + 2, Position.Y] = MapStorage[2];
-
-        Map[Position.X + 0, Position.Y + 1] = MapStorage[3];
-        Map[Position.X + 1, Position.Y + 1] = MapStorage[4];
-        Map[Position.X + 2, Position.Y + 1] = MapStorage[5];
-    }
 
     public override void Draw()
     {

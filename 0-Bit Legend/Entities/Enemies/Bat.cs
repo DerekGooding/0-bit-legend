@@ -3,7 +3,6 @@
 public class Bat : BaseEnemy
 {
     public override EnemyType Type { get; } = EnemyType.Bat;
-    public override char[] MapStorage { get; } = new string(' ', 10).ToCharArray();
 
     public override (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; } = (new(0, 0), new(4, 1));
 
@@ -20,21 +19,6 @@ public class Bat : BaseEnemy
             "{t t}",
         ]},
     };
-
-    public override void Clear()
-    {
-        Map[Position.X + 0, Position.Y] = MapStorage[0];
-        Map[Position.X + 1, Position.Y] = MapStorage[1];
-        Map[Position.X + 2, Position.Y] = MapStorage[2];
-        Map[Position.X + 3, Position.Y] = MapStorage[3];
-        Map[Position.X + 4, Position.Y] = MapStorage[4];
-
-        Map[Position.X + 0, Position.Y + 1] = MapStorage[5];
-        Map[Position.X + 1, Position.Y + 1] = MapStorage[6];
-        Map[Position.X + 2, Position.Y + 1] = MapStorage[7];
-        Map[Position.X + 3, Position.Y + 1] = MapStorage[8];
-        Map[Position.X + 4, Position.Y + 1] = MapStorage[9];
-    }
 
     public override void Draw()
     {

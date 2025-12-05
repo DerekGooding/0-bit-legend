@@ -6,6 +6,7 @@ namespace _0_Bit_Legend;
 
 public static class MainProgram
 {
+    public static Vector2 GlobalMapOffset = new(50, 4);
     public static PlayerController PlayerController { get; } = new();
     public static EnemyManager EnemyManager { get; } = new();
     public static PickupManager PickupManager { get; } = new();
@@ -27,8 +28,6 @@ public static class MainProgram
     public static char[,] Map { get; } = new char[102, 33];
     public static int CurrentMap { get; private set; }
 
-    private static readonly string[] _strs = new string[33];
-
     public static int Rupees { get; set; } = 100;
     public static int Keys { get; set; }
 
@@ -41,7 +40,7 @@ public static class MainProgram
 
     private static int _frames;
     private static string _hud = "";
-    private static bool _start;
+    //private static bool _start;
 
     private static string _credits = string.Empty;
 
@@ -97,7 +96,7 @@ public static class MainProgram
     private static void Draw()
     {
         Console.SetCursorPosition(0, 4);
-        DrawHud();
+        //DrawHud();
         DrawGame();
     }
 
@@ -139,12 +138,12 @@ public static class MainProgram
     {
         Thread.Sleep(100);
 
-        if (CurrentMap is 0 or 4 or 8)
+        if (CurrentMap is 0 or 4 or 6)
         {
             PlayerController.MoveUp();
             Thread.Sleep(50);
         }
-        else if (CurrentMap is 6 or 7 or 9)
+        else if (CurrentMap is 7 or 8 or 9)
         {
             PlayerController.MoveDown();
             Thread.Sleep(50);
@@ -215,8 +214,6 @@ public static class MainProgram
                 Map[i, _frames] = ' ';
                 Map[i, 32 - _frames] = ' ';
             }
-            UpdateRow(_frames);
-            UpdateRow(32 - _frames);
 
             if (_frames % 2 == 0)
             {
@@ -225,15 +222,6 @@ public static class MainProgram
             else
             {
                 PlayerController.PlayEffect('+');
-            }
-
-            PlayerController.UpdateLinkRows();
-        }
-        else if (_frames == 25)
-        {
-            for (var i = 0; i < 33; i++)
-            {
-                _strs[i] = "                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          #                         X                                                 X                          #                         X                                                 X                          #                         X                                                 X                          #                         X     Your hero fell.                             X                          #                         X                                                 X                          #                         X     Press any button to CONTINUE                X                          #                         X                                                 X                          #                         X                                                 X                          #                         X                                                 X                          #                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #                                                                                                      #".Split("#")[i];
             }
         }
         else if (_frames == 26)
@@ -246,7 +234,7 @@ public static class MainProgram
 
             PlayerController.Health = 3;
             _frames = -1;
-            _start = false;
+            //_start = false;
 
             cEnemies1 = 4;
             cEnemies2 = 4;
@@ -274,8 +262,6 @@ public static class MainProgram
                 Map[_frames, i] = ' ';
                 Map[101 - _frames, i] = ' ';
             }
-            UpdateRow(_frames);
-            UpdateRow(32 - _frames);
 
             PlayerController.PlacePrincess();
             PlayerController.MoveLeft(0);
@@ -287,51 +273,18 @@ public static class MainProgram
                 Map[i, _frames - 13] = ' ';
                 Map[i, 45 - _frames] = ' ';
             }
-            UpdateRow(_frames - 13);
-            UpdateRow(45 - _frames);
 
             PlayerController.PlacePrincess();
             PlayerController.MoveLeft(0);
         }
-        else if (_frames == 30)
-        {
-            var count = 0;
-            for (var i = 0; i < 7; i++)
-            {
-                var row = "";
-                for (var j = 0; j < 102; j++)
-                {
-                    row += _credits[count];
-                    count++;
-                }
-                _strs[i + 11] = row;
-
-                count++;
-            }
-        }
         else if (_frames is > 30 and < 111)
         {
             if (_frames == 31) Thread.Sleep(3500);
-            for (var i = 0; i < 31; i++)
-            {
-                _strs[i] = _strs[i + 1];
-            }
 
-            var row = "";
-            for (var i = 0; i < 102; i++)
-            {
-                row += _credits[(103 * (_frames - 18)) + i];
-            }
-            _strs[31] = row;
             Thread.Sleep(600);
         }
         else if (_frames is >= 111 and < 117)
         {
-            for (var i = 0; i < 31; i++)
-            {
-                _strs[i] = _strs[i + 1];
-            }
-            _strs[31] = "                                                                                                     ";
             Thread.Sleep(600);
         }
         _frames++;
@@ -360,106 +313,21 @@ public static class MainProgram
     public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
     {
         var map = string.Concat(_maps[mapNum].Raw);
-
-        var lCText = false;
-
-        if (mapNum == 6 && HasFlag(GameFlag.HasSword))
-        {
-            map = $"{map.AsSpan(0, 1854)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#{map.AsSpan(2266)}";
-        }
-        else if (mapNum == 7 && HasFlag(GameFlag.HasRaft) && !HasFlag(GameFlag.HasArmor))
-        {
-            map = $"{map.AsSpan(0, 1751)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                  =======               ## ##                 =XXXXXXXXXX=#=XXXXXXXXXX=                                  ==  = =               #####                 =XXXXXXXXXX=#=XXXXXXXXXX=                                                         ###                  =XXXXXXXXXX=#{map.AsSpan(2163)}";
-        }
-        else if (mapNum == 7 && !HasFlag(GameFlag.HasRaft) && HasFlag(GameFlag.HasArmor))
-        {
-            map = $"{map.AsSpan(0, 1751)}=XXXXXXXXXX=                 =====                                                        =XXXXXXXXXX=#=XXXXXXXXXX=                 *****            =======                                     =XXXXXXXXXX=#=XXXXXXXXXX=                 =====            ==  = =                                     =XXXXXXXXXX=#=XXXXXXXXXX=                 *****                                                        =XXXXXXXXXX=#{map.AsSpan(2163)}";
-        }
-        else if (mapNum == 7 && HasFlag(GameFlag.HasRaft) && HasFlag(GameFlag.HasArmor))
-        {
-            map = $"{map.AsSpan(0, 1751)}=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#=XXXXXXXXXX=                                  =======                                     =XXXXXXXXXX=#=XXXXXXXXXX=                                  ==  = =                                     =XXXXXXXXXX=#=XXXXXXXXXX=                                                                              =XXXXXXXXXX=#{map.AsSpan(2163)}";
-        }
-        else if (mapNum == 9 && CurrentMap == 8)
-        {
-            lCText = true;
-            map = $"{map.AsSpan(0, 1133)}=//////////=                                                                              =//////////=#=//////////=                                                                              =//////////=#=/////                       ||  TILL'  YOUR  FOES  ARE  BUT  HITHER,  ||                       /////=#=//  =======                 ||        SEALED  THE  PORTAL  IS.        ||                 =======  //=#=//=========                                                                              =========//=#=//== O>  ==                                                                              ==  <O ==//=#=//=========                                                                              =========//=#=//  =======                                                                              =======  //=#=/////                                                                                           ////=#=//////////=                                                                              =//////////=#=//////////=                                                                              =//////////=#{map.AsSpan(2266)}";
-        }
-        else if (mapNum == 9 && HasFlag(GameFlag.Door1) && !HasFlag(GameFlag.Door2))
-        {
-            map = $"{map.AsSpan(0, 1339)}=/////                   =====   =====                         =====   =====                    /////=#=//  XXXXXXX                                                                              =======  //=#=//XXXXXXXXX                                                                              =========//=#=//XXXXXXXXX                                                                              ==  <O ==//=#=//XXXXXXXXX                                                                              =========//=#=//  XXXXXXX                                                                              =======  //=#=/////                   XXXXX   XXXXX                         XXXXX   XXXXX                    /////=#{map.AsSpan(2060)}";
-            if (HasFlag(GameFlag.Door3))
-            {
-                map = $"{map.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map.AsSpan(618)}";
-            }
-        }
-        else if (mapNum == 9 && !HasFlag(GameFlag.Door1) && HasFlag(GameFlag.Door2))
-        {
-            map = $"{map.AsSpan(0, 1339)}=/////                   =====   =====                         =====   =====                    /////=#=//  =======                                                                              XXXXXXX  //=#=//=========                                                                              XXXXXXXXX//=#=//== O>  ==                                                                              XXXXXXXXX//=#=//=========                                                                              XXXXXXXXX//=#=//  =======                                                                              XXXXXXX  //=#=/////                   XXXXX   XXXXX                         XXXXX   XXXXX                    /////=#{map.AsSpan(2060)}";
-            if (HasFlag(GameFlag.Door3))
-            {
-                map = $"{map.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map.AsSpan(618)}";
-            }
-        }
-        else if (mapNum == 9 && HasFlag(GameFlag.Door1) && HasFlag(GameFlag.Door2))
-        {
-            map = $"{map.AsSpan(0, 1339)}=/////                   =====   =====                         =====   =====                    /////=#=//  XXXXXXX                                                                              XXXXXXX  //=#=//XXXXXXXXX                                                                              XXXXXXXXX//=#=//XXXXXXXXX                                                                              XXXXXXXXX//=#=//XXXXXXXXX                                                                              XXXXXXXXX//=#=//  XXXXXXX                                                                              XXXXXXX  //=#=/////                   XXXXX   XXXXX                         XXXXX   XXXXX                    /////=#{map.AsSpan(2060)}";
-            if (HasFlag(GameFlag.Door3) && (cEnemies1 > 0 || cEnemies2 > 0))
-            {
-                map = $"{map.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map.AsSpan(618)}";
-            }
-            else if (HasFlag(GameFlag.Door3))
-            {
-                map = $"{map.AsSpan(0, 103)}=/////////////////////////////////////////////  XXXXX  //////////////////////////////////////////////=#=///////////////////////////////////////////  XXXXXXXXX  ////////////////////////////////////////////=#=///////////////////////////////////////////  XXXXXXXXX  ////////////////////////////////////////////=#=///////////////////////////////////////////  XXXXXXXXX  ////////////////////////////////////////////=#=//////////=================================  XXXXXXXXX  ==================================//////////=#{map.AsSpan(618)}";
-            }
-        }
-        else if (mapNum == 9 && HasFlag(GameFlag.Door3))
-        {
-            map = $"{map.AsSpan(0, 103)}=/////////////////////////////////////////////  =====  //////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=///////////////////////////////////////////  =========  ////////////////////////////////////////////=#=//////////=================================  =========  ==================================//////////=#{map.AsSpan(618)}";
-        }
-        else if (mapNum == 12 && HasFlag(GameFlag.Dragon))
-        {
-            map = $"{map.AsSpan(0, 1339)}=//////////=                                                                                    /////=#=//////////=                                                                              XXXXXXX  //=#=//////////=                                                                              XXXXXXXXX//=#=//////////=                                                                              XXXXXXXXX//=#=//////////=                                                                              XXXXXXXXX//=#=//////////=                                                                              XXXXXXX  //=#=//////////=                                                                                    /////=#{map.AsSpan(2060)}";
-        }
-
         var val = 0;
 
-        //if (!(posX == 16 && posY == 6) && !(posX == 86 && posY == 7) && !(posX == 51 && posY == 17))
-        //{
-        //    CurrentMap = mapNum;
-        //}
         CurrentMap = mapNum;
-
         EnemyManager.RemoveAll();
+        PickupManager.RemoveAll();
 
-        // Load the map
         for (var i = 0; i < 33; i++)
         {
-            _strs[i] = string.Empty;
             for (var j = 0; j < 103; j++)
             {
                 if (j != 102)
                 {
                     Map[j, i] = map[val];
-                    _strs[i] += Map[j, i];
                 }
                 val++;
-            }
-        }
-
-        if (mapNum == 0 && !_start)
-        {
-            var skippedLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-
-            for (var i = 0; i < 14; i++)
-            {
-                skippedLines = skippedLines[2..];
-                Console.Write(skippedLines);
-
-                for (var j = 0; j < (i * 2) + 5; j++)
-                {
-                    Console.WriteLine("                                     " + map.Split("#")[j]);
-                }
-                Thread.Sleep(120);
             }
         }
 
@@ -549,14 +417,14 @@ public static class MainProgram
             PlayerController.SpawnLink(position, direction);
         }
 
-        if (lCText)
-        {
-            lCText = false;
-            SetFlag(GameFlag.Text);
-            wait = 750;
-        }
+        //if (lCText)
+        //{
+        //    lCText = false;
+        //    SetFlag(GameFlag.Text);
+        //    wait = 750;
+        //}
 
-        _start = true;
+        //_start = true;
     }
 
     public static void WaitForTransition(int time = 2)
@@ -565,20 +433,9 @@ public static class MainProgram
         PlayerController.MovementWait = time;
     }
 
-    public static void UpdateRow(int row)
-    {
-        if (row > 32)
-            return;
-        var line = "";
-        for (var x = 0; x < 102; x++)
-        {
-            line += Map[x, row];
-        }
-        _strs[row] = line;
-    }
-
     private static void DrawHud()
     {
+        Console.SetCursorPosition(0, 10);
         var health = PlayerController.Health;
         _hud = $"~~~~~~~~~~~~~~~~~~~~~~~~~~~#XXXXXXXXXXXXXXXXXXXXXXXXXXX#X                         X#X                         X#X                         X#X         HEALTH:         X#X                         X#X       <3  <3  <3        X#X                         X#X                         X#X  ---------------------  X#X                         X#X    r                    X#X   RRR          {Rupees,-4}     X#X    r                    X#X                         X#X  =======       {Keys,-4}     X#X  ==  = =                X#X                         X#X                         X#XXXXXXXXXXXXXXXXXXXXXXXXXXX#~~~~~~~~~~~~~~~~~~~~~~~~~~~#";
         _hud = health > 2.5
@@ -592,37 +449,26 @@ public static class MainProgram
 
     private static void DrawGame()
     {
-        for (var i = 0; i < 33; i++)
+        var blankLine = new string(' ', 102 + GlobalMapOffset.X);
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine(blankLine);
+        Console.WriteLine(blankLine);
+        Console.WriteLine(blankLine);
+        Console.WriteLine(blankLine);
+        var lineCount = GlobalMapOffset.Y;
+
+        PlayerController.Draw();
+        EnemyManager.Draw();
+        PickupManager.Draw();
+
+        foreach (var line in _maps[CurrentMap].Raw)
         {
-            if (State is not GameState.Dead and not GameState.GameOver)
+            try
             {
-                if (i is > 5 and < 28)
-                {
-                    Console.Write("            " + _hud.Split("#")[i - 6] + "            ");
-                }
-                else
-                {
-                    Console.Write("                                                   ");
-                }
-            }
-            else
-            {
-                Console.Write("                                     ");
-            }
-
-            Console.WriteLine(_strs[i]);
+                Console.SetCursorPosition(GlobalMapOffset.X, lineCount++);
+                Console.Write(line);
+            } catch { }
         }
-
-        // Clear remaining lines at the bottom of the console
-        const int lastGameLine = 4 + 33; // Game content goes from line 4 to line 36 (inclusive), so next line is 37
-        for (var i = lastGameLine; i < Console.WindowHeight; i++)
-        {
-            Console.SetCursorPosition(0, i);
-            Console.Write(new string(' ', Console.WindowWidth));
-        }
-
-        Thread.Sleep(wait);
-        wait = 0;
     }
 
     public static bool HasFlag(GameFlag flag) => (_flags & flag) != 0;

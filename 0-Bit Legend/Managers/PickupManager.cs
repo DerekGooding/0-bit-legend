@@ -58,4 +58,12 @@ public class PickupManager
         }
         return _pickups[0];
     }
+
+    internal void Draw()
+    {
+        foreach(var pickup in _pickups)
+        {
+            pickup.Draw();
+        }
+    }
 }

@@ -3,7 +3,6 @@
 public abstract class BaseEnemy : IEnemy
 {
     public abstract EnemyType Type { get; }
-    public abstract char[] MapStorage { get; }
 
     public abstract  (Vector2 TopLeft, Vector2 BottomRight) BoundingBox { get; }
 
@@ -38,7 +37,6 @@ public abstract class BaseEnemy : IEnemy
         }
         return false;
     }
-    public abstract void Clear();
     public abstract void Draw();
     public abstract bool InBounds(Vector2 position);
     public virtual bool IsTouching(char symbol) => InsideBoundingBox(symbol);
@@ -72,7 +70,6 @@ public abstract class BaseEnemy : IEnemy
         {
             var blocking = new char[] { '=', 'X', 't', 'n', 'B', '{', '}', '|', '/', '\\', '_', '~' };
             var damageHit = new char[] { '|', '_', '\\' };
-            Clear();
             if (Type == EnemyType.Dragon || Type == EnemyType.Spider || Type == EnemyType.Bat || (!IsTouching(blocking)))
             {
                 Prev1 = direction;
@@ -107,20 +104,7 @@ public abstract class BaseEnemy : IEnemy
                     }
                 }
 
-                EnemyManager.Store(this);
                 Draw();
-
-                UpdateRow(posY);
-                UpdateRow(posY + 1);
-                UpdateRow(posY + 2);
-
-                if (Type == EnemyType.Dragon)
-                {
-                    UpdateRow(posY + 3);
-                    UpdateRow(posY + 4);
-                    UpdateRow(posY + 5);
-                    UpdateRow(posY + 6);
-                }
 
                 Position = new(posX, posY);
 

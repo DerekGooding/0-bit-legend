@@ -1,5 +1,6 @@
 ﻿using _0_Bit_Legend.Entities.Enemies;
 using _0_Bit_Legend.Entities.Pickups;
+using _0_Bit_Legend.Maps;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -49,101 +50,10 @@ public class EnemyManager
         }
     }
 
-    public void Store(IEnemy enemy)
-    {
-        enemy.Clear();
-        var type = enemy.Type;
-        var posX = enemy.Position.X;
-        var posY = enemy.Position.Y;
-
-        if (type == EnemyType.Octorok)
-        {
-            var value = 0;
-            for (var i = 0; i < 3; i++)
-            {
-                for (var j = 0; j < 4; j++)
-                {
-                    enemy.MapStorage[value] = Map[posX + j, posY + i];
-                    value++;
-                }
-            }
-        }
-        else if (type == EnemyType.Spider)
-        {
-            var value = 0;
-            for (var i = 0; i < 3; i++)
-            {
-                for (var j = 0; j < 5; j++)
-                {
-                    enemy.MapStorage[value] = Map[posX + j, posY + i];
-                    value++;
-                }
-            }
-        }
-        else if (type == EnemyType.Bat)
-        {
-            var value = 0;
-            for (var i = 0; i < 2; i++)
-            {
-                for (var j = 0; j < 5; j++)
-                {
-                    enemy.MapStorage[value] = Map[posX + j, posY + i];
-                    value++;
-                }
-            }
-        }
-        else if (type == EnemyType.Fireball)
-        {
-            var value = 0;
-            for (var i = 0; i < 2; i++)
-            {
-                for (var j = 0; j < 3; j++)
-                {
-                    enemy.MapStorage[value] = Map[posX + j, posY + i];
-                    value++;
-                }
-            }
-        }
-
-        for (var i = 0; i < enemy.MapStorage.Length; i++)
-        {
-            if (enemy.MapStorage[i] is '*' or 'F' or 's' or '-' or '/' or '\\' or '|' or '^' or '#' or 'r' or 'R' or 'V')
-            {
-                enemy.MapStorage[i] = ' ';
-            }
-        }
-
-        UpdateRow(posY);
-        UpdateRow(posY + 1);
-        UpdateRow(posY + 2);
-
-        if (type == EnemyType.Dragon)
-        {
-            UpdateRow(posY + 3);
-            UpdateRow(posY + 4);
-            UpdateRow(posY + 5);
-            UpdateRow(posY  + 6);
-        }
-    }
-
     public void Remove(IEnemy enemy)
     {
-        enemy.Clear();
         _enemies.Remove(enemy);
         var type = enemy.Type;
-
-        UpdateRow(enemy.Position.Y);
-        UpdateRow(enemy.Position.Y + 1);
-        UpdateRow(enemy.Position.Y + 2);
-
-        if (type == EnemyType.Dragon)
-        {
-            UpdateRow(enemy.Position.Y + 3);
-            UpdateRow(enemy.Position.Y + 4);
-            UpdateRow(enemy.Position.Y + 5);
-            UpdateRow(enemy.Position.Y + 6);
-        }
-
 
         if (type == EnemyType.Bat)
         {
@@ -173,20 +83,7 @@ public class EnemyManager
             var Y = position.Y;
             if (posX >= X - 1 && posX <= X + 1 && posY >= Y - 1 && posY <= Y + 1)
             {
-                if (Map[X, Y] == 'V')
-                {
-                    Rupees += 5;
-                }
-                else
-                {
-                    Rupees++;
-                }
-
-                rupee.Clear();
-
-                UpdateRow(Y - 1);
-                UpdateRow(Y);
-                UpdateRow(Y + 1);
+                Rupees += 5;
 
                 _rupees.Remove(rupee);
             }
@@ -239,4 +136,10 @@ public class EnemyManager
     }
 
     public void AddRupee(Rupee rupee) => _rupees.Add(rupee);
+
+    internal void Draw()
+    {
+        foreach (var enemy in _enemies)
+            enemy.Draw();
+    }
 }
