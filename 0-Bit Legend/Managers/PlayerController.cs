@@ -1,6 +1,4 @@
 using _0_Bit_Legend.Entities;
-using System.Collections;
-using System.Reflection.Metadata.Ecma335;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -18,7 +16,16 @@ public class PlayerController
     //private bool _swingingSword;
 
     public int MovementWait;
-    public double Health { get => _player.Hp; set => _player.Hp = value;  }
+    public double Health
+    {
+        get => _player.Hp;
+        set
+        {
+            if(_player.Hp == value) return;
+            _player.Hp = value;
+            RequireHudDraw = true;
+        }
+    }
 
     public DirectionType GetPrev() => _prev;
     public DirectionType GetPrev2() => _prev2;

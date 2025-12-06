@@ -35,8 +35,26 @@ public static class MainProgram
 
     private static char[][] _screen = [];
 
-    public static int Rupees { get; set; } = 100;
-    public static int Keys { get; set; }
+    public static int Rupees
+    {
+        get => rupees;
+        set
+        {
+            if (rupees == value) return;
+            rupees = value;
+            RequireHudDraw = true;
+        }
+    }
+    public static int Keys
+    {
+        get => keys;
+        set
+        {
+            if (keys == value) return;
+            keys = value;
+            RequireHudDraw = true;
+        }
+    }
 
     public static int cEnemies1 = 4;
     public static int cEnemies2 = 4;
@@ -462,6 +480,9 @@ public static class MainProgram
     }
 
     private static Vector2 _heroSize = new(4, 3);
+    private static int rupees = 100;
+    private static int keys;
+
     public static List<ICollider> GetCollisions()
     {
         (var Position, var _) = PlayerController.GetPlayerInfo();
