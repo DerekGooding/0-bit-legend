@@ -2,10 +2,10 @@
 
 namespace _0_Bit_Legend.Maps;
 
-public class Cave0 : IMap
+public class Cave0 : BaseMap
 {
-    public string Name => "Cave 0";
-    public string[] Raw =>[
+    public override string Name => "Cave 0";
+    public override string[] Raw =>[
  "======================================================================================================",
  "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
  "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
@@ -40,12 +40,11 @@ public class Cave0 : IMap
  "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                                =XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
  "===================================                                ===================================",
 ];
-    public string[] FlagAdjusted => Raw;
 
-    public List<EntityLocation> EntityLocations { get; } =
+
+    public override List<EntityLocation> EntityLocations { get; } =
     [
         new(typeof(Sword), new(X: 30, Y: 30), () => !HasFlag(GameFlag.HasSword)),
     ];
 
-    public void Load() { }
 }

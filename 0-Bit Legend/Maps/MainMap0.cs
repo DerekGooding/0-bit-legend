@@ -2,10 +2,10 @@
 
 namespace _0_Bit_Legend.Maps;
 
-public class MainMap0 : IMap
+public class MainMap0 : BaseMap
 {
-    public string Name => "Main Map 0";
-    public string[] Raw =>[
+    public override string Name => "Main Map 0";
+    public override string[] Raw => [
 "======================================================                    ============================",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=",
@@ -40,9 +40,9 @@ public class MainMap0 : IMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "======================================================================================================",
 ];
-    public List<EntityLocation> EntityLocations { get; } =
+
+    public override List<EntityLocation> EntityLocations { get; } =
     [
         new(typeof(EnterCave0), new(13,4), () => true),
     ];
-    public void Load() { }
 }

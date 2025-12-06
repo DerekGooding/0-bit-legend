@@ -459,9 +459,9 @@ public class PlayerController
 
     private bool OutsideGameSpace(Vector2 point)
     => point.X < 0
-    || point.X > GlobalSize.X
+    || point.X >= GlobalSize.X
     || point.Y < 0
-    || point.Y > GlobalSize.Y;
+    || point.Y >= GlobalSize.Y;
 
     public void HandleDebugDraw(Vector2[] points)
     {

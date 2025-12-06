@@ -2,7 +2,6 @@ using _0_Bit_Legend.Content;
 using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Managers;
 using _0_Bit_Legend.Maps;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace _0_Bit_Legend;
 
@@ -364,7 +363,7 @@ public static class MainProgram
             return;
         }
 
-        _screen = [.. _maps[CurrentMap].Raw.Select(line => line.ToCharArray())];
+        _screen = _maps[CurrentMap].RawChars;
         EntityManager.Draw();
         PlayerController.Draw();
 
@@ -407,12 +406,12 @@ public static class MainProgram
 
     public static void DrawToScreen(string[] image, Vector2 position)
     {
-        var xOffset = position.X + GlobalMapOffset.X;
-        var yOffset = position.Y + GlobalMapOffset.Y;
-
-        for( var i = 0; i < image.Length; i++ )
+        for( var y = 0; y < image.Length; y++ )
         {
-            _screen[xOffset][yOffset + i] = image[]
+            for (var x = 0; x < image[y].Length; x++)
+            {
+                _screen[position.Y + y][position.X + x] = image[y][x];
+            }
         }
     }
 

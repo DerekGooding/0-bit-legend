@@ -1,10 +1,10 @@
 ﻿
 namespace _0_Bit_Legend.Maps;
 
-public class Castle0 : IMap
+public class Castle0 : BaseMap
 {
-    public string Name => "Castle 0";
-    public string[] Raw =>[
+    public override string Name => "Castle 0";
+    public override string[] Raw =>[
 "======================================================================================================",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
@@ -39,9 +39,7 @@ public class Castle0 : IMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "======================================================================================================",
 ];
-    public string[] FlagAdjusted => Raw;
 
-    public List<EntityLocation> EntityLocations { get; } = [];
+    public override List<EntityLocation> EntityLocations { get; } = [];
 
-    public void Load() { }
 }

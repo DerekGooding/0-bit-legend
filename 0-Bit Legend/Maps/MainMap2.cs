@@ -1,9 +1,9 @@
 ﻿namespace _0_Bit_Legend.Maps;
 
-public class MainMap2 : IMap
+public class MainMap2 : BaseMap
 {
-    public string Name => "Main Map 2";
-    public string[] Raw =>[
+    public override string Name => "Main Map 2";
+    public override string[] Raw =>[
 "=====         ~~~~~~~~~~~~~~ =============                       =====================================",
 "=XXX=         ~~~~~~~~~~~~~~ =XXXXXXXXXXX=                       =XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "=XXX=         ~~~~~~~~~~~~~~ =============                       =======XXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
@@ -38,8 +38,6 @@ public class MainMap2 : IMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "======================================================================================================",
 ];
-    public string[] FlagAdjusted => Raw;
 
-    public List<EntityLocation> EntityLocations { get; } = [];
-    public void Load() { }
+    public override List<EntityLocation> EntityLocations { get; } = [];
 }
