@@ -49,6 +49,7 @@ public static class MainProgram
     private static bool _debugWall;
 
     public static bool RequiresRedraw { get; set; } = true;
+    public static bool RequireHudDraw { get; set; } = true;
 
     public static void Main()
     {
@@ -367,8 +368,12 @@ public static class MainProgram
         EntityManager.Draw();
         PlayerController.Draw();
 
-        //PrintHud();
         PrintScreen();
+        if (RequireHudDraw)
+        {
+            PrintHud();
+            RequireHudDraw = false;
+        }
 
 
         if (_debugWall) DrawWallsDebug();
@@ -415,8 +420,14 @@ public static class MainProgram
         }
     }
 
-    private static void PrintHud()
+    public static void PrintHud()
     {
+        var image = Hud.GetImage(PlayerController.Health);
+        for (var y = 0; y < image.Length; y++)
+        {
+            Console.SetCursorPosition(Hud.AbsolutePosition.X, Hud.AbsolutePosition.Y + y);
+            Console.Write(image[y]);
+        }
 
     }
 
