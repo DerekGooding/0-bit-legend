@@ -363,7 +363,7 @@ public static class MainProgram
             return;
         }
 
-        _screen = _maps[CurrentMap].RawChars;
+        _screen = [.. _maps[CurrentMap].RawChars.Select(row => (char[])row.Clone())];
         EntityManager.Draw();
         PlayerController.Draw();
 
