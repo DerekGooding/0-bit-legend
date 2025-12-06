@@ -2,13 +2,14 @@ using _0_Bit_Legend.Content;
 using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Managers;
 using _0_Bit_Legend.Maps;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace _0_Bit_Legend;
 
 public static class MainProgram
 {
     public readonly static Vector2 GlobalMapOffset = new(50, 4);
-    public readonly static Vector2 GlobalSize = new(103, 33);
+    public readonly static Vector2 GlobalSize = new(102, 33);
     public readonly static Vector2 GlobalMapRequirement =
         new(GlobalMapOffset.X + GlobalSize.X, GlobalMapRequirement.Y + GlobalSize.Y);
 
@@ -31,7 +32,9 @@ public static class MainProgram
     }
     public static int CurrentMap { get; private set; }
 
-    public static bool[,] WallMap { get; } = new bool[103,33];
+    public static bool[,] WallMap { get; } = new bool[GlobalSize.X, GlobalSize.Y];
+
+    private static char[][] _screen = [];
 
     public static int Rupees { get; set; } = 100;
     public static int Keys { get; set; }
@@ -46,7 +49,7 @@ public static class MainProgram
 
     private static bool _debugWall;
 
-    public static bool RequiresRedraw = true;
+    public static bool RequiresRedraw { get; set; } = true;
 
     public static void Main()
     {
@@ -92,9 +95,6 @@ public static class MainProgram
         {
             case GameState.Idle:
                 HandleMovement();
-                break;
-            case GameState.Waiting:
-                HandleWaiting();
                 break;
             case GameState.Attacking:
                 HandleAttacking();
@@ -149,51 +149,6 @@ public static class MainProgram
         {
             waitEnemies = 2;
             EntityManager.MoveAll();
-        }
-    }
-    private static void HandleWaiting()
-    {
-        Thread.Sleep(100);
-
-        if (CurrentMap is 0 or 4 or 6)
-        {
-            PlayerController.MoveUp();
-            Thread.Sleep(50);
-        }
-        else if (CurrentMap is 7 or 8 or 9)
-        {
-            PlayerController.MoveDown();
-            Thread.Sleep(50);
-        }
-
-        PlayerController.MovementWait--;
-        if (PlayerController.MovementWait <= 0)
-        {
-            if (CurrentMap == 0)
-            {
-                LoadMap(6, new(50, 29), DirectionType.Up);
-            }
-            else if (CurrentMap == 4)
-            {
-                LoadMap(7, new(50, 29), DirectionType.Up);
-            }
-            else if (CurrentMap == 8)
-            {
-                LoadMap(9, new(50, 30), DirectionType.Up);
-            }
-            else if (CurrentMap == 6)
-            {
-                LoadMap(0, new(16, 9), DirectionType.Down);
-            }
-            else if (CurrentMap == 7)
-            {
-                LoadMap(4, new(86, 10), DirectionType.Down);
-            }
-            else if (CurrentMap == 9)
-            {
-                LoadMap(8, new(51, 20), DirectionType.Down);
-            }
-            State = GameState.Idle;
         }
     }
     private static void HandleAttacking() => PlayerController.Attack();
@@ -387,15 +342,6 @@ public static class MainProgram
         {
             PlayerController.SpawnLink(position, direction);
         }
-
-        //if (lCText)
-        //{
-        //    lCText = false;
-        //    SetFlag(GameFlag.Text);
-        //    wait = 750;
-        //}
-
-        //_start = true;
     }
 
     private static void UpdateWallMap()
@@ -409,14 +355,6 @@ public static class MainProgram
         }
     }
 
-    public static void WaitForTransition(int time = 2)
-    {
-        State = GameState.Waiting;
-        PlayerController.MovementWait = time;
-    }
-
-    private static void DrawHud() => DrawToScreen(Hud.GetImage(), Hud.Position);
-
     private static void Draw()
     {
         if(_lastW < GlobalMapRequirement.X || _lastH < GlobalMapRequirement.Y)
@@ -426,10 +364,12 @@ public static class MainProgram
             return;
         }
 
-        //DrawHud();
-        DrawToScreen(_maps[CurrentMap].Raw, Vector2.Zero);
+        _screen = [.. _maps[CurrentMap].Raw.Select(line => line.ToCharArray())];
         EntityManager.Draw();
         PlayerController.Draw();
+
+        //PrintHud();
+        PrintScreen();
 
 
         if (_debugWall) DrawWallsDebug();
@@ -472,8 +412,24 @@ public static class MainProgram
 
         for( var i = 0; i < image.Length; i++ )
         {
+            _screen[xOffset][yOffset + i] = image[]
+        }
+    }
+
+    private static void PrintHud()
+    {
+
+    }
+
+    private static void PrintScreen()
+    {
+        var xOffset = GlobalMapOffset.X;
+        var yOffset = GlobalMapOffset.Y;
+
+        for (var i = 0; i < _screen.Length; i++)
+        {
             Console.SetCursorPosition(xOffset, yOffset + i);
-            Console.Write(image[i]);
+            Console.Write(_screen[i]);
         }
     }
 
@@ -483,9 +439,9 @@ public static class MainProgram
         Console.WriteLine("Debug Mode Enabled");
 
         List<Vector2> walls = [];
-        for( var x = 0;x < 103; x++ )
+        for( var x = 0; x < GlobalSize.X; x++ )
         {
-            for( var y = 0; y < 33; y++ )
+            for( var y = 0; y < GlobalSize.Y; y++ )
             {
                 if (WallMap[x,y])
                     walls.Add(new Vector2(x,y));

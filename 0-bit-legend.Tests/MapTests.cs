@@ -46,11 +46,11 @@ public sealed class MapTests
         var index = instance.Raw.IndexOf(incoherantLine ?? instance.Raw[0]);
 
         var isCoherant = incoherantLine is null;
-        var isWidth = width == 103;
+        var isWidth = width == 102;
         var isHeight = height == 33;
 
         Assert.IsTrue(isCoherant, $"{implementationType.Name} does not have equal width on every line. @ line {index}");
-        Assert.IsTrue(isWidth, $"{implementationType.Name} does not have proper width. Width: {width} instead of 103");
+        Assert.IsTrue(isWidth, $"{implementationType.Name} does not have proper width. Width: {width} instead of 102");
         Assert.IsTrue(isHeight, $"{implementationType.Name} does not have proper height. Height: {height} instead of 33");
     }
 
