@@ -1,4 +1,7 @@
 using _0_Bit_Legend.Entities;
+using _0_Bit_Legend.Entities.Enemies;
+using _0_Bit_Legend.Entities.Pickups;
+using _0_Bit_Legend.Entities.Triggers;
 
 namespace _0_Bit_Legend.Managers;
 
@@ -277,6 +280,9 @@ public class PlayerController
             DirectionType.Right => _player.Position.Offset(magnitude * 2, 0),
             _ => throw new Exception(),
         };
+
+        var box = GetMoveBox(direction);
+        HandleCollisions(MainProgram.EntityManager.GetCollisions(box));
     }
 
     public void SpawnLink(Vector2 position, DirectionType direction)
@@ -454,15 +460,33 @@ public class PlayerController
         };
     }
 
+    private CollisionBox GetMoveBox(DirectionType direction)
+    {
+        var width = _player.Size.X + 1;
+        var height = _player.Size.Y + 1;
+
+        return direction switch
+        {
+            DirectionType.Up =>    new(_player.Position.Offset(0, -1), new(_player.Size.X, 0)),
+            DirectionType.Down =>  new(_player.Position.Offset(0, height + 1), new(_player.Size.X, 0)),
+            DirectionType.Left =>  new(_player.Position.Offset(-2, 0), new(0, _player.Size.Y)),
+            DirectionType.Right => new(_player.Position.Offset(width + 2, 0), new(0, _player.Size.Y)),
+            _ => throw new Exception()
+        };
+    }
+
+    private void HandleCollisions(List<ICollider> colliders)
+    {
+        if(colliders.Count == 0) return;
+        foreach (var entity in colliders)
+        {
+            entity.HandleCollision();
+        }
+    }
+
     private bool CanMove(Vector2[] points) => !points.Any(OutsideGameSpace) && !points.Any(IsBlocking);
 
     private bool IsBlocking(Vector2 point) => WallMap[point.X, point.Y];
-
-    private ICollider[] CheckCollisions(Vector2[] points)
-    {
-        //MainProgram.EntityManager.GetCollisions();
-        return [];
-    }
 
     private bool OutsideGameSpace(Vector2 point)
     => point.X < 0

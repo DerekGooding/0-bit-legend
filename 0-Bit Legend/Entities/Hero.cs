@@ -82,7 +82,10 @@ public class Hero : IEntity, ICollider
         ] },
     };
 
-
+    public void HandleCollision()
+    {
+        //TODO
+    }
     public void Draw()
     {
         var image = HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] : _spriteSheet[Direction];

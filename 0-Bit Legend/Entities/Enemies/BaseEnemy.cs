@@ -113,4 +113,6 @@ public abstract class BaseEnemy : IEnemy
         }
         return false;
     }
+
+    public void HandleCollision() => SetGameState(GameState.Hit);
 }

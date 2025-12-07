@@ -7,7 +7,7 @@ public class EnterCave1 : IEntity, ICollider
     public Action OnContact { get; } = () =>
     {
         new CaveTransition().Call();
-        LoadMap(7, new(50, 18), DirectionType.Up);
+        LoadMap(7, new(48, 27), DirectionType.Up);
     };
 
     public Vector2 Position { get; set; }
@@ -22,4 +22,5 @@ public class EnterCave1 : IEntity, ICollider
     "///////",
     ];
     public void Draw() => DrawToScreen(_spriteSheet, Position);
+    public void HandleCollision() => OnContact.Invoke();
 }

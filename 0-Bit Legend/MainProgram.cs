@@ -372,7 +372,7 @@ public static class MainProgram
                 WallMap[x,y] = Environments.Walls.Any(symbol => symbol == line[x]);
         }
     }
-
+    public static void ForceRedraw() => Draw();
     private static void Draw()
     {
         if(_lastW < GlobalMapRequirement.X || _lastH < GlobalMapRequirement.Y)

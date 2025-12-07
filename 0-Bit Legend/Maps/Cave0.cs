@@ -24,10 +24,10 @@ public class Cave0 : BaseMap
  "=XXXXXXXXXX=                                   |__|__|                                    =XXXXXXXXXX=",
  "=XXXXXXXXXx=                                                                              =XXXXXXXXXX=",
  "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
- "=XXXXXXXXXX=                                      S                                       =XXXXXXXXXX=",
- "=XXXXXXXXXX=                                      S                                       =XXXXXXXXXX=",
- "=XXXXXXXXXX=                                     ---                                      =XXXXXXXXXX=",
- "=XXXXXXXXXX=                                      -                                       =XXXXXXXXXX=",
+ "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
+ "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
+ "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
+ "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
  "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
  "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
  "=XXXXXXXXXX=                                                                              =XXXXXXXXXX=",
@@ -40,11 +40,9 @@ public class Cave0 : BaseMap
  "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                                =XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
  "===================================                                ===================================",
 ];
-
-
     public override List<EntityLocation> EntityLocations { get; } =
     [
-        new(typeof(Sword), new(X: 30, Y: 30), () => !HasFlag(GameFlag.HasSword)),
+        new(typeof(Sword), new(X: 49, Y: 19), () => !HasFlag(GameFlag.HasSword)),
     ];
 
 }

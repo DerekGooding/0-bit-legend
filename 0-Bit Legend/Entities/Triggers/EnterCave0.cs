@@ -1,5 +1,4 @@
 ﻿using _0_Bit_Legend.Animations;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace _0_Bit_Legend.Entities.Triggers;
 
@@ -8,7 +7,7 @@ public class EnterCave0 : IEntity, ICollider
     public Action OnContact { get; } = () =>
     {
         new CaveTransition().Call();
-        LoadMap(6, new(50, 18), DirectionType.Up);
+        LoadMap(6, new(48, 27), DirectionType.Up);
     };
 
     public Vector2 Position { get; set; }
@@ -24,4 +23,6 @@ public class EnterCave0 : IEntity, ICollider
     ];
 
     public void Draw() => DrawToScreen(_spriteSheet, Position);
+
+    public void HandleCollision() => OnContact.Invoke();
 }

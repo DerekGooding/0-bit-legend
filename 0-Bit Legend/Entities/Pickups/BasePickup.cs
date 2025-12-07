@@ -12,4 +12,6 @@ public abstract class BasePickup : IPickup
     public abstract Vector2 Size { get; }
 
     public void Draw() => DrawToScreen(Image, Position);
+
+    public void HandleCollision() => OnPickup.Invoke();
 }

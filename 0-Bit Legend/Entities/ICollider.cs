@@ -4,4 +4,6 @@ public interface ICollider
 {
     //Origin point is top left corner of object
     public Vector2 Size { get; }
+
+    public void HandleCollision();
 }

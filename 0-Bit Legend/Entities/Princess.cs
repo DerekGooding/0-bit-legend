@@ -22,4 +22,8 @@ public class Princess : IEntity, ICollider
     public bool InsideBoundingBox(char[] symbols) => false;
     public bool IsTouching(char symbol) => false;
     public bool IsTouching(char[] symbols) => false;
+    public void HandleCollision()
+    {
+        //TODO
+    }
 }
