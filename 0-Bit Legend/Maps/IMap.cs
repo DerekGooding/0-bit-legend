@@ -8,4 +8,6 @@ public interface IMap
     public char[][] RawChars { get; }
 
     public List<EntityLocation> EntityLocations { get; }
+
+    public List<NewAreaInfo> AreaTransitions { get; }
 }

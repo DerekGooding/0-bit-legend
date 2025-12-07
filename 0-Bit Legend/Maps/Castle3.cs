@@ -41,4 +41,6 @@ public class Castle3 : BaseMap
 ];
 
     public override List<EntityLocation> EntityLocations { get; } = [];
+
+    public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

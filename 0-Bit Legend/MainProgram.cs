@@ -1,5 +1,6 @@
 using _0_Bit_Legend.Content;
 using _0_Bit_Legend.Entities;
+using _0_Bit_Legend.Entities.Triggers;
 using _0_Bit_Legend.Managers;
 using _0_Bit_Legend.Maps;
 
@@ -273,6 +274,11 @@ public static class MainProgram
                 throw new Exception("Error in map data. Non-entity in EntityLocation list");
             entity.Position = item.Position;
             EntityManager.Add(entity);
+        }
+
+        foreach(var item in map.AreaTransitions)
+        {
+            EntityManager.Add(NewArea.Initialize(item));
         }
 
         if (mapNum == 1)

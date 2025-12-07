@@ -16,4 +16,5 @@ public abstract class BaseMap : IMap
     public abstract string Name { get; }
     public abstract string[] Raw { get; }
     public abstract List<EntityLocation> EntityLocations { get; }
+    public abstract List<NewAreaInfo> AreaTransitions { get; }
 }

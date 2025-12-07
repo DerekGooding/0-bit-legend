@@ -44,4 +44,6 @@ public class MainMap4 : BaseMap
     [
         new(typeof(EnterCave1), new(84,4), () => true),
     ];
+
+    public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

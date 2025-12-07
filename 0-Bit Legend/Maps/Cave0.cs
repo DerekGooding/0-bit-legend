@@ -45,4 +45,5 @@ public class Cave0 : BaseMap
         new(typeof(Sword), new(X: 49, Y: 19), () => !HasFlag(GameFlag.HasSword)),
     ];
 
+    public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

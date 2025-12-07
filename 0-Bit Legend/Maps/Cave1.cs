@@ -48,4 +48,6 @@ public class Cave1 : BaseMap
         new(typeof(Key), new(X: 50, Y: 30), () => true),
         new(typeof(Armor), new(X: 70, Y: 30), () => !HasFlag(GameFlag.HasArmor)),
     ];
+
+    public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

@@ -38,6 +38,7 @@ public class MainMap2 : BaseMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "======================================================================================================",
 ];
-
     public override List<EntityLocation> EntityLocations { get; } = [];
+
+    public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

@@ -45,4 +45,9 @@ public class MainMap0 : BaseMap
     [
         new(typeof(EnterCave0), new(13,4), () => true),
     ];
+
+    public override List<NewAreaInfo> AreaTransitions { get; } =
+    [
+        new(1, new(52, 18), DirectionType.Left, new(0, 10), new(2, 11)),
+    ];
 }
