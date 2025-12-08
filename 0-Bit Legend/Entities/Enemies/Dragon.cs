@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Entities.Enemies;
+﻿using _0_Bit_Legend.Content;
+
+namespace _0_Bit_Legend.Entities.Enemies;
 
 public class Dragon : BaseEnemy
 {
@@ -83,7 +85,7 @@ public class Dragon : BaseEnemy
 
         SetFlag(GameFlag.Dragon);
         var (position, prev1) = PlayerController.GetPlayerInfo();
-        LoadMap(12, position, prev1);
+        LoadMap(WorldMap.MapName.Castle5, position, prev1);
     }
 
     public override void Move()

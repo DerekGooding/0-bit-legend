@@ -48,11 +48,14 @@ public class MainMap2 : BaseMap
 
     public override List<NewAreaInfo> AreaTransitions { get; } =
     [
-        new(MapId: 2, StartPosition: new(52, 18),
+        new(MapId: WorldMap.MapName.MainMap0, StartPosition: new(52, 18),
             DirectionType.Left, Size: new(3, 10), Position: new(0, 9)),
-        new(MapId: 1, StartPosition: new(52, 18),
+
+        new(MapId: WorldMap.MapName.MainMap5, StartPosition: new(52, 18),
             DirectionType.Up,   Size: new(21, 1), Position: new(53, 0)),
-        new(MapId: 0, StartPosition: new(52, 18),
-            DirectionType.Right, Size: new(3, 9), Position: new(98, 10)),
+        new(MapId: WorldMap.MapName.MainMap5, StartPosition: new(52, 18),
+            DirectionType.Up,   Size: new(21, 1), Position: new(53, 0)),
+        new(MapId: WorldMap.MapName.MainMap5, StartPosition: new(52, 18),
+            DirectionType.Up,   Size: new(21, 1), Position: new(53, 0)),
     ];
 }

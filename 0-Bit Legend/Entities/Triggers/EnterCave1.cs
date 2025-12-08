@@ -1,4 +1,5 @@
 ﻿using _0_Bit_Legend.Animations;
+using _0_Bit_Legend.Content;
 
 namespace _0_Bit_Legend.Entities.Triggers;
 
@@ -7,7 +8,7 @@ public class EnterCave1 : IEntity, ICollider
     public Action OnContact { get; } = () =>
     {
         new CaveTransition().Call();
-        LoadMap(7, new(48, 27), DirectionType.Up);
+        LoadMap(WorldMap.MapName.Cave1, new(48, 27), DirectionType.Up);
     };
 
     public Vector2 Position { get; set; }

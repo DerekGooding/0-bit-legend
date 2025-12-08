@@ -42,7 +42,7 @@ public class Castle5 : BaseMap
 
     public override List<NewAreaInfo> AreaTransitions { get; } =
     [
-        new(MapId: 2, StartPosition: new(52, 18),
+        new(MapId: WorldMap.MapName.Castle4, StartPosition: new(52, 18),
             DirectionType.Left, Size: new(3, 10), Position: new(0, 9)),
     ];
 }

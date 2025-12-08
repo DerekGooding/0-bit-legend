@@ -22,9 +22,9 @@ public class Castle0 : BaseMap
 "=XXXXXXXXX=                             = == =         = = == =                                       ",
 "=XXXXXXXXX=                             ======         = ======                                       ",
 "=XXXXXXXXX=           XXXXX             ||||||===========||||||             XXXXX                     ",
-"=XXXXXXXXX=           =/X/=             =======/////////=======             =/X/=                     ",
-"=XXXXXXXXX=           =====             ||||||=/////////=||||||             =====                     ",
-"=XXXXXXXXX=                             =======/////////=======                                       ",
+"=XXXXXXXXX=           =/X/=             =======         =======             =/X/=                     ",
+"=XXXXXXXXX=           =====             ||||||=         =||||||             =====                     ",
+"=XXXXXXXXX=                             =======         =======                                       ",
 "=XXXXXXXXX=                                                                                           ",
 "=XXXXXXXXX=                                                                                           ",
 "=XXXXXXXXX=                                                                                           ",
@@ -44,12 +44,12 @@ public class Castle0 : BaseMap
 
     public override List<EntityLocation> EntityLocations { get; } =
     [
-        new(typeof(EnterCave0), new(47,15), () => true),
+        new(typeof(EnterCastle), new(47,15), () => true),
     ];
 
     public override List<NewAreaInfo> AreaTransitions { get; } =
     [
-        new(MapId: 2, StartPosition: new(52, 18),
+        new(MapId: WorldMap.MapName.MainMap5, StartPosition: new(52, 18),
             DirectionType.Left, Size: new(3, 10), Position: new(0, 9)),
     ];
 }

@@ -1,4 +1,5 @@
-﻿using _0_Bit_Legend.Entities;
+﻿using _0_Bit_Legend.Content;
+using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Entities.Enemies;
 
 namespace _0_Bit_Legend.Managers;
@@ -96,11 +97,11 @@ public class EntityManager
         _enemies.Remove(enemy);
         if(enemy.Type != EnemyType.Bat) return;
 
-        if (CurrentMap == 10)
+        if (CurrentMap == WorldMap.MapName.Castle2)
         {
             cEnemies1--;
         }
-        else if (CurrentMap == 11)
+        else if (CurrentMap == WorldMap.MapName.Castle3)
         {
             cEnemies2--;
         }

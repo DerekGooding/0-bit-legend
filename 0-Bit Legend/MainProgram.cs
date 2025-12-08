@@ -2,7 +2,7 @@ using _0_Bit_Legend.Content;
 using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Entities.Triggers;
 using _0_Bit_Legend.Managers;
-using _0_Bit_Legend.Maps;
+using static _0_Bit_Legend.Content.WorldMap;
 
 namespace _0_Bit_Legend;
 
@@ -22,7 +22,7 @@ public static class MainProgram
     private static GameFlag _flags = GameFlag.None;
     public static GameState State { get; private set; } = GameState.Idle;
 
-    public static int CurrentMap { get; private set; }
+    public static WorldMap.MapName CurrentMap { get; private set; }
 
     public static bool[,] WallMap { get; } = new bool[GlobalSize.X, GlobalSize.Y];
 
@@ -198,13 +198,13 @@ public static class MainProgram
         cEnemies1 = 4;
         cEnemies2 = 4;
 
-        if (CurrentMap <= 8)
+        if (CurrentMap <= MapName.Castle1)
         {
-            LoadMap(0, new(52, 15), DirectionType.Up);
+            LoadMap(MapName.MainMap0, new(52, 15), DirectionType.Up);
         }
         else
         {
-            LoadMap(9, new(50, 25), DirectionType.Up);
+            LoadMap(MapName.Castle2, new(50, 25), DirectionType.Up);
         }
         State = GameState.Idle;
 
@@ -223,13 +223,13 @@ public static class MainProgram
 
     }
 
-    public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
+    public static void LoadMap(MapName mapNum, Vector2 position, DirectionType direction)
     {
         CurrentMap = mapNum;
         UpdateWallMap();
         EntityManager.RemoveAll();
 
-        var map = WorldMap.Maps[mapNum];
+        var map = GetMap(mapNum);
         foreach(var item in map.EntityLocations)
         {
             if (!item.IsActive.Invoke()) continue;
@@ -245,27 +245,19 @@ public static class MainProgram
             EntityManager.Add(NewArea.Initialize(item));
         }
 
-        if (mapNum == 8)
+        if (mapNum == MapName.Castle0)
         {
             cEnemies1 = 4;
             cEnemies2 = 4;
         }
 
-        if ((CurrentMap == 2 || CurrentMap == 4) && position.X == 21)
-        {
-            PlayerController.SetPosition(position);
-            //TODO => Raft system
-            //PlayerController.DeployRaft(PlayerController.GetPrev2());
-        }
-        else
-        {
-            PlayerController.SpawnLink(position, direction);
-        }
+        PlayerController.SpawnLink(position, direction);
     }
 
     private static void UpdateWallMap()
     {
-        var map = WorldMap.Maps[CurrentMap].Raw;
+        var map = GetMap(CurrentMap).Raw;
+
         for(var y = 0; y < map.Length; y++)
         {
             var line = map[y];
@@ -283,7 +275,7 @@ public static class MainProgram
             return;
         }
 
-        _screen = [.. WorldMap.Maps[CurrentMap].RawChars.Select(row => (char[])row.Clone())];
+        _screen = [.. GetMap(CurrentMap).RawChars.Select(row => (char[])row.Clone())];
         EntityManager.Draw();
         PlayerController.Draw();
 
