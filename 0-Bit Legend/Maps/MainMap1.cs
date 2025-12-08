@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend.Entities.Enemies;
+
+namespace _0_Bit_Legend.Maps;
 
 public class MainMap1 : BaseMap
 {
@@ -38,7 +40,12 @@ public class MainMap1 : BaseMap
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=                    =XXXXXXXXXXXXXXXXXXXXXXXXXX=",
 "======================================================                    ============================",
 ];
-    public override List<EntityLocation> EntityLocations { get; } = [];
+    public override List<EntityLocation> EntityLocations { get; } =
+    [
+        new(typeof(Octorok), new(75, 13), () => true),
+        new(typeof(Octorok), new(9, 12), () => true),
+        new(typeof(Octorok), new(23, 26), () => true),
+    ];
 
     public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

@@ -176,24 +176,25 @@ public static class MainProgram
     {
         Thread.Sleep(100);
         State = GameState.Idle;
-        var (Position, Direction) = PlayerController.GetPlayerInfo();
+        var (_, Direction) = PlayerController.GetPlayerInfo();
 
-        if (Direction == DirectionType.Up && Position.Y < 27)
+        if (Direction == DirectionType.Up)
         {
             PlayerController.MoveDown(3);
         }
-        else if (Direction == DirectionType.Left && Position.X < 94)
+        else if (Direction == DirectionType.Left)
         {
             PlayerController.MoveRight(3);
         }
-        else if (Direction == DirectionType.Down && Position.Y > 3)
+        else if (Direction == DirectionType.Down)
         {
             PlayerController.MoveUp(3);
         }
-        else if (Direction == DirectionType.Right && Position.X > 7)
+        else if (Direction == DirectionType.Right)
         {
             PlayerController.MoveLeft(3);
         }
+
         PlayerController.Hit();
     }
     private static void HandleDeath()
@@ -281,78 +282,13 @@ public static class MainProgram
             EntityManager.Add(NewArea.Initialize(item));
         }
 
-        if (mapNum == 1)
+        if (mapNum == 8)
         {
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(75, 13), DirectionType.Left, -1);
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(9, 12), DirectionType.Right, -1);
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(23, 26), DirectionType.Left, -1);
-        }
-        else if (mapNum == 2)
-        {
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(59, 23), DirectionType.Right, -1);
-            EntityManager.SpawnEnemy(EnemyType.Spider, new(76, 6), DirectionType.Left, 5);
-        }
-        else if (mapNum == 3)
-        {
-            EntityManager.SpawnEnemy(EnemyType.Spider, new(44, 25), DirectionType.Left, 6);
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(38, 14), DirectionType.Right, -1);
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(83, 9), DirectionType.Left, -1);
-        }
-        else if (mapNum == 4)
-        {
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(35, 23), DirectionType.Left, -1);
-            EntityManager.SpawnEnemy(EnemyType.Octorok, new(69, 6), DirectionType.Left, -1);
-        }
-        else if (mapNum == 5)
-        {
-            EntityManager.SpawnEnemy(EnemyType.Spider, new(81, 9), DirectionType.Left, 4);
-            EntityManager.SpawnEnemy(EnemyType.Spider, new(32, 5), DirectionType.Right, 6);
-        }
-        else if (mapNum == 8)
-        {
-            //enemyMovement.Move(EnemyType.Spider, new(26, 20), Direction.Right, 4);
             cEnemies1 = 4;
             cEnemies2 = 4;
         }
-        else if (mapNum == 10)
-        {
-            if (cEnemies1 >= 1)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(70, 11), DirectionType.Left, -1);
-            }
-            if (cEnemies1 >= 2)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(32, 9), DirectionType.Right, -1);
-            }
-            if (cEnemies1 >= 3)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(53, 15), DirectionType.Left, -1);
-            }
-            if (cEnemies1 >= 4)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(20, 20), DirectionType.Right, -1);
-            }
-        }
-        else if (mapNum == 11)
-        {
-            if (cEnemies2 >= 1)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(27, 9), DirectionType.Left, -1);
-            }
-            if (cEnemies2 >= 2)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(56, 20), DirectionType.Right, -1);
-            }
-            if (cEnemies2 >= 3)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(73, 15), DirectionType.Left, -1);
-            }
-            if (cEnemies2 >= 4)
-            {
-                EntityManager.SpawnEnemy(EnemyType.Bat, new(18, 11), DirectionType.Right, -1);
-            }
-        }
-        else if (mapNum == 12)
+
+        if (mapNum == 12)
         {
             if (!HasFlag(GameFlag.Dragon)) EntityManager.SpawnEnemy(EnemyType.Dragon, new(71, 13), DirectionType.Left, 12);
         }

@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend.Entities.Enemies;
+
+namespace _0_Bit_Legend.Maps;
 
 public class Castle2 : BaseMap
 {
@@ -39,7 +41,13 @@ public class Castle2 : BaseMap
 "======================================================================================================",
 ];
 
-    public override List<EntityLocation> EntityLocations { get; } = [];
+    public override List<EntityLocation> EntityLocations { get; } =
+    [
+        new(typeof(Bat), new(70, 11), () => cEnemies1 >= 1),
+        new(typeof(Bat), new(32, 9), () => cEnemies1 >= 2),
+        new(typeof(Bat), new(53, 15), () => cEnemies1 >= 3),
+        new(typeof(Bat), new(20, 20), () => cEnemies1 >= 4),
+    ];
 
-    public override List<NewAreaInfo> AreaTransitions { get; } = [];
+public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }

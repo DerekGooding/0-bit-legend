@@ -8,11 +8,7 @@ namespace _0_Bit_Legend.Managers;
 public class PlayerController
 {
     private readonly Hero _player = new();
-
     private readonly SwordAttack _sword = new();
-
-    //private bool _debounce;
-    //private bool _swingingSword;
 
     public int MovementWait;
     public double Health

@@ -1,4 +1,5 @@
-﻿using _0_Bit_Legend.Entities.Triggers;
+﻿using _0_Bit_Legend.Entities.Enemies;
+using _0_Bit_Legend.Entities.Triggers;
 
 namespace _0_Bit_Legend.Maps;
 
@@ -43,6 +44,8 @@ public class MainMap4 : BaseMap
     public override List<EntityLocation> EntityLocations { get; } =
     [
         new(typeof(EnterCave1), new(84,4), () => true),
+        new(typeof(Octorok), new(23, 23), () => true),
+        new(typeof(Octorok), new(69, 6), () => true),
     ];
 
     public override List<NewAreaInfo> AreaTransitions { get; } = [];
