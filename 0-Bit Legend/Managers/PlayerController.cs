@@ -1,7 +1,4 @@
 using _0_Bit_Legend.Entities;
-using _0_Bit_Legend.Entities.Enemies;
-using _0_Bit_Legend.Entities.Pickups;
-using _0_Bit_Legend.Entities.Triggers;
 
 namespace _0_Bit_Legend.Managers;
 

@@ -3,7 +3,6 @@ using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Entities.Triggers;
 using _0_Bit_Legend.Managers;
 using _0_Bit_Legend.Maps;
-using System.Diagnostics;
 
 namespace _0_Bit_Legend;
 
@@ -287,8 +286,6 @@ public static class MainProgram
             cEnemies1 = 4;
             cEnemies2 = 4;
         }
-
-
 
         if ((CurrentMap == 2 || CurrentMap == 4) && position.X == 21)
         {
