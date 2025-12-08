@@ -49,5 +49,9 @@ public class Castle3 : BaseMap
         new(typeof(Bat), new(18, 11), () => cEnemies2 >= 4),
     ];
 
-    public override List<NewAreaInfo> AreaTransitions { get; } = [];
+    public override List<NewAreaInfo> AreaTransitions { get; } =
+    [
+        new(MapId: 2, StartPosition: new(52, 18),
+            DirectionType.Left, Size: new(3, 10), Position: new(0, 9)),
+    ];
 }

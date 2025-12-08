@@ -47,5 +47,11 @@ public class MainMap3 : BaseMap
         new(typeof(Octorok), new(83, 9), () => true),
     ];
 
-    public override List<NewAreaInfo> AreaTransitions { get; } = [];
+    public override List<NewAreaInfo> AreaTransitions { get; } =
+    [
+        new(MapId: 2, StartPosition: new(52, 18),
+            DirectionType.Left, Size: new(3, 10), Position: new(0, 9)),
+        new(MapId: 1, StartPosition: new(52, 18),
+            DirectionType.Up,   Size: new(21, 1), Position: new(53, 0)),
+    ];
 }

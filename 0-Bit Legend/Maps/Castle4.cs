@@ -45,5 +45,11 @@ public class Castle4 : BaseMap
         new(typeof(Dragon), new(71, 13), () => !HasFlag(GameFlag.Dragon)),
     ];
 
-    public override List<NewAreaInfo> AreaTransitions { get; } = [];
+    public override List<NewAreaInfo> AreaTransitions { get; } =
+    [
+        new(MapId: 2, StartPosition: new(52, 18),
+            DirectionType.Left, Size: new(3, 10), Position: new(0, 9)),
+        new(MapId: 1, StartPosition: new(52, 18),
+            DirectionType.Up,   Size: new(21, 1), Position: new(53, 0)),
+    ];
 }

@@ -62,8 +62,6 @@ public class Dragon : BaseEnemy
     public override bool InBounds(Vector2 position) => position.X > 0 && position.Y > 0;
     public override void TakeDamage()
     {
-        waitDragon++;
-
         //TODO => The dragon needs to show hit damage image change. 
 
         //var value = 0;
@@ -92,7 +90,6 @@ public class Dragon : BaseEnemy
     public override void Move()
     {
         var rnd1 = Random.Shared.Next(10);
-        waitDragon = 4;
         Motion--;
 
         var phase = DirectionType.Left;

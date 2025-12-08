@@ -53,9 +53,7 @@ public static class MainProgram
 
     public static int cEnemies1 = 4;
     public static int cEnemies2 = 4;
-    public static int waitEnemies = 1;
-    public static int waitDragon = 1;
-    public static int wait;
+    private static int waitEnemies;
 
     private static string _credits = string.Empty;
 
@@ -100,9 +98,7 @@ public static class MainProgram
             RequiresRedraw = true;
         }
 
-
         waitEnemies--;
-        waitDragon--;
 
         switch (State)
         {
