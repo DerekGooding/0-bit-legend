@@ -3,6 +3,7 @@ using _0_Bit_Legend.Entities;
 using _0_Bit_Legend.Entities.Triggers;
 using _0_Bit_Legend.Managers;
 using _0_Bit_Legend.Maps;
+using System.Diagnostics;
 
 namespace _0_Bit_Legend;
 
@@ -481,8 +482,21 @@ public static class MainProgram
                     walls.Add(new Vector2(x,y));
             }
         }
+        List<Vector2> entities = [];
+        foreach(var (Position, Size) in EntityManager.GetPositionalData())
+        {
+            for(var x = 0; x < Size.X; x++ )
+            {
+                for(var y = 0; y < Size.Y;y++ )
+                {
+                    entities.Add(new Vector2(Position.X + x, Position.Y + y));
+                }
+            }
+        }
 
-        PlayerController.HandleDebugDraw([.. walls]);
+
+        HandleDebugDraw(walls);
+        HandleDebugDraw(entities, ConsoleColor.Yellow);
     }
 
     private static Vector2 _heroSize = new(4, 3);
@@ -504,4 +518,16 @@ public static class MainProgram
                bx < ax + aw &&
                ay < by + bh &&
                by < ay + ah;
+
+    public static void HandleDebugDraw(List<Vector2> points, ConsoleColor color = ConsoleColor.Red)
+    {
+        Console.BackgroundColor = color;
+        foreach (var point in points)
+        {
+            Console.SetCursorPosition(point.X + GlobalMapOffset.X, point.Y + GlobalMapOffset.Y);
+
+            Console.Write(' ');
+        }
+        Console.BackgroundColor = ConsoleColor.Black;
+    }
 }

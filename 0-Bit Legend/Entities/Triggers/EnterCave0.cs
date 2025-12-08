@@ -13,7 +13,7 @@ public class EnterCave0 : IEntity, ICollider
     public Vector2 Position { get; set; }
     public DirectionType Direction { get; set; }
 
-    public Vector2 Size { get; } = new Vector2(6, 2);
+    public Vector2 Size { get; } = new Vector2(7, 3);
 
     private readonly string[] _spriteSheet =
     [

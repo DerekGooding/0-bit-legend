@@ -442,7 +442,7 @@ public class PlayerController
 
     internal void Draw() => _player.Draw();
 
-    private Vector2[] GetMovePoints(DirectionType direction)
+    private List<Vector2> GetMovePoints(DirectionType direction)
     {
         var bottom = _player.Position.Y + _player.Size.Y;
         var right = _player.Position.X + _player.Size.X;
@@ -484,7 +484,7 @@ public class PlayerController
         }
     }
 
-    private bool CanMove(Vector2[] points) => !points.Any(OutsideGameSpace) && !points.Any(IsBlocking);
+    private bool CanMove(List<Vector2> points) => !points.Any(OutsideGameSpace) && !points.Any(IsBlocking);
 
     private bool IsBlocking(Vector2 point) => WallMap[point.X, point.Y];
 
@@ -494,15 +494,5 @@ public class PlayerController
     || point.Y < 0
     || point.Y >= GlobalSize.Y;
 
-    public void HandleDebugDraw(Vector2[] points)
-    {
-        Console.BackgroundColor = ConsoleColor.Red;
-        foreach (var point in points)
-        {
-            Console.SetCursorPosition(point.X + GlobalMapOffset.X, point.Y + GlobalMapOffset.Y);
 
-            Console.Write(' ');
-        }
-        Console.BackgroundColor = ConsoleColor.Black;
-    }
 }

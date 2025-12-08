@@ -19,6 +19,17 @@ public class EntityManager
         && Overlaps(ax, ay, aw, ah, b.Position.X, b.Position.Y, c.Size.X, c.Size.Y)).OfType<ICollider>()];
     }
 
+    public List<(Vector2 Position, Vector2 Size)> GetPositionalData()
+    {
+        List<(Vector2 Position, Vector2 Size)> result = [];
+        foreach(var entity in _entities)
+        {
+            if (entity is ICollider c)
+                result.Add((entity.Position, c.Size));
+        }
+        return result;
+    }
+
     public bool TakeDamage(Vector2 target, DirectionType prev)
     {
         //var enemy = GetEnemyAt(target);
