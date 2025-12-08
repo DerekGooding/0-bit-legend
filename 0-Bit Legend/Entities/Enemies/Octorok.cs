@@ -7,6 +7,8 @@ public class Octorok : BaseEnemy
     public override EnemyType Type { get; } = EnemyType.Octorok;
     public override Vector2 Size { get; } = new(3, 2);
 
+    public new DirectionType Direction { get; set; } = DirectionType.Left;
+
     private readonly Dictionary<DirectionType, string[]> _spriteSheet = new()
     {
         { DirectionType.Left,
@@ -34,7 +36,7 @@ public class Octorok : BaseEnemy
 
     public override void Draw()
     {
-        var image = _spriteSheet[Prev2];
+        var image = _spriteSheet[Direction];
 
         DrawToScreen(image, Position);
     }
@@ -51,10 +53,10 @@ public class Octorok : BaseEnemy
     {
         var rnd1 = Random.Shared.Next(10);
         var passed = rnd1 <= 2;
-        var newPosition = DirectionToOffset(Prev1);
+        var newPosition = DirectionToOffset(Direction);
 
         if (!passed)
-            passed = !TryMove(newPosition, Prev1, -1);
+            passed = !TryMove(newPosition, Direction, -1);
 
         if (!passed)
             return;

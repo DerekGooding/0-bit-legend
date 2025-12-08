@@ -68,8 +68,6 @@ public class EntityManager
         enemy.Position = position;
         enemy.Direction = direction;
         enemy.Motion = motion;
-        enemy.Prev1 = direction;
-        enemy.Prev2 = direction;
 
         _entities.Add(enemy);
         _enemies.Add(enemy);

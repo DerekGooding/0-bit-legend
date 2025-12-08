@@ -24,7 +24,7 @@ public class Fireball : BaseEnemy
 
     public override void Move()
     {
-        var newPosition = Prev1 switch
+        var newPosition = Direction switch
         {
             DirectionType.Up => Position.Offset(-3, -2),
             DirectionType.Left => Position.Offset(x: -3),
@@ -33,7 +33,7 @@ public class Fireball : BaseEnemy
             _ => throw new NotSupportedException()
         };
 
-        TryMove(newPosition, Prev1, -1);
+        TryMove(newPosition, Direction, -1);
     }
     public override void TakeDamage()
     {

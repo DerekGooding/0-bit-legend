@@ -34,7 +34,7 @@ public class Dragon : BaseEnemy
 
     public override void Draw()
     {
-        var image = _spriteSheet[Prev1];
+        var image = _spriteSheet[Direction];
 
         DrawToScreen(image, Position);
 

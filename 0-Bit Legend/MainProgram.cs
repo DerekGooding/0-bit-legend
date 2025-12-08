@@ -11,7 +11,7 @@ public static class MainProgram
     public readonly static Vector2 GlobalMapOffset = new(50, 4);
     public readonly static Vector2 GlobalSize = new(102, 33);
     public readonly static Vector2 GlobalMapRequirement =
-        new(GlobalMapOffset.X + GlobalSize.X, GlobalMapRequirement.Y + GlobalSize.Y);
+        new(GlobalMapOffset.X + GlobalSize.X, GlobalMapOffset.Y + GlobalSize.Y);
 
     private static int _lastW = Console.WindowWidth;
     private static int _lastH = Console.WindowHeight;
@@ -29,6 +29,9 @@ public static class MainProgram
     public static bool[,] WallMap { get; } = new bool[GlobalSize.X, GlobalSize.Y];
 
     private static char[][] _screen = [];
+    private static Vector2 _heroSize = new(4, 3);
+    private static int rupees = 100;
+    private static int keys;
 
     public static int Rupees
     {
@@ -55,8 +58,6 @@ public static class MainProgram
     public static int cEnemies2 = 4;
     private static int waitEnemies;
 
-    private static string _credits = string.Empty;
-
     private static bool _debugWall;
 
     public static bool RequiresRedraw { get; set; } = true;
@@ -68,8 +69,6 @@ public static class MainProgram
 
         Console.CursorVisible = false;
         LoadMap(0, new(52, 18), DirectionType.Up);
-
-        _credits = string.Concat(Credits.Lose);
 
         while (true)
         {
@@ -96,6 +95,7 @@ public static class MainProgram
             _lastW = currentW;
             _lastH = currentH;
             RequiresRedraw = true;
+            RequireHudDraw = true;
         }
 
         waitEnemies--;
@@ -215,8 +215,6 @@ public static class MainProgram
     }
     private static void HandleGameOver()
     {
-        if (HasFlag(GameFlag.HasArmor)) _credits = string.Concat(Credits.WinArmor);
-
         PlayerController.PlacePrincess();
         PlayerController.MoveLeft(0);
 
@@ -302,7 +300,7 @@ public static class MainProgram
     public static void ForceRedraw() => Draw();
     private static void Draw()
     {
-        if(_lastW < GlobalMapRequirement.X || _lastH < GlobalMapRequirement.Y)
+        if(_lastW <= GlobalMapRequirement.X || _lastH <= GlobalMapRequirement.Y)
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Fullscreen window to see game");
@@ -419,9 +417,7 @@ public static class MainProgram
         HandleDebugDraw(entities, ConsoleColor.Yellow);
     }
 
-    private static Vector2 _heroSize = new(4, 3);
-    private static int rupees = 100;
-    private static int keys;
+
 
     public static List<ICollider> GetCollisions()
     {

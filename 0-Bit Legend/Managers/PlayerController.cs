@@ -128,6 +128,8 @@ public class PlayerController
     {
         if(_sword.IsActive)
             _sword.Draw();
+        if(_raft.IsActive)
+            _raft.Draw();
         _player.Draw();
     }
 
