@@ -288,10 +288,7 @@ public static class MainProgram
             cEnemies2 = 4;
         }
 
-        if (mapNum == 12)
-        {
-            if (!HasFlag(GameFlag.Dragon)) EntityManager.SpawnEnemy(EnemyType.Dragon, new(71, 13), DirectionType.Left, 12);
-        }
+
 
         if ((CurrentMap == 2 || CurrentMap == 4) && position.X == 21)
         {

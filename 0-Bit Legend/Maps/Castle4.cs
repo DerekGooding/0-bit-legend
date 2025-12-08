@@ -1,4 +1,6 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿using _0_Bit_Legend.Entities.Enemies;
+
+namespace _0_Bit_Legend.Maps;
 
 public class Castle4 : BaseMap
 {
@@ -38,7 +40,10 @@ public class Castle4 : BaseMap
 "=///////////////////////////////////////////    XXXXX    ////////////////////////////////////////////=",
 "======================================================================================================",
 ];
-    public override List<EntityLocation> EntityLocations { get; } = [];
+    public override List<EntityLocation> EntityLocations { get; } =
+    [
+        new(typeof(Dragon), new(71, 13), () => !HasFlag(GameFlag.Dragon)),
+    ];
 
     public override List<NewAreaInfo> AreaTransitions { get; } = [];
 }
