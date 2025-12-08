@@ -2,6 +2,7 @@
 
 public class Hero : IEntity, ICollider
 {
+    public bool IsTakingDamaged { get; set; }
     public double Hp { get; set; } = 3;
     private Vector2 _position = Vector2.Zero;
     public Vector2 Position
@@ -82,13 +83,23 @@ public class Hero : IEntity, ICollider
         ] },
     };
 
+    private readonly string[] _spriteSheetDamaged =
+    [
+        "*****",
+        "*****",
+        "*****",
+        "*****",
+    ];
+
     public void HandleCollision()
     {
         //TODO
     }
     public void Draw()
     {
-        var image = HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] : _spriteSheet[Direction];
+        var image = IsTakingDamaged ? _spriteSheetDamaged :
+                            HasFlag(GameFlag.HasArmor) ? _spriteSheetArmor[Direction] :
+                            _spriteSheet[Direction];
         DrawToScreen(image, Position);
     }
 }
