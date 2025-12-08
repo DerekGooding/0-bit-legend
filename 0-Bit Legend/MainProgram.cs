@@ -22,8 +22,6 @@ public static class MainProgram
     private static GameFlag _flags = GameFlag.None;
     public static GameState State { get; private set; } = GameState.Idle;
 
-    private static readonly List<IMap> _maps = [];
-
     public static int CurrentMap { get; private set; }
 
     public static bool[,] WallMap { get; } = new bool[GlobalSize.X, GlobalSize.Y];
@@ -65,8 +63,6 @@ public static class MainProgram
 
     public static void Main()
     {
-        InitializeMaps();
-
         Console.CursorVisible = false;
         LoadMap(0, new(52, 18), DirectionType.Up);
 
@@ -227,33 +223,13 @@ public static class MainProgram
 
     }
 
-    private static void InitializeMaps()
-    {
-        _maps.Add(new MainMap0());
-        _maps.Add(new MainMap1());
-        _maps.Add(new MainMap2());
-        _maps.Add(new MainMap3());
-        _maps.Add(new MainMap4());
-        _maps.Add(new MainMap5());
-
-        _maps.Add(new Cave0());
-        _maps.Add(new Cave1());
-
-        _maps.Add(new Castle0());
-        _maps.Add(new Castle1());
-        _maps.Add(new Castle2());
-        _maps.Add(new Castle3());
-        _maps.Add(new Castle4());
-        _maps.Add(new Castle5());
-    }
-
     public static void LoadMap(int mapNum, Vector2 position, DirectionType direction)
     {
         CurrentMap = mapNum;
         UpdateWallMap();
         EntityManager.RemoveAll();
 
-        var map = _maps[mapNum];
+        var map = WorldMap.Maps[mapNum];
         foreach(var item in map.EntityLocations)
         {
             if (!item.IsActive.Invoke()) continue;
@@ -289,7 +265,7 @@ public static class MainProgram
 
     private static void UpdateWallMap()
     {
-        var map = _maps[CurrentMap].Raw;
+        var map = WorldMap.Maps[CurrentMap].Raw;
         for(var y = 0; y < map.Length; y++)
         {
             var line = map[y];
@@ -307,7 +283,7 @@ public static class MainProgram
             return;
         }
 
-        _screen = [.. _maps[CurrentMap].RawChars.Select(row => (char[])row.Clone())];
+        _screen = [.. WorldMap.Maps[CurrentMap].RawChars.Select(row => (char[])row.Clone())];
         EntityManager.Draw();
         PlayerController.Draw();
 
