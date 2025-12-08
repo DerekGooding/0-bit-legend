@@ -485,9 +485,9 @@ public static class MainProgram
         List<Vector2> entities = [];
         foreach(var (Position, Size) in EntityManager.GetPositionalData())
         {
-            for(var x = 0; x < Size.X; x++ )
+            for(var x = 0; x <= Size.X; x++ )
             {
-                for(var y = 0; y < Size.Y;y++ )
+                for(var y = 0; y <= Size.Y;y++ )
                 {
                     entities.Add(new Vector2(Position.X + x, Position.Y + y));
                 }
