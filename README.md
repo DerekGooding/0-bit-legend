@@ -1,32 +1,12 @@
-<p align="center">
-  <img src="images/ascii-art-text-removebg-preview.png" alt="0-Bit Legend Banner">
-</p>
-
+# Inspired by
+A project by Jayden Newman (Epixest) [github](https://github.com/epixest/0-bit-legend).
+Originally a fork but the work been put in to create actual game systems instead of a chain of if/else statements is extensive. By now, this is it's own project and looks to vastly extend on the original project. 
 
 # Modernization (by Derek Gooding)
 This game had so much room for improvement. I've upgraded things to make it more modular, readable and scalable. You can still play the original from epixest. If you'd like to manipulate or play with the codebase, here is a much cleaner solution.
 
 ## Description
 0-Bit Legend is a C# text based remake of Nintendo's classic [The Legend of Zelda (NES)](https://en.wikipedia.org/wiki/The_Legend_of_Zelda_(video_game)).
-
-## Project Background
-The project was created by Jayden Newman (Epixest) over the course of more than a year. While it started as a small programming endeavor, the game soon developed into a poetic masterpiece.
-
-<p align="left">
-  <img src="images/zeldaart (1).png" width="47%">
-</p>
-
-## Trailer
-<p align="left">
-  <a href="https://www.youtube.com/watch?v=Mo834k_bwjo">
-    <img src="https://img.youtube.com/vi/Mo834k_bwjo/maxresdefault.jpg" width="480">
-  </a>
-</p>
-
-## How to Play
-1. Download the game from [here](https://github.com/epixest/0-bit-legend/releases)
-2. Extract the game file
-3. Go into the game directory and run `0-Bit Legend.exe`
 
 Playing the Game
 ----------------
@@ -39,8 +19,3 @@ To attack:
 
     <left shift>, <right shift> and <space>
 
----
-![Stars](https://img.shields.io/github/stars/epixest/0-bit-legend?style=for-the-badge)
-![Downloads](https://img.shields.io/github/downloads/epixest/0-bit-legend/total?style=for-the-badge)
-
-#### If you enjoyed this project, please ⭐ star the repo — it really helps!
