@@ -69,7 +69,7 @@ public sealed class MapTests
                 return;
             foreach (var point in PointsFromSize(collider.Position, collider.Size))
             {
-                Assert.IsFalse(CollidsInMap(point, map));
+                Assert.IsFalse(CollidesInMap(point, map));
             }
         }
 
@@ -87,14 +87,14 @@ public sealed class MapTests
         {
             foreach(var point in PointsFromSize(areaInfo.Position, areaInfo.Size))
             {
-                Assert.IsFalse(CollidsInMap(point, map));
+                Assert.IsFalse(CollidesInMap(point, map));
             }
         }
     }
 
-    private static bool CollidsInMap(Vector2 point, string[] map) => map[point.X][point.Y] == ' ';
+    private static bool CollidesInMap(Vector2 point, string[] map) => map[point.X][point.Y] == ' ';
 
-    private List<Vector2> PointsFromSize(Vector2 Position, Vector2 Size)
+    private static List<Vector2> PointsFromSize(Vector2 Position, Vector2 Size)
     {
         List<Vector2> points = [];
         for(var x = 0; x < Size.X; x++)
