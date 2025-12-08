@@ -1,0 +1,11 @@
+﻿<Application x:Class="_0_bit_legend.MapEditor.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:_0_bit_legend.MapEditor"
+             xmlns:converters="clr-namespace:_0_bit_legend.MapEditor.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <converters:StringListToTextConverter x:Key="StringListToTextConverter" />
+    </Application.Resources>
+</Application>
+

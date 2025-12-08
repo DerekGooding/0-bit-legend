@@ -1,0 +1,108 @@
+<Window x:Class="_0_bit_legend.MapEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_0_bit_legend.MapEditor"
+        xmlns:viewmodels="clr-namespace:_0_bit_legend.MapEditor.ViewModels"
+        mc:Ignorable="d"
+        Title="0-Bit Legend Map Editor" Height="720" Width="1280">
+    <Window.DataContext>
+        <viewmodels:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Map List -->
+        <DockPanel Grid.Column="0">
+            <Label DockPanel.Dock="Top">Maps</Label>
+            <ListBox x:Name="MapsListBox" Margin="5"
+                     ItemsSource="{Binding Maps}"
+                     DisplayMemberPath="Name"
+                     SelectedItem="{Binding SelectedMap}"/>
+            <Button Content="Save Map"
+                    Command="{Binding SaveMapCommand}"
+                    Margin="5"
+                    DockPanel.Dock="Bottom"/>
+        </DockPanel>
+
+        <!-- Right Panel - Map Editor and Entity/Transition Tabs -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Map Editor View (Top Row) -->
+            <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="10" Padding="5">
+                <ItemsControl ItemsSource="{Binding DisplayMapCharacters}"
+                              HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding}"
+                                          HorizontalAlignment="Left">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 FontFamily="Consolas" FontSize="12"
+                                                 MaxLength="1"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 Padding="0" Margin="0"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+
+            <!-- Entity and Transition Tabs (Bottom Row) -->
+            <TabControl Grid.Row="1" Margin="10">
+                <TabItem Header="Entities">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                            <Button Content="Add Entity" Command="{Binding AddEntityCommand}" Margin="5"/>
+                            <Button Content="Edit Entity" Command="{Binding EditEntityCommand}" Margin="5"/>
+                            <Button Content="Delete Entity" Command="{Binding DeleteEntityCommand}" Margin="5"/>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding SelectedMap.EntityLocations}"
+                                  SelectedItem="{Binding SelectedEntity}"
+                                  AutoGenerateColumns="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"/>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Transitions">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                            <Button Content="Add Transition" Command="{Binding AddTransitionCommand}" Margin="5"/>
+                            <Button Content="Edit Transition" Command="{Binding EditTransitionCommand}" Margin="5"/>
+                            <Button Content="Delete Transition" Command="{Binding DeleteTransitionCommand}" Margin="5"/>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding SelectedMap.AreaTransitions}"
+                                  SelectedItem="{Binding SelectedTransition}"
+                                  AutoGenerateColumns="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"/>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
