@@ -24,12 +24,6 @@ public static class MainProgram
 
     private static readonly List<IMap> _maps = [];
 
-    //Testing purposes until loading maps is properly abstracted/DI
-    public static void SetMapZero(IMap map)
-    {
-        _maps.Clear();
-        _maps.Add(map);
-    }
     public static int CurrentMap { get; private set; }
 
     public static bool[,] WallMap { get; } = new bool[GlobalSize.X, GlobalSize.Y];
