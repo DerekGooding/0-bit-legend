@@ -42,14 +42,6 @@ public class Spider : BaseEnemy
         DrawToScreen(image, Position);
     }
 
-    public override bool InBounds(Vector2 position)
-    {
-        var inPosX = position.X + 4;
-        var inPosY = position.Y + 2;
-
-        return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
-    }
-
     public override void Move()
     {
         if (SkipMoveCheck())

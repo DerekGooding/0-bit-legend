@@ -12,7 +12,6 @@ public abstract class BaseEnemy : IEnemy
     public DirectionType Direction { get; set; }
 
     public abstract void Draw();
-    public abstract bool InBounds(Vector2 position);
     public abstract void Move();
     public virtual void TakeDamage()
     {

@@ -41,14 +41,6 @@ public class Octorok : BaseEnemy
         DrawToScreen(image, Position);
     }
 
-    public override bool InBounds(Vector2 position)
-    {
-        var inPosX = position.X + 3;
-        var inPosY = position.Y + 2;
-
-        return position.X > 0 && inPosX < 102 && position.Y > 0 && inPosY < 33;
-    }
-
     public override void Move()
     {
         var rnd1 = Random.Shared.Next(10);
