@@ -176,21 +176,21 @@ public static class MainProgram
     {
         Thread.Sleep(100);
         State = GameState.Idle;
-        var (Position, _) = PlayerController.GetPlayerInfo();
+        var (Position, Direction) = PlayerController.GetPlayerInfo();
 
-        if (PlayerController.GetPrev() == DirectionType.Up && Position.Y < 27)
+        if (Direction == DirectionType.Up && Position.Y < 27)
         {
             PlayerController.MoveDown(3);
         }
-        else if (PlayerController.GetPrev() == DirectionType.Left && Position.X < 94)
+        else if (Direction == DirectionType.Left && Position.X < 94)
         {
             PlayerController.MoveRight(3);
         }
-        else if (PlayerController.GetPrev() == DirectionType.Down && Position.Y > 3)
+        else if (Direction == DirectionType.Down && Position.Y > 3)
         {
             PlayerController.MoveUp(3);
         }
-        else if (PlayerController.GetPrev() == DirectionType.Right && Position.X > 7)
+        else if (Direction == DirectionType.Right && Position.X > 7)
         {
             PlayerController.MoveLeft(3);
         }
@@ -199,8 +199,7 @@ public static class MainProgram
     private static void HandleDeath()
     {
         Thread.Sleep(50);
-        PlayerController.PlayEffect('*');
-        PlayerController.PlayEffect('+');
+        PlayerController.TakeDamageEffect();
 
         while (Console.KeyAvailable)
         {
@@ -361,7 +360,8 @@ public static class MainProgram
         if ((CurrentMap == 2 || CurrentMap == 4) && position.X == 21)
         {
             PlayerController.SetPosition(position);
-            PlayerController.DeployRaft(PlayerController.GetPrev2());
+            //TODO => Raft system
+            //PlayerController.DeployRaft(PlayerController.GetPrev2());
         }
         else
         {

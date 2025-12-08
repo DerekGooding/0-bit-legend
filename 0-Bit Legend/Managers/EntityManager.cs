@@ -16,7 +16,7 @@ public class EntityManager
         var ah = collisionBox.Size.Y;
 
         return [.. _entities.Where(b => b is ICollider c
-        && Overlaps(ax, ay, aw, ah, b.Position.X, b.Position.Y, c.Size.X, c.Size.Y)).OfType<ICollider>()];
+        && Overlaps(ax, ay, aw, ah, c.Position.X, c.Position.Y, c.Size.X, c.Size.Y)).OfType<ICollider>()];
     }
 
     public List<(Vector2 Position, Vector2 Size)> GetPositionalData()

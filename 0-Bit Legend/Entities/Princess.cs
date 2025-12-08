@@ -17,11 +17,6 @@ public class Princess : IEntity, ICollider
     ];
 
     public void Draw() => DrawToScreen(_spriteSheet, Position);
-
-    public bool InsideBoundingBox(char symbol) => false;
-    public bool InsideBoundingBox(char[] symbols) => false;
-    public bool IsTouching(char symbol) => false;
-    public bool IsTouching(char[] symbols) => false;
     public void HandleCollision()
     {
         //TODO

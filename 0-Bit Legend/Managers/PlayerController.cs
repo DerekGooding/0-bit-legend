@@ -9,11 +9,7 @@ public class PlayerController
 {
     private readonly Hero _player = new();
 
-    private static readonly char[] _storage_sword = new char[6];
-    private static readonly char[] _storage_detect_enemy = new char[6];
-
-    private DirectionType _prev = DirectionType.Up;
-    private DirectionType _prev2 = DirectionType.Left;
+    private readonly SwordAttack _sword = new();
 
     //private bool _debounce;
     //private bool _swingingSword;
@@ -30,11 +26,9 @@ public class PlayerController
         }
     }
 
-    public DirectionType GetPrev() => _prev;
-    public DirectionType GetPrev2() => _prev2;
     public void SetPosition(Vector2 pos) => _player.Position = pos;
 
-    public (Vector2 Position, DirectionType Prev1) GetPlayerInfo() => (_player.Position, _prev);
+    public (Vector2 Position, DirectionType Prev1) GetPlayerInfo() => (_player.Position, _player.Direction);
 
     public void Attack()
     {
@@ -160,35 +154,6 @@ public class PlayerController
         //}
     }
 
-    public void PlayEffect(char symbol)
-    {
-        //TODO => Turn this into a drawn object
-
-        //Map[PosX - 2, PosY - 1] = symbol;
-        //Map[PosX - 1, PosY - 1] = symbol;
-        //Map[PosX, PosY - 1] = symbol;
-        //Map[PosX + 1, PosY - 1] = symbol;
-        //Map[PosX + 2, PosY - 1] = symbol;
-
-        //Map[PosX - 2, PosY] = symbol;
-        //Map[PosX - 1, PosY] = symbol;
-        //Map[PosX, PosY] = symbol;
-        //Map[PosX + 1, PosY] = symbol;
-        //Map[PosX + 2, PosY] = symbol;
-
-        //Map[PosX - 2, PosY + 1] = symbol;
-        //Map[PosX - 1, PosY + 1] = symbol;
-        //Map[PosX, PosY + 1] = symbol;
-        //Map[PosX + 1, PosY + 1] = symbol;
-        //Map[PosX + 2, PosY + 1] = symbol;
-
-        //Map[PosX - 2, PosY + 2] = symbol;
-        //Map[PosX - 1, PosY + 2] = symbol;
-        //Map[PosX, PosY + 2] = symbol;
-        //Map[PosX + 1, PosY + 2] = symbol;
-        //Map[PosX + 2, PosY + 2] = symbol;
-    }
-
     public void PlacePrincess()
     {
         var princess = new Princess
@@ -211,9 +176,18 @@ public class PlayerController
         }
         SetGameState(GameState.Hit);
 
-        PlayEffect('*');
-        if(_player.Hp <= 0)
+        TakeDamageEffect();
+
+        if (_player.Hp <= 0)
             SetGameState(GameState.Dead);
+    }
+
+    public void TakeDamageEffect()
+    {
+        _player.IsTakingDamaged = true;
+        ForceRedraw();
+        Thread.Sleep(200);
+        _player.IsTakingDamaged = false;
     }
 
     internal void Draw() => _player.Draw();
