@@ -44,7 +44,7 @@ public class EntityManager
         return result;
     }
 
-    public bool TakeDamage(SwordAttack sword)
+    public bool TakeDamage(SwordInUse sword)
     {
         var box = new CollisionBox(sword.Position, sword.Size);
         foreach (var enemy in GetEnemyCollisions(box))

@@ -1,8 +1,8 @@
 ﻿namespace _0_Bit_Legend.Entities;
 
-public class SwordAttack : IEntity, ICollider
+public class SwordInUse : IEntity, ICollider, IUsable
 {
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     public Vector2 Position { get; set;  } = Vector2.Zero;
     public DirectionType Direction { get; set; } = DirectionType.Up;
 
@@ -38,7 +38,8 @@ public class SwordAttack : IEntity, ICollider
 
     public void Draw()
     {
-        throw new NotImplementedException();
+        var image = _spriteSheet[Direction];
+        DrawToScreen(image, Position);
     }
 
     public void HandleCollision()

@@ -5,7 +5,8 @@ namespace _0_Bit_Legend.Managers;
 public class PlayerController
 {
     private readonly Hero _player = new();
-    private readonly SwordAttack _sword = new();
+    private readonly SwordInUse _sword = new();
+    private readonly RaftInUse _raft = new RaftInUse();
 
     public int MovementWait;
     public double Health
@@ -85,84 +86,6 @@ public class PlayerController
     {
         _player.Position = position;
         _player.Direction = direction;
-    }
-
-    public void DeployRaft(DirectionType direction)
-    {
-
-        //TODO => Draw something
-
-        //var spaceslot = ' ';
-        //var underslot = '_';
-        //if (HasFlag(GameFlag.HasArmor))
-        //{
-        //    spaceslot = '#';
-        //    underslot = '#';
-        //}
-
-        //Map[PosX - 3, PosY - 2] = '*';
-        //Map[PosX - 2, PosY - 2] = '*';
-        //Map[PosX - 1, PosY - 2] = '*';
-        //Map[PosX, PosY - 2] = '*';
-        //Map[PosX + 1, PosY - 2] = '*';
-        //Map[PosX + 2, PosY - 2] = '*';
-        //Map[PosX + 3, PosY - 2] = '*';
-
-        //Map[PosX - 3, PosY - 1] = '=';
-        //Map[PosX, PosY - 1] = ' ';
-        //Map[PosX + 3, PosY - 1] = '=';
-
-        //Map[PosX - 3, PosY] = '*';
-        //Map[PosX - 2, PosY] = '|';
-        //Map[PosX + 2, PosY] = '|';
-        //Map[PosX + 3, PosY] = '*';
-
-        //Map[PosX - 3, PosY + 1] = '*';
-        //Map[PosX - 2, PosY + 1] = '|';
-        //Map[PosX - 1, PosY + 1] = underslot;
-        //Map[PosX, PosY + 1] = '=';
-        //Map[PosX + 1, PosY + 1] = underslot;
-        //Map[PosX + 2, PosY + 1] = '|';
-        //Map[PosX + 3, PosY + 1] = '*';
-
-        //Map[PosX - 3, PosY + 2] = '=';
-        //Map[PosX - 2, PosY + 2] = '=';
-        //Map[PosX - 1, PosY + 2] = '=';
-        //Map[PosX, PosY + 2] = '=';
-        //Map[PosX + 1, PosY + 2] = '=';
-        //Map[PosX + 2, PosY + 2] = '=';
-        //Map[PosX + 3, PosY + 2] = '=';
-
-        //Map[PosX - 3, PosY + 3] = '*';
-        //Map[PosX - 2, PosY + 3] = '*';
-        //Map[PosX - 1, PosY + 3] = '*';
-        //Map[PosX, PosY + 3] = '*';
-        //Map[PosX + 1, PosY + 3] = '*';
-        //Map[PosX + 2, PosY + 3] = '*';
-        //Map[PosX + 3, PosY + 3] = '*';
-
-        //if (direction == DirectionType.Left)
-        //{
-        //    Map[PosX - 2, PosY - 1] = '=';
-        //    Map[PosX - 1, PosY - 1] = '/';
-        //    Map[PosX + 1, PosY - 1] = ' ';
-        //    Map[PosX + 2, PosY - 1] = '|';
-
-        //    Map[PosX - 1, PosY] = '^';
-        //    Map[PosX, PosY] = spaceslot;
-        //    Map[PosX + 1, PosY] = spaceslot;
-        //}
-        //else if (direction == DirectionType.Right)
-        //{
-        //    Map[PosX - 2, PosY - 1] = '|';
-        //    Map[PosX - 1, PosY - 1] = ' ';
-        //    Map[PosX + 1, PosY - 1] = '\\';
-        //    Map[PosX + 2, PosY - 1] = '=';
-
-        //    Map[PosX - 1, PosY] = spaceslot;
-        //    Map[PosX, PosY] = spaceslot;
-        //    Map[PosX + 1, PosY] = '^';
-        //}
     }
 
     public void PlacePrincess()
