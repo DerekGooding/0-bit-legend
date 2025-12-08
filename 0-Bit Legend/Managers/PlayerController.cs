@@ -32,14 +32,32 @@ public class PlayerController
 
     public void Attack()
     {
+        SetSword();
+        _sword.IsActive = !_sword.IsActive;
 
+        if(!_sword.IsActive)
+        {
 
-        Stab();
+            Stab();
+        }
+    }
+
+    private void SetSword()
+    {
+        _sword.Direction = _player.Direction;
+        _sword.Position = _player.Direction switch
+        {
+            DirectionType.Up => _player.Position.Offset(0, - _sword.Size.Y),
+            DirectionType.Down => _player.Position.Offset(0, _player.Size.Y + 1),
+            DirectionType.Left => _player.Position.Offset(- _sword.Size.X, 0),
+            DirectionType.Right => _player.Position.Offset(_player.Size.X + 1, 0),
+            _ => throw new NotImplementedException()
+        };
     }
 
     public void Stab()
     {
-        //MainProgram.EntityManager.TakeDamage(new(swordArr[0, i], swordArr[1, i]), prev);
+        MainProgram.EntityManager.TakeDamage(_sword);
         SetGameState(GameState.Idle);
     }
 
@@ -190,7 +208,12 @@ public class PlayerController
         _player.IsTakingDamaged = false;
     }
 
-    internal void Draw() => _player.Draw();
+    internal void Draw()
+    {
+        if(_sword.IsActive)
+            _sword.Draw();
+        _player.Draw();
+    }
 
     private List<Vector2> GetMovePoints(DirectionType direction)
     {

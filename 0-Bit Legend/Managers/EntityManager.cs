@@ -15,9 +15,23 @@ public class EntityManager
         var aw = collisionBox.Size.X;
         var ah = collisionBox.Size.Y;
 
-        return [.. _entities.Where(b => b is ICollider c
+        return
+        [.. _entities.Where(b => b is ICollider c
         && Overlaps(ax, ay, aw, ah, c.Position.X, c.Position.Y, c.Size.X, c.Size.Y)).OfType<ICollider>()];
     }
+
+    public List<IEnemy> GetEnemyCollisions(CollisionBox collisionBox)
+    {
+        var ax = collisionBox.Position.X;
+        var ay = collisionBox.Position.Y;
+        var aw = collisionBox.Size.X;
+        var ah = collisionBox.Size.Y;
+
+        return
+        [.. _enemies.Where(b => b is ICollider c
+        && Overlaps(ax, ay, aw, ah, c.Position.X, c.Position.Y, c.Size.X, c.Size.Y))];
+    }
+
 
     public List<(Vector2 Position, Vector2 Size)> GetPositionalData()
     {
@@ -30,13 +44,11 @@ public class EntityManager
         return result;
     }
 
-    public bool TakeDamage(Vector2 target, DirectionType prev)
+    public bool TakeDamage(SwordAttack sword)
     {
-        //var enemy = GetEnemyAt(target);
-        //TODO => Trigger sword collapse assuming that's in the future system
-        //MainProgram.PlayerController.StoreSword(prev);
-
-        //enemy.TakeDamage();
+        var box = new CollisionBox(sword.Position, sword.Size);
+        foreach (var enemy in GetEnemyCollisions(box))
+            enemy.TakeDamage();
 
         return true;
     }
