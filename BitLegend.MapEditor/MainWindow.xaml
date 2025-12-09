@@ -63,8 +63,10 @@
                         <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
                             <Label Content="Drawing Mode:"/>
                             <RadioButton Content="Brush Mode" Margin="5,0"
+                                         Foreground="{DynamicResource ForegroundColor}"
                                          IsChecked="{Binding PaintingMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Brush, Mode=TwoWay}"/>
                             <RadioButton Content="Selection Mode" Margin="5,0"
+                                         Foreground="{DynamicResource ForegroundColor}"
                                          IsChecked="{Binding PaintingMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Selection, Mode=TwoWay}"/>
                         </StackPanel>
         
