@@ -131,12 +131,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _mapFileParserService = new MapFileParserService();
         _mapFileSaverService = new MapFileSaverService();
 
-        _maps = [];
         LoadMaps();
-        if (_maps.Count > 0)
+        if (Maps.Count > 0)
         {
-            _selectedMap = _maps[0];
-            PopulateDisplayMapCharacters();
+            SelectedMap = Maps[0];
         }
         _selectedEntity = new EntityData(); // Initialize to prevent nullable warning
         _selectedTransition = new TransitionData(); // Initialize to prevent nullable warning

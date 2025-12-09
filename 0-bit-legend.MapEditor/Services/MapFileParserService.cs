@@ -12,7 +12,18 @@ public class MapFileParserService
     public List<MapData> LoadMaps()
     {
         List<MapData> maps = [];
+        // Debugging: Log the absolute path and files found
+        string debugLogPath = Path.Combine(Path.GetTempPath(), "map_parser_debug.log");
+        File.AppendAllText(debugLogPath, $"Timestamp: {DateTime.Now}\n");
+        File.AppendAllText(debugLogPath, $"AbsoluteGameMapsPath: {AbsoluteGameMapsPath}\n");
+
         var mapFiles = Directory.GetFiles(AbsoluteGameMapsPath, "*.cs");
+        File.AppendAllText(debugLogPath, "Files found by Directory.GetFiles:\n");
+        foreach (var file in mapFiles)
+        {
+            File.AppendAllText(debugLogPath, $"- {file}\n");
+        }
+        File.AppendAllText(debugLogPath, "--- End of files ---\n\n");
 
         foreach (var filePath in mapFiles)
         {
@@ -23,6 +34,7 @@ public class MapFileParserService
                 maps.Add(map);
             }
         }
+        return maps;
         return maps;
     }
 
@@ -37,7 +49,7 @@ public class MapFileParserService
         string name = nameMatch.Groups["name"].Value;
 
         // Extract Raw map data
-        var rawMatch = Regex.Match(fileContent, @"public override string\[\] Raw => \[\s*(?<rawContent>[\s\S]*?)\];");
+        var rawMatch = Regex.Match(fileContent, @"public override string\[\] Raw =>\s*\[\s*(?<rawContent>[\s\S]*?)\s*\];");
         if (!rawMatch.Success)
         {
             return null; // Invalid map file: no raw data found
