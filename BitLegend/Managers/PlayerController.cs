@@ -6,7 +6,7 @@ public class PlayerController
 {
     private readonly Hero _player = new();
     private readonly SwordInUse _sword = new();
-    private readonly RaftInUse _raft = new RaftInUse();
+    private readonly RaftInUse _raft = new();
 
     public int MovementWait;
     public double Health

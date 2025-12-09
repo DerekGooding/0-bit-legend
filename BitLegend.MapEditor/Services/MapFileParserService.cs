@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace BitLegend.MapEditor.Services;
 
 [Singleton]
-public class MapFileParserService
+public partial class MapFileParserService
 {
     private const string _gameMapsSubPath = @"BitLegend\Maps";
     public static readonly string AbsoluteGameMapsPath
@@ -41,7 +41,7 @@ public class MapFileParserService
     private static MapData? ParseMapFile(string fileContent)
     {
         // Extract Name
-        var nameMatch = Regex.Match(fileContent, @"public override string Name => ""(?<name>[^""]+)"";");
+        var nameMatch = ParseName().Match(fileContent);
         if (!nameMatch.Success)
         {
             return null; // Invalid map file: no name found
@@ -49,14 +49,13 @@ public class MapFileParserService
         var name = nameMatch.Groups["name"].Value;
 
         // Extract Raw map data
-        var rawMatch = Regex.Match(fileContent, @"public override string\[\] Raw =>\s*\[\s*(?<rawContent>[\s\S]*?)\s*\];");
+        var rawMatch = ParseRaw().Match(fileContent);
         if (!rawMatch.Success)
         {
             return null; // Invalid map file: no raw data found
         }
         List<string> raw = [];
-        var rawLines = Regex.Matches(rawMatch.Groups["rawContent"].Value, @"""(?<line>[^""]*)""");
-        foreach (Match lineMatch in rawLines)
+        foreach (Match lineMatch in ParseRawLines().Matches(rawMatch.Groups["rawContent"].Value))
         {
             raw.Add(lineMatch.Groups["line"].Value);
         }
@@ -64,11 +63,11 @@ public class MapFileParserService
         MapData mapData = new(name, [.. raw]);
 
         // Extract EntityLocations
-        var entityLocationsMatch = Regex.Match(fileContent, @"public override List<EntityLocation> EntityLocations { get; } =[\s\S]*?\[(?<entities>[\s\S]*?)\];");
+        var entityLocationsMatch = ParseEntityLocations().Match(fileContent);
         if (entityLocationsMatch.Success)
         {
-            var entityMatches = Regex.Matches(entityLocationsMatch.Groups["entities"].Value, @"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>.*?)\)"); // Updated regex
-            foreach (Match entityMatch in entityMatches)
+             // Updated regex
+            foreach (Match entityMatch in ParseEntities().Matches(entityLocationsMatch.Groups["entities"].Value))
             {
                 mapData.EntityLocations.Add(new EntityData(
                     entityMatch.Groups["type"].Value,
@@ -80,11 +79,10 @@ public class MapFileParserService
         }
 
         // Extract AreaTransitions
-        var areaTransitionsMatch = Regex.Match(fileContent, @"public override List<NewAreaInfo> AreaTransitions { get; } =[\s\S]*?\[(?<transitions>[\s\S]*?)\];");
+        var areaTransitionsMatch = ParseAreaTransitions().Match(fileContent);
         if (areaTransitionsMatch.Success)
         {
-            var transitionMatches = Regex.Matches(areaTransitionsMatch.Groups["transitions"].Value, @"new\(MapId:\s*WorldMap.MapName.(?<mapId>[^,]+),\s*StartPosition:\s*new\((?<startX>\d+),\s*(?<startY>\d+)\),\s*DirectionType.(?<direction>[^,]+),\s*Size:\s*new\((?<sizeX>\d+),\s*(?<sizeY>\d+)\),\s*Position:\s*new\((?<posX>\d+),\s*(?<posY>\d+)\)\)");
-            foreach (Match transitionMatch in transitionMatches)
+            foreach (Match transitionMatch in ParseTransitions().Matches(areaTransitionsMatch.Groups["transitions"].Value))
             {
                 var mapId = transitionMatch.Groups["mapId"].Value;
                 // Remove "WorldMap.MapName." prefix
@@ -108,4 +106,19 @@ public class MapFileParserService
 
         return mapData;
     }
+
+    [GeneratedRegex(@"public override string Name => ""(?<name>[^""]+)"";")]
+    private static partial Regex ParseName();
+    [GeneratedRegex(@"public override string\[\] Raw =>\s*\[\s*(?<rawContent>[\s\S]*?)\s*\];")]
+    private static partial Regex ParseRaw();
+    [GeneratedRegex(@"""(?<line>[^""]*)""")]
+    private static partial Regex ParseRawLines();
+    [GeneratedRegex(@"public override List<EntityLocation> EntityLocations { get; } =[\s\S]*?\[(?<entities>[\s\S]*?)\];")]
+    private static partial Regex ParseEntityLocations();
+    [GeneratedRegex(@"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>.*?)\)")]
+    private static partial Regex ParseEntities();
+    [GeneratedRegex(@"public override List<NewAreaInfo> AreaTransitions { get; } =[\s\S]*?\[(?<transitions>[\s\S]*?)\];")]
+    private static partial Regex ParseAreaTransitions();
+    [GeneratedRegex(@"new\(MapId:\s*WorldMap.MapName.(?<mapId>[^,]+),\s*StartPosition:\s*new\((?<startX>\d+),\s*(?<startY>\d+)\),\s*DirectionType.(?<direction>[^,]+),\s*Size:\s*new\((?<sizeX>\d+),\s*(?<sizeY>\d+)\),\s*Position:\s*new\((?<posX>\d+),\s*(?<posY>\d+)\)\)")]
+    private static partial Regex ParseTransitions();
 }

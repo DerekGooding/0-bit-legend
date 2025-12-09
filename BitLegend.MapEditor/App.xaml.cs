@@ -30,7 +30,7 @@ public partial class App : Application
     private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         var errorMessage = $"An unhandled exception occurred (UI Thread): {e.Exception.Message}\n\n" +
-                              $"Please contact support with the following details:\n{e.Exception.ToString()}";
+                              $"Please contact support with the following details:\n{e.Exception}";
         MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
         e.Handled = true;
@@ -42,7 +42,7 @@ public partial class App : Application
         {
             // Log the exception
             var errorMessage = $"An unhandled exception occurred (Non-UI Thread): {ex.Message}\n\n" +
-                                  $"Please contact support with the following details:\n{ex.ToString()}";
+                                  $"Please contact support with the following details:\n{ex}";
             MessageBox.Show(errorMessage, "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         else

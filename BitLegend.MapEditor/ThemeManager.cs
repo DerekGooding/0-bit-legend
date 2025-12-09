@@ -2,21 +2,20 @@
 
 public static class ThemeManager
 {
-    private const string LightThemeSource = "/BitLegend.MapEditor;component/Themes/LightTheme.xaml";
-    private const string DarkThemeSource = "/BitLegend.MapEditor;component/Themes/DarkTheme.xaml";
+    private const string _lightThemeSource = "/BitLegend.MapEditor;component/Themes/LightTheme.xaml";
+    private const string _darkThemeSource = "/BitLegend.MapEditor;component/Themes/DarkTheme.xaml";
 
-    private static bool _isDarkMode = false;
     public static bool IsDarkMode
     {
-        get => _isDarkMode;
+        get;
         private set
         {
-            if (_isDarkMode != value)
+            if (field != value)
             {
-                _isDarkMode = value;
+                field = value;
             }
         }
-    }
+    } = false;
 
     public static void ToggleTheme()
     {
@@ -29,14 +28,14 @@ public static class ThemeManager
         IsDarkMode = isDark;
         var dictionaries = Application.Current.Resources.MergedDictionaries;
         var oldTheme = dictionaries.FirstOrDefault(
-            d => d.Source != null && (d.Source.OriginalString == LightThemeSource || d.Source.OriginalString == DarkThemeSource));
+            d => d.Source != null && (d.Source.OriginalString == _lightThemeSource || d.Source.OriginalString == _darkThemeSource));
 
         if (oldTheme != null)
         {
             dictionaries.Remove(oldTheme);
         }
 
-        var newThemeSource = isDark ? DarkThemeSource : LightThemeSource;
+        var newThemeSource = isDark ? _darkThemeSource : _lightThemeSource;
         dictionaries.Add(new ResourceDictionary() { Source = new Uri(newThemeSource, UriKind.RelativeOrAbsolute) });
     }
 }

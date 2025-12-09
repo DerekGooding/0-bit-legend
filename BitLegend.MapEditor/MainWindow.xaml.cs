@@ -78,7 +78,7 @@ public partial class MainWindow : Window
         {
             _isDrawing = true;
             ProcessDrawing(sender as ItemsControl, e.GetPosition(sender as IInputElement));
-            (sender as UIElement).CaptureMouse();
+            (sender as UIElement)?.CaptureMouse();
             e.Handled = true;
         }
     }
@@ -98,7 +98,7 @@ public partial class MainWindow : Window
         {
             _isDrawing = false;
             _lastPaintedCell = null;
-            (sender as UIElement).ReleaseMouseCapture();
+            (sender as UIElement)?.ReleaseMouseCapture();
             e.Handled = true;
         }
     }

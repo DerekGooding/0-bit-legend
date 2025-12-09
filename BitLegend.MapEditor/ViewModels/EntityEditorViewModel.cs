@@ -102,7 +102,7 @@ public partial class EntityEditorViewModel(EntityData entity,
                     {
                         result = "Condition cannot be empty. Use 'true' for always active.";
                     }
-                    else if (!Regex.IsMatch(Entity.Condition.Trim(), @"^[\w\d\s\.\(\)\=\!\<\>\&\|]+$"))
+                    else if (!ParseFlages().IsMatch(Entity.Condition.Trim()))
                     {
                          result = "Condition must be a valid C# boolean expression (e.g., 'true', 'Hero.HasSword', 'GameFlag.KeyCollected == true', 'GameManager.IsFlagTrue(GameFlag.VisitedCave0)').";
                     }
@@ -120,5 +120,8 @@ public partial class EntityEditorViewModel(EntityData entity,
                    !string.IsNullOrEmpty(this[nameof(Entity.X)]) ||
                    !string.IsNullOrEmpty(this[nameof(Entity.Y)]) ||
                    !string.IsNullOrEmpty(this[nameof(Entity.Condition)]));
+
+    [GeneratedRegex(@"^[\w\d\s\.\(\)\=\!\<\>\&\|]+$")]
+    private static partial Regex ParseFlages();
     #endregion
 }

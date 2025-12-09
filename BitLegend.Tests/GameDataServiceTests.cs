@@ -5,34 +5,31 @@ namespace BitLegend.Tests;
 [TestClass]
 public class GameDataServiceTests
 {
-    private GameDataService _gameDataService;
+    private GameDataService? _gameDataService;
 
     [TestInitialize]
-    public void Setup()
-    {
-        _gameDataService = new GameDataService();
-    }
+    public void Setup() => _gameDataService = new GameDataService();
 
     [TestMethod]
     public void LoadValidEntityTypes_PopulatesCorrectly()
     {
         Assert.IsNotNull(_gameDataService.ValidEntityTypes);
-        Assert.IsTrue(_gameDataService.ValidEntityTypes.Any(), "ValidEntityTypes should not be empty.");
+        Assert.IsNotEmpty(_gameDataService.ValidEntityTypes, "ValidEntityTypes should not be empty.");
         Assert.IsNotNull(_gameDataService.EntityTypeToFullTypeName);
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.Any(), "EntityTypeToFullTypeName should not be empty.");
+        Assert.IsNotEmpty(_gameDataService.EntityTypeToFullTypeName, "EntityTypeToFullTypeName should not be empty.");
 
         // Check for some expected types (based on prior inspection)
-        Assert.IsTrue(_gameDataService.ValidEntityTypes.Contains("Door"));
-        Assert.IsTrue(_gameDataService.ValidEntityTypes.Contains("Octorok"));
-        Assert.IsTrue(_gameDataService.ValidEntityTypes.Contains("Princess"));
-        Assert.IsTrue(_gameDataService.ValidEntityTypes.Contains("Sword")); // Pickup
-        Assert.IsTrue(_gameDataService.ValidEntityTypes.Contains("EnterCastle")); // Trigger
+        Assert.Contains("Door", _gameDataService.ValidEntityTypes);
+        Assert.Contains("Octorok", _gameDataService.ValidEntityTypes);
+        Assert.Contains("Princess", _gameDataService.ValidEntityTypes);
+        Assert.Contains("Sword", _gameDataService.ValidEntityTypes); // Pickup
+        Assert.Contains("EnterCastle", _gameDataService.ValidEntityTypes); // Trigger
 
         // Check for full type names
         Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.ContainsKey("Octorok"));
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Octorok"].Contains("BitLegend.Entities.Enemies.Octorok"));
+        Assert.Contains("BitLegend.Entities.Enemies.Octorok", _gameDataService.EntityTypeToFullTypeName["Octorok"]);
         Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.ContainsKey("Princess"));
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Princess"].Contains("BitLegend.Entities.Princess"));
+        Assert.Contains("BitLegend.Entities.Princess", _gameDataService.EntityTypeToFullTypeName["Princess"]);
     }
 
     [TestMethod]
@@ -42,19 +39,19 @@ public class GameDataServiceTests
                                          .Where(g => g.Count() > 1)
                                          .Select(y => y.Key)
                                          .ToList();
-        Assert.IsFalse(duplicates.Any(), $"Duplicate entity types found: {string.Join(", ", duplicates)}");
+        Assert.IsEmpty(duplicates, $"Duplicate entity types found: {string.Join(", ", duplicates)}");
     }
 
     [TestMethod]
     public void LoadValidMapIds_PopulatesCorrectly()
     {
         Assert.IsNotNull(_gameDataService.ValidMapIds);
-        Assert.IsTrue(_gameDataService.ValidMapIds.Any(), "ValidMapIds should not be empty.");
+        Assert.IsNotEmpty(_gameDataService.ValidMapIds, "ValidMapIds should not be empty.");
 
         // Check for some expected map IDs
-        Assert.IsTrue(_gameDataService.ValidMapIds.Contains("MainMap0"));
-        Assert.IsTrue(_gameDataService.ValidMapIds.Contains("Castle0"));
-        Assert.IsTrue(_gameDataService.ValidMapIds.Contains("Cave1"));
+        Assert.Contains("MainMap0", _gameDataService.ValidMapIds);
+        Assert.Contains("Castle0", _gameDataService.ValidMapIds);
+        Assert.Contains("Cave1", _gameDataService.ValidMapIds);
     }
 
     [TestMethod]
@@ -64,18 +61,18 @@ public class GameDataServiceTests
                                         .Where(g => g.Count() > 1)
                                         .Select(y => y.Key)
                                         .ToList();
-        Assert.IsFalse(duplicates.Any(), $"Duplicate map IDs found: {string.Join(", ", duplicates)}");
+        Assert.IsEmpty(duplicates, $"Duplicate map IDs found: {string.Join(", ", duplicates)}");
     }
 
     [TestMethod]
     public void LoadValidDirectionTypes_PopulatesCorrectly()
     {
         Assert.IsNotNull(_gameDataService.ValidDirectionTypes);
-        Assert.AreEqual(4, _gameDataService.ValidDirectionTypes.Count); // Up, Down, Left, Right
-        Assert.IsTrue(_gameDataService.ValidDirectionTypes.Contains("Up"));
-        Assert.IsTrue(_gameDataService.ValidDirectionTypes.Contains("Down"));
-        Assert.IsTrue(_gameDataService.ValidDirectionTypes.Contains("Left"));
-        Assert.IsTrue(_gameDataService.ValidDirectionTypes.Contains("Right"));
+        Assert.HasCount(4, _gameDataService.ValidDirectionTypes); // Up, Down, Left, Right
+        Assert.Contains("Up", _gameDataService.ValidDirectionTypes);
+        Assert.Contains("Down", _gameDataService.ValidDirectionTypes);
+        Assert.Contains("Left", _gameDataService.ValidDirectionTypes);
+        Assert.Contains("Right", _gameDataService.ValidDirectionTypes);
     }
 
     [TestMethod]
@@ -85,20 +82,20 @@ public class GameDataServiceTests
                                             .Where(g => g.Count() > 1)
                                             .Select(y => y.Key)
                                             .ToList();
-        Assert.IsFalse(duplicates.Any(), $"Duplicate direction types found: {string.Join(", ", duplicates)}");
+        Assert.IsEmpty(duplicates, $"Duplicate direction types found: {string.Join(", ", duplicates)}");
     }
 
     [TestMethod]
     public void LoadValidGameFlags_PopulatesCorrectly()
     {
         Assert.IsNotNull(_gameDataService.ValidGameFlags);
-        Assert.IsTrue(_gameDataService.ValidGameFlags.Any(), "ValidGameFlags should not be empty.");
-        Assert.IsFalse(_gameDataService.ValidGameFlags.Contains("None"), "ValidGameFlags should not contain 'None'.");
+        Assert.IsNotEmpty(_gameDataService.ValidGameFlags, "ValidGameFlags should not be empty.");
+        Assert.DoesNotContain("None", _gameDataService.ValidGameFlags, "ValidGameFlags should not contain 'None'.");
 
         // Check for some expected game flags
-        Assert.IsTrue(_gameDataService.ValidGameFlags.Contains("HasSword"));
-        Assert.IsTrue(_gameDataService.ValidGameFlags.Contains("Door1"));
-        Assert.IsTrue(_gameDataService.ValidGameFlags.Contains("Dragon"));
+        Assert.Contains("HasSword", _gameDataService.ValidGameFlags);
+        Assert.Contains("Door1", _gameDataService.ValidGameFlags);
+        Assert.Contains("Dragon", _gameDataService.ValidGameFlags);
     }
 
     [TestMethod]
@@ -108,6 +105,6 @@ public class GameDataServiceTests
                                          .Where(g => g.Count() > 1)
                                          .Select(y => y.Key)
                                          .ToList();
-        Assert.IsFalse(duplicates.Any(), $"Duplicate game flags found: {string.Join(", ", duplicates)}");
+        Assert.IsEmpty(duplicates, $"Duplicate game flags found: {string.Join(", ", duplicates)}");
     }
 }

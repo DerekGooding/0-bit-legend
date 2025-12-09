@@ -18,7 +18,7 @@ public class GameDataService
     /// <summary>
     /// Gets a dictionary mapping entity type simple names to their full namespace-qualified names.
     /// </summary>
-    public Dictionary<string, string> EntityTypeToFullTypeName { get; private set; } = [];
+    public Dictionary<string, string> EntityTypeToFullTypeName { get; } = [];
 
     /// <summary>
     /// Gets a list of valid map IDs (e.g., "MainMap0", "Castle1").

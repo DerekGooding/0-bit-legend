@@ -1,7 +1,4 @@
 namespace BitLegend.Managers;
 
 
-public class SaveLoadService
-{
-
-}
+public class SaveLoadService;

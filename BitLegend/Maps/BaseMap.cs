@@ -2,14 +2,13 @@
 
 public abstract class BaseMap : IMap
 {
-    private char[][]? _rawChars;
     public char[][] RawChars
     {
         get
         {
-            _rawChars ??= [.. Raw.Select(line => line.ToCharArray())];
+            field ??= [.. Raw.Select(line => line.ToCharArray())];
 
-            return _rawChars;
+            return field;
         }
     }
 
