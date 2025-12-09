@@ -89,67 +89,101 @@ public class ResizeAdorner : Adorner
         updateAction(dx, dy);
     }
 
+
     private void TopLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
+        // Clamp position to >= 0, which limits how much we can expand
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width - (newPosX - _initialDragValues.X));
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height - (newPosY - _initialDragValues.Y));
-        _transition.PositionX = _initialDragValues.X + (_initialDragValues.Width - _transition.SizeX);
-        _transition.PositionY = _initialDragValues.Y + (_initialDragValues.Height - _transition.SizeY);
+
+        // Calculate how much position actually changed (may be clamped)
+        var actualDx = newPosX - _initialDragValues.X;
+        var actualDy = newPosY - _initialDragValues.Y;
+
+        // Size changes by opposite amount to maintain far edge position
+        _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
+        _transition.SizeY = Math.Max(1, _initialDragValues.Height - actualDy);
+        _transition.PositionX = newPosX;
+        _transition.PositionY = newPosY;
     });
 
     private void Top_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
     {
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height - (newPosY - _initialDragValues.Y));
-        _transition.PositionY = _initialDragValues.Y + (_initialDragValues.Height - _transition.SizeY);
+        var actualDy = newPosY - _initialDragValues.Y;
+
+        _transition.SizeY = Math.Max(1, _initialDragValues.Height - actualDy);
+        _transition.PositionY = newPosY;
     });
 
     private void TopRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
         var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
+
+        // Top edge
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height - (newPosY - _initialDragValues.Y));
-        _transition.PositionY = _initialDragValues.Y + (_initialDragValues.Height - _transition.SizeY);
-        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), mapWidth - _transition.PositionX);
+        var actualDy = newPosY - _initialDragValues.Y;
+        _transition.SizeY = Math.Max(1, _initialDragValues.Height - actualDy);
+        _transition.PositionY = newPosY;
+
+        // Right edge - bounded by map width
+        var maxWidth = mapWidth - _initialDragValues.X;
+        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
     });
 
     private void Left_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
     {
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width - (newPosX - _initialDragValues.X));
-        _transition.PositionX = _initialDragValues.X + (_initialDragValues.Width - _transition.SizeX);
+        var actualDx = newPosX - _initialDragValues.X;
+
+        _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
+        _transition.PositionX = newPosX;
     });
 
     private void Right_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
     {
         var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
-        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), mapWidth - _transition.PositionX);
+        var maxWidth = mapWidth - _initialDragValues.X;
+
+        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
     });
 
     private void BottomLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
         var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
+
+        // Left edge
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width - (newPosX - _initialDragValues.X));
-        _transition.PositionX = _initialDragValues.X + (_initialDragValues.Width - _transition.SizeX);
-        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), mapHeight - _transition.PositionY);
+        var actualDx = newPosX - _initialDragValues.X;
+        _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
+        _transition.PositionX = newPosX;
+
+        // Bottom edge - bounded by map height, use INITIAL Y position
+        var maxHeight = mapHeight - _initialDragValues.Y;
+        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
 
     private void Bottom_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
     {
         var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), mapHeight - _transition.PositionY);
+        var maxHeight = mapHeight - _initialDragValues.Y;  // Use initial Y!
+
+        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
 
     private void BottomRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
         var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
         var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), mapWidth - _transition.PositionX);
-        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), mapHeight - _transition.PositionY);
+
+        // Use initial position for bounds calculation!
+        var maxWidth = mapWidth - _initialDragValues.X;
+        var maxHeight = mapHeight - _initialDragValues.Y;
+
+        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
+        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
+
 
     private void Move_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
@@ -189,5 +223,13 @@ public class ResizeAdorner : Adorner
         _move.Arrange(new Rect(0, 0, adornedWidth, adornedHeight));
 
         return finalSize;
+    }
+
+    private (int Width, int Height) GetMapDimensions()
+    {
+        var map = _viewModel.SelectedMap;
+        if (map?.Raw == null || map.Raw.Count == 0)
+            return (0, 0);
+        return (map.Raw[0].Length, map.Raw.Count);
     }
 }

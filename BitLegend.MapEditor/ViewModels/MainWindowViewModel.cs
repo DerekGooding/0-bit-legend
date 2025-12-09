@@ -293,6 +293,7 @@ public partial class MainWindowViewModel
         {
             DisplayMapCharacters = [];
         }
+
     }
 
     public void AddEntityFromDragDrop(string entityType, int x, int y)
