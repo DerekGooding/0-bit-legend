@@ -1,56 +1,23 @@
 using _0_bit_legend.MapEditor.ViewModels;
+using System.Linq; // Added for OfType<T> and FirstOrDefault
 using System.Windows;
+using System.Windows.Controls; // Added for ItemsControl and TextBox
 using System.Windows.Input;
-using System.Windows.Controls; // Added for ListBox
-using System.Windows.Media; // Added for VisualTreeHelper
+using System.Windows.Media;
 
 namespace _0_bit_legend.MapEditor;
 
 public partial class MainWindow : Window
 {
-    private bool _isDrawing = false;
     private Point _dragStartPoint;
+    private bool _isDrawing; // Flag to indicate if drawing is in progress
+    private MapCharacterViewModel _lastPaintedCell; // To prevent repainting the same cell
 
     public MainWindow()
     {
         InitializeComponent();
         DataContext = new MainWindowViewModel();
     }
-
-    private void MapCharacter_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            _isDrawing = true;
-            UpdateMapCharacter(sender);
-        }
-    }
-
-    private void MapCharacter_PreviewMouseMove(object sender, MouseEventArgs e)
-    {
-        if (_isDrawing && e.LeftButton == MouseButtonState.Pressed)
-        {
-            UpdateMapCharacter(sender);
-        }
-    }
-
-    protected override void OnMouseUp(MouseButtonEventArgs e)
-    {
-        base.OnMouseUp(e);
-        _isDrawing = false;
-    }
-
-    private void UpdateMapCharacter(object sender)
-    {
-        if (sender is System.Windows.Controls.TextBox textBox && textBox.DataContext is MapCharacterViewModel mapCharViewModel)
-        {
-            if (DataContext is MainWindowViewModel viewModel)
-            {
-                viewModel.UpdateMapCharacter(mapCharViewModel);
-            }
-        }
-    }
-
     private void EntityPalette_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => _dragStartPoint = e.GetPosition(null);
 
     private void EntityPalette_MouseMove(object sender, MouseEventArgs e)
@@ -121,6 +88,67 @@ public partial class MainWindow : Window
         }
         e.Handled = true;
     }
+
+    private void MapDisplay_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
+        {
+            _isDrawing = true;
+            ProcessDrawing(sender as ItemsControl, e.GetPosition(sender as IInputElement));
+            (sender as UIElement).CaptureMouse();
+            e.Handled = true;
+        }
+    }
+
+    private void MapDisplay_PreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (_isDrawing && e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
+        {
+            ProcessDrawing(sender as ItemsControl, e.GetPosition(sender as IInputElement));
+            e.Handled = true;
+        }
+    }
+
+    private void MapDisplay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (_isDrawing)
+        {
+            _isDrawing = false;
+            _lastPaintedCell = null;
+            (sender as UIElement).ReleaseMouseCapture();
+            e.Handled = true;
+        }
+    }
+
+    private void ProcessDrawing(ItemsControl mapItemsControl, Point mousePosition)
+    {
+        // Get the current view model from the DataContext
+        if (DataContext is not MainWindowViewModel viewModel) return;
+
+        // Perform a hit test to find the TextBox at the current mouse position
+        VisualTreeHelper.HitTest(mapItemsControl, null,
+            new HitTestResultCallback(result =>
+            {
+                var visual = result.VisualHit;
+                while (visual != null && !(visual is TextBox))
+                {
+                    visual = VisualTreeHelper.GetParent(visual);
+                }
+
+                if (visual is TextBox hitTextBox)
+                {
+                    if (hitTextBox.DataContext is MapCharacterViewModel currentCell && currentCell != _lastPaintedCell)
+                    {
+                        // Update the character of the hit cell
+                        currentCell.Character = viewModel.CurrentDrawingCharacter;
+                        _lastPaintedCell = currentCell; // Mark this cell as painted
+                    }
+                }
+                return HitTestResultBehavior.Continue; // Continue hit testing
+            }),
+            new PointHitTestParameters(mousePosition));
+    }
 }
+
 
 

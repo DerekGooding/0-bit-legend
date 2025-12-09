@@ -12,6 +12,10 @@
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/> <!-- Row for StatusBar -->
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
@@ -19,29 +23,27 @@
         </Grid.ColumnDefinitions>
 
         <!-- Map List -->
-        <DockPanel Grid.Column="0" Background="{DynamicResource BackgroundColor}">
+        <DockPanel Grid.Row="0" Grid.Column="0" Background="{DynamicResource BackgroundColor}">
             <Label DockPanel.Dock="Top" Content="Maps"/>
+            <StackPanel DockPanel.Dock="Bottom">
+                <Button Content="Save Map"
+                        Command="{Binding SaveMapCommand}"
+                        Margin="5"/>
+                <Button Content="New Map"
+                        Command="{Binding NewMapCommand}"
+                        Margin="5"/>
+                <Button Content="Delete Map"
+                        Command="{Binding DeleteMapCommand}"
+                        Margin="5"/>
+            </StackPanel>
             <ListBox x:Name="MapsListBox" Margin="5"
                      ItemsSource="{Binding Maps}"
                      DisplayMemberPath="Name"
                      SelectedItem="{Binding SelectedMap}"/>
-            <Button Content="Save Map"
-                    Command="{Binding SaveMapCommand}"
-                    Margin="5"/>
-            <Button Content="New Map"
-                    Command="{Binding NewMapCommand}"
-                    Margin="5"/>
-            <Button Content="Delete Map"
-                    Command="{Binding DeleteMapCommand}"
-                    Margin="5"/>
-            <Button Content="Toggle Theme"
-                    Command="{Binding ToggleThemeCommand}"
-                    Margin="5"
-                    DockPanel.Dock="Bottom"/>
         </DockPanel>
 
         <!-- Right Panel - Map Editor and Entity/Transition Tabs -->
-        <Grid Grid.Column="1">
+        <Grid Grid.Row="0" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -56,7 +58,10 @@
                         <TextBox Width="20" MaxLength="1" Text="{Binding CurrentDrawingCharacter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <ItemsControl ItemsSource="{Binding DisplayMapCharacters}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  PreviewMouseDown="MapDisplay_PreviewMouseDown"
+                                  PreviewMouseMove="MapDisplay_PreviewMouseMove"
+                                  PreviewMouseUp="MapDisplay_PreviewMouseUp">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Vertical"/>
@@ -80,9 +85,7 @@
                                                      Background="{DynamicResource ControlBackgroundColor}"
                                                      Foreground="{DynamicResource ControlForegroundColor}"
                                                      Padding="0" Margin="0"
-                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                     PreviewMouseDown="MapCharacter_PreviewMouseDown"
-                                                     PreviewMouseMove="MapCharacter_PreviewMouseMove"/>
+                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -129,12 +132,21 @@
         </Grid>
 
         <!-- Entity Palette -->
-        <DockPanel Grid.Column="2" Margin="5" Background="{DynamicResource BackgroundColor}">
+        <DockPanel Grid.Row="0" Grid.Column="2" Margin="5" Background="{DynamicResource BackgroundColor}">
             <Label DockPanel.Dock="Top" Content="Entity Palette"/>
             <ListBox ItemsSource="{Binding AvailableEntityTypes}"
                      x:Name="EntityPaletteListBox"
                      PreviewMouseLeftButtonDown="EntityPalette_PreviewMouseLeftButtonDown"
                      MouseMove="EntityPalette_MouseMove"/>
         </DockPanel>
+
+        <!-- Status Bar with Toggle Theme Button -->
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="3" Background="{DynamicResource ControlBackgroundColor}">
+            <StatusBarItem>
+                <Button Content="Toggle Theme"
+                        Command="{Binding ToggleThemeCommand}"
+                        Margin="5"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

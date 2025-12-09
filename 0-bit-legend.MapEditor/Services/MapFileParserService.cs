@@ -6,9 +6,8 @@ namespace _0_bit_legend.MapEditor.Services;
 
 public class MapFileParserService
 {
-    private const string GameMapsPath = @"0-Bit Legend\Maps";
-    private static readonly string fourUp = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", ".."));
-    public static readonly string AbsoluteGameMapsPath = Path.Join(fourUp, GameMapsPath);
+    private const string GameMapsSubPath = @"0-Bit Legend\Maps";
+    public static readonly string AbsoluteGameMapsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", GameMapsSubPath);
 
     public List<MapData> LoadMaps()
     {
@@ -31,18 +30,23 @@ public class MapFileParserService
     {
         // Extract Name
         var nameMatch = Regex.Match(fileContent, @"public override string Name => ""(?<name>[^""]+)"";");
-        string name = nameMatch.Success ? nameMatch.Groups["name"].Value : "Unknown Map";
+        if (!nameMatch.Success)
+        {
+            return null; // Invalid map file: no name found
+        }
+        string name = nameMatch.Groups["name"].Value;
 
         // Extract Raw map data
         var rawMatch = Regex.Match(fileContent, @"public override string\[\] Raw => \[\s*(?<rawContent>[\s\S]*?)\];");
-        List<string> raw = [];
-        if (rawMatch.Success)
+        if (!rawMatch.Success)
         {
-            var rawLines = Regex.Matches(rawMatch.Groups["rawContent"].Value, @"""(?<line>[^""]*)""");
-            foreach (Match lineMatch in rawLines)
-            {
-                raw.Add(lineMatch.Groups["line"].Value);
-            }
+            return null; // Invalid map file: no raw data found
+        }
+        List<string> raw = [];
+        var rawLines = Regex.Matches(rawMatch.Groups["rawContent"].Value, @"""(?<line>[^""]*)""");
+        foreach (Match lineMatch in rawLines)
+        {
+            raw.Add(lineMatch.Groups["line"].Value);
         }
 
         MapData mapData = new(name, raw.ToArray());

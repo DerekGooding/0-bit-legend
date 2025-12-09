@@ -6,9 +6,8 @@ namespace _0_bit_legend.MapEditor.Services;
 
 public class MapFileSaverService
 {
-    private const string GameMapsPath = @"0-Bit Legend\Maps";
-    private static readonly string fourUp = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..", "..", "..", ".."));
-    public static readonly string AbsoluteGameMapsPath = Path.Join(fourUp, GameMapsPath);
+    private const string GameMapsSubPath = @"0-Bit Legend\Maps";
+    public static readonly string AbsoluteGameMapsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", GameMapsSubPath);
 
     public void SaveMap(MapData mapData)
     {
@@ -31,8 +30,7 @@ public class MapFileSaverService
         sb.AppendLine("using _0_Bit_Legend.Entities;");
         sb.AppendLine("using _0_Bit_Legend.Model;");
         sb.AppendLine("using _0_Bit_Legend.Model.Enums;");
-        sb.AppendLine("using System;");
-        sb.AppendLine("using System.Collections.Generic;");
+
         sb.AppendLine("");
         sb.AppendLine("namespace _0_Bit_Legend.Maps");
         sb.AppendLine("{");
@@ -42,17 +40,17 @@ public class MapFileSaverService
         sb.AppendLine("");
 
         // Raw map data
-        sb.AppendLine("        public override string[] Raw => new string[]");
+        sb.AppendLine("        public override string[] Raw => [");
         sb.AppendLine("        {");
         foreach (string line in mapData.Raw)
         {
             sb.AppendLine($"            \"{line}\",");
         }
-        sb.AppendLine("        }");
+        sb.AppendLine("        ];");
         sb.AppendLine("");
 
         // Entity Locations
-        sb.AppendLine("        public override List<EntityLocation> EntityLocations { get; } = new List<EntityLocation>()");
+        sb.AppendLine("        public override List<EntityLocation> EntityLocations { get; } =");
         sb.AppendLine("        {");
         foreach (EntityData entity in mapData.EntityLocations)
         {
@@ -64,17 +62,16 @@ public class MapFileSaverService
         sb.AppendLine("");
 
         // Area Transitions
-        sb.AppendLine("        public override List<NewAreaInfo> AreaTransitions { get; } = new List<NewAreaInfo>()");
+        sb.AppendLine("        public override List<NewAreaInfo> AreaTransitions { get; } =");
         sb.AppendLine("        {");
         foreach (TransitionData transition in mapData.AreaTransitions)
         {
             // Ensure MapId and DirectionType are correctly referenced as enums
             sb.AppendLine($"            new(MapId: WorldMap.MapName.{transition.MapId}, StartPosition: new({transition.StartPositionX}, {transition.StartPositionY}), DirectionType.{transition.DirectionType}, Size: new({transition.SizeX}, {transition.SizeY}), Position: new({transition.PositionX}, {transition.PositionY})),");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+            sb.AppendLine("}");
         }
-        sb.AppendLine("        }");
-        sb.AppendLine("    }");
-        sb.AppendLine("}");
-
         return sb.ToString();
     }
 }

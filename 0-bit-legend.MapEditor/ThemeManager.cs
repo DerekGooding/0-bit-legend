@@ -28,6 +28,7 @@ public static class ThemeManager
 
     public static void ApplyTheme(bool isDark)
     {
+        IsDarkMode = isDark;
         var dictionaries = Application.Current.Resources.MergedDictionaries;
         var oldTheme = dictionaries.FirstOrDefault(
             d => d.Source != null && (d.Source.OriginalString == LightThemeSource || d.Source.OriginalString == DarkThemeSource));
@@ -38,7 +39,7 @@ public static class ThemeManager
         }
 
         var newThemeSource = isDark ? DarkThemeSource : LightThemeSource;
-        dictionaries.Add(new ResourceDictionary() { Source = new System.Uri(newThemeSource, System.UriKind.Relative) });
+        dictionaries.Add(new ResourceDictionary() { Source = new System.Uri(newThemeSource, System.UriKind.RelativeOrAbsolute) });
     }
 }
 

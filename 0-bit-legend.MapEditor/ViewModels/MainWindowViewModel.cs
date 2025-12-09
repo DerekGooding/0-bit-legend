@@ -73,7 +73,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private char _currentDrawingCharacter = '.'; // Default drawing character
+    private char _currentDrawingCharacter = 'X'; // Default drawing character
     public char CurrentDrawingCharacter
     {
         get => _currentDrawingCharacter;
@@ -187,16 +187,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         {
             SelectedMap.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
             OnPropertyChanged(nameof(SelectedMap.EntityLocations));
-        }
-    }
-
-    public void UpdateMapCharacter(MapCharacterViewModel mapCharViewModel)
-    {
-        if (mapCharViewModel != null && mapCharViewModel.Character != CurrentDrawingCharacter)
-        {
-            mapCharViewModel.Character = CurrentDrawingCharacter;
-            // No need to explicitly call OnPropertyChanged on DisplayMapCharacters
-            // as MapCharacterViewModel handles its own PropertyChanged notification for 'Character'.
         }
     }
 

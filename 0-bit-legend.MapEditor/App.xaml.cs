@@ -10,7 +10,12 @@ public partial class App : Application
 
     public App()
     {
-        ThemeManager.ApplyTheme(true);
+        // ThemeManager.ApplyTheme(true); // Moved to Startup event
+    }
+
+    private void Application_Startup(object sender, StartupEventArgs e)
+    {
+        ThemeManager.ApplyTheme(true); // Apply dark theme at startup
     }
 }
 
