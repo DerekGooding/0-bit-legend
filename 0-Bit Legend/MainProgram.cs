@@ -1,10 +1,10 @@
-using _0_Bit_Legend.Content;
-using _0_Bit_Legend.Entities;
-using _0_Bit_Legend.Entities.Triggers;
-using _0_Bit_Legend.Managers;
-using static _0_Bit_Legend.Content.WorldMap;
+using _0_bit_Legend.Content;
+using _0_bit_Legend.Entities;
+using _0_bit_Legend.Entities.Triggers;
+using _0_bit_Legend.Managers;
+using static _0_bit_Legend.Content.WorldMap;
 
-namespace _0_Bit_Legend;
+namespace _0_bit_Legend;
 
 public static class MainProgram
 {

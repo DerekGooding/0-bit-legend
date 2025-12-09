@@ -1,20 +1,21 @@
 using _0_bit_legend.MapEditor.ViewModels;
-using System.Windows.Controls; // Added for ItemsControl and TextBox
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace _0_bit_legend.MapEditor;
 
+[Singleton]
 public partial class MainWindow : Window
 {
     private Point _dragStartPoint;
     private bool _isDrawing; // Flag to indicate if drawing is in progress
-    private MapCharacterViewModel _lastPaintedCell; // To prevent repainting the same cell
+    private MapCharacterViewModel? _lastPaintedCell; // To prevent repainting the same cell
 
-    public MainWindow()
+    public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
-        DataContext = new MainWindowViewModel();
+        DataContext = mainWindowViewModel;
     }
     private void EntityPalette_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => _dragStartPoint = e.GetPosition(null);
 
@@ -27,13 +28,11 @@ public partial class MainWindow : Window
             (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
              Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
         {
-            // Get the dragged ListViewItem
-            ListBox listBox = sender as ListBox;
-            var entityType = (string)listBox.SelectedItem;
+            var listBox = sender as ListBox;
+            var entityType = (string?)listBox?.SelectedItem;
 
             if (entityType != null)
             {
-                // Initialize the drag-and-drop operation
                 DataObject dragData = new("entityType", entityType);
                 DragDrop.DoDragDrop(listBox, dragData, DragDropEffects.Move);
             }
@@ -42,14 +41,7 @@ public partial class MainWindow : Window
 
     private void MapArea_DragOver(object sender, DragEventArgs e)
     {
-        if (e.Data.GetDataPresent("entityType"))
-        {
-            e.Effects = DragDropEffects.Move;
-        }
-        else
-        {
-            e.Effects = DragDropEffects.None;
-        }
+        e.Effects = e.Data.GetDataPresent("entityType") ? DragDropEffects.Move : DragDropEffects.None;
         e.Handled = true;
     }
 
@@ -60,22 +52,14 @@ public partial class MainWindow : Window
             var entityType = (string)e.Data.GetData("entityType");
             if (DataContext is MainWindowViewModel viewModel)
             {
-                // Get the drop position relative to the ItemsControl (map)
-                // The map is displayed using nested ItemsControls, where each inner ItemsControl represents a row
-                // and contains TextBoxes for each character.
-                // We need to find which TextBox was dropped on to get accurate X, Y coordinates.
-
-                // Find the visual element that was dropped on
                 var dropTarget = e.OriginalSource as UIElement;
                 if (dropTarget != null)
                 {
-                    // Traverse up the visual tree to find the TextBox
-                    TextBox targetTextBox = null;
-                    while (dropTarget != null && !(dropTarget is TextBox))
+                    while (dropTarget is not null and not TextBox)
                     {
                         dropTarget = VisualTreeHelper.GetParent(dropTarget) as UIElement;
                     }
-                    targetTextBox = dropTarget as TextBox;
+                    var targetTextBox = dropTarget as TextBox;
 
                     if (targetTextBox?.DataContext is MapCharacterViewModel mapCharViewModel)
                     {
@@ -128,7 +112,7 @@ public partial class MainWindow : Window
             new HitTestResultCallback(result =>
             {
                 var visual = result.VisualHit;
-                while (visual != null && !(visual is TextBox))
+                while (visual is not null and not TextBox)
                 {
                     visual = VisualTreeHelper.GetParent(visual);
                 }

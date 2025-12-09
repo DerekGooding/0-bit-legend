@@ -47,7 +47,7 @@ namespace _0_bit_legend.MapEditor.Controls
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            NumericUpDown control = (NumericUpDown)d;
+            var control = (NumericUpDown)d;
             control.ValueTextBox.Text = control.Value.ToString();
             control.CoerceValue(MinimumProperty);
             control.CoerceValue(MaximumProperty);

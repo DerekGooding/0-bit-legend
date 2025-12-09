@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Entities.Pickups;
+﻿namespace _0_bit_Legend.Entities.Pickups;
 
 public class Rupee : BasePickup
 {

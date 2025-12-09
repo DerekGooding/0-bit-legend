@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Animations;
+﻿namespace _0_bit_Legend.Animations;
 
 public class CaveTransition : IAnimation
 {

@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Model;
+﻿namespace _0_bit_Legend.Model;
 
 public record struct Vector2(int X, int Y)
 {

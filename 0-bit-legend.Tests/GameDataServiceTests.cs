@@ -33,9 +33,9 @@ public class GameDataServiceTests
 
         // Check for full type names
         Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.ContainsKey("Octorok"));
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Octorok"].Contains("_0_Bit_Legend.Entities.Enemies.Octorok"));
+        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Octorok"].Contains("_0_bit_Legend.Entities.Enemies.Octorok"));
         Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.ContainsKey("Princess"));
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Princess"].Contains("_0_Bit_Legend.Entities.Princess"));
+        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Princess"].Contains("_0_bit_Legend.Entities.Princess"));
     }
 
     [TestMethod]

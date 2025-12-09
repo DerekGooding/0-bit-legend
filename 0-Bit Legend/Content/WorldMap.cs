@@ -1,6 +1,6 @@
-﻿using _0_Bit_Legend.Maps;
+﻿using _0_bit_Legend.Maps;
 
-namespace _0_Bit_Legend.Content;
+namespace _0_bit_Legend.Content;
 
 public static class WorldMap
 {

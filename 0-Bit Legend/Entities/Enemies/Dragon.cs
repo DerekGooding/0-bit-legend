@@ -1,6 +1,6 @@
-﻿using _0_Bit_Legend.Content;
+﻿using _0_bit_Legend.Content;
 
-namespace _0_Bit_Legend.Entities.Enemies;
+namespace _0_bit_Legend.Entities.Enemies;
 
 public class Dragon : BaseEnemy
 {

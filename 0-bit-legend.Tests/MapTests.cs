@@ -1,6 +1,6 @@
-﻿using _0_Bit_Legend.Entities;
-using _0_Bit_Legend.Maps;
-using _0_Bit_Legend.Model;
+﻿using _0_bit_Legend.Entities;
+using _0_bit_Legend.Maps;
+using _0_bit_Legend.Model;
 using System.Reflection;
 
 namespace _0_bit_legend.Tests;

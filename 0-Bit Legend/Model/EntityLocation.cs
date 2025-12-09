@@ -1,6 +1,6 @@
-﻿using _0_Bit_Legend.Entities;
+﻿using _0_bit_Legend.Entities;
 
-namespace _0_Bit_Legend.Model;
+namespace _0_bit_Legend.Model;
 
 public readonly record struct EntityLocation
 {

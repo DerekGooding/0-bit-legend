@@ -1,6 +1,6 @@
-﻿using _0_Bit_Legend.Entities.Enemies;
+﻿using _0_bit_Legend.Entities.Enemies;
 
-namespace _0_Bit_Legend.Maps;
+namespace _0_bit_Legend.Maps;
 
 public class MainMap3 : BaseMap
 {

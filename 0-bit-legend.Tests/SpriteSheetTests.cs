@@ -1,5 +1,5 @@
-﻿using _0_Bit_Legend.Entities;
-using _0_Bit_Legend.Model.Enums;
+﻿using _0_bit_Legend.Entities;
+using _0_bit_Legend.Model.Enums;
 using System.Reflection;
 
 namespace _0_bit_legend.Tests;

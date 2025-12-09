@@ -1,6 +1,6 @@
 using System.Reflection;
-using _0_Bit_Legend.Model.Enums;
-using _0_Bit_Legend.Entities;
+using _0_bit_Legend.Model.Enums;
+using _0_bit_Legend.Entities;
 
 namespace _0_bit_legend.MapEditor.Services;
 
@@ -86,7 +86,7 @@ public class GameDataService
             {
                 ValidEntityTypes.Add(name);
                 // This is a heuristic: assuming EnemyType enum names correspond to classes in Entities.Enemies namespace
-                EntityTypeToFullTypeName[name] = $"_0_Bit_Legend.Entities.Enemies.{name}";
+                EntityTypeToFullTypeName[name] = $"_0_bit_Legend.Entities.Enemies.{name}";
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿
-using _0_Bit_Legend.Entities.Triggers;
+using _0_bit_Legend.Entities.Triggers;
 
-namespace _0_Bit_Legend.Maps;
+namespace _0_bit_Legend.Maps;
 
 public class Castle0 : BaseMap
 {

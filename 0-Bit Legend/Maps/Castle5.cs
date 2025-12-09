@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Maps;
+﻿namespace _0_bit_Legend.Maps;
 
 public class Castle5 : BaseMap
 {

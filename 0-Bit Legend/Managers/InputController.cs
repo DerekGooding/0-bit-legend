@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace _0_Bit_Legend;
+namespace _0_bit_Legend;
 
 public partial class InputController
 {

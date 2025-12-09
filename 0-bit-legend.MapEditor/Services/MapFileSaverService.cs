@@ -25,13 +25,13 @@ public class MapFileSaverService(GameDataService gameDataService)
     {
         StringBuilder sb = new();
 
-        sb.AppendLine("using _0_Bit_Legend.Content;");
-        sb.AppendLine("using _0_Bit_Legend.Entities;");
-        sb.AppendLine("using _0_Bit_Legend.Model;");
-        sb.AppendLine("using _0_Bit_Legend.Model.Enums;");
+        sb.AppendLine("using _0_bit_Legend.Content;");
+        sb.AppendLine("using _0_bit_Legend.Entities;");
+        sb.AppendLine("using _0_bit_Legend.Model;");
+        sb.AppendLine("using _0_bit_Legend.Model.Enums;");
 
         sb.AppendLine("");
-        sb.AppendLine("namespace _0_Bit_Legend.Maps");
+        sb.AppendLine("namespace _0_bit_Legend.Maps");
         sb.AppendLine("{");
         sb.AppendLine($"    public class {mapData.Name} : BaseMap");
         sb.AppendLine("    {");

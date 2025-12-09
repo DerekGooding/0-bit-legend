@@ -1,8 +1,8 @@
-﻿using _0_Bit_Legend.Content;
-using _0_Bit_Legend.Entities;
-using _0_Bit_Legend.Entities.Enemies;
+﻿using _0_bit_Legend.Content;
+using _0_bit_Legend.Entities;
+using _0_bit_Legend.Entities.Enemies;
 
-namespace _0_Bit_Legend.Managers;
+namespace _0_bit_Legend.Managers;
 
 public class EntityManager
 {

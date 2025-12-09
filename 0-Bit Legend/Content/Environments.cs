@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Content;
+﻿namespace _0_bit_Legend.Content;
 
 public static class Environments
 {

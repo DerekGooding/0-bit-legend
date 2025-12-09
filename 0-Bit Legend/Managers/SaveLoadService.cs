@@ -1,4 +1,4 @@
-namespace _0_Bit_Legend.Managers;
+namespace _0_bit_Legend.Managers;
 
 
 public class SaveLoadService

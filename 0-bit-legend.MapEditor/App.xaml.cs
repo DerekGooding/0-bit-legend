@@ -1,5 +1,6 @@
 ﻿using System.Windows.Threading;
 
+
 namespace _0_bit_legend.MapEditor;
 
 /// <summary>

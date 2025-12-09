@@ -72,7 +72,7 @@ public partial class MainWindowViewModel
     }
 
     [Command]
-    private void ToggleTheme(object parameter) => ThemeManager.ToggleTheme();
+    private void ToggleTheme() => ThemeManager.ToggleTheme();
 
     public void AddEntityFromDragDrop(string entityType, int x, int y)
     {

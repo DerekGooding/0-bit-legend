@@ -1,6 +1,6 @@
-﻿using _0_Bit_Legend.Entities.Pickups;
+﻿using _0_bit_Legend.Entities.Pickups;
 
-namespace _0_Bit_Legend.Entities.Enemies;
+namespace _0_bit_Legend.Entities.Enemies;
 
 public class Spider : BaseEnemy
 {

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace _0_Bit_Legend.Entities.Triggers;
+namespace _0_bit_Legend.Entities.Triggers;
 
 public class NewArea : IEntity, ICollider
 {

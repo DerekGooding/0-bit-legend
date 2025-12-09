@@ -1,4 +1,4 @@
-﻿namespace _0_Bit_Legend.Model.Enums;
+﻿namespace _0_bit_Legend.Model.Enums;
 
 [Flags]
 public enum InputType
