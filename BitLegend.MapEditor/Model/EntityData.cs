@@ -1,4 +1,4 @@
-namespace BitLegend.MapEditor.Models;
+namespace BitLegend.MapEditor.Model;
 
 public class EntityData
 {

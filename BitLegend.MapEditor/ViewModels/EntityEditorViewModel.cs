@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using System.Text.RegularExpressions;
-using BitLegend.MapEditor.Models;
+using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Services;
 
 namespace BitLegend.MapEditor.ViewModels;

@@ -1,11 +1,13 @@
-namespace BitLegend.MapEditor.Models;
+using System.Collections.ObjectModel;
+
+namespace BitLegend.MapEditor.Model;
 
 public class MapData
 {
     public string Name { get; set; }
     public List<string> Raw { get; set; } = [];
-    public List<EntityData> EntityLocations { get; set; } = [];
-    public List<TransitionData> AreaTransitions { get; set; } = [];
+    public ObservableCollection<EntityData> EntityLocations { get; set; } = [];
+    public ObservableCollection<TransitionData> AreaTransitions { get; set; } = [];
 
     public MapData(string name, string[] raw)
     {

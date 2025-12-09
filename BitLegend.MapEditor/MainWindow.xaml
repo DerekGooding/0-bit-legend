@@ -4,11 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BitLegend.MapEditor" 
-        xmlns:viewmodels="clr-namespace:BitLegend.MapEditor.ViewModels" 
+        xmlns:viewmodels="clr-namespace:BitLegend.MapEditor.ViewModels"
+        xmlns:converters="clr-namespace:BitLegend.MapEditor.Converters"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="0-bit Legend Map Editor" Height="720" Width="1280"
         Style="{DynamicResource {x:Type Window}}">
+    <Window.Resources>
+        <converters:PositionConverter x:Key="PositionConverter"/>
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -41,94 +46,192 @@
         </DockPanel>
 
         <!-- Right Panel - Map Editor and Entity/Transition Tabs -->
-        <Grid Grid.Row="0" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Map Editor View (Top Row) -->
-            <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="10" Padding="5"
-                    AllowDrop="True" DragOver="MapArea_DragOver" Drop="MapArea_Drop">
-                <DockPanel Background="{DynamicResource ControlBackgroundColor}">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,5">
-                        <Label Content="Drawing Character:"/>
-                        <TextBox Width="20" MaxLength="1" Text="{Binding CurrentDrawingCharacter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
-                    <ItemsControl ItemsSource="{Binding DisplayMapCharacters}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  PreviewMouseDown="MapDisplay_PreviewMouseDown"
-                                  PreviewMouseMove="MapDisplay_PreviewMouseMove"
-                                  PreviewMouseUp="MapDisplay_PreviewMouseUp">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <ItemsControl ItemsSource="{Binding}"
-                                              HorizontalAlignment="Left">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                                     FontFamily="Consolas" FontSize="12"
-                                                     MaxLength="1"
-                                                     BorderThickness="0"
-                                                     Background="{DynamicResource ControlBackgroundColor}"
-                                                     Foreground="{DynamicResource ControlForegroundColor}"
-                                                     Padding="0" Margin="0"
-                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DockPanel>
-            </Border>
-
-
-            <!-- Entity and Transition Tabs (Bottom Row) -->
-            <TabControl Grid.Row="1" Margin="10" Style="{DynamicResource {x:Type TabControl}}">
-                <TabItem Header="Entities" Style="{DynamicResource {x:Type TabItem}}">
-                    <DockPanel Background="{DynamicResource BackgroundColor}">
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-                            <Button Content="Add Entity" Command="{Binding AddEntityCommand}" Margin="5"/>
-                            <Button Content="Edit Entity" Command="{Binding EditEntityCommand}" Margin="5"/>
-                            <Button Content="Delete Entity" Command="{Binding DeleteEntityCommand}" Margin="5"/>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+        
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+        
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
+                            <Label Content="Drawing Mode:"/>
+                            <RadioButton Content="Brush Mode" Margin="5,0"
+                                         IsChecked="{Binding PaintingMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Brush, Mode=TwoWay}"/>
+                            <RadioButton Content="Selection Mode" Margin="5,0"
+                                         IsChecked="{Binding PaintingMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Selection, Mode=TwoWay}"/>
                         </StackPanel>
-                        <DataGrid ItemsSource="{Binding SelectedMap.EntityLocations}"
-                                  SelectedItem="{Binding SelectedEntity}"
-                                  AutoGenerateColumns="True"
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  Style="{DynamicResource {x:Type DataGrid}}"/>
-                    </DockPanel>
-                </TabItem>
-                <TabItem Header="Transitions" Style="{DynamicResource {x:Type TabItem}}">
-                    <DockPanel Background="{DynamicResource BackgroundColor}">
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-                            <Button Content="Add Transition" Command="{Binding AddTransitionCommand}" Margin="5"/>
-                            <Button Content="Edit Transition" Command="{Binding EditTransitionCommand}" Margin="5"/>
-                            <Button Content="Delete Transition" Command="{Binding DeleteTransitionCommand}" Margin="5"/>
+        
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,5">
+                            <Label Content="Drawing Character:"/>
+                            <TextBox Width="20" MaxLength="1" Text="{Binding CurrentDrawingCharacter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
-                        <DataGrid ItemsSource="{Binding SelectedMap.AreaTransitions}"
-                                  SelectedItem="{Binding SelectedTransition}"
-                                  AutoGenerateColumns="True"
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  Style="{DynamicResource {x:Type DataGrid}}"/>
-                    </DockPanel>
-                </TabItem>
-            </TabControl>
-        </Grid>
-
+        
+                        <!-- Map Editor View (Top Row) -->
+                        <Border Grid.Row="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="10" Padding="5"
+                                AllowDrop="True" DragOver="MapArea_DragOver" Drop="MapArea_Drop">
+                            <AdornerDecorator x:Name="MapAdornerDecorator">
+                                <Grid>
+                                    <!-- This will hold the map characters -->
+                                    <ItemsControl x:Name="MapItemsControl" ItemsSource="{Binding DisplayMapCharacters}"
+                                                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                  PreviewMouseDown="MapDisplay_PreviewMouseDown"
+                                                  PreviewMouseMove="MapDisplay_PreviewMouseMove"
+                                                  PreviewMouseUp="MapDisplay_PreviewMouseUp">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl ItemsSource="{Binding}"
+                                                              HorizontalAlignment="Left">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                                     FontFamily="Consolas" FontSize="12"
+                                                                     MaxLength="1"
+                                                                     BorderThickness="0"
+                                                                     Background="Transparent"
+                                                                     Foreground="{DynamicResource ControlForegroundColor}"
+                                                                     Padding="0" Margin="0"
+                                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+        
+                                    <!-- This will overlay the entities on the map -->
+                                    <ItemsControl ItemsSource="{Binding SelectedMap.EntityLocations}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding EntityType}" 
+                                                           Foreground="Red" 
+                                                           FontWeight="Bold"
+                                                           IsHitTestVisible="False">
+                                                    <Canvas.Left>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="X"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Left>
+                                                    <Canvas.Top>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="Y"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw.Count" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Top>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+        
+                                    <!-- This will overlay the transitions on the map -->
+                                    <ItemsControl ItemsSource="{Binding SelectedMap.AreaTransitions}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Rectangle x:Name="TransitionRectangle" Fill="Blue" Opacity="0.5" IsHitTestVisible="True"
+                                                           Loaded="TransitionRectangle_Loaded">
+                                                    <Rectangle.Width>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="SizeX"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </Rectangle.Width>
+                                                    <Rectangle.Height>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="SizeY"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw.Count" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </Rectangle.Height>
+                                                    <Canvas.Left>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="PositionX"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Left>
+                                                    <Canvas.Top>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="PositionY"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw.Count" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </Canvas.Top>
+                                                </Rectangle>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </AdornerDecorator>
+                        </Border>
+        
+        
+                        <!-- Entity and Transition Tabs (Bottom Row) -->
+                        <TabControl Grid.Row="3" Margin="10" Style="{DynamicResource {x:Type TabControl}}">
+                            <TabItem Header="Entities" Style="{DynamicResource {x:Type TabItem}}">
+                                <DockPanel Background="{DynamicResource BackgroundColor}">
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                                        <Button Content="Add Entity" Command="{Binding AddEntityCommand}" Margin="5"/>
+                                        <Button Content="Edit Entity" Command="{Binding EditEntityCommand}" Margin="5"/>
+                                        <Button Content="Delete Entity" Command="{Binding DeleteEntityCommand}" Margin="5"/>
+                                    </StackPanel>
+                                    <DataGrid ItemsSource="{Binding SelectedMap.EntityLocations}"
+                                              SelectedItem="{Binding SelectedEntity}"
+                                              AutoGenerateColumns="True"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              Style="{DynamicResource {x:Type DataGrid}}"/>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="Transitions" Style="{DynamicResource {x:Type TabItem}}">
+                                <DockPanel Background="{DynamicResource BackgroundColor}">
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                                        <Button Content="Add Transition" Command="{Binding AddTransitionCommand}" Margin="5"/>
+                                        <Button Content="Edit Transition" Command="{Binding EditTransitionCommand}" Margin="5"/>
+                                        <Button Content="Delete Transition" Command="{Binding DeleteTransitionCommand}" Margin="5"/>
+                                    </StackPanel>
+                                    <DataGrid x:Name="TransitionsDataGrid"
+                                              ItemsSource="{Binding SelectedMap.AreaTransitions}"
+                                              SelectedItem="{Binding SelectedTransition}"
+                                              AutoGenerateColumns="True"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              Style="{DynamicResource {x:Type DataGrid}}"
+                                              SelectionChanged="TransitionsDataGrid_SelectionChanged"/>
+                                </DockPanel>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </Grid>
         <!-- Entity Palette -->
         <DockPanel Grid.Row="0" Grid.Column="2" Margin="5" Background="{DynamicResource BackgroundColor}">
             <Label DockPanel.Dock="Top" Content="Entity Palette"/>

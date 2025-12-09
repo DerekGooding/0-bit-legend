@@ -1,4 +1,4 @@
-using BitLegend.MapEditor.Models;
+using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Services;
 using BitLegend.MapEditor.ViewModels;
 

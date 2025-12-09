@@ -1,8 +1,6 @@
-using BitLegend.MapEditor.Models;
+using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Services;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
 
 namespace BitLegend.MapEditor.ViewModels;
 
@@ -17,7 +15,10 @@ namespace BitLegend.MapEditor.ViewModels;
 /// <param name="mapWidth">The width of the map for position and size validation.</param>
 /// <param name="mapHeight">The height of the map for position and size validation.</param>
 [ViewModel]
-public partial class TransitionEditorViewModel(TransitionData transition, GameDataService gameDataService, int mapWidth, int mapHeight) : IDataErrorInfo
+public partial class TransitionEditorViewModel(TransitionData transition,
+                                               GameDataService gameDataService,
+                                               int mapWidth,
+                                               int mapHeight) : IDataErrorInfo
 {
     private readonly GameDataService _gameDataService = gameDataService ?? throw new ArgumentNullException(nameof(gameDataService));
     private readonly int _mapWidth = mapWidth;

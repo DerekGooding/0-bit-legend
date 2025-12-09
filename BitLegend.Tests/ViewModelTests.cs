@@ -14,6 +14,78 @@ public class ViewModelTests
     [TestInitialize]
     public void Setup() => _gameDataService = new GameDataService();
 
+    #region Mocks
+    private class MockMapFileParserService : MapFileParserService
+    {
+        public override List<MapData> LoadMaps()
+        {
+            var map = new MapData("TestMap", new[] { "abc", "def", "ghi" });
+            return new List<MapData> { map };
+        }
+    }
+
+    private class MockMapFileSaverService : MapFileSaverService
+    {
+        public override void SaveMap(MapData mapData)
+        {
+            // Do nothing
+        }
+    }
+
+    #endregion
+
+    #region MainWindowViewModel Tests
+
+    [TestMethod]
+    public void MainWindowViewModel_AddEntityFromDragDrop_AddsEntity()
+    {
+        var parser = new MockMapFileParserService();
+        var saver = new MockMapFileSaverService();
+        var gds = new GameDataService();
+
+        var viewModel = new MainWindowViewModel(parser, gds, saver);
+        viewModel.SelectedMap = viewModel.Maps.First();
+
+        var initialCount = viewModel.SelectedMap.EntityLocations.Count;
+        var entityType = "Bat";
+        var x = 5;
+        var y = 10;
+
+        viewModel.AddEntityFromDragDrop(entityType, x, y);
+
+        Assert.AreEqual(initialCount + 1, viewModel.SelectedMap.EntityLocations.Count);
+        var newEntity = viewModel.SelectedMap.EntityLocations.Last();
+        Assert.AreEqual(entityType, newEntity.EntityType);
+        Assert.AreEqual(x, newEntity.X);
+        Assert.AreEqual(y, newEntity.Y);
+        Assert.AreEqual("true", newEntity.Condition);
+    }
+
+    [TestMethod]
+    public void MainWindowViewModel_SetSelectedCharacterBrush_CreatesCorrectBrush()
+    {
+        var parser = new MockMapFileParserService();
+        var saver = new MockMapFileSaverService();
+        var gds = new GameDataService();
+
+        var viewModel = new MainWindowViewModel(parser, gds, saver);
+        viewModel.SelectedMap = viewModel.Maps.First(); // This will populate DisplayMapCharacters
+
+        // Select a 2x2 brush from the top-left corner
+        viewModel.SetSelectedCharacterBrush(0, 0, 1, 1);
+
+        var brush = viewModel.SelectedCharacterBrush;
+        Assert.IsNotNull(brush);
+        Assert.AreEqual(2, brush.Count); // 2 rows
+        Assert.AreEqual(2, brush[0].Count); // 2 columns in first row
+        Assert.AreEqual('a', brush[0][0]);
+        Assert.AreEqual('b', brush[0][1]);
+        Assert.AreEqual('d', brush[1][0]);
+        Assert.AreEqual('e', brush[1][1]);
+    }
+
+    #endregion
+
     #region EntityEditorViewModel Tests
 
     [TestMethod]
