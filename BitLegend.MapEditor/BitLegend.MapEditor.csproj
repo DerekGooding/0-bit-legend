@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>BitLegend.MapEditor</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SimpleInjection" Version="0.9.8.4" />
+		<PackageReference Include="SimpleViewModel" Version="0.9.7.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BitLegend\BitLegend.csproj" />
+	</ItemGroup>
+
+</Project>
