@@ -1,7 +1,5 @@
 using BitLegend.MapEditor.Model;
-using System.Diagnostics; // Added
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BitLegend.MapEditor.Services;
 
@@ -45,7 +43,7 @@ public partial class MapFileParserService : IMapFileParserService
     private static MapData? ParseMapFile(string fileContent)
     {
         var debugLogPath = Path.Combine(Path.GetTempPath(), "map_parser_debug.log");
-        File.AppendAllText(debugLogPath, $"\n--- Parsing New Map File ---\n");
+        File.AppendAllText(debugLogPath, "\n--- Parsing New Map File ---\n");
         File.AppendAllText(debugLogPath, $"File Content:\n{fileContent}\n");
 
         // --- Extract Name ---
@@ -138,7 +136,7 @@ public partial class MapFileParserService : IMapFileParserService
         {
             File.AppendAllText(debugLogPath, "ParseAreaTransitions: FAILED - No area transitions block found.\n");
         }
-        File.AppendAllText(debugLogPath, $"--- End Parsing Map File ---\n\n");
+        File.AppendAllText(debugLogPath, "--- End Parsing Map File ---\n\n");
 
         return mapData;
     }

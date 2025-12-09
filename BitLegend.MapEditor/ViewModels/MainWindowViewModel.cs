@@ -2,7 +2,6 @@ using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Model.Enums;
 using BitLegend.MapEditor.Services;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace BitLegend.MapEditor.ViewModels;
 
@@ -28,12 +27,7 @@ public partial class MainWindowViewModel
 
     public List<string> AvailableEntityTypes { get; }
 
-    private ObservableCollection<ObservableCollection<char>>? _selectedCharacterBrush;
-    public ObservableCollection<ObservableCollection<char>>? SelectedCharacterBrush
-    {
-        get => _selectedCharacterBrush;
-        set => SetProperty(ref _selectedCharacterBrush, value);
-    }
+    [Bind] private ObservableCollection<ObservableCollection<char>> _selectedCharacterBrush = [];
 
     private readonly IMapFileParserService _mapFileParserService;
     private readonly IMapFileSaverService _mapFileSaverService;
@@ -302,27 +296,21 @@ public partial class MainWindowViewModel
     }
 
     public void AddEntityFromDragDrop(string entityType, int x, int y)
-    {
-        if (SelectedMap != null)
-        {
-            // Ensure the condition is always "true" when adding via drag and drop
-            SelectedMap.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
-        }
-    }
+        => SelectedMap?.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
 
     public void SetSelectedCharacterBrush(int startGridX, int startGridY, int endGridX, int endGridY)
     {
         if (SelectedMap == null || DisplayMapCharacters == null || DisplayMapCharacters.Count == 0)
         {
-            SelectedCharacterBrush = null;
+            SelectedCharacterBrush.Clear();
             return;
         }
 
         var brush = new ObservableCollection<ObservableCollection<char>>();
-        for (int y = startGridY; y <= endGridY; y++)
+        for (var y = startGridY; y <= endGridY; y++)
         {
             var row = new ObservableCollection<char>();
-            for (int x = startGridX; x <= endGridX; x++)
+            for (var x = startGridX; x <= endGridX; x++)
             {
                 if (y >= 0 && y < DisplayMapCharacters.Count &&
                     x >= 0 && x < DisplayMapCharacters[y].Count)

@@ -2,7 +2,6 @@ using System.Reflection;
 using BitLegend.Model.Enums;
 using BitLegend.Entities;
 using System.Text.Json; // Added
-using System.IO;       // Added
 
 namespace BitLegend.MapEditor.Services;
 
@@ -61,7 +60,7 @@ public class GameDataService
         // Determine paths for the game assembly and cache file
         var currentAssemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         _gameAssemblyPath = Path.Combine(currentAssemblyDirectory ?? string.Empty, GameAssemblyFileName);
-        
+
         // Ensure cache directory exists, creating a subdirectory in TempPath
         var cacheDirectory = Path.Combine(Path.GetTempPath(), "BitLegendMapEditor");
         Directory.CreateDirectory(cacheDirectory);
@@ -73,7 +72,7 @@ public class GameDataService
     private void LoadGameData()
     {
         GameDataCache? cache = null;
-        DateTime gameAssemblyLastWriteTime = File.Exists(_gameAssemblyPath)
+        var gameAssemblyLastWriteTime = File.Exists(_gameAssemblyPath)
             ? File.GetLastWriteTime(_gameAssemblyPath)
             : DateTime.MinValue;
 
@@ -162,7 +161,7 @@ public class GameDataService
         }
 
         ValidEntityTypes = [.. ValidEntityTypes.Order()];
-        
+
         // Hardcoded map IDs (as before)
         ValidMapIds.AddRange(
         [

@@ -86,8 +86,7 @@ public partial class MainWindow : Window
     {
         if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
         {
-            var mapItemsControl = sender as ItemsControl;
-            if (mapItemsControl == null) return;
+            if (sender is not ItemsControl mapItemsControl) return;
 
             (mapItemsControl as UIElement)?.CaptureMouse();
             e.Handled = true;
@@ -118,8 +117,7 @@ public partial class MainWindow : Window
     {
         if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
         {
-            var mapItemsControl = sender as ItemsControl;
-            if (mapItemsControl == null) return;
+            if (sender is not ItemsControl mapItemsControl) return;
 
             e.Handled = true;
 
@@ -143,8 +141,7 @@ public partial class MainWindow : Window
 
     private void MapDisplay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
     {
-        var mapItemsControl = sender as ItemsControl;
-        if (mapItemsControl == null) return;
+        if (sender is not ItemsControl mapItemsControl) return;
 
         (mapItemsControl as UIElement)?.ReleaseMouseCapture();
         e.Handled = true;
@@ -186,36 +183,33 @@ public partial class MainWindow : Window
                     visual = VisualTreeHelper.GetParent(visual);
                 }
 
-                if (visual is TextBox hitTextBox)
+                if (visual is TextBox hitTextBox && hitTextBox.DataContext is MapCharacterViewModel currentCell && currentCell != _lastPaintedCell)
                 {
-                    if (hitTextBox.DataContext is MapCharacterViewModel currentCell && currentCell != _lastPaintedCell)
+                    if (viewModel.SelectedCharacterBrush?.Count > 0)
                     {
-                        if (viewModel.SelectedCharacterBrush != null && viewModel.SelectedCharacterBrush.Count > 0)
+                        // Apply the selected brush
+                        for (var y = 0; y < viewModel.SelectedCharacterBrush.Count; y++)
                         {
-                            // Apply the selected brush
-                            for (int y = 0; y < viewModel.SelectedCharacterBrush.Count; y++)
+                            var brushRow = viewModel.SelectedCharacterBrush[y];
+                            for (var x = 0; x < brushRow.Count; x++)
                             {
-                                var brushRow = viewModel.SelectedCharacterBrush[y];
-                                for (int x = 0; x < brushRow.Count; x++)
-                                {
-                                    int targetX = currentCell.X + x;
-                                    int targetY = currentCell.Y + y;
+                                var targetX = currentCell.X + x;
+                                var targetY = currentCell.Y + y;
 
-                                    if (targetY >= 0 && targetY < viewModel.DisplayMapCharacters.Count &&
-                                        targetX >= 0 && targetX < viewModel.DisplayMapCharacters[targetY].Count)
-                                    {
-                                        viewModel.DisplayMapCharacters[targetY][targetX].Character = brushRow[x];
-                                    }
+                                if (targetY >= 0 && targetY < viewModel.DisplayMapCharacters.Count &&
+                                    targetX >= 0 && targetX < viewModel.DisplayMapCharacters[targetY].Count)
+                                {
+                                    viewModel.DisplayMapCharacters[targetY][targetX].Character = brushRow[x];
                                 }
                             }
                         }
-                        else
-                        {
-                            // Fallback to single character drawing
-                            currentCell.Character = viewModel.CurrentDrawingCharacter;
-                        }
-                        _lastPaintedCell = currentCell; // Mark this cell as painted
                     }
+                    else
+                    {
+                        // Fallback to single character drawing
+                        currentCell.Character = viewModel.CurrentDrawingCharacter;
+                    }
+                    _lastPaintedCell = currentCell; // Mark this cell as painted
                 }
                 return HitTestResultBehavior.Continue; // Continue hit testing
             }),
@@ -256,22 +250,22 @@ public partial class MainWindow : Window
         startGridY = Math.Clamp(startGridY, 0, mapHeight - 1);
         endGridX = Math.Clamp(endGridX, 0, mapWidth - 1);
         endGridY = Math.Clamp(endGridY, 0, mapHeight - 1);
-        
+
         viewModel.SetSelectedCharacterBrush(startGridX, startGridY, endGridX, endGridY);
     }
 
     private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
     {
-        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
         {
-            DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+            var child = VisualTreeHelper.GetChild(parent, i);
             if (child is T typedChild)
             {
                 return typedChild;
             }
             else
             {
-                T? result = FindVisualChild<T>(child);
+                var result = FindVisualChild<T>(child);
                 if (result != null)
                     return result;
             }
