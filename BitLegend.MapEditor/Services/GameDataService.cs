@@ -56,7 +56,7 @@ public class GameDataService
         EntityTypeToFullTypeName.Clear();
 
         // Load the 0-bit Legend assembly
-        var gameAssembly = Assembly.Load("0-bit Legend");
+        var gameAssembly = Assembly.Load("BitLegend");
         if (gameAssembly == null)
         {
             // In a real application, proper error logging or handling would be done here.

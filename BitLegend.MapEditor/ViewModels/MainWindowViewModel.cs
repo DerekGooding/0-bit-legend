@@ -1,7 +1,5 @@
-using BitLegend.MapEditor;
 using BitLegend.MapEditor.Models;
 using BitLegend.MapEditor.Services;
-using BitLegend.MapEditor.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace BitLegend.MapEditor.ViewModels;
@@ -43,39 +41,10 @@ public partial class MainWindowViewModel
         {
             SelectedMap = Maps[0];
         }
-        _selectedEntity = new EntityData();
-        _selectedTransition = new TransitionData();
-
-
-        //SaveMapCommand = new RelayCommand(ExecuteSaveMap, CanExecuteSaveMap);
-        //NewMapCommand = new RelayCommand(ExecuteNewMap, CanExecuteNewMap);
-        //DeleteMapCommand = new RelayCommand(ExecuteDeleteMap, CanExecuteDeleteMap);
-        //AddEntityCommand = new RelayCommand(ExecuteAddEntity, CanExecuteAddEntity);
-        //EditEntityCommand = new RelayCommand(ExecuteEditEntity, CanExecuteEditEntity);
-        //DeleteEntityCommand = new RelayCommand(ExecuteDeleteEntity, CanExecuteDeleteEntity);
-        //AddTransitionCommand = new RelayCommand(ExecuteAddTransition, CanExecuteAddTransition);
-        //EditTransitionCommand = new RelayCommand(ExecuteEditTransition, CanExecuteEditTransition);
-        //DeleteTransitionCommand = new RelayCommand(ExecuteDeleteTransition, CanExecuteDeleteTransition);
     }
 
     [Command] public void ToggleTheme() => ThemeManager.ToggleTheme();
-
-    public void AddEntityFromDragDrop(string entityType, int x, int y)
-    {
-        //if (SelectedMap != null)
-        //{
-        //    // Ensure the condition is always "true" when adding via drag and drop
-        //    SelectedMap.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
-        //    OnPropertyChanged(nameof(SelectedMap.EntityLocations));
-
-        //}
-    }
-
-    private void LoadMaps() => Maps = new ObservableCollection<MapData>(_mapFileParserService.LoadMaps());
-
-    private bool CanExecuteNewMap(object parameter) => true;
-
-    private void ExecuteNewMap(object parameter)
+    [Command] public void NewMap()
     {
         // For simplicity, using MessageBox.Show for input. In a real app, use a custom dialog.
         var newMapName = Microsoft.VisualBasic.Interaction.InputBox("Enter new map name:", "New Map", "NewMap");
@@ -116,9 +85,13 @@ public partial class MainWindowViewModel
         }
     }
 
-    private bool CanExecuteDeleteMap(object parameter) => SelectedMap != null;
+    public bool IsSelectedMap() => SelectedMap != null;
+    public bool IsSelectedEntity() => SelectedEntity != null;
+    public bool IsSelectedMapAndEntity() => SelectedEntity != null && SelectedMap != null;
+    public bool IsSelectedTransition() => SelectedTransition != null;
+    public bool IsSelectedMapAndTransition() => SelectedTransition != null && SelectedMap != null;
 
-    private void ExecuteDeleteMap(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedMap))] public void DeleteMap()
     {
         if (SelectedMap != null)
         {
@@ -146,33 +119,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-
-    private void PopulateDisplayMapCharacters()
-    {
-        if (SelectedMap?.Raw != null)
-        {
-            var tempRows = new ObservableCollection<ObservableCollection<MapCharacterViewModel>>();
-            for (var y = 0; y < SelectedMap.Raw.Count; y++)
-            {
-                var line = SelectedMap.Raw[y];
-                var tempRow = new ObservableCollection<MapCharacterViewModel>();
-                for (var x = 0; x < line.Length; x++)
-                {
-                    tempRow.Add(new MapCharacterViewModel(line[x], x, y));
-                }
-                tempRows.Add(tempRow);
-            }
-            DisplayMapCharacters = tempRows;
-        }
-        else
-        {
-            DisplayMapCharacters = [];
-        }
-    }
-
-    private bool CanExecuteSaveMap(object parameter) => SelectedMap != null;
-
-    private void ExecuteSaveMap(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedMap))] public void SaveMap()
     {
         if (SelectedMap != null)
         {
@@ -194,10 +141,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-
-    // Entity Commands
-    private bool CanExecuteAddEntity(object parameter) => SelectedMap != null;
-    private void ExecuteAddEntity(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedMap))] public void AddEntity()
     {
         if (SelectedMap != null)
         {
@@ -216,9 +160,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-
-    private bool CanExecuteEditEntity(object parameter) => SelectedEntity != null;
-    private void ExecuteEditEntity(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedEntity))] public void EditEntity()
     {
         if (SelectedMap != null && SelectedEntity != null)
         {
@@ -246,9 +188,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-
-    private bool CanExecuteDeleteEntity(object parameter) => SelectedEntity != null && SelectedMap != null;
-    private void ExecuteDeleteEntity(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedMapAndEntity))] public void DeleteEntity()
     {
         if (SelectedMap != null && SelectedEntity != null)
         {
@@ -257,10 +197,7 @@ public partial class MainWindowViewModel
             SelectedEntity = null; // Clear selection after deletion
         }
     }
-
-    // Transition Commands
-    private bool CanExecuteAddTransition(object parameter) => SelectedMap != null;
-    private void ExecuteAddTransition(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedMap))] public void AddTransition()
     {
         if (SelectedMap != null)
         {
@@ -279,9 +216,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-
-    private bool CanExecuteEditTransition(object parameter) => SelectedTransition != null;
-    private void ExecuteEditTransition(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedTransition))] public void EditTransition()
     {
         if (SelectedMap != null && SelectedTransition != null)
         {
@@ -322,9 +257,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-
-    private bool CanExecuteDeleteTransition(object parameter) => SelectedTransition != null && SelectedMap != null;
-    private void ExecuteDeleteTransition(object parameter)
+    [Command(CanExecuteMethodName = nameof(IsSelectedMapAndTransition))] public void DeleteTransition()
     {
         if (SelectedMap != null && SelectedTransition != null)
         {
@@ -333,6 +266,42 @@ public partial class MainWindowViewModel
             SelectedTransition = null; // Clear selection after deletion
         }
     }
+
+    private void PopulateDisplayMapCharacters()
+    {
+        if (SelectedMap?.Raw != null)
+        {
+            var tempRows = new ObservableCollection<ObservableCollection<MapCharacterViewModel>>();
+            for (var y = 0; y < SelectedMap.Raw.Count; y++)
+            {
+                var line = SelectedMap.Raw[y];
+                var tempRow = new ObservableCollection<MapCharacterViewModel>();
+                for (var x = 0; x < line.Length; x++)
+                {
+                    tempRow.Add(new MapCharacterViewModel(line[x], x, y));
+                }
+                tempRows.Add(tempRow);
+            }
+            DisplayMapCharacters = tempRows;
+        }
+        else
+        {
+            DisplayMapCharacters = [];
+        }
+    }
+
+    public void AddEntityFromDragDrop(string entityType, int x, int y)
+    {
+        //if (SelectedMap != null)
+        //{
+        //    // Ensure the condition is always "true" when adding via drag and drop
+        //    SelectedMap.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
+        //    OnPropertyChanged(nameof(SelectedMap.EntityLocations));
+
+        //}
+    }
+
+    private void LoadMaps() => Maps = new ObservableCollection<MapData>(_mapFileParserService.LoadMaps());
 }
 
 

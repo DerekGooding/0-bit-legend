@@ -6,7 +6,7 @@ namespace BitLegend.MapEditor.Services;
 [Singleton]
 public class MapFileParserService
 {
-    private const string _gameMapsSubPath = @"0-bit Legend\Maps";
+    private const string _gameMapsSubPath = @"BitLegend\Maps";
     public static readonly string AbsoluteGameMapsPath
         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", _gameMapsSubPath);
 

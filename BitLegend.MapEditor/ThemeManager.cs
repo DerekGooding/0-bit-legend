@@ -2,8 +2,8 @@
 
 public static class ThemeManager
 {
-    private const string LightThemeSource = "/0-bit-legend.MapEditor;component/Themes/LightTheme.xaml";
-    private const string DarkThemeSource = "/0-bit-legend.MapEditor;component/Themes/DarkTheme.xaml";
+    private const string LightThemeSource = "/BitLegend.MapEditor;component/Themes/LightTheme.xaml";
+    private const string DarkThemeSource = "/BitLegend.MapEditor;component/Themes/DarkTheme.xaml";
 
     private static bool _isDarkMode = false;
     public static bool IsDarkMode
@@ -37,7 +37,7 @@ public static class ThemeManager
         }
 
         var newThemeSource = isDark ? DarkThemeSource : LightThemeSource;
-        dictionaries.Add(new ResourceDictionary() { Source = new System.Uri(newThemeSource, System.UriKind.RelativeOrAbsolute) });
+        dictionaries.Add(new ResourceDictionary() { Source = new Uri(newThemeSource, UriKind.RelativeOrAbsolute) });
     }
 }
 
