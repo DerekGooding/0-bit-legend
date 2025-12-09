@@ -1,160 +1,198 @@
 using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
-namespace BitLegend.MapEditor.Adorners;
-
-public class ResizeAdorner : Adorner
+namespace BitLegend.MapEditor.Adorners
 {
-    private readonly Thumb _topLeft, _topRight, _bottomLeft, _bottomRight;
-    private readonly VisualCollection _visuals;
-    private readonly TransitionData _transition;
-    private readonly MainWindowViewModel _viewModel;
-    private readonly Rectangle _adornedRectangle;
-
-    public ResizeAdorner(Rectangle adornedRectangle, TransitionData transition, MainWindowViewModel viewModel) : base(adornedRectangle)
+    public class ResizeAdorner : Adorner
     {
-        _adornedRectangle = adornedRectangle;
-        _transition = transition;
-        _viewModel = viewModel;
+        private readonly Thumb _topLeft, _top, _topRight, _left, _right, _bottomLeft, _bottom, _bottomRight, _move;
+        private readonly VisualCollection _visuals;
+        private readonly TransitionData _transition;
+        private readonly MainWindowViewModel _viewModel;
 
-        _visuals = new VisualCollection(this);
-        _topLeft = CreateThumb(Cursors.SizeNWSE);
-        _topRight = CreateThumb(Cursors.SizeNESW);
-        _bottomLeft = CreateThumb(Cursors.SizeNESW);
-        _bottomRight = CreateThumb(Cursors.SizeNWSE);
+        private (double Width, double Height) _cellSize;
+        private (int X, int Y, int Width, int Height) _initialDragValues;
 
-        _topLeft.DragDelta += TopLeft_DragDelta;
-        _topRight.DragDelta += TopRight_DragDelta;
-        _bottomLeft.DragDelta += BottomLeft_DragDelta;
-        _bottomRight.DragDelta += BottomRight_DragDelta;
-    }
-
-    private Thumb CreateThumb(Cursor cursor)
-    {
-        var thumb = new Thumb
+        public ResizeAdorner(UIElement adornedElement, MainWindowViewModel viewModel) : base(adornedElement)
         {
-            Cursor = cursor,
-            Width = 10,
-            Height = 10,
-            Background = Brushes.DodgerBlue
-        };
-        _visuals.Add(thumb);
-        return thumb;
-    }
+            if (adornedElement is not FrameworkElement adornedFrameworkElement || adornedFrameworkElement.DataContext is not TransitionData transition)
+            {
+                throw new ArgumentException("Adorned element must be a FrameworkElement with a TransitionData DataContext.", nameof(adornedElement));
+            }
 
-    private void TopLeft_DragDelta(object sender, DragDeltaEventArgs e)
-    {
-        var (gridWidth, gridHeight) = GetGridSize();
-        if (gridWidth == 0 || gridHeight == 0) return;
+            _transition = transition;
+            _viewModel = viewModel;
+            _visuals = new VisualCollection(this);
 
-        var dx = (int)(e.HorizontalChange / gridWidth);
-        var dy = (int)(e.VerticalChange / gridHeight);
+            _topLeft = CreateThumb(Cursors.SizeNWSE);
+            _top = CreateThumb(Cursors.SizeNS);
+            _topRight = CreateThumb(Cursors.SizeNESW);
+            _left = CreateThumb(Cursors.SizeWE);
+            _right = CreateThumb(Cursors.SizeWE);
+            _bottomLeft = CreateThumb(Cursors.SizeNESW);
+            _bottom = CreateThumb(Cursors.SizeNS);
+            _bottomRight = CreateThumb(Cursors.SizeNWSE);
+            _move = CreateThumb(Cursors.SizeAll, Brushes.Transparent);
 
-        if (_transition.SizeX > dx)
-        {
-            _transition.PositionX += dx;
-            _transition.SizeX -= dx;
+            // Attach drag handlers
+            _topLeft.DragDelta += TopLeft_DragDelta;
+            _top.DragDelta += Top_DragDelta;
+            _topRight.DragDelta += TopRight_DragDelta;
+            _left.DragDelta += Left_DragDelta;
+            _right.DragDelta += Right_DragDelta;
+            _bottomLeft.DragDelta += BottomLeft_DragDelta;
+            _bottom.DragDelta += Bottom_DragDelta;
+            _bottomRight.DragDelta += BottomRight_DragDelta;
+            _move.DragDelta += Move_DragDelta;
+
+            // Attach DragStarted handlers
+            _topLeft.DragStarted += Thumb_DragStarted;
+            _top.DragStarted += Thumb_DragStarted;
+            _topRight.DragStarted += Thumb_DragStarted;
+            _left.DragStarted += Thumb_DragStarted;
+            _right.DragStarted += Thumb_DragStarted;
+            _bottomLeft.DragStarted += Thumb_DragStarted;
+            _bottom.DragStarted += Thumb_DragStarted;
+            _bottomRight.DragStarted += Thumb_DragStarted;
+            _move.DragStarted += Thumb_DragStarted;
         }
 
-        if (_transition.SizeY > dy)
+        private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
         {
-            _transition.PositionY += dy;
-            _transition.SizeY -= dy;
+            _initialDragValues = (_transition.PositionX, _transition.PositionY, _transition.SizeX, _transition.SizeY);
         }
-    }
-
-    private void TopRight_DragDelta(object sender, DragDeltaEventArgs e)
-    {
-        var (gridWidth, gridHeight) = GetGridSize();
-        if (gridWidth == 0 || gridHeight == 0) return;
-
-        var dx = (int)(e.HorizontalChange / gridWidth);
-        var dy = (int)(e.VerticalChange / gridHeight);
-
-        if (_transition.SizeX + dx > 0)
+        
+        private Thumb CreateThumb(Cursor cursor, Brush? background = null)
         {
-            _transition.SizeX += dx;
+            var thumb = new Thumb
+            {
+                Cursor = cursor,
+                Width = 10,
+                Height = 10,
+                Background = background ?? Brushes.DodgerBlue,
+                BorderBrush = Brushes.White,
+                BorderThickness = new Thickness(1)
+            };
+            _visuals.Add(thumb);
+            return thumb;
         }
-
-        if (_transition.SizeY > dy)
+        
+        private void HandleDrag(double horizontalChange, double verticalChange, Action<int, int> updateAction)
         {
-            _transition.PositionY += dy;
-            _transition.SizeY -= dy;
-        }
-    }
+            if (_cellSize.Width == 0 || _cellSize.Height == 0) return;
 
-    private void BottomLeft_DragDelta(object sender, DragDeltaEventArgs e)
-    {
-        var (gridWidth, gridHeight) = GetGridSize();
-        if (gridWidth == 0 || gridHeight == 0) return;
+            var dx = (int)Math.Round(horizontalChange / _cellSize.Width);
+            var dy = (int)Math.Round(verticalChange / _cellSize.Height);
 
-        var dx = (int)(e.HorizontalChange / gridWidth);
-        var dy = (int)(e.VerticalChange / gridHeight);
-
-        if (_transition.SizeX > dx)
-        {
-            _transition.PositionX += dx;
-            _transition.SizeX -= dx;
+            updateAction(dx, dy);
         }
 
-        if (_transition.SizeY + dy > 0)
+        private void TopLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
         {
-            _transition.SizeY += dy;
-        }
-    }
+            var newPosX = Math.Max(0, _initialDragValues.X + dx);
+            var newPosY = Math.Max(0, _initialDragValues.Y + dy);
+            _transition.SizeX = Math.Max(1, _initialDragValues.Width - (newPosX - _initialDragValues.X));
+            _transition.SizeY = Math.Max(1, _initialDragValues.Height - (newPosY - _initialDragValues.Y));
+            _transition.PositionX = _initialDragValues.X + (_initialDragValues.Width - _transition.SizeX);
+            _transition.PositionY = _initialDragValues.Y + (_initialDragValues.Height - _transition.SizeY);
+        });
 
-    private void BottomRight_DragDelta(object sender, DragDeltaEventArgs e)
-    {
-        var (gridWidth, gridHeight) = GetGridSize();
-        if (gridWidth == 0 || gridHeight == 0) return;
-
-        var dx = (int)(e.HorizontalChange / gridWidth);
-        var dy = (int)(e.VerticalChange / gridHeight);
-
-        if (_transition.SizeX + dx > 0)
+        private void Top_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
         {
-            _transition.SizeX += dx;
-        }
+            var newPosY = Math.Max(0, _initialDragValues.Y + dy);
+            _transition.SizeY = Math.Max(1, _initialDragValues.Height - (newPosY - _initialDragValues.Y));
+            _transition.PositionY = _initialDragValues.Y + (_initialDragValues.Height - _transition.SizeY);
+        });
 
-        if (_transition.SizeY + dy > 0)
+        private void TopRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
         {
-            _transition.SizeY += dy;
+            var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
+            var newPosY = Math.Max(0, _initialDragValues.Y + dy);
+            _transition.SizeY = Math.Max(1, _initialDragValues.Height - (newPosY - _initialDragValues.Y));
+            _transition.PositionY = _initialDragValues.Y + (_initialDragValues.Height - _transition.SizeY);
+            _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), mapWidth - _transition.PositionX);
+        });
+
+        private void Left_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
+        {
+            var newPosX = Math.Max(0, _initialDragValues.X + dx);
+            _transition.SizeX = Math.Max(1, _initialDragValues.Width - (newPosX - _initialDragValues.X));
+            _transition.PositionX = _initialDragValues.X + (_initialDragValues.Width - _transition.SizeX);
+        });
+
+        private void Right_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
+        {
+            var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
+            _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), mapWidth - _transition.PositionX);
+        });
+        
+        private void BottomLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
+        {
+            var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
+            var newPosX = Math.Max(0, _initialDragValues.X + dx);
+            _transition.SizeX = Math.Max(1, _initialDragValues.Width - (newPosX - _initialDragValues.X));
+            _transition.PositionX = _initialDragValues.X + (_initialDragValues.Width - _transition.SizeX);
+            _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), mapHeight - _transition.PositionY);
+        });
+
+        private void Bottom_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
+        {
+            var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
+            _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), mapHeight - _transition.PositionY);
+        });
+
+        private void BottomRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
+        {
+            var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
+            var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
+            _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), mapWidth - _transition.PositionX);
+            _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), mapHeight - _transition.PositionY);
+        });
+
+        private void Move_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
+        {
+            var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
+            var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
+            _transition.PositionX = Math.Clamp(_initialDragValues.X + dx, 0, mapWidth - _initialDragValues.Width);
+            _transition.PositionY = Math.Clamp(_initialDragValues.Y + dy, 0, mapHeight - _initialDragValues.Height);
+        });
+        
+        protected override int VisualChildrenCount => _visuals.Count;
+        protected override Visual GetVisualChild(int index) => _visuals[index];
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (AdornedElement is not FrameworkElement adornedElement) return finalSize;
+
+            var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
+            var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
+            if (mapWidth == 0 || mapHeight == 0) return finalSize;
+            
+            var adornedWidth = adornedElement.ActualWidth;
+            var adornedHeight = adornedElement.ActualHeight;
+            if (adornedWidth == 0 || adornedHeight == 0) return finalSize;
+
+            _cellSize = (adornedWidth / _transition.SizeX, adornedHeight / _transition.SizeY);
+
+            var halfThumb = 5.0;
+            
+            _topLeft.Arrange(new Rect(-halfThumb, -halfThumb, 10, 10));
+            _top.Arrange(new Rect(adornedWidth / 2 - halfThumb, -halfThumb, 10, 10));
+            _topRight.Arrange(new Rect(adornedWidth - halfThumb, -halfThumb, 10, 10));
+            _left.Arrange(new Rect(-halfThumb, adornedHeight / 2 - halfThumb, 10, 10));
+            _right.Arrange(new Rect(adornedWidth - halfThumb, adornedHeight / 2 - halfThumb, 10, 10));
+            _bottomLeft.Arrange(new Rect(-halfThumb, adornedHeight - halfThumb, 10, 10));
+            _bottom.Arrange(new Rect(adornedWidth / 2 - halfThumb, adornedHeight - halfThumb, 10, 10));
+            _bottomRight.Arrange(new Rect(adornedWidth - halfThumb, adornedHeight - halfThumb, 10, 10));
+            _move.Arrange(new Rect(0, 0, adornedWidth, adornedHeight));
+
+            return finalSize;
         }
-    }
-
-    private (double, double) GetGridSize()
-    {
-        if (_viewModel.SelectedMap == null || _viewModel.SelectedMap.Raw.Count == 0 || _viewModel.SelectedMap.Raw[0].Length == 0)
-            return (0, 0);
-
-        var mapWidth = _adornedRectangle.ActualWidth / _transition.SizeX;
-        var mapHeight = _adornedRectangle.ActualHeight / _transition.SizeY;
-
-        return (mapWidth, mapHeight);
-    }
-
-
-    protected override int VisualChildrenCount => _visuals.Count;
-
-    protected override Visual GetVisualChild(int index) => _visuals[index];
-
-    protected override Size ArrangeOverride(Size finalSize)
-    {
-        if (AdornedElement is not FrameworkElement adornedElement) return finalSize;
-
-        var adornedWidth = adornedElement.ActualWidth;
-        var adornedHeight = adornedElement.ActualHeight;
-
-        _topLeft.Arrange(new Rect(-5, -5, 10, 10));
-        _topRight.Arrange(new Rect(adornedWidth - 5, -5, 10, 10));
-        _bottomLeft.Arrange(new Rect(-5, adornedHeight - 5, 10, 10));
-        _bottomRight.Arrange(new Rect(adornedWidth - 5, adornedHeight - 5, 10, 10));
-
-        return finalSize;
     }
 }

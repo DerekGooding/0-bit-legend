@@ -304,7 +304,7 @@ public partial class MainWindow : Window
             _transitionRectangles.TryGetValue(selectedTransition, out var rectangle) &&
             DataContext is MainWindowViewModel viewModel) // Get the view model
         {
-            _currentAdorner = new ResizeAdorner(rectangle, selectedTransition, viewModel);
+            _currentAdorner = new ResizeAdorner(rectangle, viewModel);
             adornerLayer.Add(_currentAdorner);
         }
     }

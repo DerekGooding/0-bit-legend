@@ -2,7 +2,7 @@ using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Services;
 using BitLegend.MapEditor.ViewModels;
 using System.Windows.Controls; // Added for ItemsControl
-using System.Windows; // Added for Point
+using System.Windows;
 
 namespace BitLegend.Tests;
 
@@ -21,9 +21,11 @@ public class ViewModelTests
     {
         public List<MapData> LoadMaps()
         {
-            var map = new MapData("TestMap", new[] { "abc", "def", "ghi" });
-            return new List<MapData> { map };
+            var map = new MapData("TestMap", ["abc", "def", "ghi"]);
+            return [map];
         }
+
+        public Task<List<MapData>> LoadMapsAsync() => Task.Run(LoadMaps);
     }
 
     private class MockMapFileSaverService : IMapFileSaverService

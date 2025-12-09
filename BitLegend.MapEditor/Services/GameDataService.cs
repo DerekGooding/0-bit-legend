@@ -1,6 +1,8 @@
 using System.Reflection;
 using BitLegend.Model.Enums;
 using BitLegend.Entities;
+using System.Text.Json; // Added
+using System.IO;       // Added
 
 namespace BitLegend.MapEditor.Services;
 
@@ -10,6 +12,22 @@ namespace BitLegend.MapEditor.Services;
 [Singleton]
 public class GameDataService
 {
+    private const string GameAssemblyFileName = "BitLegend.dll";
+    private const string CacheFileName = "GameDataCache.json";
+    private readonly string _gameAssemblyPath;
+    private readonly string _cacheFilePath;
+
+    // Internal class for caching
+    private class GameDataCache
+    {
+        public DateTime AssemblyLastWriteTime { get; set; }
+        public List<string> ValidEntityTypes { get; set; } = [];
+        public Dictionary<string, string> EntityTypeToFullTypeName { get; set; } = [];
+        public List<string> ValidMapIds { get; set; } = [];
+        public List<string> ValidDirectionTypes { get; set; } = [];
+        public List<string> ValidGameFlags { get; set; } = [];
+    }
+
     /// <summary>
     /// Gets a list of valid entity type simple names (e.g., "Octorok", "Door").
     /// </summary>
@@ -18,7 +36,7 @@ public class GameDataService
     /// <summary>
     /// Gets a dictionary mapping entity type simple names to their full namespace-qualified names.
     /// </summary>
-    public Dictionary<string, string> EntityTypeToFullTypeName { get; } = [];
+    public Dictionary<string, string> EntityTypeToFullTypeName { get; set; } = [];
 
     /// <summary>
     /// Gets a list of valid map IDs (e.g., "MainMap0", "Castle1").
@@ -40,20 +58,73 @@ public class GameDataService
     /// </summary>
     public GameDataService()
     {
-        LoadValidEntityTypes();
-        LoadValidMapIds();
-        LoadValidDirectionTypes();
-        LoadValidGameFlags();
+        // Determine paths for the game assembly and cache file
+        var currentAssemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        _gameAssemblyPath = Path.Combine(currentAssemblyDirectory ?? string.Empty, GameAssemblyFileName);
+        
+        // Ensure cache directory exists, creating a subdirectory in TempPath
+        var cacheDirectory = Path.Combine(Path.GetTempPath(), "BitLegendMapEditor");
+        Directory.CreateDirectory(cacheDirectory);
+        _cacheFilePath = Path.Combine(cacheDirectory, CacheFileName);
+
+        LoadGameData(); // New method to handle cached or reflected loading
     }
 
-    /// <summary>
-    /// Loads valid entity types by reflecting on the game's assembly for types implementing IEntity
-    /// and supplementing with EnemyType enum values.
-    /// </summary>
-    private void LoadValidEntityTypes()
+    private void LoadGameData()
+    {
+        GameDataCache? cache = null;
+        DateTime gameAssemblyLastWriteTime = File.Exists(_gameAssemblyPath)
+            ? File.GetLastWriteTime(_gameAssemblyPath)
+            : DateTime.MinValue;
+
+        // Try to load from cache
+        if (File.Exists(_cacheFilePath))
+        {
+            try
+            {
+                var json = File.ReadAllText(_cacheFilePath);
+                cache = JsonSerializer.Deserialize<GameDataCache>(json);
+
+                // Invalidate cache if assembly is newer
+                if (cache?.AssemblyLastWriteTime < gameAssemblyLastWriteTime)
+                {
+                    cache = null; // Cache is stale
+                }
+            }
+            catch (JsonException)
+            {
+                cache = null; // Cache file corrupted
+            }
+            catch (IOException)
+            {
+                cache = null; // Cache file inaccessible
+            }
+        }
+
+        if (cache != null)
+        {
+            // Load from cache
+            ValidEntityTypes = cache.ValidEntityTypes;
+            EntityTypeToFullTypeName = cache.EntityTypeToFullTypeName;
+            ValidMapIds = cache.ValidMapIds;
+            ValidDirectionTypes = cache.ValidDirectionTypes;
+            ValidGameFlags = cache.ValidGameFlags;
+        }
+        else
+        {
+            // Perform reflection and build cache
+            PerformReflection();
+            SaveCache(gameAssemblyLastWriteTime);
+        }
+    }
+
+    private void PerformReflection()
     {
         ValidEntityTypes.Clear();
         EntityTypeToFullTypeName.Clear();
+        ValidMapIds.Clear();
+        ValidDirectionTypes.Clear();
+        ValidGameFlags.Clear();
 
         // Load the 0-bit Legend assembly
         var gameAssembly = Assembly.Load("BitLegend");
@@ -91,15 +162,8 @@ public class GameDataService
         }
 
         ValidEntityTypes = [.. ValidEntityTypes.Order()];
-    }
-
-    /// <summary>
-    /// Loads valid map IDs based on hardcoded values. In a production environment,
-    /// these would typically be discovered dynamically from map files or configuration.
-    /// </summary>
-    private void LoadValidMapIds()
-    {
-        ValidMapIds.Clear();
+        
+        // Hardcoded map IDs (as before)
         ValidMapIds.AddRange(
         [
             "Castle0", "Castle1", "Castle2", "Castle3", "Castle4", "Castle5",
@@ -107,24 +171,12 @@ public class GameDataService
             "MainMap0", "MainMap1", "MainMap2", "MainMap3", "MainMap4", "MainMap5"
         ]);
         ValidMapIds = [.. ValidMapIds.Order()];
-    }
 
-    /// <summary>
-    /// Loads valid direction types from the <see cref="DirectionType"/> enumeration.
-    /// </summary>
-    private void LoadValidDirectionTypes()
-    {
-        ValidDirectionTypes.Clear();
+        // Load valid direction types from the DirectionType enumeration.
         ValidDirectionTypes.AddRange(Enum.GetNames<DirectionType>());
         ValidDirectionTypes = [.. ValidDirectionTypes.Order()];
-    }
 
-    /// <summary>
-    /// Loads valid game flags from the <see cref="GameFlag"/> enumeration, excluding the 'None' flag.
-    /// </summary>
-    private void LoadValidGameFlags()
-    {
-        ValidGameFlags.Clear();
+        // Load valid game flags from the GameFlag enumeration, excluding the 'None' flag.
         foreach (var name in Enum.GetNames<GameFlag>())
         {
             if (name != "None")
@@ -133,5 +185,20 @@ public class GameDataService
             }
         }
         ValidGameFlags = [.. ValidGameFlags.Order()];
+    }
+
+    private void SaveCache(DateTime assemblyLastWriteTime)
+    {
+        var cache = new GameDataCache
+        {
+            AssemblyLastWriteTime = assemblyLastWriteTime,
+            ValidEntityTypes = ValidEntityTypes,
+            EntityTypeToFullTypeName = EntityTypeToFullTypeName,
+            ValidMapIds = ValidMapIds,
+            ValidDirectionTypes = ValidDirectionTypes,
+            ValidGameFlags = ValidGameFlags
+        };
+        var json = JsonSerializer.Serialize(cache, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(_cacheFilePath, json);
     }
 }

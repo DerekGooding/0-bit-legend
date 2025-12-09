@@ -2,6 +2,7 @@ using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Model.Enums;
 using BitLegend.MapEditor.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace BitLegend.MapEditor.ViewModels;
 
@@ -25,6 +26,8 @@ public partial class MainWindowViewModel
     [Bind] private double _cellSize = 16;
     [Bind] private PaintingMode _paintingMode = PaintingMode.Brush;
 
+    public List<string> AvailableEntityTypes { get; }
+
     private ObservableCollection<ObservableCollection<char>>? _selectedCharacterBrush;
     public ObservableCollection<ObservableCollection<char>>? SelectedCharacterBrush
     {
@@ -45,11 +48,10 @@ public partial class MainWindowViewModel
         _gameDataService = gameDataService;
         _mapFileSaverService = mapFileSaverService;
 
-        LoadMaps();
-        if (Maps.Count > 0)
-        {
-            SelectedMap = Maps[0];
-        }
+        // Initialize the new property
+        AvailableEntityTypes = _gameDataService.ValidEntityTypes;
+
+        LoadDataAsync();
     }
 
     [Command] public void ToggleTheme() => ThemeManager.ToggleTheme();
@@ -335,6 +337,17 @@ public partial class MainWindowViewModel
             brush.Add(row);
         }
         SelectedCharacterBrush = brush;
+    }
+
+    // New asynchronous data loading method
+    private async void LoadDataAsync()
+    {
+        var maps = await _mapFileParserService.LoadMapsAsync();
+        Maps = new ObservableCollection<MapData>(maps);
+        if (Maps.Count > 0)
+        {
+            SelectedMap = Maps[0];
+        }
     }
 
     private void LoadMaps() => Maps = new ObservableCollection<MapData>(_mapFileParserService.LoadMaps());
