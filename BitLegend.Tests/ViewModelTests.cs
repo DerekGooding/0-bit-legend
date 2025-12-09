@@ -98,11 +98,11 @@ public class ViewModelTests
     {
         var entity = new EntityData("Octorok", 10, 10, "true");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, MapWidth, MapHeight);
-        Assert.IsTrue(viewModel.SaveCommand.CanExecute(null));
+        Assert.IsTrue(viewModel.EntitySaveCommand.CanExecute(null));
 
         bool closed = false;
         viewModel.RequestClose += (s, e) => closed = true;
-        viewModel.SaveCommand.Execute(null);
+        viewModel.EntitySaveCommand.Execute(null);
         Assert.IsTrue(closed);
     }
 
@@ -114,7 +114,7 @@ public class ViewModelTests
 
         bool closed = false;
         viewModel.RequestClose += (s, e) => closed = true;
-        viewModel.CancelCommand.Execute(null);
+        viewModel.EntityCancelCommand.Execute(null);
         Assert.IsTrue(closed);
         Assert.IsNull(viewModel.Entity); // Check if entity is nulled on cancel
     }
@@ -196,11 +196,11 @@ public class ViewModelTests
     {
         var transition = new TransitionData("MainMap0", 5, 5, "Up", 1, 1, 10, 10);
         var viewModel = new TransitionEditorViewModel(transition, _gameDataService, MapWidth, MapHeight);
-        Assert.IsTrue(viewModel.SaveCommand.CanExecute(null));
+        Assert.IsTrue(viewModel.TransitionSaveCommand.CanExecute(null));
 
         bool closed = false;
         viewModel.RequestClose += (s, e) => closed = true;
-        viewModel.SaveCommand.Execute(null);
+        viewModel.TransitionSaveCommand.Execute(null);
         Assert.IsTrue(closed);
     }
 
@@ -212,7 +212,7 @@ public class ViewModelTests
 
         bool closed = false;
         viewModel.RequestClose += (s, e) => closed = true;
-        viewModel.CancelCommand.Execute(null);
+        viewModel.TransitionCancelCommand.Execute(null);
         Assert.IsTrue(closed);
         Assert.IsNull(viewModel.Transition); // Check if transition is nulled on cancel
     }

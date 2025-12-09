@@ -2,10 +2,10 @@ namespace BitLegend.MapEditor.Models;
 
 public class EntityData
 {
-    public string EntityType { get; set; } // Store as string for simplicity in editor
+    public string EntityType { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
-    public string Condition { get; set; } // Store condition as string/expression if needed, or simplify
+    public string Condition { get; set; }
 
     public EntityData(string entityType, int x, int y, string condition = "")
     {
@@ -15,5 +15,9 @@ public class EntityData
         Condition = condition;
     }
 
-    public EntityData() { }
+    public EntityData()
+    {
+        EntityType = string.Empty;
+        Condition = string.Empty;
+    }
 }

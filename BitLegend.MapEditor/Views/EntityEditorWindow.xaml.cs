@@ -13,6 +13,6 @@ public partial class EntityEditorWindow : Window
     {
         InitializeComponent();
         DataContext = new EntityEditorViewModel(entity, gameDataService, mapWidth, mapHeight);
-        (DataContext as EntityEditorViewModel).RequestClose += (s, e) => this.Close();
+        (DataContext as EntityEditorViewModel)?.RequestClose += (s, e) => Close();
     }
 }

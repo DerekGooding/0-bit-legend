@@ -13,6 +13,6 @@ public partial class TransitionEditorWindow : Window
     {
         InitializeComponent();
         DataContext = new TransitionEditorViewModel(transition, gameDataService, mapWidth, mapHeight);
-        (DataContext as TransitionEditorViewModel).RequestClose += (s, e) => this.Close();
+        (DataContext as TransitionEditorViewModel)?.RequestClose += (s, e) => Close();
     }
 }
