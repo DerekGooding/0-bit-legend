@@ -5,7 +5,12 @@
              xmlns:converters="clr-namespace:_0_bit_legend.MapEditor.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <converters:StringListToTextConverter x:Key="StringListToTextConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/0-bit-legend.MapEditor;component/Themes/LightTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:StringListToTextConverter x:Key="StringListToTextConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
 

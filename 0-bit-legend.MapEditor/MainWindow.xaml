@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:_0_bit_legend.MapEditor"
         xmlns:viewmodels="clr-namespace:_0_bit_legend.MapEditor.ViewModels"
         mc:Ignorable="d"
-        Title="0-Bit Legend Map Editor" Height="720" Width="1280">
+        Title="0-Bit Legend Map Editor" Height="720" Width="1280"
+        Style="{DynamicResource {x:Type Window}}">
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
@@ -14,17 +15,27 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/> <!-- New column for Entity Palette -->
         </Grid.ColumnDefinitions>
 
         <!-- Map List -->
-        <DockPanel Grid.Column="0">
-            <Label DockPanel.Dock="Top">Maps</Label>
+        <DockPanel Grid.Column="0" Background="{DynamicResource BackgroundColor}">
+            <Label DockPanel.Dock="Top" Content="Maps"/>
             <ListBox x:Name="MapsListBox" Margin="5"
                      ItemsSource="{Binding Maps}"
                      DisplayMemberPath="Name"
                      SelectedItem="{Binding SelectedMap}"/>
             <Button Content="Save Map"
                     Command="{Binding SaveMapCommand}"
+                    Margin="5"/>
+            <Button Content="New Map"
+                    Command="{Binding NewMapCommand}"
+                    Margin="5"/>
+            <Button Content="Delete Map"
+                    Command="{Binding DeleteMapCommand}"
+                    Margin="5"/>
+            <Button Content="Toggle Theme"
+                    Command="{Binding ToggleThemeCommand}"
                     Margin="5"
                     DockPanel.Dock="Bottom"/>
         </DockPanel>
@@ -37,45 +48,55 @@
             </Grid.RowDefinitions>
 
             <!-- Map Editor View (Top Row) -->
-            <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="10" Padding="5">
-                <ItemsControl ItemsSource="{Binding DisplayMapCharacters}"
-                              HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding}"
-                                          HorizontalAlignment="Left">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 FontFamily="Consolas" FontSize="12"
-                                                 MaxLength="1"
-                                                 BorderThickness="0"
-                                                 Background="Transparent"
-                                                 Padding="0" Margin="0"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+            <Border Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" Margin="10" Padding="5"
+                    AllowDrop="True" DragOver="MapArea_DragOver" Drop="MapArea_Drop">
+                <DockPanel Background="{DynamicResource ControlBackgroundColor}">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,5">
+                        <Label Content="Drawing Character:"/>
+                        <TextBox Width="20" MaxLength="1" Text="{Binding CurrentDrawingCharacter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding DisplayMapCharacters}"
+                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding}"
+                                              HorizontalAlignment="Left">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                     FontFamily="Consolas" FontSize="12"
+                                                     MaxLength="1"
+                                                     BorderThickness="0"
+                                                     Background="{DynamicResource ControlBackgroundColor}"
+                                                     Foreground="{DynamicResource ControlForegroundColor}"
+                                                     Padding="0" Margin="0"
+                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                     PreviewMouseDown="MapCharacter_PreviewMouseDown"
+                                                     PreviewMouseMove="MapCharacter_PreviewMouseMove"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
             </Border>
 
 
             <!-- Entity and Transition Tabs (Bottom Row) -->
-            <TabControl Grid.Row="1" Margin="10">
-                <TabItem Header="Entities">
-                    <DockPanel>
+            <TabControl Grid.Row="1" Margin="10" Style="{DynamicResource {x:Type TabControl}}">
+                <TabItem Header="Entities" Style="{DynamicResource {x:Type TabItem}}">
+                    <DockPanel Background="{DynamicResource BackgroundColor}">
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                             <Button Content="Add Entity" Command="{Binding AddEntityCommand}" Margin="5"/>
                             <Button Content="Edit Entity" Command="{Binding EditEntityCommand}" Margin="5"/>
@@ -85,11 +106,12 @@
                                   SelectedItem="{Binding SelectedEntity}"
                                   AutoGenerateColumns="True"
                                   CanUserAddRows="False"
-                                  CanUserDeleteRows="False"/>
+                                  CanUserDeleteRows="False"
+                                  Style="{DynamicResource {x:Type DataGrid}}"/>
                     </DockPanel>
                 </TabItem>
-                <TabItem Header="Transitions">
-                    <DockPanel>
+                <TabItem Header="Transitions" Style="{DynamicResource {x:Type TabItem}}">
+                    <DockPanel Background="{DynamicResource BackgroundColor}">
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                             <Button Content="Add Transition" Command="{Binding AddTransitionCommand}" Margin="5"/>
                             <Button Content="Edit Transition" Command="{Binding EditTransitionCommand}" Margin="5"/>
@@ -99,10 +121,20 @@
                                   SelectedItem="{Binding SelectedTransition}"
                                   AutoGenerateColumns="True"
                                   CanUserAddRows="False"
-                                  CanUserDeleteRows="False"/>
+                                  CanUserDeleteRows="False"
+                                  Style="{DynamicResource {x:Type DataGrid}}"/>
                     </DockPanel>
                 </TabItem>
             </TabControl>
         </Grid>
+
+        <!-- Entity Palette -->
+        <DockPanel Grid.Column="2" Margin="5" Background="{DynamicResource BackgroundColor}">
+            <Label DockPanel.Dock="Top" Content="Entity Palette"/>
+            <ListBox ItemsSource="{Binding AvailableEntityTypes}"
+                     x:Name="EntityPaletteListBox"
+                     PreviewMouseLeftButtonDown="EntityPalette_PreviewMouseLeftButtonDown"
+                     MouseMove="EntityPalette_MouseMove"/>
+        </DockPanel>
     </Grid>
 </Window>
