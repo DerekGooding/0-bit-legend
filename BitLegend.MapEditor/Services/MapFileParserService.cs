@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace BitLegend.MapEditor.Services;
 
 [Singleton]
-public partial class MapFileParserService
+public partial class MapFileParserService : IMapFileParserService
 {
     private const string _gameMapsSubPath = @"BitLegend\Maps";
     public static readonly string AbsoluteGameMapsPath

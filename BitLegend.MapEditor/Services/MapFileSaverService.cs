@@ -4,7 +4,7 @@ using System.Text;
 namespace BitLegend.MapEditor.Services;
 
 [Singleton]
-public class MapFileSaverService(GameDataService gameDataService)
+public class MapFileSaverService(GameDataService gameDataService) : IMapFileSaverService
 {
     private const string _gameMapsSubPath = @"BitLegend\Maps";
     public static readonly string AbsoluteGameMapsPath

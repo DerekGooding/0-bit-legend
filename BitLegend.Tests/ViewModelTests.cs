@@ -1,6 +1,8 @@
-using BitLegend.MapEditor.Models;
+using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.Services;
 using BitLegend.MapEditor.ViewModels;
+using System.Windows.Controls; // Added for ItemsControl
+using System.Windows; // Added for Point
 
 namespace BitLegend.Tests;
 
@@ -15,18 +17,18 @@ public class ViewModelTests
     public void Setup() => _gameDataService = new GameDataService();
 
     #region Mocks
-    private class MockMapFileParserService : MapFileParserService
+    private class MockMapFileParserService : IMapFileParserService
     {
-        public override List<MapData> LoadMaps()
+        public List<MapData> LoadMaps()
         {
             var map = new MapData("TestMap", new[] { "abc", "def", "ghi" });
             return new List<MapData> { map };
         }
     }
 
-    private class MockMapFileSaverService : MapFileSaverService
+    private class MockMapFileSaverService : IMapFileSaverService
     {
-        public override void SaveMap(MapData mapData)
+        public void SaveMap(MapData mapData)
         {
             // Do nothing
         }
@@ -82,6 +84,95 @@ public class ViewModelTests
         Assert.AreEqual('b', brush[0][1]);
         Assert.AreEqual('d', brush[1][0]);
         Assert.AreEqual('e', brush[1][1]);
+    }
+
+    [TestMethod]
+    public void MainWindowViewModel_SetSelectedCharacterBrush_HandlesOutOfBounds()
+    {
+        var parser = new MockMapFileParserService();
+        var saver = new MockMapFileSaverService();
+        var gds = new GameDataService();
+
+        var viewModel = new MainWindowViewModel(parser, gds, saver);
+        viewModel.SelectedMap = viewModel.Maps.First(); // Map: "abc", "def", "ghi"
+
+        // Select a brush that goes out of bounds
+        viewModel.SetSelectedCharacterBrush(-1, -1, 4, 4);
+
+        var brush = viewModel.SelectedCharacterBrush;
+        Assert.IsNotNull(brush);
+        Assert.AreEqual(6, brush.Count); // From -1 to 4 is 6 rows
+        Assert.AreEqual(6, brush[0].Count); // From -1 to 4 is 6 columns
+
+        // Expected brush:
+        // '     '
+        // ' abc '
+        // ' def '
+        // ' ghi '
+        // '     '
+
+        Assert.AreEqual(' ', brush[0][0]); Assert.AreEqual(' ', brush[0][1]); Assert.AreEqual(' ', brush[0][2]); Assert.AreEqual(' ', brush[0][3]); Assert.AreEqual(' ', brush[0][4]);
+        Assert.AreEqual(' ', brush[1][0]); Assert.AreEqual('a', brush[1][1]); Assert.AreEqual('b', brush[1][2]); Assert.AreEqual('c', brush[1][3]); Assert.AreEqual(' ', brush[1][4]);
+        Assert.AreEqual(' ', brush[2][0]); Assert.AreEqual('d', brush[2][1]); Assert.AreEqual('e', brush[2][2]); Assert.AreEqual('f', brush[2][3]); Assert.AreEqual(' ', brush[2][4]);
+        Assert.AreEqual(' ', brush[3][0]); Assert.AreEqual('g', brush[3][1]); Assert.AreEqual('h', brush[3][2]); Assert.AreEqual('i', brush[3][3]); Assert.AreEqual(' ', brush[3][4]);
+        Assert.AreEqual(' ', brush[4][0]); Assert.AreEqual(' ', brush[4][1]); Assert.AreEqual(' ', brush[4][2]); Assert.AreEqual(' ', brush[4][3]); Assert.AreEqual(' ', brush[4][4]);
+    }
+
+    [TestMethod]
+    [STAThread]
+    public void MainWindowViewModel_ProcessBrushDrawing_WithCharacterBrush()
+    {
+        var parser = new MockMapFileParserService();
+        var saver = new MockMapFileSaverService();
+        var gds = new GameDataService();
+
+        var viewModel = new MainWindowViewModel(parser, gds, saver);
+        viewModel.SelectedMap = viewModel.Maps.First();
+
+        viewModel.SetSelectedCharacterBrush(0, 0, 1, 1);
+
+        var mockItemsControl = new ItemsControl
+        {
+            DataContext = viewModel,
+            ItemsSource = viewModel.DisplayMapCharacters
+        };
+
+        var targetCell = viewModel.DisplayMapCharacters[1][1];
+        var mousePosition = new Point(targetCell.X * 10, targetCell.Y * 10);
+
+        var hitX = 1;
+        var hitY = 1;
+
+        if (viewModel.SelectedCharacterBrush?.Count > 0)
+        {
+            for (var y = 0; y < viewModel.SelectedCharacterBrush.Count; y++)
+            {
+                var brushRow = viewModel.SelectedCharacterBrush[y];
+                for (var x = 0; x < brushRow.Count; x++)
+                {
+                    var targetX = hitX + x;
+                    var targetY = hitY + y;
+
+                    if (targetY >= 0 && targetY < viewModel.DisplayMapCharacters.Count &&
+                        targetX >= 0 && targetX < viewModel.DisplayMapCharacters[targetY].Count)
+                    {
+                        viewModel.DisplayMapCharacters[targetY][targetX].Character = brushRow[x];
+                    }
+                }
+            }
+        }
+
+        Assert.AreEqual('a', viewModel.DisplayMapCharacters[0][0].Character);
+        Assert.AreEqual('b', viewModel.DisplayMapCharacters[0][1].Character);
+        Assert.AreEqual('c', viewModel.DisplayMapCharacters[0][2].Character);
+
+        Assert.AreEqual('a', viewModel.DisplayMapCharacters[1][1].Character); // targetCell (1,1) gets brush[0][0]
+        Assert.AreEqual('b', viewModel.DisplayMapCharacters[1][2].Character); // targetCell (1,2) gets brush[0][1]
+        Assert.AreEqual('f', viewModel.DisplayMapCharacters[1][0].Character); // should remain 'f'
+
+        Assert.AreEqual('d', viewModel.DisplayMapCharacters[2][1].Character); // targetCell (2,1) gets brush[1][0]
+        Assert.AreEqual('e', viewModel.DisplayMapCharacters[2][2].Character); // targetCell (2,2) gets brush[1][1]
+        Assert.AreEqual('g', viewModel.DisplayMapCharacters[2][0].Character); // should remain 'g'
     }
 
     #endregion

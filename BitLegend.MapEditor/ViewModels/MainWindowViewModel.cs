@@ -32,14 +32,14 @@ public partial class MainWindowViewModel
         set => SetProperty(ref _selectedCharacterBrush, value);
     }
 
-    private readonly MapFileParserService _mapFileParserService;
-    private readonly MapFileSaverService _mapFileSaverService;
+    private readonly IMapFileParserService _mapFileParserService;
+    private readonly IMapFileSaverService _mapFileSaverService;
     private readonly GameDataService _gameDataService;
 
     public MainWindowViewModel(
-        MapFileParserService mapFileParserService,
+        IMapFileParserService mapFileParserService,
         GameDataService gameDataService,
-        MapFileSaverService mapFileSaverService)
+        IMapFileSaverService mapFileSaverService)
     {
         _mapFileParserService = mapFileParserService;
         _gameDataService = gameDataService;

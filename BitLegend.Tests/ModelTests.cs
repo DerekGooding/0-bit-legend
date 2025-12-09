@@ -1,4 +1,4 @@
-using BitLegend.MapEditor.Models;
+using BitLegend.MapEditor.Model;
 using System.ComponentModel;
 
 namespace BitLegend.Tests
