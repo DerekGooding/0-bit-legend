@@ -1,5 +1,3 @@
-using System;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
@@ -94,7 +92,7 @@ namespace _0_bit_legend.MapEditor.Controls
 
         private void ValueTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(ValueTextBox.Text, out int parsedValue))
+            if (int.TryParse(ValueTextBox.Text, out var parsedValue))
             {
                 Value = Math.Clamp(parsedValue, Minimum, Maximum);
             }

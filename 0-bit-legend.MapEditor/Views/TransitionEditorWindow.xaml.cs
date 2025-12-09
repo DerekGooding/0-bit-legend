@@ -1,4 +1,3 @@
-using System.Windows;
 using _0_bit_legend.MapEditor.ViewModels;
 using _0_bit_legend.MapEditor.Models;
 using _0_bit_legend.MapEditor.Services;

@@ -6,17 +6,17 @@ namespace _0_bit_legend.MapEditor.Services;
 
 public class MapFileSaverService(GameDataService gameDataService)
 {
-    private const string GameMapsSubPath = @"0-Bit Legend\Maps";
+    private const string GameMapsSubPath = @"0-bit Legend\Maps";
     public static readonly string AbsoluteGameMapsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", GameMapsSubPath);
 
     private readonly GameDataService _gameDataService = gameDataService;
 
     public void SaveMap(MapData mapData)
     {
-        string fileName = $"{mapData.Name}.cs";
-        string filePath = Path.Combine(AbsoluteGameMapsPath, fileName);
+        var fileName = $"{mapData.Name}.cs";
+        var filePath = Path.Combine(AbsoluteGameMapsPath, fileName);
 
-        string fileContent = GenerateMapFileContent(mapData);
+        var fileContent = GenerateMapFileContent(mapData);
 
         File.WriteAllText(filePath, fileContent);
     }
@@ -41,7 +41,7 @@ public class MapFileSaverService(GameDataService gameDataService)
         // Raw map data
         sb.AppendLine("        public override string[] Raw => [");
         sb.AppendLine("        {");
-        foreach (string line in mapData.Raw)
+        foreach (var line in mapData.Raw)
         {
             sb.AppendLine($"            \"{line}\",");
         }
@@ -53,7 +53,7 @@ public class MapFileSaverService(GameDataService gameDataService)
         sb.AppendLine("        {");
         foreach (EntityData entity in mapData.EntityLocations)
         {
-            string fullTypeName = _gameDataService.EntityTypeToFullTypeName[entity.EntityType]; // Get full type name
+            var fullTypeName = _gameDataService.EntityTypeToFullTypeName[entity.EntityType]; // Get full type name
             sb.AppendLine($"            new(typeof({fullTypeName}), new({entity.X}, {entity.Y}), () => {entity.Condition}),");
         }
         sb.AppendLine("        }"); // Close EntityLocations list

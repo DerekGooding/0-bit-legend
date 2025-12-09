@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_0_bit_legend.MapEditor"
         xmlns:viewmodels="clr-namespace:_0_bit_legend.MapEditor.ViewModels"
         mc:Ignorable="d"
-        Title="0-Bit Legend Map Editor" Height="720" Width="1280"
+        Title="0-bit Legend Map Editor" Height="720" Width="1280"
         Style="{DynamicResource {x:Type Window}}">
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>

@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using System.Windows;
 using System.IO;
 
 namespace _0_bit_legend.MapEditor.ViewModels;
@@ -12,136 +11,33 @@ namespace _0_bit_legend.MapEditor.ViewModels;
 /// <summary>
 /// ViewModel for the main application window, managing map data, entities, and transitions.
 /// </summary>
-public class MainWindowViewModel : INotifyPropertyChanged
+[Singleton, ViewModel]
+public partial class MainWindowViewModel
 {
-    private ObservableCollection<MapData> _maps = [];
-    public ObservableCollection<MapData> Maps
+    [Bind] private ObservableCollection<MapData> _maps = [];
+
+    [Bind(OnChangeMethodName = nameof(OnMapDataChange))] private MapData? _selectedMap;
+    public void OnMapDataChange(MapData value)
     {
-        get => _maps;
-        set
-        {
-            _maps = value;
-            OnPropertyChanged();
-        }
+        if(_selectedMap != value)
+            PopulateDisplayMapCharacters();
     }
 
-    private MapData? _selectedMap; // Made nullable
-    /// <summary>
-    /// Gets or sets the currently selected map.
-    /// </summary>
-    public MapData? SelectedMap
-    {
-        get => _selectedMap;
-        set
-        {
-            if (!Equals(_selectedMap, value)) // Use Equals for object comparison
-            {
-                _selectedMap = value;
-                OnPropertyChanged();
-                PopulateDisplayMapCharacters();
-                // Update entity and transition collections when map changes
-                OnPropertyChanged(nameof(SelectedMap.EntityLocations));
-                OnPropertyChanged(nameof(SelectedMap.AreaTransitions));
-            }
-        }
-    }
+    [Bind] private ObservableCollection<ObservableCollection<MapCharacterViewModel>> _displayMapCharacters
+        = [];
 
-    private ObservableCollection<ObservableCollection<MapCharacterViewModel>> _displayMapCharacters = [];
-    /// <summary>
-    /// Gets or sets the 2D collection of <see cref="MapCharacterViewModel"/> for display.
-    /// </summary>
-    public ObservableCollection<ObservableCollection<MapCharacterViewModel>> DisplayMapCharacters
-    {
-        get => _displayMapCharacters;
-        set
-        {
-            _displayMapCharacters = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private EntityData? _selectedEntity;
-    /// <summary>
-    /// Gets or sets the currently selected entity.
-    /// </summary>
-    public EntityData? SelectedEntity
-    {
-        get => _selectedEntity;
-        set
-        {
-            _selectedEntity = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private TransitionData? _selectedTransition;
-    /// <summary>
-    /// Gets or sets the currently selected transition.
-    /// </summary>
-    public TransitionData? SelectedTransition
-    {
-        get => _selectedTransition;
-        set
-        {
-            _selectedTransition = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private char _currentDrawingCharacter = 'X'; // Default drawing character
-    /// <summary>
-    /// Gets or sets the character used for drawing on the map.
-    /// </summary>
-    public char CurrentDrawingCharacter
-    {
-        get => _currentDrawingCharacter;
-        set
-        {
-            if (_currentDrawingCharacter != value)
-            {
-                _currentDrawingCharacter = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-    private double _cellSize = 16; // Default cell size
-    /// <summary>
-    /// Gets or sets the size of each cell in the map display.
-    /// </summary>
-    public double CellSize
-    {
-        get => _cellSize;
-        set
-        {
-            if (_cellSize != value)
-            {
-                _cellSize = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-    // Removed AvailableEntityTypes property as it will be accessed via GameDataService
-    // private ObservableCollection<string> _availableEntityTypes = [];
-    // public ObservableCollection<string> AvailableEntityTypes
-    // {
-    //     get => _availableEntityTypes;
-    //     set
-    //     {
-    //         _availableEntityTypes = value;
-    //         OnPropertyChanged();
-    //     }
-    // }
+    [Bind] private EntityData? _selectedEntity;
+    [Bind] private TransitionData? _selectedTransition;
+    [Bind] private char _currentDrawingCharacter = 'X';
+    [Bind] private double _cellSize = 16;
 
     private readonly MapFileParserService _mapFileParserService;
     private readonly MapFileSaverService _mapFileSaverService;
-    private readonly GameDataService _gameDataService; // Added
+    private readonly GameDataService _gameDataService;
 
     public ICommand SaveMapCommand { get; }
     public ICommand NewMapCommand { get; }
     public ICommand DeleteMapCommand { get; }
-    public ICommand ToggleThemeCommand { get; }
     public ICommand AddEntityCommand { get; }
     public ICommand EditEntityCommand { get; }
     public ICommand DeleteEntityCommand { get; }
@@ -149,11 +45,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public ICommand EditTransitionCommand { get; }
     public ICommand DeleteTransitionCommand { get; }
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(MapFileParserService mapFileParserService, GameDataService gameDataService)
     {
-        _mapFileParserService = new MapFileParserService();
-        _gameDataService = new GameDataService(); // Initialized
-        _mapFileSaverService = new MapFileSaverService(_gameDataService); // Modified here
+        _mapFileParserService = mapFileParserService;
+        _gameDataService = gameDataService;
+        _mapFileSaverService = new MapFileSaverService(_gameDataService);
 
         LoadMaps();
         if (Maps.Count > 0)
@@ -163,13 +59,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _selectedEntity = new EntityData();
         _selectedTransition = new TransitionData();
 
-        // Removed PopulateAvailableEntityTypes();
-        // PopulateAvailableEntityTypes();
 
         SaveMapCommand = new RelayCommand(ExecuteSaveMap, CanExecuteSaveMap);
         NewMapCommand = new RelayCommand(ExecuteNewMap, CanExecuteNewMap);
         DeleteMapCommand = new RelayCommand(ExecuteDeleteMap, CanExecuteDeleteMap);
-        ToggleThemeCommand = new RelayCommand(ExecuteToggleTheme);
         AddEntityCommand = new RelayCommand(ExecuteAddEntity, CanExecuteAddEntity);
         EditEntityCommand = new RelayCommand(ExecuteEditEntity, CanExecuteEditEntity);
         DeleteEntityCommand = new RelayCommand(ExecuteDeleteEntity, CanExecuteDeleteEntity);
@@ -178,32 +71,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         DeleteTransitionCommand = new RelayCommand(ExecuteDeleteTransition, CanExecuteDeleteTransition);
     }
 
-    private void ExecuteToggleTheme(object parameter) => ThemeManager.ToggleTheme();
-
-    // Removed PopulateAvailableEntityTypes method
-    // private void PopulateAvailableEntityTypes()
-    // {
-    //     AvailableEntityTypes.Add("Door");
-    //     AvailableEntityTypes.Add("Hero");
-    //     AvailableEntityTypes.Add("Princess");
-    //     AvailableEntityTypes.Add("RaftInUse");
-    //     AvailableEntityTypes.Add("SwordInUse");
-    //     AvailableEntityTypes.Add("Bat");
-    //     AvailableEntityTypes.Add("Dragon");
-    //     AvailableEntityTypes.Add("Fireball");
-    //     AvailableEntityTypes.Add("Octorok");
-    //     AvailableEntityTypes.Add("Spider");
-    //     AvailableEntityTypes.Add("Armor");
-    //     AvailableEntityTypes.Add("Key");
-    //     AvailableEntityTypes.Add("Raft");
-    //     AvailableEntityTypes.Add("Rupee");
-    //     AvailableEntityTypes.Add("Sword");
-    //     AvailableEntityTypes.Add("EnterCastle");
-    //     AvailableEntityTypes.Add("EnterCave0");
-    //     AvailableEntityTypes.Add("EnterCave1");
-    //     AvailableEntityTypes.Add("NewArea");
-    //     AvailableEntityTypes.Add("Water");
-    // }
+    [Command]
+    private void ToggleTheme(object parameter) => ThemeManager.ToggleTheme();
 
     public void AddEntityFromDragDrop(string entityType, int x, int y)
     {
@@ -222,7 +91,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private void ExecuteNewMap(object parameter)
     {
         // For simplicity, using MessageBox.Show for input. In a real app, use a custom dialog.
-        string newMapName = Microsoft.VisualBasic.Interaction.InputBox("Enter new map name:", "New Map", "NewMap");
+        var newMapName = Microsoft.VisualBasic.Interaction.InputBox("Enter new map name:", "New Map", "NewMap");
 
         if (!string.IsNullOrWhiteSpace(newMapName) && newMapName != "NewMap")
         {
@@ -235,7 +104,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
             // Create a blank map (e.g., 10x10 with '.' characters)
             List<string> rawMap = [];
-            for (int i = 0; i < 10; i++) // Default 10 rows
+            for (var i = 0; i < 10; i++) // Default 10 rows
             {
                 rawMap.Add(new string('.', 10)); // Default 10 columns
             }
@@ -271,8 +140,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
             {
                 try
                 {
-                    string fileName = $"{SelectedMap.Name}.cs";
-                    string filePath = Path.Combine(MapFileSaverService.AbsoluteGameMapsPath, fileName);
+                    var fileName = $"{SelectedMap.Name}.cs";
+                    var filePath = Path.Combine(MapFileSaverService.AbsoluteGameMapsPath, fileName);
 
                     if (File.Exists(filePath))
                     {
@@ -296,11 +165,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
         if (SelectedMap?.Raw != null)
         {
             var tempRows = new ObservableCollection<ObservableCollection<MapCharacterViewModel>>();
-            for (int y = 0; y < SelectedMap.Raw.Count; y++)
+            for (var y = 0; y < SelectedMap.Raw.Count; y++)
             {
-                string line = SelectedMap.Raw[y];
+                var line = SelectedMap.Raw[y];
                 var tempRow = new ObservableCollection<MapCharacterViewModel>();
-                for (int x = 0; x < line.Length; x++)
+                for (var x = 0; x < line.Length; x++)
                 {
                     tempRow.Add(new MapCharacterViewModel(line[x], x, y));
                 }

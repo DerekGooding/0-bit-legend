@@ -1,6 +1,4 @@
 using _0_bit_legend.MapEditor.ViewModels;
-using System.Linq; // Added for OfType<T> and FirstOrDefault
-using System.Windows;
 using System.Windows.Controls; // Added for ItemsControl and TextBox
 using System.Windows.Input;
 using System.Windows.Media;
@@ -31,7 +29,7 @@ public partial class MainWindow : Window
         {
             // Get the dragged ListViewItem
             ListBox listBox = sender as ListBox;
-            string entityType = (string)listBox.SelectedItem;
+            var entityType = (string)listBox.SelectedItem;
 
             if (entityType != null)
             {
@@ -59,7 +57,7 @@ public partial class MainWindow : Window
     {
         if (e.Data.GetDataPresent("entityType"))
         {
-            string entityType = (string)e.Data.GetData("entityType");
+            var entityType = (string)e.Data.GetData("entityType");
             if (DataContext is MainWindowViewModel viewModel)
             {
                 // Get the drop position relative to the ItemsControl (map)

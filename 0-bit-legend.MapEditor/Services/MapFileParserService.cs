@@ -4,16 +4,18 @@ using System.Text.RegularExpressions;
 
 namespace _0_bit_legend.MapEditor.Services;
 
+[Singleton]
 public class MapFileParserService
 {
-    private const string GameMapsSubPath = @"0-Bit Legend\Maps";
-    public static readonly string AbsoluteGameMapsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", GameMapsSubPath);
+    private const string _gameMapsSubPath = @"0-bit Legend\Maps";
+    public static readonly string AbsoluteGameMapsPath
+        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", _gameMapsSubPath);
 
     public List<MapData> LoadMaps()
     {
         List<MapData> maps = [];
         // Debugging: Log the absolute path and files found
-        string debugLogPath = Path.Combine(Path.GetTempPath(), "map_parser_debug.log");
+        var debugLogPath = Path.Combine(Path.GetTempPath(), "map_parser_debug.log");
         File.AppendAllText(debugLogPath, $"Timestamp: {DateTime.Now}\n");
         File.AppendAllText(debugLogPath, $"AbsoluteGameMapsPath: {AbsoluteGameMapsPath}\n");
 
@@ -28,7 +30,7 @@ public class MapFileParserService
         foreach (var filePath in mapFiles)
         {
             var content = File.ReadAllText(filePath);
-            MapData? map = ParseMapFile(content);
+            var map = ParseMapFile(content);
             if (map != null)
             {
                 maps.Add(map);
@@ -45,7 +47,7 @@ public class MapFileParserService
         {
             return null; // Invalid map file: no name found
         }
-        string name = nameMatch.Groups["name"].Value;
+        var name = nameMatch.Groups["name"].Value;
 
         // Extract Raw map data
         var rawMatch = Regex.Match(fileContent, @"public override string\[\] Raw =>\s*\[\s*(?<rawContent>[\s\S]*?)\s*\];");
@@ -85,7 +87,7 @@ public class MapFileParserService
             var transitionMatches = Regex.Matches(areaTransitionsMatch.Groups["transitions"].Value, @"new\(MapId:\s*WorldMap.MapName.(?<mapId>[^,]+),\s*StartPosition:\s*new\((?<startX>\d+),\s*(?<startY>\d+)\),\s*DirectionType.(?<direction>[^,]+),\s*Size:\s*new\((?<sizeX>\d+),\s*(?<sizeY>\d+)\),\s*Position:\s*new\((?<posX>\d+),\s*(?<posY>\d+)\)\)");
             foreach (Match transitionMatch in transitionMatches)
             {
-                string mapId = transitionMatch.Groups["mapId"].Value;
+                var mapId = transitionMatch.Groups["mapId"].Value;
                 // Remove "WorldMap.MapName." prefix
                 if (mapId.StartsWith("WorldMap.MapName."))
                 {

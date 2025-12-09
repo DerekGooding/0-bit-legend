@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace _0_bit_legend.MapEditor;
+﻿namespace _0_bit_legend.MapEditor;
 
 public static class ThemeManager
 {

@@ -154,7 +154,7 @@ public class TransitionEditorViewModel : INotifyPropertyChanged, IDataErrorInfo
                     if (Transition.SizeX <= 0 || (Transition.PositionX + Transition.SizeX > _mapWidth && Transition.PositionX < _mapWidth))
                     {
                         // Calculate max allowed size for informative message, ensuring PositionX is within bounds
-                        int maxAllowedSizeX = (Transition.PositionX >= 0 && Transition.PositionX < _mapWidth)
+                        var maxAllowedSizeX = (Transition.PositionX >= 0 && Transition.PositionX < _mapWidth)
                             ? _mapWidth - Transition.PositionX : 0;
                         
                         result = $"Size X must be positive and not exceed map bounds (max: {maxAllowedSizeX}).";
@@ -164,7 +164,7 @@ public class TransitionEditorViewModel : INotifyPropertyChanged, IDataErrorInfo
                     if (Transition.SizeY <= 0 || (Transition.PositionY + Transition.SizeY > _mapHeight && Transition.PositionY < _mapHeight))
                     {
                         // Calculate max allowed size for informative message, ensuring PositionY is within bounds
-                        int maxAllowedSizeY = (Transition.PositionY >= 0 && Transition.PositionY < _mapHeight)
+                        var maxAllowedSizeY = (Transition.PositionY >= 0 && Transition.PositionY < _mapHeight)
                             ? _mapHeight - Transition.PositionY : 0;
                         result = $"Size Y must be positive and not exceed map bounds (max: {maxAllowedSizeY}).";
                     }

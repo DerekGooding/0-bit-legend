@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\0-Bit Legend\0-Bit Legend.csproj" />
+    <ProjectReference Include="..\0-bit Legend\0-bit Legend.csproj" />
     <ProjectReference Include="..\0-bit-legend.MapEditor\0-bit-legend.MapEditor.csproj" />
   </ItemGroup>
 

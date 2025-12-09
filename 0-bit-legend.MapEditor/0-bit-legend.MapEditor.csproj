@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\0-Bit Legend\0-Bit Legend.csproj" />
+    <PackageReference Include="SimpleInjection" Version="0.9.8.4" />
+    <PackageReference Include="SimpleViewModel" Version="0.9.7.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\0-bit Legend\0-bit Legend.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
