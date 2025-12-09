@@ -28,17 +28,16 @@ public class MapFileParserService
         foreach (var filePath in mapFiles)
         {
             var content = File.ReadAllText(filePath);
-            MapData map = ParseMapFile(content);
+            MapData? map = ParseMapFile(content);
             if (map != null)
             {
                 maps.Add(map);
             }
         }
         return maps;
-        return maps;
     }
 
-    private MapData ParseMapFile(string fileContent)
+    private static MapData? ParseMapFile(string fileContent)
     {
         // Extract Name
         var nameMatch = Regex.Match(fileContent, @"public override string Name => ""(?<name>[^""]+)"";");
@@ -61,7 +60,7 @@ public class MapFileParserService
             raw.Add(lineMatch.Groups["line"].Value);
         }
 
-        MapData mapData = new(name, raw.ToArray());
+        MapData mapData = new(name, [.. raw]);
 
         // Extract EntityLocations
         var entityLocationsMatch = Regex.Match(fileContent, @"public override List<EntityLocation> EntityLocations { get; } =[\s\S]*?\[(?<entities>[\s\S]*?)\];");

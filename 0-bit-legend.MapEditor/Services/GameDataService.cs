@@ -92,7 +92,7 @@ namespace _0_bit_legend.MapEditor.Services
                 }
             }
 
-            ValidEntityTypes = ValidEntityTypes.OrderBy(s => s).ToList();
+            ValidEntityTypes = [.. ValidEntityTypes.OrderBy(s => s)];
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace _0_bit_legend.MapEditor.Services
                 "Cave0", "Cave1",
                 "MainMap0", "MainMap1", "MainMap2", "MainMap3", "MainMap4", "MainMap5"
             });
-            ValidMapIds = ValidMapIds.OrderBy(s => s).ToList();
+            ValidMapIds = [.. ValidMapIds.OrderBy(s => s)];
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace _0_bit_legend.MapEditor.Services
         {
             ValidDirectionTypes.Clear();
             ValidDirectionTypes.AddRange(Enum.GetNames(typeof(DirectionType)));
-            ValidDirectionTypes = ValidDirectionTypes.OrderBy(s => s).ToList();
+            ValidDirectionTypes = [.. ValidDirectionTypes.OrderBy(s => s)];
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace _0_bit_legend.MapEditor.Services
                     ValidGameFlags.Add(name);
                 }
             }
-            ValidGameFlags = ValidGameFlags.OrderBy(s => s).ToList();
+            ValidGameFlags = [.. ValidGameFlags.OrderBy(s => s)];
         }
     }
 }

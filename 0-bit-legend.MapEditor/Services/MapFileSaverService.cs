@@ -4,28 +4,20 @@ using System.Text;
 
 namespace _0_bit_legend.MapEditor.Services;
 
-public class MapFileSaverService
+public class MapFileSaverService(GameDataService gameDataService)
 {
     private const string GameMapsSubPath = @"0-Bit Legend\Maps";
     public static readonly string AbsoluteGameMapsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", GameMapsSubPath);
 
-    private readonly GameDataService _gameDataService; // Added
-
-    public MapFileSaverService(GameDataService gameDataService) // Modified constructor
-    {
-        _gameDataService = gameDataService; // Initialized
-    }
+    private readonly GameDataService _gameDataService = gameDataService;
 
     public void SaveMap(MapData mapData)
     {
-        // Construct the file path for the map
-        string fileName = $"{mapData.Name}.cs"; // Assuming the file name matches the map name
+        string fileName = $"{mapData.Name}.cs";
         string filePath = Path.Combine(AbsoluteGameMapsPath, fileName);
 
-        // Generate the C# file content
         string fileContent = GenerateMapFileContent(mapData);
 
-        // Write the content back to the file
         File.WriteAllText(filePath, fileContent);
     }
 

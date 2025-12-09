@@ -240,7 +240,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 rawMap.Add(new string('.', 10)); // Default 10 columns
             }
 
-            MapData newMap = new(newMapName, rawMap.ToArray());
+            MapData newMap = new(newMapName, [.. rawMap]);
             Maps.Add(newMap);
             SelectedMap = newMap; // Select the new map
 
@@ -285,7 +285,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 }
                 catch (System.Exception ex)
                 {
-                    MessageBox.Show($"Error deleting map '{SelectedMap.Name}':\n{ex.Message}", "Delete Map Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error deleting map '{SelectedMap?.Name}':\n{ex.Message}", "Delete Map Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -325,7 +325,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 SelectedMap.Raw.Clear();
                 foreach (var row in DisplayMapCharacters)
                 {
-                    string line = new(row.OrderBy(mc => mc.X).Select(mc => mc.Character).ToArray());
+                    string line = new([.. row.OrderBy(mc => mc.X).Select(mc => mc.Character)]);
                     SelectedMap.Raw.Add(line);
                 }
 
@@ -480,7 +480,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 

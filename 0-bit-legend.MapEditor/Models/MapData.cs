@@ -11,7 +11,7 @@ public class MapData
     public MapData(string name, string[] raw)
     {
         Name = name;
-        Raw = raw.ToList();
+        Raw = [.. raw];
     }
 
     public MapData() { } // Parameterless constructor for serialization
