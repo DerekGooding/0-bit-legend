@@ -1,9 +1,4 @@
-﻿using BitLegend.Entities;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
-using System.Drawing;
-
-namespace BitLegend.Entities.Triggers;
+﻿namespace BitLegend.Entities.Triggers;
 
 public class NewArea : IEntity, ICollider
 {

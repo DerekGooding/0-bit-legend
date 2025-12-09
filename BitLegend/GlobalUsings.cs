@@ -1,4 +1,4 @@
-﻿global using _0_bit_Legend.Model;
-global using _0_bit_Legend.Model.Enums;
-global using _0_bit_Legend.Content;
+﻿global using BitLegend.Model;
+global using BitLegend.Model.Enums;
+global using BitLegend.Content;
 global using static BitLegend.MainProgram;

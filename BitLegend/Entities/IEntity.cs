@@ -1,6 +1,4 @@
-﻿using BitLegend.Model.Enums;
-
-namespace BitLegend.Entities;
+﻿namespace BitLegend.Entities;
 
 public interface IEntity : IWorldSpace
 {

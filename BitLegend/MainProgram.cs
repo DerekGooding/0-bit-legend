@@ -1,10 +1,6 @@
-using _0_bit_Legend;
-using BitLegend.Content;
 using BitLegend.Entities;
 using BitLegend.Entities.Triggers;
 using BitLegend.Managers;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
 using static BitLegend.Content.WorldMap;
 
 namespace BitLegend;

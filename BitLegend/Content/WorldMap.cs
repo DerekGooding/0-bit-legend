@@ -1,6 +1,4 @@
-﻿using _0_bit_Legend.Maps;
-using BitLegend.Maps;
-using BitLegend.Model.Enums;
+﻿using BitLegend.Maps;
 
 namespace BitLegend.Content;
 

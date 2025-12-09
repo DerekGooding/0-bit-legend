@@ -1,9 +1,6 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using _0_bit_legend.MapEditor.ViewModels;
-using _0_bit_legend.MapEditor.Models;
-using System.Linq;
-using System.Collections.Generic;
+using BitLegend.MapEditor.Models;
 using BitLegend.MapEditor.Services;
+using BitLegend.MapEditor.ViewModels;
 
 namespace BitLegend.Tests;
 

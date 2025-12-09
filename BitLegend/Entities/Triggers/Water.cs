@@ -1,8 +1,4 @@
-﻿using BitLegend.Entities;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
-
-namespace BitLegend.Entities.Triggers;
+﻿namespace BitLegend.Entities.Triggers;
 
 public class Water : IEntity, ICollider
 {

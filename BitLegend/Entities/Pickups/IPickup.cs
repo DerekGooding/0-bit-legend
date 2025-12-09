@@ -1,6 +1,4 @@
-﻿using BitLegend.Entities;
-
-namespace BitLegend.Entities.Pickups;
+﻿namespace BitLegend.Entities.Pickups;
 
 public interface IPickup : IEntity, ICollider
 {

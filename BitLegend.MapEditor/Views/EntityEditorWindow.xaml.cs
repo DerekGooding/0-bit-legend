@@ -2,7 +2,7 @@ using BitLegend.MapEditor.Models;
 using BitLegend.MapEditor.Services;
 using BitLegend.MapEditor.ViewModels;
 
-namespace _0_bit_legend.MapEditor.Views;
+namespace BitLegend.MapEditor.Views;
 
 /// <summary>
 /// Interaction logic for EntityEditorWindow.xaml

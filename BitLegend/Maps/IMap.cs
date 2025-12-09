@@ -1,6 +1,4 @@
-﻿using BitLegend.Model;
-
-namespace BitLegend.Maps;
+﻿namespace BitLegend.Maps;
 
 public interface IMap
 {

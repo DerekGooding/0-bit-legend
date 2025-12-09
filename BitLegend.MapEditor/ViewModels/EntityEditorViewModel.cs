@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
-using _0_bit_legend.MapEditor.ViewModels;
 using BitLegend.MapEditor.Models;
 using BitLegend.MapEditor.Services;
 

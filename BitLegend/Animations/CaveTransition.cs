@@ -1,6 +1,4 @@
-﻿using BitLegend.Model;
-
-namespace BitLegend.Animations;
+﻿namespace BitLegend.Animations;
 
 public class CaveTransition : IAnimation
 {

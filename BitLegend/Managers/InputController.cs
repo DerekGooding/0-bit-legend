@@ -1,7 +1,6 @@
-﻿using BitLegend.Model.Enums;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace _0_bit_Legend;
+namespace BitLegend;
 
 public partial class InputController
 {

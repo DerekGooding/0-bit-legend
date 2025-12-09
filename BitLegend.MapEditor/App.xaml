@@ -1,8 +1,8 @@
-﻿<Application x:Class="_0_bit_legend.MapEditor.App"
+﻿<Application x:Class="BitLegend.MapEditor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:_0_bit_legend.MapEditor"
-             xmlns:converters="clr-namespace:_0_bit_legend.MapEditor.Converters"
+             xmlns:local="clr-namespace:BitLegend.MapEditor"
+             xmlns:converters="clr-namespace:BitLegend.MapEditor.Converters"
              Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>

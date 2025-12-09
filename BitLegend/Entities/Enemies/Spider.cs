@@ -1,6 +1,4 @@
-﻿using _0_bit_Legend.Entities.Pickups;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
+﻿using BitLegend.Entities.Pickups;
 
 namespace BitLegend.Entities.Enemies;
 

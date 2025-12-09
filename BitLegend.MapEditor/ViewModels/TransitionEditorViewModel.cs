@@ -1,4 +1,3 @@
-using _0_bit_legend.MapEditor.ViewModels;
 using BitLegend.MapEditor.Models;
 using BitLegend.MapEditor.Services;
 using System.ComponentModel;

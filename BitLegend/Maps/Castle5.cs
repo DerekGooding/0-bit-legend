@@ -1,8 +1,4 @@
-﻿using BitLegend.Content;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
-
-namespace BitLegend.Maps;
+﻿namespace BitLegend.Maps;
 
 public class Castle5 : BaseMap
 {

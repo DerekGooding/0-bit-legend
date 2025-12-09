@@ -1,6 +1,4 @@
-﻿using BitLegend.Model;
-
-namespace BitLegend.Entities.Pickups;
+﻿namespace BitLegend.Entities.Pickups;
 
 public class Key : BasePickup, IPurchased
 {

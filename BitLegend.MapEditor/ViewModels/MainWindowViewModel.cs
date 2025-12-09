@@ -4,7 +4,7 @@ using BitLegend.MapEditor.Services;
 using BitLegend.MapEditor.ViewModels;
 using System.Collections.ObjectModel;
 
-namespace _0_bit_legend.MapEditor.ViewModels;
+namespace BitLegend.MapEditor.ViewModels;
 
 /// <summary>
 /// ViewModel for the main application window, managing map data, entities, and transitions.
@@ -15,11 +15,7 @@ public partial class MainWindowViewModel
     [Bind] private ObservableCollection<MapData> _maps = [];
 
     [Bind(OnChangeMethodName = nameof(OnMapDataChange))] private MapData? _selectedMap;
-    public void OnMapDataChange(MapData value)
-    {
-        if(_selectedMap != value)
-            PopulateDisplayMapCharacters();
-    }
+    public void OnMapDataChange() => PopulateDisplayMapCharacters();
 
     [Bind] private ObservableCollection<ObservableCollection<MapCharacterViewModel>> _displayMapCharacters
         = [];
@@ -126,7 +122,7 @@ public partial class MainWindowViewModel
     {
         if (SelectedMap != null)
         {
-            MessageBoxResult result = MessageBox.Show($"Are you sure you want to delete map '{SelectedMap.Name}'?", "Delete Map", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show($"Are you sure you want to delete map '{SelectedMap.Name}'?", "Delete Map", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
                 try
@@ -231,7 +227,7 @@ public partial class MainWindowViewModel
             const int MapHeight = 32;
 
             // Create a clone for editing to allow cancellation
-            EntityData originalEntity = SelectedEntity;
+            var originalEntity = SelectedEntity;
             EntityData clonedEntity = new(originalEntity.EntityType, originalEntity.X, originalEntity.Y, originalEntity.Condition);
 
             Views.EntityEditorWindow editorWindow = new(clonedEntity, _gameDataService, MapWidth, MapHeight);
@@ -294,7 +290,7 @@ public partial class MainWindowViewModel
             const int MapHeight = 32;
 
             // Create a clone for editing to allow cancellation
-            TransitionData originalTransition = SelectedTransition;
+            var originalTransition = SelectedTransition;
             TransitionData clonedTransition = new(
                 originalTransition.MapId,
                 originalTransition.StartPositionX,

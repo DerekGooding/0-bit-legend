@@ -1,7 +1,4 @@
-﻿using BitLegend.Model;
-using BitLegend.Model.Enums;
-
-namespace BitLegend.Entities.Enemies;
+﻿namespace BitLegend.Entities.Enemies;
 
 public class Bat : BaseEnemy
 {

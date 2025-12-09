@@ -1,6 +1,4 @@
-﻿using BitLegend.Model;
-
-namespace BitLegend.Entities;
+﻿namespace BitLegend.Entities;
 
 public interface ICollider : IWorldSpace
 {

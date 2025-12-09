@@ -1,7 +1,4 @@
-﻿using BitLegend.Model;
-using BitLegend.Model.Enums;
-
-namespace BitLegend.Entities.Pickups;
+﻿namespace BitLegend.Entities.Pickups;
 
 public class Sword : BasePickup
 {

@@ -1,6 +1,4 @@
 ﻿using BitLegend.Entities.Pickups;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
 
 namespace BitLegend.Maps;
 

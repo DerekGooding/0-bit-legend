@@ -1,7 +1,4 @@
-﻿using BitLegend.Content;
-using BitLegend.Entities.Triggers;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
+﻿using BitLegend.Entities.Triggers;
 
 namespace BitLegend.Maps;
 

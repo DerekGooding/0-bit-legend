@@ -1,7 +1,4 @@
-﻿using _0_bit_Legend.Animations;
-using BitLegend.Content;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
+﻿using BitLegend.Animations;
 
 namespace BitLegend.Entities.Triggers;
 

@@ -1,7 +1,4 @@
-﻿using BitLegend.Content;
-using BitLegend.Entities.Enemies;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
+﻿using BitLegend.Entities.Enemies;
 
 namespace BitLegend.Maps;
 

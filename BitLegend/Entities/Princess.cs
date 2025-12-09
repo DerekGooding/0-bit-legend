@@ -1,7 +1,4 @@
-﻿using BitLegend.Model;
-using BitLegend.Model.Enums;
-
-namespace BitLegend.Entities;
+﻿namespace BitLegend.Entities;
 
 public class Princess : IEntity, ICollider
 {

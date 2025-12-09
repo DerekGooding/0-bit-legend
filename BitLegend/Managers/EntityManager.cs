@@ -1,9 +1,5 @@
-﻿using _0_bit_Legend.Entities.Enemies;
-using BitLegend.Content;
+﻿using BitLegend.Entities.Enemies;
 using BitLegend.Entities;
-using BitLegend.Entities.Enemies;
-using BitLegend.Model;
-using BitLegend.Model.Enums;
 
 namespace BitLegend.Managers;
 

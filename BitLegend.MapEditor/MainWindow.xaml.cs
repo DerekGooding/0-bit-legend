@@ -1,29 +1,29 @@
-using _0_bit_legend.MapEditor.ViewModels;
 using BitLegend.MapEditor.ViewModels;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace _0_bit_legend.MapEditor;
+namespace BitLegend.MapEditor;
 
 [Singleton]
 public partial class MainWindow : Window
 {
     private Point _dragStartPoint;
-    private bool _isDrawing; // Flag to indicate if drawing is in progress
-    private MapCharacterViewModel? _lastPaintedCell; // To prevent repainting the same cell
+    private bool _isDrawing;
+    private MapCharacterViewModel? _lastPaintedCell;
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
         DataContext = mainWindowViewModel;
     }
-    private void EntityPalette_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => _dragStartPoint = e.GetPosition(null);
+    private void EntityPalette_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        => _dragStartPoint = e.GetPosition(null);
 
     private void EntityPalette_MouseMove(object sender, MouseEventArgs e)
     {
-        Point mousePos = e.GetPosition(null);
-        Vector diff = _dragStartPoint - mousePos;
+        var mousePos = e.GetPosition(null);
+        var diff = _dragStartPoint - mousePos;
 
         if (e.LeftButton == MouseButtonState.Pressed &&
             (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||

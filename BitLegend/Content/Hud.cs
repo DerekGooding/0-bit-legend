@@ -1,6 +1,4 @@
-﻿using BitLegend.Model;
-
-namespace BitLegend.Content;
+﻿namespace BitLegend.Content;
 
 public static class Hud
 {

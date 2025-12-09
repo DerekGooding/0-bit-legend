@@ -1,16 +1,16 @@
-﻿using BitLegend.MapEditor;
+﻿using BitLegend.MapEditor.Generated;
 using System.Windows.Threading;
 
 
-namespace _0_bit_legend.MapEditor;
+namespace BitLegend.MapEditor;
 
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application
 {
-    //private static readonly Host _host = Host.Initialize();
-    //private T Get<T>() where T : class => _host.Get<T>();
+    private static readonly Host _host = Host.Initialize();
+    public static T Get<T>() where T : class => _host.Get<T>();
 
     public App()
     {
@@ -18,7 +18,14 @@ public partial class App : Application
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
     }
 
-    private void Application_Startup(object sender, StartupEventArgs e) => ThemeManager.ApplyTheme(true);
+    private void Application_Startup(object sender, StartupEventArgs e)
+    {
+        ThemeManager.ApplyTheme(true);
+        var mainMenu = Get<MainWindow>();
+
+
+        mainMenu.Show();
+    }
 
     private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {

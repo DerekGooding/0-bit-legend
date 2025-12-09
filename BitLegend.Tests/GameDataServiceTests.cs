@@ -1,6 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using System.Collections.Generic;
 using BitLegend.MapEditor.Services;
 
 namespace BitLegend.Tests;
@@ -33,9 +30,9 @@ public class GameDataServiceTests
 
         // Check for full type names
         Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.ContainsKey("Octorok"));
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Octorok"].Contains("_0_bit_Legend.Entities.Enemies.Octorok"));
+        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Octorok"].Contains("BitLegend.Entities.Enemies.Octorok"));
         Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName.ContainsKey("Princess"));
-        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Princess"].Contains("_0_bit_Legend.Entities.Princess"));
+        Assert.IsTrue(_gameDataService.EntityTypeToFullTypeName["Princess"].Contains("BitLegend.Entities.Princess"));
     }
 
     [TestMethod]
