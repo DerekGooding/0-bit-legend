@@ -1,6 +1,7 @@
 using System.Windows;
 using _0_bit_legend.MapEditor.ViewModels;
 using _0_bit_legend.MapEditor.Models;
+using _0_bit_legend.MapEditor.Services;
 
 namespace _0_bit_legend.MapEditor.Views;
 
@@ -9,10 +10,10 @@ namespace _0_bit_legend.MapEditor.Views;
 /// </summary>
 public partial class TransitionEditorWindow : Window
 {
-    public TransitionEditorWindow(TransitionData transition)
+    public TransitionEditorWindow(TransitionData transition, GameDataService gameDataService, int mapWidth, int mapHeight)
     {
         InitializeComponent();
-        DataContext = new TransitionEditorViewModel(transition);
+        DataContext = new TransitionEditorViewModel(transition, gameDataService, mapWidth, mapHeight);
         (DataContext as TransitionEditorViewModel).RequestClose += (s, e) => this.Close();
     }
 }

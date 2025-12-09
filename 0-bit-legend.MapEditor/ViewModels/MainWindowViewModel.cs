@@ -9,6 +9,9 @@ using System.IO;
 
 namespace _0_bit_legend.MapEditor.ViewModels;
 
+/// <summary>
+/// ViewModel for the main application window, managing map data, entities, and transitions.
+/// </summary>
 public class MainWindowViewModel : INotifyPropertyChanged
 {
     private ObservableCollection<MapData> _maps = [];
@@ -22,13 +25,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private MapData _selectedMap;
-    public MapData SelectedMap
+    private MapData? _selectedMap; // Made nullable
+    /// <summary>
+    /// Gets or sets the currently selected map.
+    /// </summary>
+    public MapData? SelectedMap
     {
         get => _selectedMap;
         set
         {
-            if (_selectedMap != value)
+            if (!Equals(_selectedMap, value)) // Use Equals for object comparison
             {
                 _selectedMap = value;
                 OnPropertyChanged();
@@ -41,6 +47,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private ObservableCollection<ObservableCollection<MapCharacterViewModel>> _displayMapCharacters = [];
+    /// <summary>
+    /// Gets or sets the 2D collection of <see cref="MapCharacterViewModel"/> for display.
+    /// </summary>
     public ObservableCollection<ObservableCollection<MapCharacterViewModel>> DisplayMapCharacters
     {
         get => _displayMapCharacters;
@@ -52,6 +61,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private EntityData? _selectedEntity;
+    /// <summary>
+    /// Gets or sets the currently selected entity.
+    /// </summary>
     public EntityData? SelectedEntity
     {
         get => _selectedEntity;
@@ -63,6 +75,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private TransitionData? _selectedTransition;
+    /// <summary>
+    /// Gets or sets the currently selected transition.
+    /// </summary>
     public TransitionData? SelectedTransition
     {
         get => _selectedTransition;
@@ -74,6 +89,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private char _currentDrawingCharacter = 'X'; // Default drawing character
+    /// <summary>
+    /// Gets or sets the character used for drawing on the map.
+    /// </summary>
     public char CurrentDrawingCharacter
     {
         get => _currentDrawingCharacter;
@@ -88,6 +106,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private double _cellSize = 16; // Default cell size
+    /// <summary>
+    /// Gets or sets the size of each cell in the map display.
+    /// </summary>
     public double CellSize
     {
         get => _cellSize;
@@ -101,24 +122,26 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private ObservableCollection<string> _availableEntityTypes = [];
-    public ObservableCollection<string> AvailableEntityTypes
-    {
-        get => _availableEntityTypes;
-        set
-        {
-            _availableEntityTypes = value;
-            OnPropertyChanged();
-        }
-    }
+    // Removed AvailableEntityTypes property as it will be accessed via GameDataService
+    // private ObservableCollection<string> _availableEntityTypes = [];
+    // public ObservableCollection<string> AvailableEntityTypes
+    // {
+    //     get => _availableEntityTypes;
+    //     set
+    //     {
+    //         _availableEntityTypes = value;
+    //         OnPropertyChanged();
+    //     }
+    // }
 
     private readonly MapFileParserService _mapFileParserService;
     private readonly MapFileSaverService _mapFileSaverService;
+    private readonly GameDataService _gameDataService; // Added
 
     public ICommand SaveMapCommand { get; }
     public ICommand NewMapCommand { get; }
     public ICommand DeleteMapCommand { get; }
-    public ICommand ToggleThemeCommand { get; } // Added for theme switching
+    public ICommand ToggleThemeCommand { get; }
     public ICommand AddEntityCommand { get; }
     public ICommand EditEntityCommand { get; }
     public ICommand DeleteEntityCommand { get; }
@@ -129,22 +152,24 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public MainWindowViewModel()
     {
         _mapFileParserService = new MapFileParserService();
-        _mapFileSaverService = new MapFileSaverService();
+        _gameDataService = new GameDataService(); // Initialized
+        _mapFileSaverService = new MapFileSaverService(_gameDataService); // Modified here
 
         LoadMaps();
         if (Maps.Count > 0)
         {
             SelectedMap = Maps[0];
         }
-        _selectedEntity = new EntityData(); // Initialize to prevent nullable warning
-        _selectedTransition = new TransitionData(); // Initialize to prevent nullable warning
+        _selectedEntity = new EntityData();
+        _selectedTransition = new TransitionData();
 
-        PopulateAvailableEntityTypes();
+        // Removed PopulateAvailableEntityTypes();
+        // PopulateAvailableEntityTypes();
 
         SaveMapCommand = new RelayCommand(ExecuteSaveMap, CanExecuteSaveMap);
         NewMapCommand = new RelayCommand(ExecuteNewMap, CanExecuteNewMap);
         DeleteMapCommand = new RelayCommand(ExecuteDeleteMap, CanExecuteDeleteMap);
-        ToggleThemeCommand = new RelayCommand(ExecuteToggleTheme); // Initialize command
+        ToggleThemeCommand = new RelayCommand(ExecuteToggleTheme);
         AddEntityCommand = new RelayCommand(ExecuteAddEntity, CanExecuteAddEntity);
         EditEntityCommand = new RelayCommand(ExecuteEditEntity, CanExecuteEditEntity);
         DeleteEntityCommand = new RelayCommand(ExecuteDeleteEntity, CanExecuteDeleteEntity);
@@ -155,34 +180,36 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     private void ExecuteToggleTheme(object parameter) => ThemeManager.ToggleTheme();
 
-    private void PopulateAvailableEntityTypes()
-    {
-        AvailableEntityTypes.Add("Door");
-        AvailableEntityTypes.Add("Hero");
-        AvailableEntityTypes.Add("Princess");
-        AvailableEntityTypes.Add("RaftInUse");
-        AvailableEntityTypes.Add("SwordInUse");
-        AvailableEntityTypes.Add("Bat");
-        AvailableEntityTypes.Add("Dragon");
-        AvailableEntityTypes.Add("Fireball");
-        AvailableEntityTypes.Add("Octorok");
-        AvailableEntityTypes.Add("Spider");
-        AvailableEntityTypes.Add("Armor");
-        AvailableEntityTypes.Add("Key");
-        AvailableEntityTypes.Add("Raft");
-        AvailableEntityTypes.Add("Rupee");
-        AvailableEntityTypes.Add("Sword");
-        AvailableEntityTypes.Add("EnterCastle");
-        AvailableEntityTypes.Add("EnterCave0");
-        AvailableEntityTypes.Add("EnterCave1");
-        AvailableEntityTypes.Add("NewArea");
-        AvailableEntityTypes.Add("Water");
-    }
+    // Removed PopulateAvailableEntityTypes method
+    // private void PopulateAvailableEntityTypes()
+    // {
+    //     AvailableEntityTypes.Add("Door");
+    //     AvailableEntityTypes.Add("Hero");
+    //     AvailableEntityTypes.Add("Princess");
+    //     AvailableEntityTypes.Add("RaftInUse");
+    //     AvailableEntityTypes.Add("SwordInUse");
+    //     AvailableEntityTypes.Add("Bat");
+    //     AvailableEntityTypes.Add("Dragon");
+    //     AvailableEntityTypes.Add("Fireball");
+    //     AvailableEntityTypes.Add("Octorok");
+    //     AvailableEntityTypes.Add("Spider");
+    //     AvailableEntityTypes.Add("Armor");
+    //     AvailableEntityTypes.Add("Key");
+    //     AvailableEntityTypes.Add("Raft");
+    //     AvailableEntityTypes.Add("Rupee");
+    //     AvailableEntityTypes.Add("Sword");
+    //     AvailableEntityTypes.Add("EnterCastle");
+    //     AvailableEntityTypes.Add("EnterCave0");
+    //     AvailableEntityTypes.Add("EnterCave1");
+    //     AvailableEntityTypes.Add("NewArea");
+    //     AvailableEntityTypes.Add("Water");
+    // }
 
     public void AddEntityFromDragDrop(string entityType, int x, int y)
     {
         if (SelectedMap != null)
         {
+            // Ensure the condition is always "true" when adding via drag and drop
             SelectedMap.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
             OnPropertyChanged(nameof(SelectedMap.EntityLocations));
         }
@@ -318,8 +345,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         if (SelectedMap != null)
         {
+            // Placeholder map dimensions for now
+            const int MapWidth = 32;
+            const int MapHeight = 32;
+
             EntityData newEntity = new("NewEntity", 0, 0, "true");
-            Views.EntityEditorWindow editorWindow = new(newEntity);
+            Views.EntityEditorWindow editorWindow = new(newEntity, _gameDataService, MapWidth, MapHeight);
             editorWindow.ShowDialog();
 
             if (editorWindow.DataContext is EntityEditorViewModel viewModel && viewModel.Entity != null)
@@ -335,11 +366,15 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         if (SelectedMap != null && SelectedEntity != null)
         {
+            // Placeholder map dimensions for now
+            const int MapWidth = 32;
+            const int MapHeight = 32;
+
             // Create a clone for editing to allow cancellation
             EntityData originalEntity = SelectedEntity;
             EntityData clonedEntity = new(originalEntity.EntityType, originalEntity.X, originalEntity.Y, originalEntity.Condition);
 
-            Views.EntityEditorWindow editorWindow = new(clonedEntity);
+            Views.EntityEditorWindow editorWindow = new(clonedEntity, _gameDataService, MapWidth, MapHeight);
             editorWindow.ShowDialog();
 
             if (editorWindow.DataContext is EntityEditorViewModel viewModel && viewModel.Entity != null)
@@ -373,8 +408,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         if (SelectedMap != null)
         {
+            // Placeholder map dimensions for now
+            const int MapWidth = 32;
+            const int MapHeight = 32;
+
             TransitionData newTransition = new("MainMap0", 0, 0, "Up", 1, 1, 0, 0);
-            Views.TransitionEditorWindow editorWindow = new(newTransition);
+            Views.TransitionEditorWindow editorWindow = new(newTransition, _gameDataService, MapWidth, MapHeight);
             editorWindow.ShowDialog();
 
             if (editorWindow.DataContext is TransitionEditorViewModel viewModel && viewModel.Transition != null)
@@ -390,6 +429,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         if (SelectedMap != null && SelectedTransition != null)
         {
+            // Placeholder map dimensions for now
+            const int MapWidth = 32;
+            const int MapHeight = 32;
+
             // Create a clone for editing to allow cancellation
             TransitionData originalTransition = SelectedTransition;
             TransitionData clonedTransition = new(
@@ -403,7 +446,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 originalTransition.PositionY
             );
 
-            Views.TransitionEditorWindow editorWindow = new(clonedTransition);
+            Views.TransitionEditorWindow editorWindow = new(clonedTransition, _gameDataService, MapWidth, MapHeight);
             editorWindow.ShowDialog();
 
             if (editorWindow.DataContext is TransitionEditorViewModel viewModel && viewModel.Transition != null)

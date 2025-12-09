@@ -67,7 +67,7 @@ public class MapFileParserService
         var entityLocationsMatch = Regex.Match(fileContent, @"public override List<EntityLocation> EntityLocations { get; } =[\s\S]*?\[(?<entities>[\s\S]*?)\];");
         if (entityLocationsMatch.Success)
         {
-            var entityMatches = Regex.Matches(entityLocationsMatch.Groups["entities"].Value, @"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>[^)]+)\)");
+            var entityMatches = Regex.Matches(entityLocationsMatch.Groups["entities"].Value, @"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>.*?)\)"); // Updated regex
             foreach (Match entityMatch in entityMatches)
             {
                 mapData.EntityLocations.Add(new EntityData(
@@ -86,8 +86,15 @@ public class MapFileParserService
             var transitionMatches = Regex.Matches(areaTransitionsMatch.Groups["transitions"].Value, @"new\(MapId:\s*WorldMap.MapName.(?<mapId>[^,]+),\s*StartPosition:\s*new\((?<startX>\d+),\s*(?<startY>\d+)\),\s*DirectionType.(?<direction>[^,]+),\s*Size:\s*new\((?<sizeX>\d+),\s*(?<sizeY>\d+)\),\s*Position:\s*new\((?<posX>\d+),\s*(?<posY>\d+)\)\)");
             foreach (Match transitionMatch in transitionMatches)
             {
+                string mapId = transitionMatch.Groups["mapId"].Value;
+                // Remove "WorldMap.MapName." prefix
+                if (mapId.StartsWith("WorldMap.MapName."))
+                {
+                    mapId = mapId.Replace("WorldMap.MapName.", "");
+                }
+
                 mapData.AreaTransitions.Add(new TransitionData(
-                    transitionMatch.Groups["mapId"].Value,
+                    mapId, // Use the cleaned mapId
                     int.Parse(transitionMatch.Groups["startX"].Value),
                     int.Parse(transitionMatch.Groups["startY"].Value),
                     transitionMatch.Groups["direction"].Value,

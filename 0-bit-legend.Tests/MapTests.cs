@@ -92,7 +92,16 @@ public sealed class MapTests
         }
     }
 
-    private static bool CollidesInMap(Vector2 point, string[] map) => map[point.X][point.Y] == ' ';
+    private static bool CollidesInMap(Vector2 point, string[] map)
+    {
+        // Check bounds before accessing
+        if (point.Y < 0 || point.Y >= map.Length)
+            return true; // Out of bounds in Y, consider it a collision
+        if (point.X < 0 || point.X >= map[point.Y].Length)
+            return true; // Out of bounds in X, consider it a collision
+
+        return map[point.Y][point.X] == ' ';
+    }
 
     private static List<Vector2> PointsFromSize(Vector2 Position, Vector2 Size)
     {
