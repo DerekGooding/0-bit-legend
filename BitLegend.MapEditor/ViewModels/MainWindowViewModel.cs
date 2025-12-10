@@ -22,8 +22,22 @@ public partial class MainWindowViewModel
     [Bind] private EntityData? _selectedEntity;
     [Bind] private TransitionData? _selectedTransition;
     [Bind] private char _currentDrawingCharacter = 'X';
-    [Bind] private double _cellSize = 16;
+    [Bind] private double _cellSize = 30;
     [Bind] private PaintingMode _paintingMode = PaintingMode.Brush;
+
+    [Bind] private int _mapRows;
+    public int MapRows
+    {
+        get => _mapRows;
+        set => SetProperty(ref _mapRows, value);
+    }
+
+    [Bind] private int _mapColumns;
+    public int MapColumns
+    {
+        get => _mapColumns;
+        set => SetProperty(ref _mapColumns, value);
+    }
 
     public List<string> AvailableEntityTypes { get; }
 
@@ -49,7 +63,7 @@ public partial class MainWindowViewModel
     }
 
     [Command] public void ToggleTheme() => ThemeManager.ToggleTheme();
-    [Command] public void NewMap()
+    [Command] public async void NewMap()
     {
         // For simplicity, using MessageBox.Show for input. In a real app, use a custom dialog.
         var newMapName = Microsoft.VisualBasic.Interaction.InputBox("Enter new map name:", "New Map", "NewMap");
@@ -76,7 +90,7 @@ public partial class MainWindowViewModel
 
             try
             {
-                _mapFileSaverService.SaveMap(newMap);
+                await _mapFileSaverService.SaveMapAsync(newMap);
                 MessageBox.Show($"Map '{newMapName}' created successfully!", "New Map", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (System.Exception ex)
@@ -105,8 +119,8 @@ public partial class MainWindowViewModel
             {
                 try
                 {
-                    var fileName = $"{SelectedMap.Name}.cs";
-                    var filePath = Path.Combine(MapFileSaverService.AbsoluteGameMapsPath, fileName);
+                    var fileName = $"{SelectedMap.Name}.json";
+                    var filePath = Path.Combine(MapFileParserService.GetAbsoluteGameMapsPath(), fileName);
 
                     if (File.Exists(filePath))
                     {
@@ -124,7 +138,7 @@ public partial class MainWindowViewModel
             }
         }
     }
-    [Command(CanExecuteMethodName = nameof(IsSelectedMap))] public void SaveMap()
+    [Command(CanExecuteMethodName = nameof(IsSelectedMap))] public async Task SaveMap()
     {
         if (SelectedMap != null)
         {
@@ -137,7 +151,7 @@ public partial class MainWindowViewModel
                     SelectedMap.Raw.Add(line);
                 }
 
-                _mapFileSaverService.SaveMap(SelectedMap);
+                await _mapFileSaverService.SaveMapAsync(SelectedMap);
                 MessageBox.Show($"Map '{SelectedMap.Name}' saved successfully!", "Save Map", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (System.Exception ex)
@@ -288,10 +302,16 @@ public partial class MainWindowViewModel
                 tempRows.Add(tempRow);
             }
             DisplayMapCharacters = tempRows;
+
+            // Update MapRows and MapColumns
+            MapRows = tempRows.Count;
+            MapColumns = tempRows.Count > 0 ? tempRows[0].Count : 0;
         }
         else
         {
             DisplayMapCharacters = [];
+            MapRows = 0;
+            MapColumns = 0;
         }
 
     }

@@ -22,12 +22,49 @@ public partial class MainWindow : Window
     private SelectionAdorner? _selectionAdorner;
     private Point _selectionStartPoint;
     private IResizableAndMovable? _selectedResizableAndMovable;
+    private double _cachedCellWidth;
+    private double _cachedCellHeight;
 
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
         DataContext = mainWindowViewModel;
+        this.Loaded += MainWindow_Loaded;
+    }
+
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        CacheCellDimensions();
+    }
+
+    private void MapItemsControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        CacheCellDimensions(); // Ensure dimensions are cached when the control is loaded or reloaded
+    }
+
+    private void MapItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        CacheCellDimensions(); // Recache dimensions if the size of the control changes
+    }
+
+    private void CacheCellDimensions()
+    {
+        // Try to find the TextBlock inside the Grid within the ItemsControl
+        // This relies on the structure from Task 1.2
+        var firstCellTextBlock = FindVisualChild<TextBlock>(MapItemsControl);
+        if (firstCellTextBlock != null)
+        {
+            _cachedCellWidth = firstCellTextBlock.ActualWidth;
+            _cachedCellHeight = firstCellTextBlock.ActualHeight;
+        }
+        else
+        {
+            // Fallback for when no map is loaded yet or structure is different
+            // Could use a default value or try to find a Grid directly and infer
+            _cachedCellWidth = 12; // Default reasonable value
+            _cachedCellHeight = 12; // Default reasonable value
+        }
     }
     private void EntityPalette_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         => _dragStartPoint = e.GetPosition(null);
@@ -101,16 +138,9 @@ public partial class MainWindow : Window
                 // Add a new adorner if an element and data are provided
                 if (element != null && data != null && DataContext is MainWindowViewModel viewModel)
                 {
-                    // Determine the actual pixel size of one character cell
-                    double cellWidth = 0;
-                    double cellHeight = 0;
-        
-                    var firstCell = FindVisualChild<TextBox>(MapItemsControl);
-                    if (firstCell != null)
-                    {
-                        cellWidth = firstCell.ActualWidth;
-                        cellHeight = firstCell.ActualHeight;
-                    }
+                    // Use cached cell dimensions
+                    double cellWidth = _cachedCellWidth;
+                    double cellHeight = _cachedCellHeight;
         
                     // Get map dimensions in cells
                     int mapWidthInCells = viewModel.SelectedMap?.Raw[0]?.Length ?? 0;
@@ -171,6 +201,16 @@ public partial class MainWindow : Window
                                 // If no entity or transition was clicked, capture mouse for potential brush/selection drag
                                 (mapItemsControl as UIElement)?.CaptureMouse();
                                 e.Handled = true;
+
+                                // Additionally, calculate grid coordinates for the click point,
+                                // which can be used by subsequent logic if needed for single cell interaction.
+                                if (_cachedCellWidth > 0 && _cachedCellHeight > 0)
+                                {
+                                    int clickedGridX = (int)(_dragStartPoint.X / _cachedCellWidth);
+                                    int clickedGridY = (int)(_dragStartPoint.Y / _cachedCellHeight);
+                                    // These clickedGridX, clickedGridY can be used here or passed to ViewModel
+                                    // For now, just calculating them.
+                                }
                             }
                         }
                     
@@ -258,50 +298,54 @@ public partial class MainWindow : Window
 
     private void ProcessBrushDrawing(ItemsControl mapItemsControl, Point mousePosition)
     {
-        // Get the current view model from the DataContext
         if (DataContext is not MainWindowViewModel viewModel) return;
 
-        // Perform a hit test to find the TextBox at the current mouse position
-        VisualTreeHelper.HitTest(mapItemsControl, null,
-            new HitTestResultCallback(result =>
+        if (_cachedCellWidth == 0 || _cachedCellHeight == 0)
+        {
+            CacheCellDimensions();
+            if (_cachedCellWidth == 0 || _cachedCellHeight == 0) return; // Still zero, cannot proceed
+        }
+
+        int gridX = (int)(mousePosition.X / _cachedCellWidth);
+        int gridY = (int)(mousePosition.Y / _cachedCellHeight);
+
+        // Boundary checks
+        if (gridY < 0 || gridY >= viewModel.DisplayMapCharacters.Count ||
+            gridX < 0 || gridX >= viewModel.DisplayMapCharacters[gridY].Count)
+        {
+            return;
+        }
+
+        var currentCell = viewModel.DisplayMapCharacters[gridY][gridX];
+
+        if (currentCell != null && currentCell != _lastPaintedCell)
+        {
+            if (viewModel.SelectedCharacterBrush?.Count > 0)
             {
-                var visual = result.VisualHit;
-                while (visual is not null and not TextBox)
+                // Apply the selected brush
+                for (var y = 0; y < viewModel.SelectedCharacterBrush.Count; y++)
                 {
-                    visual = VisualTreeHelper.GetParent(visual);
-                }
-
-                if (visual is TextBox hitTextBox && hitTextBox.DataContext is MapCharacterViewModel currentCell && currentCell != _lastPaintedCell)
-                {
-                    if (viewModel.SelectedCharacterBrush?.Count > 0)
+                    var brushRow = viewModel.SelectedCharacterBrush[y];
+                    for (var x = 0; x < brushRow.Count; x++)
                     {
-                        // Apply the selected brush
-                        for (var y = 0; y < viewModel.SelectedCharacterBrush.Count; y++)
-                        {
-                            var brushRow = viewModel.SelectedCharacterBrush[y];
-                            for (var x = 0; x < brushRow.Count; x++)
-                            {
-                                var targetX = currentCell.X + x;
-                                var targetY = currentCell.Y + y;
+                        var targetX = currentCell.X + x;
+                        var targetY = currentCell.Y + y;
 
-                                if (targetY >= 0 && targetY < viewModel.DisplayMapCharacters.Count &&
-                                    targetX >= 0 && targetX < viewModel.DisplayMapCharacters[targetY].Count)
-                                {
-                                    viewModel.DisplayMapCharacters[targetY][targetX].Character = brushRow[x];
-                                }
-                            }
+                        if (targetY >= 0 && targetY < viewModel.DisplayMapCharacters.Count &&
+                            targetX >= 0 && targetX < viewModel.DisplayMapCharacters[targetY].Count)
+                        {
+                            viewModel.DisplayMapCharacters[targetY][targetX].Character = brushRow[x];
                         }
                     }
-                    else
-                    {
-                        // Fallback to single character drawing
-                        currentCell.Character = viewModel.CurrentDrawingCharacter;
-                    }
-                    _lastPaintedCell = currentCell; // Mark this cell as painted
                 }
-                return HitTestResultBehavior.Continue; // Continue hit testing
-            }),
-            new PointHitTestParameters(mousePosition));
+            }
+            else
+            {
+                // Fallback to single character drawing
+                currentCell.Character = viewModel.CurrentDrawingCharacter;
+            }
+            _lastPaintedCell = currentCell; // Mark this cell as painted
+        }
     }
 
     private void ProcessSelectionDrawing(ItemsControl mapItemsControl, Point mousePosition)
@@ -313,16 +357,17 @@ public partial class MainWindow : Window
     {
         if (DataContext is not MainWindowViewModel viewModel) return;
 
-        // Determine the actual pixel size of one character cell
-        if (viewModel.DisplayMapCharacters.Count == 0 || viewModel.DisplayMapCharacters[0].Count == 0) return;
+        // Determine the actual pixel size of one character cell using cached values
+        var cellWidth = _cachedCellWidth;
+        var cellHeight = _cachedCellHeight;
 
-        var firstCell = FindVisualChild<TextBox>(mapItemsControl);
-        if (firstCell == null) return;
-
-        var cellWidth = firstCell.ActualWidth;
-        var cellHeight = firstCell.ActualHeight;
-
-        if (cellWidth == 0 || cellHeight == 0) return;
+        if (cellWidth == 0 || cellHeight == 0)
+        {
+            CacheCellDimensions(); // Recache if somehow zero
+            cellWidth = _cachedCellWidth;
+            cellHeight = _cachedCellHeight;
+            if (cellWidth == 0 || cellHeight == 0) return; // Still zero, something is wrong
+        }
 
         // Convert pixel coordinates to grid coordinates
         var startGridX = (int)Math.Floor(Math.Min(startPoint.X, endPoint.X) / cellWidth);
@@ -384,6 +429,54 @@ public partial class MainWindow : Window
             {
                 SetActiveAdorner(null, null); // Clear adorner if no transition is selected
             }
+        }
+    }
+
+    private void CharacterTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is TextBlock textBlock)
+        {
+            var parentGrid = VisualTreeHelper.GetParent(textBlock) as Grid;
+            if (parentGrid != null)
+            {
+                var editTextBox = parentGrid.FindName("CharacterEditTextBox") as TextBox;
+                if (editTextBox != null)
+                {
+                    textBlock.Visibility = Visibility.Collapsed;
+                    editTextBox.Visibility = Visibility.Visible;
+                    editTextBox.Focus();
+                    editTextBox.SelectAll();
+                }
+            }
+        }
+        e.Handled = true;
+    }
+
+    private void CharacterEditTextBox_LostFocus(object sender, RoutedEventArgs e)
+    {
+        if (sender is TextBox editTextBox)
+        {
+            var parentGrid = VisualTreeHelper.GetParent(editTextBox) as Grid;
+            if (parentGrid != null)
+            {
+                var textBlock = parentGrid.FindName("CharacterTextBlock") as TextBlock;
+                if (textBlock != null)
+                {
+                    editTextBox.Visibility = Visibility.Collapsed;
+                    textBlock.Visibility = Visibility.Visible;
+                }
+            }
+        }
+    }
+
+    private void CharacterEditTextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            // Lose focus to commit the change and hide the TextBox
+            var textBox = sender as TextBox;
+            var scope = FocusManager.GetFocusScope(textBox);
+            FocusManager.SetFocusedElement(scope, null); // This will cause LostFocus
         }
     }
 }

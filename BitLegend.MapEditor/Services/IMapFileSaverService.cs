@@ -5,4 +5,5 @@ namespace BitLegend.MapEditor.Services;
 public interface IMapFileSaverService
 {
     public void SaveMap(MapData mapData);
+    public Task SaveMapAsync(MapData mapData);
 }

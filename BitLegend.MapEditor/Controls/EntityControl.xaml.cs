@@ -18,10 +18,19 @@ public partial class EntityControl : UserControl
         set => SetValue(EntityDataProperty, value);
     }
 
+    public static readonly DependencyProperty CellSizeProperty =
+        DependencyProperty.Register(nameof(CellSize), typeof(double), typeof(EntityControl), new PropertyMetadata(16.0, OnCellSizeChanged));
+
+    public double CellSize
+    {
+        get => (double)GetValue(CellSizeProperty);
+        set => SetValue(CellSizeProperty, value);
+    }
+
     public EntityControl()
     {
         InitializeComponent();
-        this.DataContextChanged += EntityControl_DataContextChanged;
+        // Removed: this.DataContextChanged += EntityControl_DataContextChanged;
     }
 
     private static void OnEntityDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -33,11 +42,11 @@ public partial class EntityControl : UserControl
         }
     }
 
-    private void EntityControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private static void OnCellSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (e.NewValue is EntityData newData)
+        if (d is EntityControl entityControl && entityControl.EntityData != null)
         {
-            UpdateLayoutFromEntityData(newData);
+            entityControl.UpdateLayoutFromEntityData(entityControl.EntityData);
         }
     }
 
@@ -46,12 +55,12 @@ public partial class EntityControl : UserControl
         if (data != null)
         {
             // Set Width and Height based on EntityData properties
-            this.Width = data.Width * 30; // Assuming 30 pixels per cell
-            this.Height = data.Height * 30; // Assuming 30 pixels per cell
+            this.Width = data.Width * CellSize;
+            this.Height = data.Height * CellSize;
 
             // Set Canvas.Left and Canvas.Top based on EntityData properties
-            Canvas.SetLeft(this, data.X * 30);
-            Canvas.SetTop(this, data.Y * 30);
+            Canvas.SetLeft(this, data.X * CellSize);
+            Canvas.SetTop(this, data.Y * CellSize);
         }
     }
 }

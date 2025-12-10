@@ -4,6 +4,6 @@ namespace BitLegend.MapEditor.Services;
 
 public interface IMapFileParserService
 {
-    public List<MapData> LoadMaps();
+    public MapData? LoadMap(string filePath);
     public Task<List<MapData>> LoadMapsAsync();
 }

@@ -86,10 +86,13 @@
                                                   HorizontalAlignment="Left" VerticalAlignment="Top"
                                                   PreviewMouseDown="MapDisplay_PreviewMouseDown"
                                                   PreviewMouseMove="MapDisplay_PreviewMouseMove"
-                                                  PreviewMouseUp="MapDisplay_PreviewMouseUp">
+                                                  PreviewMouseUp="MapDisplay_PreviewMouseUp"
+                                                  Loaded="MapItemsControl_Loaded"
+                                                  SizeChanged="MapItemsControl_SizeChanged">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Vertical"/>
+                                                <UniformGrid Rows="{Binding MapRows}"
+                                                             Columns="{Binding MapColumns}" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
@@ -98,19 +101,31 @@
                                                               HorizontalAlignment="Left">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
-                                                            <StackPanel Orientation="Horizontal"/>
+                                                            <UniformGrid Columns="{Binding Count}"/>
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBox Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                                                     FontFamily="Consolas" FontSize="12"
-                                                                     MaxLength="1"
-                                                                     BorderThickness="0"
-                                                                     Background="Transparent"
-                                                                     Foreground="{DynamicResource ControlForegroundColor}"
-                                                                     Padding="0" Margin="0"
-                                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                                            <Grid>
+                                                                <TextBlock x:Name="CharacterTextBlock"
+                                                                           Text="{Binding Character, Mode=TwoWay}"
+                                                                           FontFamily="Consolas" FontSize="12"
+                                                                           Foreground="{DynamicResource ControlForegroundColor}"
+                                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                           MouseLeftButtonDown="CharacterTextBlock_MouseLeftButtonDown"/>
+                                                                <TextBox x:Name="CharacterEditTextBox"
+                                                                         Text="{Binding Character, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                                         FontFamily="Consolas" FontSize="12"
+                                                                         MaxLength="1"
+                                                                         BorderThickness="0"
+                                                                         Background="{DynamicResource BackgroundColor}"
+                                                                         Foreground="{DynamicResource ControlForegroundColor}"
+                                                                         Padding="0" Margin="0"
+                                                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                                         Visibility="Collapsed"
+                                                                         LostFocus="CharacterEditTextBox_LostFocus"
+                                                                         KeyDown="CharacterEditTextBox_KeyDown"/>
+                                                            </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
@@ -127,7 +142,8 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <controls:EntityControl EntityData="{Binding}"/>
+                                                <controls:EntityControl EntityData="{Binding}"
+                                                                        CellSize="{Binding DataContext.CellSize, RelativeSource={RelativeSource AncestorType=Window}}"/>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
