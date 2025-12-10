@@ -31,7 +31,7 @@ public class SwordInUse : IEntity, ICollider, IUsable
         { DirectionType.Right,
         [
             "|  ",
-            "|S ",
+            "|SS",
             "|  ",
         ] },
     };

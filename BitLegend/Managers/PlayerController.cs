@@ -41,10 +41,10 @@ public class PlayerController
         _sword.Direction = _player.Direction;
         _sword.Position = _player.Direction switch
         {
-            DirectionType.Up => _player.Position.Offset(0, - _sword.Size.Y),
-            DirectionType.Down => _player.Position.Offset(0, _player.Size.Y + 1),
-            DirectionType.Left => _player.Position.Offset(- _sword.Size.X, 0),
-            DirectionType.Right => _player.Position.Offset(_player.Size.X + 1, 0),
+            DirectionType.Up => _player.Position.Offset(1, - _sword.Size.Y),
+            DirectionType.Down => _player.Position.Offset(1, _player.Size.Y + 1),
+            DirectionType.Left => _player.Position.Offset(- _sword.Size.X - 1, 0),
+            DirectionType.Right => _player.Position.Offset(_player.Size.X + 1, 1),
             _ => throw new NotImplementedException()
         };
     }

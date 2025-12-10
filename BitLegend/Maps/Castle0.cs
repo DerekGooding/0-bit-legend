@@ -1,6 +1,4 @@
 using BitLegend.Entities.Triggers;
-using BitLegend.Entities.Enemies;
-using BitLegend.Entities.Pickups;
 
 namespace BitLegend.Maps;
 public class Castle0 : BaseMap
