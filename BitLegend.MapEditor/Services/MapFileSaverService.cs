@@ -26,51 +26,42 @@ public class MapFileSaverService(GameDataService gameDataService) : IMapFileSave
     {
         StringBuilder sb = new();
 
-        sb.AppendLine("using BitLegend.Content;");
-        sb.AppendLine("using BitLegend.Entities;");
-        sb.AppendLine("using BitLegend.Model;");
-        sb.AppendLine("using BitLegend.Model.Enums;");
-
-        sb.AppendLine("");
-        sb.AppendLine("namespace BitLegend.Maps");
-        sb.AppendLine("{");
-        sb.AppendLine($"    public class {mapData.Name} : BaseMap");
-        sb.AppendLine("    {");
-        sb.AppendLine($"        public override string Name => \"{mapData.Name}\";");
+        sb.AppendLine("namespace BitLegend.Maps;");
+        sb.AppendLine($"public class {mapData.Name} : BaseMap");
+        sb.AppendLine(" {");
+        sb.AppendLine($"    public override string Name => \"{mapData.Name}\";");
         sb.AppendLine("");
 
         // Raw map data
-        sb.AppendLine("        public override string[] Raw => [");
-        sb.AppendLine("        {");
+        sb.AppendLine("     public override string[] Raw => [");
         foreach (var line in mapData.Raw)
         {
-            sb.AppendLine($"            \"{line}\",");
+            sb.AppendLine($"        \"{line}\",");
         }
-        sb.AppendLine("        ];");
+        sb.AppendLine("     ];");
         sb.AppendLine("");
 
         // Entity Locations
-        sb.AppendLine("        public override List<EntityLocation> EntityLocations { get; } =");
-        sb.AppendLine("        {");
+        sb.AppendLine("     public override List<EntityLocation> EntityLocations { get; } =");
+        sb.AppendLine("     [");
         foreach (var entity in mapData.EntityLocations)
         {
             var fullTypeName = _gameDataService.EntityTypeToFullTypeName[entity.EntityType]; // Get full type name
-            sb.AppendLine($"            new(typeof({fullTypeName}), new({entity.X}, {entity.Y}), () => {entity.Condition}),");
+            sb.AppendLine($"        new(typeof({fullTypeName}), new({entity.X}, {entity.Y}), () => {entity.Condition}),");
         }
-        sb.AppendLine("        }"); // Close EntityLocations list
+        sb.AppendLine("     ]"); // Close EntityLocations list
         sb.AppendLine("");
 
         // Area Transitions
-        sb.AppendLine("        public override List<NewAreaInfo> AreaTransitions { get; } =");
-        sb.AppendLine("        {");
+        sb.AppendLine("     public override List<NewAreaInfo> AreaTransitions { get; } =");
+        sb.AppendLine("     [");
         foreach (var transition in mapData.AreaTransitions)
         {
             // Ensure MapId and DirectionType are correctly referenced as enums
-            sb.AppendLine($"            new(MapId: WorldMap.MapName.{transition.MapId}, StartPosition: new({transition.StartPositionX}, {transition.StartPositionY}), Direction: DirectionType.{transition.DirectionType}, Size: new({transition.SizeX}, {transition.SizeY}), Position: new({transition.PositionX}, {transition.PositionY})),");
+            sb.AppendLine($"        new(MapId: WorldMap.MapName.{transition.MapId}, StartPosition: new({transition.StartPositionX}, {transition.StartPositionY}), StartDirection: DirectionType.{transition.DirectionType}, Size: new({transition.SizeX}, {transition.SizeY}), Position: new({transition.PositionX}, {transition.PositionY})),");
         }
-        sb.AppendLine("        };"); // Close AreaTransitions list
-        sb.AppendLine("    }"); // Close class
-        sb.AppendLine("}"); // Close namespace
+        sb.AppendLine("     ];"); // Close AreaTransitions list
+        sb.AppendLine(" }"); // Close class
         return sb.ToString();
     }
 }

@@ -1,10 +1,8 @@
-﻿using BitLegend.Entities.Triggers;
-
-namespace BitLegend.Maps;
+﻿namespace BitLegend.Maps;
 
 public class Castle0 : BaseMap
 {
-    public override string Name => "Castle 0";
+    public override string Name => "Castle0";
     public override string[] Raw =>[
 "======================================================================================================",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=",
@@ -43,7 +41,7 @@ public class Castle0 : BaseMap
 
     public override List<EntityLocation> EntityLocations { get; } =
     [
-        new(typeof(EnterCastle), new(47,15), () => true),
+        new(typeof(Entities.Triggers.EnterCastle), new(47,15), () => true),
     ];
 
     public override List<NewAreaInfo> AreaTransitions { get; } =

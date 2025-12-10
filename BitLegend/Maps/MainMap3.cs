@@ -4,7 +4,7 @@ namespace BitLegend.Maps;
 
 public class MainMap3 : BaseMap
 {
-    public override string Name => "Main Map 3";
+    public override string Name => "MainMap3";
     public override string[] Raw =>[
 "=============================                                                  =======================",
 "=XXXXXXXXXXXXXXXXXXXXXXXXXXX=                                                  =XXXXXXXXXXXXXXXXXXXXX=",

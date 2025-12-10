@@ -4,7 +4,7 @@ namespace BitLegend.Maps;
 
 public class Castle4 : BaseMap
 {
-    public override string Name => "Castle 4";
+    public override string Name => "Castle4";
     public override string[] Raw =>[
 "======================================================================================================",
 "=////////////////////////////////////////////////////////////////////////////////////////////////////=",

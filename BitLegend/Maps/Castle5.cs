@@ -2,7 +2,7 @@
 
 public class Castle5 : BaseMap
 {
-    public override string Name => "Castle 5";
+    public override string Name => "Castle5";
     public override string[] Raw =>[
 "======================================================================================================",
 "=////////////////////////////////////////////////////////////////////////////////////////////////////=",
