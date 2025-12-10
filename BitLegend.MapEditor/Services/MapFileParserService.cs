@@ -54,66 +54,130 @@ public partial class MapFileParserService : IMapFileParserService
             raw.Add(lineMatch.Groups["line"].Value);
         }
 
-
         MapData mapData = new(name, [.. raw]);
 
         // --- Extract EntityLocations ---
-        var entityLocationsMatch = ParseEntityLocations().Match(fileContent);
-        if (entityLocationsMatch.Success)
+        var entitiesContent = ParseListContent(fileContent, "EntityLocations");
+        if (!string.IsNullOrEmpty(entitiesContent))
         {
-            var entitiesContent = entityLocationsMatch.Groups["entities_content"].Value;
-            if (entitiesContent.Contains("["))
+            var entityDefinitions = SplitListItems(entitiesContent);
+            foreach (var entityDef in entityDefinitions)
             {
-                var entities = entitiesContent.Substring(entitiesContent.IndexOf('[') + 1);
-                entities = entities.Substring(0, entities.LastIndexOf(']'));
-
-                foreach (Match entityMatch in ParseEntities().Matches(entities))
+                var entityData = ParseEntityData(entityDef);
+                if (entityData != null)
                 {
-                    mapData.EntityLocations.Add(new EntityData(
-                        entityMatch.Groups["type"].Value,
-                        int.Parse(entityMatch.Groups["x"].Value),
-                        int.Parse(entityMatch.Groups["y"].Value),
-                        entityMatch.Groups["condition"].Value.Trim()
-                    ));
+                    mapData.EntityLocations.Add(entityData);
                 }
             }
         }
 
-
         // --- Extract AreaTransitions ---
-        var areaTransitionsMatch = ParseAreaTransitions().Match(fileContent);
-        if (areaTransitionsMatch.Success)
+        var transitionsContent = ParseListContent(fileContent, "AreaTransitions");
+        if (!string.IsNullOrEmpty(transitionsContent))
         {
-            var transitionsContent = areaTransitionsMatch.Groups["transitions_content"].Value;
-            if (transitionsContent.Contains("["))
+            var transitionDefinitions = SplitListItems(transitionsContent);
+            foreach (var transitionDef in transitionDefinitions)
             {
-                var transitions = transitionsContent.Substring(transitionsContent.IndexOf('[') + 1);
-                transitions = transitions.Substring(0, transitions.LastIndexOf(']'));
-
-                foreach (Match transitionMatch in ParseTransitions().Matches(transitions))
+                var transitionData = ParseTransitionData(transitionDef);
+                if (transitionData != null)
                 {
-                    var mapId = transitionMatch.Groups["mapId"].Value;
-                    // Remove "WorldMap.MapName." prefix
-                    if (mapId.StartsWith("WorldMap.MapName."))
-                    {
-                        mapId = mapId.Replace("WorldMap.MapName.", "");
-                    }
-
-                    mapData.AreaTransitions.Add(new TransitionData(
-                        mapId, // Use the cleaned mapId
-                        int.Parse(transitionMatch.Groups["startX"].Value),
-                        int.Parse(transitionMatch.Groups["startY"].Value),
-                        transitionMatch.Groups["direction"].Value,
-                        int.Parse(transitionMatch.Groups["sizeX"].Value),
-                        int.Parse(transitionMatch.Groups["sizeY"].Value),
-                        int.Parse(transitionMatch.Groups["posX"].Value),
-                        int.Parse(transitionMatch.Groups["posY"].Value)
-                    ));
+                    mapData.AreaTransitions.Add(transitionData);
                 }
             }
         }
 
         return mapData;
+    }
+
+    private static string ParseListContent(string fileContent, string listName)
+    {
+        string listType = listName == "EntityLocations" ? "EntityLocation" : "NewAreaInfo";
+        var pattern = @$"public override List<{listType}> {listName} {{ get; }} =\s*(?<content>.*?);";
+        var match = Regex.Match(fileContent, pattern, RegexOptions.Singleline);
+
+        if (match.Success)
+        {
+            var content = match.Groups["content"].Value.Trim();
+            if (content.StartsWith("["))
+            {
+                var startIndex = content.IndexOf('[') + 1;
+                var endIndex = content.LastIndexOf(']');
+                if (endIndex > startIndex)
+                {
+                    return content.Substring(startIndex, endIndex - startIndex);
+                }
+            }
+        }
+        return "";
+    }
+
+    private static List<string> SplitListItems(string listContent)
+    {
+        var items = new List<string>();
+        int balance = 0;
+        int lastSplitIndex = 0;
+
+        for (int i = 0; i < listContent.Length; i++)
+        {
+            if (listContent[i] == '(') balance++;
+            else if (listContent[i] == ')') balance--;
+            else if (listContent[i] == ',' && balance == 0)
+            {
+                items.Add(listContent.Substring(lastSplitIndex, i - lastSplitIndex).Trim());
+                lastSplitIndex = i + 1;
+            }
+        }
+        if (lastSplitIndex < listContent.Length)
+        {
+            items.Add(listContent.Substring(lastSplitIndex).Trim());
+        }
+        return items;
+    }
+
+    private static EntityData? ParseEntityData(string entityDefinition)
+    {
+        // Example: new(typeof(EnterCave0), new(13,4), () => true)
+        // This regex specifically parses the components of an EntityData from its string definition.
+        // It captures the entity type, its X and Y coordinates, and its condition.
+        var match = Regex.Match(entityDefinition, @"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>[\s\S]*)\)");
+        if (match.Success)
+        {
+            return new EntityData(
+                match.Groups["type"].Value,
+                int.Parse(match.Groups["x"].Value),
+                int.Parse(match.Groups["y"].Value),
+                match.Groups["condition"].Value.Trim()
+            );
+        }
+        return null;
+    }
+
+    private static TransitionData? ParseTransitionData(string transitionDefinition)
+    {
+        // Example: new(MapId: WorldMap.MapName.MainMap2, StartPosition: new(52, 18), DirectionType.Left, Size: new(3, 10), Position: new(0, 9))
+        // This regex parses the components of a TransitionData from its string definition.
+        // It captures the MapId, StartPosition X and Y, DirectionType, Size X and Y, and Position X and Y.
+        var match = Regex.Match(transitionDefinition, @"new\(MapId:\s*WorldMap.MapName.(?<mapId>[^,]+),\s*StartPosition:\s*new\((?<startX>\d+),\s*(?<startY>\d+)\),\s*DirectionType.(?<direction>[^,]+),\s*Size:\s*new\((?<sizeX>\d+),\s*(?<sizeY>\d+)\),\s*Position:\s*new\((?<posX>\d+),\s*(?<posY>\d+)\)\)");
+        if (match.Success)
+        {
+            var mapId = match.Groups["mapId"].Value;
+            if (mapId.StartsWith("WorldMap.MapName."))
+            {
+                mapId = mapId.Replace("WorldMap.MapName.", "");
+            }
+
+            return new TransitionData(
+                mapId,
+                int.Parse(match.Groups["startX"].Value),
+                int.Parse(match.Groups["startY"].Value),
+                match.Groups["direction"].Value,
+                int.Parse(match.Groups["sizeX"].Value),
+                int.Parse(match.Groups["sizeY"].Value),
+                int.Parse(match.Groups["posX"].Value),
+                int.Parse(match.Groups["posY"].Value)
+            );
+        }
+        return null;
     }
 
     [GeneratedRegex(@"public\s+override\s+string\s+Name\s*=>\s*""(?<name>[^""]+)"";")]
@@ -124,16 +188,4 @@ public partial class MapFileParserService : IMapFileParserService
 
     [GeneratedRegex(@"""(?<line>[^""]*)""")]
     private static partial Regex ParseRawLines();
-
-    [GeneratedRegex(@"public override List<EntityLocation> EntityLocations { get; } = (?<entities_content>.*?);", RegexOptions.Singleline)]
-    private static partial Regex ParseEntityLocations();
-
-    [GeneratedRegex(@"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>.*?)\)")]
-    private static partial Regex ParseEntities();
-
-    [GeneratedRegex(@"public override List<NewAreaInfo> AreaTransitions { get; } = (?<transitions_content>.*?);", RegexOptions.Singleline)]
-    private static partial Regex ParseAreaTransitions();
-
-    [GeneratedRegex(@"new\(MapId:\s*WorldMap.MapName.(?<mapId>[^,]+),\s*StartPosition:\s*new\((?<startX>\d+),\s*(?<startY>\d+)\),\s*DirectionType.(?<direction>[^,]+),\s*Size:\s*new\((?<sizeX>\d+),\s*(?<sizeY>\d+)\),\s*Position:\s*new\((?<posX>\d+),\s*(?<posY>\d+)\)")]
-    private static partial Regex ParseTransitions();
 }
