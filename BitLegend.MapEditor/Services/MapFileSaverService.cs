@@ -1,18 +1,11 @@
 using BitLegend.MapEditor.Model;
-using BitLegend.MapEditor.Model;
-using System.IO;
-using System.Text.Json; // Added for JSON serialization
-using System.Threading.Tasks; // Added for async operations
-using System; // For Exception
-// using System.Reflection; // No need to add here, using static method from ParserService
+using System.Text.Json;
 
 namespace BitLegend.MapEditor.Services;
 
 [Singleton]
-public class MapFileSaverService(GameDataService gameDataService) : IMapFileSaverService
+public class MapFileSaverService : IMapFileSaverService
 {
-    private readonly GameDataService _gameDataService = gameDataService;
-
     public void SaveMap(MapData mapData)
     {
         var fileName = $"{mapData.Name}.json"; // Change extension
@@ -30,8 +23,5 @@ public class MapFileSaverService(GameDataService gameDataService) : IMapFileSave
         }
     }
 
-    public async Task SaveMapAsync(MapData mapData)
-    {
-        await Task.Run(() => SaveMap(mapData)); // Offload synchronous save to a background thread
-    }
+    public async Task SaveMapAsync(MapData mapData) => await Task.Run(() => SaveMap(mapData));
 }

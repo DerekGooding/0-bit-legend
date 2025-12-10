@@ -1,5 +1,3 @@
-using BitLegend.MapEditor.Model;
-
 namespace BitLegend.MapEditor.Model;
 
 [ViewModel]

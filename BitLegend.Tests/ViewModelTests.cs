@@ -19,6 +19,8 @@ public class ViewModelTests
     #region Mocks
     private class MockMapFileParserService : IMapFileParserService
     {
+        public MapData? LoadMap(string filePath) => throw new NotImplementedException();
+
         public List<MapData> LoadMaps()
         {
             var map = new MapData("TestMap", ["abc", "def", "ghi"]);
@@ -34,6 +36,8 @@ public class ViewModelTests
         {
             // Do nothing
         }
+
+        public Task SaveMapAsync(MapData mapData) => throw new NotImplementedException();
     }
 
     #endregion

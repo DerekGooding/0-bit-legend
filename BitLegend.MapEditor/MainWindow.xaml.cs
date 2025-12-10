@@ -30,7 +30,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = mainWindowViewModel;
-        this.Loaded += MainWindow_Loaded;
+        Loaded += MainWindow_Loaded;
     }
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)

@@ -1,22 +1,6 @@
 using BitLegend.MapEditor.Model;
-using System.Text.RegularExpressions;
-
-namespace BitLegend.MapEditor.Services;
-
-[Singleton]
-public partial class MapFileParserService : IMapFileParserService
-{
-    private const string _gameMapsSubPath = @"BitLegend\Maps";
-    public static readonly string AbsoluteGameMapsPath
-        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", _gameMapsSubPath);
-
-using BitLegend.MapEditor.Model;
-using System.Text.Json; // Added for JSON serialization
-using System.IO;
-using System.Threading.Tasks; // Added for async operations
-using System.Collections.Generic; // Make sure this is present
-using System; // For Exception
-using System.Reflection; // Added for Assembly.GetExecutingAssembly()
+using System.Text.Json;
+using System.Reflection;
 
 namespace BitLegend.MapEditor.Services;
 

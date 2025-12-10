@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Windows.Controls.Primitives;
 using System.Windows.Shapes;
@@ -6,9 +5,6 @@ using System.Windows;
 using BitLegend.MapEditor.Adorners;
 using BitLegend.MapEditor.Model;
 using BitLegend.MapEditor.ViewModels;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System;
 using BitLegend.MapEditor.Services;
 
 namespace BitLegend.Tests;

@@ -1,4 +1,3 @@
-using System.Windows;
 using System.Windows.Controls;
 using BitLegend.MapEditor.Model;
 
@@ -27,11 +26,7 @@ public partial class EntityControl : UserControl
         set => SetValue(CellSizeProperty, value);
     }
 
-    public EntityControl()
-    {
-        InitializeComponent();
-        // Removed: this.DataContextChanged += EntityControl_DataContextChanged;
-    }
+    public EntityControl() => InitializeComponent();
 
     private static void OnEntityDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -55,8 +50,8 @@ public partial class EntityControl : UserControl
         if (data != null)
         {
             // Set Width and Height based on EntityData properties
-            this.Width = data.Width * CellSize;
-            this.Height = data.Height * CellSize;
+            Width = data.Width * CellSize;
+            Height = data.Height * CellSize;
 
             // Set Canvas.Left and Canvas.Top based on EntityData properties
             Canvas.SetLeft(this, data.X * CellSize);

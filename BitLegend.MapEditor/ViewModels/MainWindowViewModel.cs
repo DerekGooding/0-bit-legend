@@ -24,20 +24,8 @@ public partial class MainWindowViewModel
     [Bind] private char _currentDrawingCharacter = 'X';
     [Bind] private double _cellSize = 30;
     [Bind] private PaintingMode _paintingMode = PaintingMode.Brush;
-
     [Bind] private int _mapRows;
-    public int MapRows
-    {
-        get => _mapRows;
-        set => SetProperty(ref _mapRows, value);
-    }
-
     [Bind] private int _mapColumns;
-    public int MapColumns
-    {
-        get => _mapColumns;
-        set => SetProperty(ref _mapColumns, value);
-    }
 
     public List<string> AvailableEntityTypes { get; }
 
@@ -340,7 +328,7 @@ public partial class MainWindowViewModel
                 }
                 else
                 {
-                    row.Add(' '); // Add empty character for out-of-bounds selection
+                    row.Add(' ');
                 }
             }
             brush.Add(row);
@@ -348,7 +336,6 @@ public partial class MainWindowViewModel
         SelectedCharacterBrush = brush;
     }
 
-    // New asynchronous data loading method
     private async void LoadDataAsync()
     {
         var maps = await _mapFileParserService.LoadMapsAsync();
@@ -358,6 +345,4 @@ public partial class MainWindowViewModel
             SelectedMap = Maps[0];
         }
     }
-
-    private void LoadMaps() => Maps = new ObservableCollection<MapData>(_mapFileParserService.LoadMaps());
 }
