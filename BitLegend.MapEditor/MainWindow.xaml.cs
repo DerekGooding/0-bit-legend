@@ -298,8 +298,26 @@ public partial class MainWindow : Window
             _transitionRectangles.TryGetValue(selectedTransition, out var rectangle) &&
             DataContext is MainWindowViewModel viewModel) // Get the view model
         {
-            _currentAdorner = new ResizeAdorner(rectangle, viewModel);
-            adornerLayer.Add(_currentAdorner);
+            // Determine the actual pixel size of one character cell
+            double cellWidth = 0;
+            double cellHeight = 0;
+
+            var firstCell = FindVisualChild<TextBox>(MapItemsControl);
+            if (firstCell != null)
+            {
+                cellWidth = firstCell.ActualWidth;
+                cellHeight = firstCell.ActualHeight;
+            }
+
+            // Get map dimensions in cells
+            int mapWidthInCells = viewModel.SelectedMap?.Raw[0]?.Length ?? 0;
+            int mapHeightInCells = viewModel.SelectedMap?.Raw?.Count ?? 0;
+
+            if (cellWidth > 0 && cellHeight > 0 && mapWidthInCells > 0 && mapHeightInCells > 0)
+            {
+                _currentAdorner = new ResizeAdorner(rectangle, viewModel, cellWidth, cellHeight, mapWidthInCells, mapHeightInCells);
+                adornerLayer.Add(_currentAdorner);
+            }
         }
     }
 }

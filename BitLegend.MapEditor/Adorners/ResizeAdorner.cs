@@ -12,12 +12,14 @@ public class ResizeAdorner : Adorner
     private readonly Thumb _topLeft, _top, _topRight, _left, _right, _bottomLeft, _bottom, _bottomRight, _move;
     private readonly VisualCollection _visuals;
     private readonly TransitionData _transition;
-    private readonly MainWindowViewModel _viewModel;
+    private readonly MainWindowViewModel _viewModel; // Still needed for other commands if any, but not for map dims
+    private readonly int _mapWidthInCells;
+    private readonly int _mapHeightInCells;
 
     private (double Width, double Height) _cellSize;
     private (int X, int Y, int Width, int Height) _initialDragValues;
 
-    public ResizeAdorner(UIElement adornedElement, MainWindowViewModel viewModel) : base(adornedElement)
+    public ResizeAdorner(UIElement adornedElement, MainWindowViewModel viewModel, double cellWidth, double cellHeight, int mapWidthInCells, int mapHeightInCells) : base(adornedElement)
     {
         if (adornedElement is not FrameworkElement adornedFrameworkElement || adornedFrameworkElement.DataContext is not TransitionData transition)
         {
@@ -26,7 +28,11 @@ public class ResizeAdorner : Adorner
 
         _transition = transition;
         _viewModel = viewModel;
+        _mapWidthInCells = mapWidthInCells;
+        _mapHeightInCells = mapHeightInCells;
         _visuals = new VisualCollection(this);
+
+        _cellSize = (cellWidth, cellHeight);
 
         _topLeft = CreateThumb(Cursors.SizeNWSE);
         _top = CreateThumb(Cursors.SizeNS);
@@ -118,8 +124,6 @@ public class ResizeAdorner : Adorner
 
     private void TopRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
-
         // Top edge
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
         var actualDy = newPosY - _initialDragValues.Y;
@@ -127,7 +131,7 @@ public class ResizeAdorner : Adorner
         _transition.PositionY = newPosY;
 
         // Right edge - bounded by map width
-        var maxWidth = mapWidth - _initialDragValues.X;
+        var maxWidth = _mapWidthInCells - _initialDragValues.X;
         _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
     });
 
@@ -142,16 +146,13 @@ public class ResizeAdorner : Adorner
 
     private void Right_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
     {
-        var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
-        var maxWidth = mapWidth - _initialDragValues.X;
+        var maxWidth = _mapWidthInCells - _initialDragValues.X;
 
         _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
     });
 
     private void BottomLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-
         // Left edge
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
         var actualDx = newPosX - _initialDragValues.X;
@@ -159,26 +160,22 @@ public class ResizeAdorner : Adorner
         _transition.PositionX = newPosX;
 
         // Bottom edge - bounded by map height, use INITIAL Y position
-        var maxHeight = mapHeight - _initialDragValues.Y;
+        var maxHeight = _mapHeightInCells - _initialDragValues.Y;
         _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
 
     private void Bottom_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
     {
-        var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-        var maxHeight = mapHeight - _initialDragValues.Y;  // Use initial Y!
+        var maxHeight = _mapHeightInCells - _initialDragValues.Y;  // Use initial Y!
 
         _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
 
     private void BottomRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
-        var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-
         // Use initial position for bounds calculation!
-        var maxWidth = mapWidth - _initialDragValues.X;
-        var maxHeight = mapHeight - _initialDragValues.Y;
+        var maxWidth = _mapWidthInCells - _initialDragValues.X;
+        var maxHeight = _mapHeightInCells - _initialDragValues.Y;
 
         _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
         _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
@@ -187,10 +184,8 @@ public class ResizeAdorner : Adorner
 
     private void Move_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
-        var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-        _transition.PositionX = Math.Clamp(_initialDragValues.X + dx, 0, mapWidth - _initialDragValues.Width);
-        _transition.PositionY = Math.Clamp(_initialDragValues.Y + dy, 0, mapHeight - _initialDragValues.Height);
+        _transition.PositionX = Math.Clamp(_initialDragValues.X + dx, 0, _mapWidthInCells - _initialDragValues.Width);
+        _transition.PositionY = Math.Clamp(_initialDragValues.Y + dy, 0, _mapHeightInCells - _initialDragValues.Height);
     });
 
     protected override int VisualChildrenCount => _visuals.Count;
@@ -200,15 +195,9 @@ public class ResizeAdorner : Adorner
     {
         if (AdornedElement is not FrameworkElement adornedElement) return finalSize;
 
-        var mapWidth = _viewModel.SelectedMap?.Raw[0].Length ?? 0;
-        var mapHeight = _viewModel.SelectedMap?.Raw.Count ?? 0;
-        if (mapWidth == 0 || mapHeight == 0) return finalSize;
-
         var adornedWidth = adornedElement.ActualWidth;
         var adornedHeight = adornedElement.ActualHeight;
         if (adornedWidth == 0 || adornedHeight == 0) return finalSize;
-
-        _cellSize = (adornedWidth / _transition.SizeX, adornedHeight / _transition.SizeY);
 
         const double halfThumb = 5.0;
 
@@ -225,11 +214,4 @@ public class ResizeAdorner : Adorner
         return finalSize;
     }
 
-    private (int Width, int Height) GetMapDimensions()
-    {
-        var map = _viewModel.SelectedMap;
-        if (map?.Raw == null || map.Raw.Count == 0)
-            return (0, 0);
-        return (map.Raw[0].Length, map.Raw.Count);
-    }
 }

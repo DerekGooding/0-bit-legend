@@ -43,7 +43,7 @@ public class MainMap0 : BaseMap
 ";
 
             // Act
-            var mapData = _parseMapFileMethod.Invoke(null, new object[] { mockMapContent }) as BitLegend.MapEditor.Model.MapData;
+            var mapData = _parseMapFileMethod.Invoke(null, [mockMapContent]) as BitLegend.MapEditor.Model.MapData;
 
             // Assert
             Assert.IsNotNull(mapData);
@@ -83,7 +83,7 @@ public class MainMap1 : BaseMap
 ";
 
             // Act
-            var mapData = _parseMapFileMethod.Invoke(null, new object[] { mockMapContent }) as BitLegend.MapEditor.Model.MapData;
+            var mapData = _parseMapFileMethod.Invoke(null, [mockMapContent]) as BitLegend.MapEditor.Model.MapData;
 
             // Assert
             Assert.IsNotNull(mapData);
@@ -113,7 +113,7 @@ public class MainMap2 : BaseMap
 ";
 
             // Act
-            var mapData = _parseMapFileMethod.Invoke(null, new object[] { mockMapContent }) as BitLegend.MapEditor.Model.MapData;
+            var mapData = _parseMapFileMethod.Invoke(null, [mockMapContent]) as BitLegend.MapEditor.Model.MapData;
 
             // Assert
             Assert.IsNotNull(mapData);
@@ -139,7 +139,7 @@ public class MainMap3 : BaseMap
 ";
             
             // Act
-            var mapData = _parseMapFileMethod.Invoke(null, new object[] { mockMapContent }) as BitLegend.MapEditor.Model.MapData;
+            var mapData = _parseMapFileMethod.Invoke(null, [mockMapContent]) as BitLegend.MapEditor.Model.MapData;
 
             // Assert
             Assert.IsNotNull(mapData);
@@ -162,7 +162,7 @@ public class InvalidMap : BaseMap
 ";
 
             // Act
-            var mapData = _parseMapFileMethod.Invoke(null, new object[] { invalidContent });
+            var mapData = _parseMapFileMethod.Invoke(null, [invalidContent]);
 
             // Assert
             Assert.IsNull(mapData);

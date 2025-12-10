@@ -10,6 +10,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="SimpleInjection" Version="0.9.8.4" />
 		<PackageReference Include="SimpleViewModel" Version="0.9.7.4" />
 	</ItemGroup>

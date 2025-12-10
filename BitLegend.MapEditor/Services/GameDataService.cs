@@ -30,27 +30,27 @@ public class GameDataService
     /// <summary>
     /// Gets a list of valid entity type simple names (e.g., "Octorok", "Door").
     /// </summary>
-    public List<string> ValidEntityTypes { get; private set; } = [];
+    public virtual List<string> ValidEntityTypes { get; private set; } = [];
 
     /// <summary>
     /// Gets a dictionary mapping entity type simple names to their full namespace-qualified names.
     /// </summary>
-    public Dictionary<string, string> EntityTypeToFullTypeName { get; set; } = [];
+    public virtual Dictionary<string, string> EntityTypeToFullTypeName { get; set; } = [];
 
     /// <summary>
     /// Gets a list of valid map IDs (e.g., "MainMap0", "Castle1").
     /// </summary>
-    public List<string> ValidMapIds { get; private set; } = [];
+    public virtual List<string> ValidMapIds { get; private set; } = [];
 
     /// <summary>
     /// Gets a list of valid direction types (e.g., "Up", "Down").
     /// </summary>
-    public List<string> ValidDirectionTypes { get; private set; } = [];
+    public virtual List<string> ValidDirectionTypes { get; private set; } = [];
 
     /// <summary>
     /// Gets a list of valid game flags (e.g., "HasSword", "Door1").
     /// </summary>
-    public List<string> ValidGameFlags { get; private set; } = [];
+    public virtual List<string> ValidGameFlags { get; private set; } = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GameDataService"/> class, loading all game data.
