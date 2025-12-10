@@ -156,7 +156,7 @@ public class GameDataService
             {
                 ValidEntityTypes.Add(name);
                 // This is a heuristic: assuming EnemyType enum names correspond to classes in Entities.Enemies namespace
-                EntityTypeToFullTypeName[name] = $"BitLegend.Entities.Enemies.{name}";
+                EntityTypeToFullTypeName[name] = $"{name}";
             }
         }
 
