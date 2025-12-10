@@ -113,12 +113,12 @@ public class ResizeAdorner : Adorner
         _transition.PositionY = newPosY;
     });
 
-    private void Top_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
+    private void Top_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (_, dy) =>
     {
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
         var actualDy = newPosY - _initialDragValues.Y;
 
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height - actualDy);
+        _transition.SizeY = Math.Max(1, _initialDragValues.Height + actualDy);
         _transition.PositionY = newPosY;
     });
 
@@ -135,16 +135,16 @@ public class ResizeAdorner : Adorner
         _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
     });
 
-    private void Left_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
+    private void Left_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, _) =>
     {
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
         var actualDx = newPosX - _initialDragValues.X;
 
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
+        _transition.SizeX = Math.Max(1, _initialDragValues.Width + actualDx);
         _transition.PositionX = newPosX;
     });
 
-    private void Right_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, dy) =>
+    private void Right_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, _) =>
     {
         var maxWidth = _mapWidthInCells - _initialDragValues.X;
 
@@ -153,27 +153,24 @@ public class ResizeAdorner : Adorner
 
     private void BottomLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        // Left edge
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
         var actualDx = newPosX - _initialDragValues.X;
         _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
         _transition.PositionX = newPosX;
 
-        // Bottom edge - bounded by map height, use INITIAL Y position
         var maxHeight = _mapHeightInCells - _initialDragValues.Y;
         _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
 
-    private void Bottom_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (dx, dy) =>
+    private void Bottom_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (_, dy) =>
     {
-        var maxHeight = _mapHeightInCells - _initialDragValues.Y;  // Use initial Y!
+        var maxHeight = _mapHeightInCells - _initialDragValues.Y;
 
         _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
     });
 
     private void BottomRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        // Use initial position for bounds calculation!
         var maxWidth = _mapWidthInCells - _initialDragValues.X;
         var maxHeight = _mapHeightInCells - _initialDragValues.Y;
 

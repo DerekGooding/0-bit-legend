@@ -1,6 +1,6 @@
 ﻿namespace BitLegend.Model;
 
-public record struct Vector2(int X, int Y)
+public readonly record struct Vector2(int X, int Y)
 {
     public static Vector2 Zero => new(0, 0);
 

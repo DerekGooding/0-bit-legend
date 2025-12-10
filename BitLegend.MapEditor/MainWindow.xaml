@@ -160,35 +160,46 @@
                                             <DataTemplate>
                                                 <Rectangle x:Name="TransitionRectangle" Fill="Blue" Opacity="0.5" IsHitTestVisible="True"
                                                            Loaded="TransitionRectangle_Loaded">
+                                                    <Rectangle.RenderTransform>
+                                                <TranslateTransform>
+                                                    <TranslateTransform.X>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="PositionX"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length"
+                                                                     RelativeSource="{RelativeSource AncestorType=Window}"
+                                                                     FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </TranslateTransform.X>
+
+                                                    <TranslateTransform.Y>
+                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                            <Binding Path="PositionY"/>
+                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw.Count"
+                                                                     RelativeSource="{RelativeSource AncestorType=Window}"
+                                                                     FallbackValue="1"/>
+                                                        </MultiBinding>
+                                                    </TranslateTransform.Y>
+                                                </TranslateTransform>
+                                            </Rectangle.RenderTransform>
                                                     <Rectangle.Width>
                                                         <MultiBinding Converter="{StaticResource PositionConverter}">
                                                             <Binding Path="SizeX"/>
                                                             <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
-                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" 
+                                                                     RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
                                                         </MultiBinding>
                                                     </Rectangle.Width>
-                                                    <Rectangle.Height>
-                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
-                                                            <Binding Path="SizeY"/>
-                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
-                                                            <Binding Path="DataContext.SelectedMap.Raw.Count" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
-                                                        </MultiBinding>
-                                                    </Rectangle.Height>
-                                                    <Canvas.Left>
-                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
-                                                            <Binding Path="PositionX"/>
-                                                            <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
-                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
-                                                        </MultiBinding>
-                                                    </Canvas.Left>
-                                                    <Canvas.Top>
-                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
-                                                            <Binding Path="PositionY"/>
-                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
-                                                            <Binding Path="DataContext.SelectedMap.Raw.Count" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
-                                                        </MultiBinding>
-                                                    </Canvas.Top>
-                                                </Rectangle>
+                                            <Rectangle.Height>
+                                                <MultiBinding Converter="{StaticResource PositionConverter}">
+                                                    <Binding Path="SizeY"/>
+                                                    <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
+                                                    <Binding Path="DataContext.SelectedMap.Raw.Count" 
+                                                                     RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
+                                                </MultiBinding>
+                                            </Rectangle.Height>
+                                        </Rectangle>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
