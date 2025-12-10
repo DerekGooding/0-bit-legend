@@ -75,8 +75,7 @@ public partial class MapFileParserService : IMapFileParserService
         var transitionsContent = ParseListContent(fileContent, "AreaTransitions");
         if (!string.IsNullOrEmpty(transitionsContent))
         {
-            var transitionDefinitions = SplitListItems(transitionsContent);
-            foreach (var transitionDef in transitionDefinitions)
+            foreach (var transitionDef in SplitListItems(transitionsContent))
             {
                 var transitionData = ParseTransitionData(transitionDef);
                 if (transitionData != null)
@@ -91,7 +90,7 @@ public partial class MapFileParserService : IMapFileParserService
 
     private static string ParseListContent(string fileContent, string listName)
     {
-        string listType = listName == "EntityLocations" ? "EntityLocation" : "NewAreaInfo";
+        var listType = listName == "EntityLocations" ? "EntityLocation" : "NewAreaInfo";
         var pattern = @$"public override List<{listType}> {listName} {{ get; }} =\s*(?<content>.*?);";
         var match = Regex.Match(fileContent, pattern, RegexOptions.Singleline);
 
@@ -114,13 +113,19 @@ public partial class MapFileParserService : IMapFileParserService
     private static List<string> SplitListItems(string listContent)
     {
         var items = new List<string>();
-        int balance = 0;
-        int lastSplitIndex = 0;
+        var balance = 0;
+        var lastSplitIndex = 0;
 
-        for (int i = 0; i < listContent.Length; i++)
+        for (var i = 0; i < listContent.Length; i++)
         {
-            if (listContent[i] == '(') balance++;
-            else if (listContent[i] == ')') balance--;
+            if (listContent[i] == '(')
+            {
+                balance++;
+            }
+            else if (listContent[i] == ')')
+            {
+                balance--;
+            }
             else if (listContent[i] == ',' && balance == 0)
             {
                 items.Add(listContent.Substring(lastSplitIndex, i - lastSplitIndex).Trim());
@@ -140,16 +145,16 @@ public partial class MapFileParserService : IMapFileParserService
         // This regex specifically parses the components of an EntityData from its string definition.
         // It captures the entity type, its X and Y coordinates, and its condition.
         var match = Regex.Match(entityDefinition, @"new\(typeof\((?<type>[^)]+)\),\s*new\((?<x>\d+),\s*(?<y>\d+)\),\s*(?<condition>[\s\S]*)\)");
-        if (match.Success)
-        {
-            return new EntityData(
+        return match.Success
+            ? new EntityData(
                 match.Groups["type"].Value,
-                int.Parse(match.Groups["x"].Value),
-                int.Parse(match.Groups["y"].Value),
+                double.Parse(match.Groups["x"].Value),
+                double.Parse(match.Groups["y"].Value),
+                1, // Default width
+                1, // Default height
                 match.Groups["condition"].Value.Trim()
-            );
-        }
-        return null;
+            )
+            : null;
     }
 
     private static TransitionData? ParseTransitionData(string transitionDefinition)

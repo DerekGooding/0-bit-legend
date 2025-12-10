@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:BitLegend.MapEditor" 
         xmlns:viewmodels="clr-namespace:BitLegend.MapEditor.ViewModels"
         xmlns:converters="clr-namespace:BitLegend.MapEditor.Converters"
+        xmlns:controls="clr-namespace:BitLegend.MapEditor.Controls"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="0-bit Legend Map Editor" Height="720" Width="1280"
@@ -126,25 +127,7 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding EntityType}" 
-                                                           Foreground="Red" 
-                                                           FontWeight="Bold"
-                                                           IsHitTestVisible="False">
-                                                    <Canvas.Left>
-                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
-                                                            <Binding Path="X"/>
-                                                            <Binding ElementName="MapItemsControl" Path="ActualWidth"/>
-                                                            <Binding Path="DataContext.SelectedMap.Raw[0].Length" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
-                                                        </MultiBinding>
-                                                    </Canvas.Left>
-                                                    <Canvas.Top>
-                                                        <MultiBinding Converter="{StaticResource PositionConverter}">
-                                                            <Binding Path="Y"/>
-                                                            <Binding ElementName="MapItemsControl" Path="ActualHeight"/>
-                                                            <Binding Path="DataContext.SelectedMap.Raw.Count" RelativeSource="{RelativeSource AncestorType=Window}" FallbackValue="1"/>
-                                                        </MultiBinding>
-                                                    </Canvas.Top>
-                                                </TextBlock>
+                                                <controls:EntityControl EntityData="{Binding}"/>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

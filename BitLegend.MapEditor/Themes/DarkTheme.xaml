@@ -82,6 +82,11 @@
                             <Setter Property="BorderBrush" Value="{DynamicResource HighlightColor}"/>
                             <Setter Property="Foreground" Value="{DynamicResource ControlBackgroundColor}"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="Background" Value="#3E3E40"/>
+                            <Setter Property="Foreground" Value="#AAAAAA"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

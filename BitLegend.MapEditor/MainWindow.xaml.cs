@@ -21,6 +21,8 @@ public partial class MainWindow : Window
     private Adorner? _currentAdorner;
     private SelectionAdorner? _selectionAdorner;
     private Point _selectionStartPoint;
+    private IResizableAndMovable? _selectedResizableAndMovable;
+
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
@@ -78,67 +80,153 @@ public partial class MainWindow : Window
                     }
                 }
             }
-        }
-        e.Handled = true;
-    }
-
-    private void MapDisplay_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
-        {
-            if (sender is not ItemsControl mapItemsControl) return;
-
-            (mapItemsControl as UIElement)?.CaptureMouse();
-            e.Handled = true;
-
-            switch (viewModel.PaintingMode)
-            {
-                case PaintingMode.Brush:
-                    _isBrushDrawing = true;
-                    ProcessBrushDrawing(mapItemsControl, e.GetPosition(mapItemsControl));
-                    break;
-                case PaintingMode.Selection:
-                    _isSelecting = true;
-                    _selectionStartPoint = e.GetPosition(mapItemsControl);
-
-                    var adornerLayer = AdornerLayer.GetAdornerLayer(mapItemsControl);
-                    if (adornerLayer != null)
-                    {
-                        _selectionAdorner = new SelectionAdorner(mapItemsControl);
-                        adornerLayer.Add(_selectionAdorner);
-                        _selectionAdorner.UpdateSelection(_selectionStartPoint, _selectionStartPoint);
-                    }
-                    break;
+                }
+                e.Handled = true;
             }
-        }
-    }
-
-    private void MapDisplay_PreviewMouseMove(object sender, MouseEventArgs e)
-    {
-        if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
-        {
-            if (sender is not ItemsControl mapItemsControl) return;
-
-            e.Handled = true;
-
-            switch (viewModel.PaintingMode)
+        
+            private void SetActiveAdorner(FrameworkElement? element, IResizableAndMovable? data)
             {
-                case PaintingMode.Brush:
-                    if (_isBrushDrawing)
+                var adornerLayer = AdornerLayer.GetAdornerLayer(MapAdornerDecorator);
+                if (adornerLayer == null) return;
+        
+                // Remove the old adorner
+                if (_currentAdorner != null)
+                {
+                    adornerLayer.Remove(_currentAdorner);
+                    _currentAdorner = null;
+                }
+        
+                _selectedResizableAndMovable = data;
+        
+                // Add a new adorner if an element and data are provided
+                if (element != null && data != null && DataContext is MainWindowViewModel viewModel)
+                {
+                    // Determine the actual pixel size of one character cell
+                    double cellWidth = 0;
+                    double cellHeight = 0;
+        
+                    var firstCell = FindVisualChild<TextBox>(MapItemsControl);
+                    if (firstCell != null)
                     {
-                        ProcessBrushDrawing(mapItemsControl, e.GetPosition(mapItemsControl));
+                        cellWidth = firstCell.ActualWidth;
+                        cellHeight = firstCell.ActualHeight;
                     }
-                    break;
-                case PaintingMode.Selection:
-                    if (_isSelecting && _selectionAdorner != null)
+        
+                    // Get map dimensions in cells
+                    int mapWidthInCells = viewModel.SelectedMap?.Raw[0]?.Length ?? 0;
+                    int mapHeightInCells = viewModel.SelectedMap?.Raw?.Count ?? 0;
+        
+                    if (cellWidth > 0 && cellHeight > 0 && mapWidthInCells > 0 && mapHeightInCells > 0)
                     {
-                        _selectionAdorner.UpdateSelection(_selectionStartPoint, e.GetPosition(mapItemsControl));
+                        _currentAdorner = new ResizeAdorner(element, viewModel, cellWidth, cellHeight, mapWidthInCells, mapHeightInCells);
+                        adornerLayer.Add(_currentAdorner);
                     }
-                    break;
+                }
+                else
+                {
+                    // If no element or data, ensure SelectedEntity and SelectedTransition are null in ViewModel
+                    if (DataContext is MainWindowViewModel vm)
+                    {
+                        vm.SelectedEntity = null;
+                        vm.SelectedTransition = null;
+                    }
+                }
             }
-        }
-    }
-
+        
+                        private void MapDisplay_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+                        {
+                            if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
+                            {
+                                if (sender is not ItemsControl mapItemsControl) return;
+                    
+                                _dragStartPoint = e.GetPosition(mapItemsControl); // Capture drag start point
+                    
+                                // Clear any active adorner when clicking on the map background
+                                SetActiveAdorner(null, null);
+                    
+                                var originalSource = e.OriginalSource as FrameworkElement;
+                                if (originalSource != null)
+                                {
+                                    // Check if an EntityControl was clicked
+                                    var entityControl = VisualTreeHelper.GetParent(originalSource) as Controls.EntityControl;
+                                    if (entityControl != null && entityControl.EntityData != null)
+                                    {
+                                        viewModel.SelectedEntity = entityControl.EntityData;
+                                        SetActiveAdorner(entityControl, entityControl.EntityData);
+                                        e.Handled = true;
+                                        return;
+                                    }
+                    
+                                    // Check if a Rectangle representing a TransitionData was clicked
+                                    var clickedRectangle = VisualTreeHelper.GetParent(originalSource) as Rectangle;
+                                    if (clickedRectangle != null && clickedRectangle.DataContext is TransitionData transition)
+                                    {
+                                        viewModel.SelectedTransition = transition;
+                                        SetActiveAdorner(clickedRectangle, transition);
+                                        e.Handled = true;
+                                        return;
+                                    }
+                                }
+                    
+                                // If no entity or transition was clicked, capture mouse for potential brush/selection drag
+                                (mapItemsControl as UIElement)?.CaptureMouse();
+                                e.Handled = true;
+                            }
+                        }
+                    
+                        private void MapDisplay_PreviewMouseMove(object sender, MouseEventArgs e)
+                        {
+                            if (e.LeftButton == MouseButtonState.Pressed && DataContext is MainWindowViewModel viewModel && viewModel.SelectedMap != null)
+                            {
+                                if (sender is not ItemsControl mapItemsControl) return;
+                    
+                                var mousePos = e.GetPosition(mapItemsControl);
+                                var diff = _dragStartPoint - mousePos;
+                    
+                                // Check for drag threshold
+                                if (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                                    Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+                                {
+                                    e.Handled = true;
+                                    switch (viewModel.PaintingMode)
+                                    {
+                                        case PaintingMode.Brush:
+                                            _isBrushDrawing = true;
+                                            ProcessBrushDrawing(mapItemsControl, mousePos);
+                                            break;
+                                        case PaintingMode.Selection:
+                                            _isSelecting = true;
+                                            // If selection hasn't started yet, initialize _selectionStartPoint
+                                            if (_selectionAdorner == null)
+                                            {
+                                                _selectionStartPoint = _dragStartPoint;
+                                                var adornerLayer = AdornerLayer.GetAdornerLayer(mapItemsControl);
+                                                if (adornerLayer != null)
+                                                {
+                                                    _selectionAdorner = new SelectionAdorner(mapItemsControl);
+                                                    adornerLayer.Add(_selectionAdorner);
+                                                    _selectionAdorner.UpdateSelection(_selectionStartPoint, _selectionStartPoint);
+                                                }
+                                            }
+                                            _selectionAdorner?.UpdateSelection(_selectionStartPoint, mousePos);
+                                            break;
+                                    }
+                                }
+                                else if (_isBrushDrawing || _isSelecting) // Continue drawing if already started
+                                {
+                                     e.Handled = true;
+                                     switch (viewModel.PaintingMode)
+                                     {
+                                         case PaintingMode.Brush:
+                                             ProcessBrushDrawing(mapItemsControl, mousePos);
+                                             break;
+                                         case PaintingMode.Selection:
+                                             _selectionAdorner?.UpdateSelection(_selectionStartPoint, mousePos);
+                                             break;
+                                     }
+                                }
+                            }
+                        }
     private void MapDisplay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
     {
         if (sender is not ItemsControl mapItemsControl) return;
@@ -283,40 +371,18 @@ public partial class MainWindow : Window
 
     private void TransitionsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var adornerLayer = AdornerLayer.GetAdornerLayer(MapAdornerDecorator);
-        if (adornerLayer == null) return;
-
-        // Remove the old adorner
-        if (_currentAdorner != null)
+        if (DataContext is MainWindowViewModel viewModel)
         {
-            adornerLayer.Remove(_currentAdorner);
-            _currentAdorner = null;
-        }
-
-        // Add a new adorner to the selected transition's rectangle
-        if (TransitionsDataGrid.SelectedItem is TransitionData selectedTransition &&
-            _transitionRectangles.TryGetValue(selectedTransition, out var rectangle) &&
-            DataContext is MainWindowViewModel viewModel) // Get the view model
-        {
-            // Determine the actual pixel size of one character cell
-            double cellWidth = 0;
-            double cellHeight = 0;
-
-            var firstCell = FindVisualChild<TextBox>(MapItemsControl);
-            if (firstCell != null)
+            // The ViewModel's SelectedTransition is already updated via TwoWay binding from DataGrid.SelectedItem.
+            // We just need to ensure the adorner is set for the currently selected item.
+            if (viewModel.SelectedTransition != null &&
+                _transitionRectangles.TryGetValue(viewModel.SelectedTransition, out var rectangle))
             {
-                cellWidth = firstCell.ActualWidth;
-                cellHeight = firstCell.ActualHeight;
+                SetActiveAdorner(rectangle, viewModel.SelectedTransition);
             }
-
-            // Get map dimensions in cells
-            int mapWidthInCells = viewModel.SelectedMap?.Raw[0]?.Length ?? 0;
-            int mapHeightInCells = viewModel.SelectedMap?.Raw?.Count ?? 0;
-
-            if (cellWidth > 0 && cellHeight > 0 && mapWidthInCells > 0 && mapHeightInCells > 0)
+            else
             {
-                _currentAdorner = new ResizeAdorner(rectangle, viewModel, cellWidth, cellHeight, mapWidthInCells, mapHeightInCells);
-                adornerLayer.Add(_currentAdorner);
+                SetActiveAdorner(null, null); // Clear adorner if no transition is selected
             }
         }
     }

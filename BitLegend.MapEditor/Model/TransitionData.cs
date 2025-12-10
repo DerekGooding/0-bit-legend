@@ -1,25 +1,33 @@
+using BitLegend.MapEditor.Model;
+
 namespace BitLegend.MapEditor.Model;
 
 [ViewModel]
-public partial class TransitionData
+public partial class TransitionData : IResizableAndMovable
 {
     [Bind] private string _mapId;
-    [Bind] private int _startPositionX;
-    [Bind] private int _startPositionY;
+    [Bind] private double _startPositionX;
+    [Bind] private double _startPositionY;
     [Bind] private string _directionType;
-    [Bind] private int _sizeX;
-    [Bind] private int _sizeY;
-    [Bind] private int _positionX;
-    [Bind] private int _positionY;
+    [Bind] private double _sizeX;
+    [Bind] private double _sizeY;
+    [Bind] private double _positionX;
+    [Bind] private double _positionY;
+
+    public double X { get => _positionX; set => _positionX = value; }
+    public double Y { get => _positionY; set => _positionY = value; }
+    public double Width { get => _sizeX; set => _sizeX = value; }
+    public double Height { get => _sizeY; set => _sizeY = value; }
+
 
     public TransitionData(string mapId,
-                          int startPositionX,
-                          int startPositionY,
+                          double startPositionX,
+                          double startPositionY,
                           string directionType,
-                          int sizeX,
-                          int sizeY,
-                          int positionX,
-                          int positionY)
+                          double sizeX,
+                          double sizeY,
+                          double positionX,
+                          double positionY)
     {
         _mapId = mapId;
         _startPositionX = startPositionX;

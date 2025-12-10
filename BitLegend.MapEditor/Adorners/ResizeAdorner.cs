@@ -11,22 +11,22 @@ public class ResizeAdorner : Adorner
 {
     private readonly Thumb _topLeft, _top, _topRight, _left, _right, _bottomLeft, _bottom, _bottomRight, _move;
     private readonly VisualCollection _visuals;
-    private readonly TransitionData _transition;
+    private readonly IResizableAndMovable _resizableAndMovable; // Changed from TransitionData
     private readonly MainWindowViewModel _viewModel; // Still needed for other commands if any, but not for map dims
     private readonly int _mapWidthInCells;
     private readonly int _mapHeightInCells;
 
     private (double Width, double Height) _cellSize;
-    private (int X, int Y, int Width, int Height) _initialDragValues;
+    private (double X, double Y, double Width, double Height) _initialDragValues; // Changed to double
 
     public ResizeAdorner(UIElement adornedElement, MainWindowViewModel viewModel, double cellWidth, double cellHeight, int mapWidthInCells, int mapHeightInCells) : base(adornedElement)
     {
-        if (adornedElement is not FrameworkElement adornedFrameworkElement || adornedFrameworkElement.DataContext is not TransitionData transition)
+        if (adornedElement is not FrameworkElement adornedFrameworkElement || adornedFrameworkElement.DataContext is not IResizableAndMovable resizableAndMovable) // Changed to IResizableAndMovable
         {
-            throw new ArgumentException("Adorned element must be a FrameworkElement with a TransitionData DataContext.", nameof(adornedElement));
+            throw new ArgumentException("Adorned element must be a FrameworkElement with an IResizableAndMovable DataContext.", nameof(adornedElement));
         }
 
-        _transition = transition;
+        _resizableAndMovable = resizableAndMovable; // Changed from _transition
         _viewModel = viewModel;
         _mapWidthInCells = mapWidthInCells;
         _mapHeightInCells = mapHeightInCells;
@@ -68,7 +68,7 @@ public class ResizeAdorner : Adorner
     }
 
     private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
-        => _initialDragValues = (_transition.PositionX, _transition.PositionY, _transition.SizeX, _transition.SizeY);
+        => _initialDragValues = (_resizableAndMovable.X, _resizableAndMovable.Y, _resizableAndMovable.Width, _resizableAndMovable.Height); // Changed to _resizableAndMovable
 
     private Thumb CreateThumb(Cursor cursor, Brush? background = null)
     {
@@ -85,12 +85,12 @@ public class ResizeAdorner : Adorner
         return thumb;
     }
 
-    private void HandleDrag(double horizontalChange, double verticalChange, Action<int, int> updateAction)
+    private void HandleDrag(double horizontalChange, double verticalChange, Action<double, double> updateAction) // Changed Action parameter types to double
     {
         if (_cellSize.Width == 0 || _cellSize.Height == 0) return;
 
-        var dx = (int)Math.Round(horizontalChange / _cellSize.Width);
-        var dy = (int)Math.Round(verticalChange / _cellSize.Height);
+        var dx = horizontalChange / _cellSize.Width; // Removed (int)Math.Round()
+        var dy = verticalChange / _cellSize.Height; // Removed (int)Math.Round()
 
         updateAction(dx, dy);
     }
@@ -107,10 +107,10 @@ public class ResizeAdorner : Adorner
         var actualDy = newPosY - _initialDragValues.Y;
 
         // Size changes by opposite amount to maintain far edge position
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height - actualDy);
-        _transition.PositionX = newPosX;
-        _transition.PositionY = newPosY;
+        _resizableAndMovable.Width = Math.Max(1, _initialDragValues.Width - actualDx); // Changed to _resizableAndMovable
+        _resizableAndMovable.Height = Math.Max(1, _initialDragValues.Height - actualDy); // Changed to _resizableAndMovable
+        _resizableAndMovable.X = newPosX; // Changed to _resizableAndMovable
+        _resizableAndMovable.Y = newPosY; // Changed to _resizableAndMovable
     });
 
     private void Top_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (_, dy) =>
@@ -118,8 +118,8 @@ public class ResizeAdorner : Adorner
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
         var actualDy = newPosY - _initialDragValues.Y;
 
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height + actualDy);
-        _transition.PositionY = newPosY;
+        _resizableAndMovable.Height = Math.Max(1, _initialDragValues.Height + actualDy); // Changed to _resizableAndMovable
+        _resizableAndMovable.Y = newPosY; // Changed to _resizableAndMovable
     });
 
     private void TopRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
@@ -127,12 +127,12 @@ public class ResizeAdorner : Adorner
         // Top edge
         var newPosY = Math.Max(0, _initialDragValues.Y + dy);
         var actualDy = newPosY - _initialDragValues.Y;
-        _transition.SizeY = Math.Max(1, _initialDragValues.Height - actualDy);
-        _transition.PositionY = newPosY;
+        _resizableAndMovable.Height = Math.Max(1, _initialDragValues.Height - actualDy); // Changed to _resizableAndMovable
+        _resizableAndMovable.Y = newPosY; // Changed to _resizableAndMovable
 
         // Right edge - bounded by map width
         var maxWidth = _mapWidthInCells - _initialDragValues.X;
-        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
+        _resizableAndMovable.Width = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth); // Changed to _resizableAndMovable
     });
 
     private void Left_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, _) =>
@@ -140,33 +140,33 @@ public class ResizeAdorner : Adorner
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
         var actualDx = newPosX - _initialDragValues.X;
 
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width + actualDx);
-        _transition.PositionX = newPosX;
+        _resizableAndMovable.Width = Math.Max(1, _initialDragValues.Width + actualDx); // Changed to _resizableAndMovable
+        _resizableAndMovable.X = newPosX; // Changed to _resizableAndMovable
     });
 
     private void Right_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, 0, (dx, _) =>
     {
         var maxWidth = _mapWidthInCells - _initialDragValues.X;
 
-        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
+        _resizableAndMovable.Width = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth); // Changed to _resizableAndMovable
     });
 
     private void BottomLeft_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
         var newPosX = Math.Max(0, _initialDragValues.X + dx);
         var actualDx = newPosX - _initialDragValues.X;
-        _transition.SizeX = Math.Max(1, _initialDragValues.Width - actualDx);
-        _transition.PositionX = newPosX;
+        _resizableAndMovable.Width = Math.Max(1, _initialDragValues.Width - actualDx); // Changed to _resizableAndMovable
+        _resizableAndMovable.X = newPosX; // Changed to _resizableAndMovable
 
         var maxHeight = _mapHeightInCells - _initialDragValues.Y;
-        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
+        _resizableAndMovable.Height = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight); // Changed to _resizableAndMovable
     });
 
     private void Bottom_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(0, e.VerticalChange, (_, dy) =>
     {
         var maxHeight = _mapHeightInCells - _initialDragValues.Y;
 
-        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
+        _resizableAndMovable.Height = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight); // Changed to _resizableAndMovable
     });
 
     private void BottomRight_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
@@ -174,15 +174,15 @@ public class ResizeAdorner : Adorner
         var maxWidth = _mapWidthInCells - _initialDragValues.X;
         var maxHeight = _mapHeightInCells - _initialDragValues.Y;
 
-        _transition.SizeX = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth);
-        _transition.SizeY = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight);
+        _resizableAndMovable.Width = Math.Min(Math.Max(1, _initialDragValues.Width + dx), maxWidth); // Changed to _resizableAndMovable
+        _resizableAndMovable.Height = Math.Min(Math.Max(1, _initialDragValues.Height + dy), maxHeight); // Changed to _resizableAndMovable
     });
 
 
     private void Move_DragDelta(object sender, DragDeltaEventArgs e) => HandleDrag(e.HorizontalChange, e.VerticalChange, (dx, dy) =>
     {
-        _transition.PositionX = Math.Clamp(_initialDragValues.X + dx, 0, _mapWidthInCells - _initialDragValues.Width);
-        _transition.PositionY = Math.Clamp(_initialDragValues.Y + dy, 0, _mapHeightInCells - _initialDragValues.Height);
+        _resizableAndMovable.X = Math.Clamp(_initialDragValues.X + dx, 0, _mapWidthInCells - _initialDragValues.Width); // Changed to _resizableAndMovable
+        _resizableAndMovable.Y = Math.Clamp(_initialDragValues.Y + dy, 0, _mapHeightInCells - _initialDragValues.Height); // Changed to _resizableAndMovable
     });
 
     protected override int VisualChildrenCount => _visuals.Count;

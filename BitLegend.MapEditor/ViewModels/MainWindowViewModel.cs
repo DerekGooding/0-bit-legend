@@ -154,7 +154,7 @@ public partial class MainWindowViewModel
             const int MapWidth = 32;
             const int MapHeight = 32;
 
-            EntityData newEntity = new("NewEntity", 0, 0, "true");
+            EntityData newEntity = new("NewEntity", 0, 0, 1, 1, "true"); // Added default width and height
             Views.EntityEditorWindow editorWindow = new(newEntity, _gameDataService, MapWidth, MapHeight);
             editorWindow.ShowDialog();
 
@@ -175,7 +175,7 @@ public partial class MainWindowViewModel
 
             // Create a clone for editing to allow cancellation
             var originalEntity = SelectedEntity;
-            EntityData clonedEntity = new(originalEntity.EntityType, originalEntity.X, originalEntity.Y, originalEntity.Condition);
+            EntityData clonedEntity = new(originalEntity.EntityType, originalEntity.X, originalEntity.Y, originalEntity.Width, originalEntity.Height, originalEntity.Condition); // Added width and height
 
             Views.EntityEditorWindow editorWindow = new(clonedEntity, _gameDataService, MapWidth, MapHeight);
             editorWindow.ShowDialog();
@@ -297,7 +297,7 @@ public partial class MainWindowViewModel
     }
 
     public void AddEntityFromDragDrop(string entityType, int x, int y)
-        => SelectedMap?.EntityLocations.Add(new EntityData(entityType, x, y, "true"));
+        => SelectedMap?.EntityLocations.Add(new EntityData(entityType, x, y, 1, 1, "true")); // Added default width and height
 
     public void SetSelectedCharacterBrush(int startGridX, int startGridY, int endGridX, int endGridY)
     {

@@ -184,7 +184,7 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_ValidEntity_NoErrors()
     {
-        var entity = new EntityData("Octorok", 10, 10, "true");
+        var entity = new EntityData("Octorok", 10, 10, 1.0, 1.0, "true");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsFalse(viewModel.HasErrors);
         Assert.IsNull(viewModel[nameof(entity.EntityType)]);
@@ -196,7 +196,7 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_InvalidEntityType_HasErrors()
     {
-        var entity = new EntityData("InvalidType", 10, 10, "true");
+        var entity = new EntityData("InvalidType", 10, 10, 1.0, 1.0, "true");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.EntityType)]);
@@ -206,13 +206,13 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_XOutOfBounds_HasErrors()
     {
-        var entity = new EntityData("Octorok", -1, 10, "true"); // X too low
+        var entity = new EntityData("Octorok", -1, 10, 1.0, 1.0, "true"); // X too low
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.X)]);
         Assert.AreEqual($"X position must be between 0 and {_mapWidth - 1}.", viewModel[nameof(entity.X)]);
 
-        entity = new EntityData("Octorok", _mapWidth, 10, "true"); // X too high
+        entity = new EntityData("Octorok", _mapWidth, 10, 1.0, 1.0, "true"); // X too high
         viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.X)]);
@@ -222,13 +222,13 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_YOutOfBounds_HasErrors()
     {
-        var entity = new EntityData("Octorok", 10, -1, "true"); // Y too low
+        var entity = new EntityData("Octorok", 10, -1, 1.0, 1.0, "true"); // Y too low
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.Y)]);
         Assert.AreEqual($"Y position must be between 0 and {_mapHeight - 1}.", viewModel[nameof(entity.Y)]);
 
-        entity = new EntityData("Octorok", 10, _mapHeight, "true"); // Y too high
+        entity = new EntityData("Octorok", 10, _mapHeight, 1.0, 1.0, "true"); // Y too high
         viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.Y)]);
@@ -238,7 +238,7 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_EmptyCondition_HasErrors()
     {
-        var entity = new EntityData("Octorok", 10, 10, "");
+        var entity = new EntityData("Octorok", 10, 10, 1.0, 1.0, "");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.Condition)]);
@@ -248,7 +248,7 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_InvalidConditionFormat_HasErrors()
     {
-        var entity = new EntityData("Octorok", 10, 10, "invalid-expression!");
+        var entity = new EntityData("Octorok", 10, 10, 1.0, 1.0, "invalid-expression!");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.HasErrors);
         Assert.IsNotNull(viewModel[nameof(entity.Condition)]);
@@ -258,7 +258,7 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_SaveCommand_CanExecuteAndExecute()
     {
-        var entity = new EntityData("Octorok", 10, 10, "true");
+        var entity = new EntityData("Octorok", 10, 10, 1.0, 1.0, "true");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
         Assert.IsTrue(viewModel.EntitySaveCommand.CanExecute(null));
 
@@ -271,7 +271,7 @@ public class ViewModelTests
     [TestMethod]
     public void EntityEditorViewModel_CancelCommand_Execute()
     {
-        var entity = new EntityData("Octorok", 10, 10, "true");
+        var entity = new EntityData("Octorok", 10, 10, 1.0, 1.0, "true");
         var viewModel = new EntityEditorViewModel(entity, _gameDataService, _mapWidth, _mapHeight);
 
         var closed = false;
