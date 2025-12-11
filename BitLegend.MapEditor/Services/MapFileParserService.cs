@@ -67,6 +67,19 @@ public partial class MapFileParserService : IMapFileParserService
                 maps.Add(map);
             }
         }
+        if(maps.Count == 0)
+        {
+            foreach (var filePath in Directory.GetFiles(GetAbsoluteGameMapsPath(), "*.cs"))
+            {
+                var content = File.ReadAllText(filePath);
+                var map = await Task.Run(() => ParseMapFile(content));
+                if (map != null)
+                {
+                    maps.Add(map);
+                }
+            }
+        }
+
         return maps;
     }
 
@@ -138,13 +151,13 @@ public partial class MapFileParserService : IMapFileParserService
         if (match.Success)
         {
             var content = match.Groups["content"].Value.Trim();
-            if (content.StartsWith("["))
+            if (content.StartsWith('['))
             {
                 var startIndex = content.IndexOf('[') + 1;
                 var endIndex = content.LastIndexOf(']');
                 if (endIndex > startIndex)
                 {
-                    return content.Substring(startIndex, endIndex - startIndex);
+                    return content[startIndex..endIndex];
                 }
             }
         }
@@ -169,13 +182,13 @@ public partial class MapFileParserService : IMapFileParserService
             }
             else if (listContent[i] == ',' && balance == 0)
             {
-                items.Add(listContent.Substring(lastSplitIndex, i - lastSplitIndex).Trim());
+                items.Add(listContent[lastSplitIndex..i].Trim());
                 lastSplitIndex = i + 1;
             }
         }
         if (lastSplitIndex < listContent.Length)
         {
-            items.Add(listContent.Substring(lastSplitIndex).Trim());
+            items.Add(listContent[lastSplitIndex..].Trim());
         }
         return items;
     }
